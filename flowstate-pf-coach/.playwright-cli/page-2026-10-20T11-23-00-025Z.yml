@@ -1,0 +1,133 @@
+- generic [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - complementary [ref=f1e3]:
+      - link "Flowstate home" [ref=f1e4] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=f1e9]:
+          - strong [ref=f1e10]: flowstate
+          - generic [ref=f1e11]: THE PF PRACTICE ROOM
+      - generic [ref=f1e12]:
+        - generic [ref=f1e13]: "N"
+        - generic [ref=f1e14]:
+          - strong [ref=f1e15]: Northview Debate
+          - generic [ref=f1e16]: Varsity · Public Forum
+        - generic [ref=f1e17]: ⌄
+      - generic [ref=f1e18]: WORKSPACE
+      - navigation "Main navigation" [ref=f1e19]:
+        - button "Overview" [ref=f1e20] [cursor=pointer]
+        - button "Round room 8" [ref=f1e25] [cursor=pointer]:
+          - generic [ref=f1e30]: Round room
+          - generic [ref=f1e31]: "8"
+        - button "Case lab" [ref=f1e32] [cursor=pointer]
+        - button "Flow board" [ref=f1e38] [cursor=pointer]
+        - button "Evidence library" [ref=f1e44] [cursor=pointer]
+        - button "Crossfire gym" [ref=f1e51] [cursor=pointer]
+        - button "Speech studio" [ref=f1e57] [cursor=pointer]
+      - generic [ref=f1e63]: TEAM TOOLS
+      - navigation "Team tools" [ref=f1e64]:
+        - button "Tournament kit" [ref=f1e65] [cursor=pointer]
+        - button "Progress" [active] [ref=f1e71] [cursor=pointer]
+      - generic [ref=f1e77]:
+        - generic [ref=f1e78]: ✳
+        - generic [ref=f1e79]:
+          - strong [ref=f1e80]: Coach's corner
+          - paragraph [ref=f1e81]: Win the ballot by extending offense and weighing it in summary.
+          - button "Open speech guide →" [ref=f1e82] [cursor=pointer]
+      - button "MC Maya Chen Student debater •••" [ref=f1e83] [cursor=pointer]:
+        - generic [ref=f1e84]: MC
+        - generic [ref=f1e85]:
+          - strong [ref=f1e86]: Maya Chen
+          - generic [ref=f1e87]: Student debater
+        - generic [ref=f1e88]: •••
+    - main [ref=f1e89]:
+      - generic [ref=f1e90]:
+        - generic [ref=f1e91]:
+          - generic [ref=f1e92]: MY WORKSPACE
+          - generic [ref=f1e93]: /
+          - strong [ref=f1e94]: Progress
+        - generic [ref=f1e95]:
+          - generic [ref=f1e96]:
+            - searchbox "⌘ K" [ref=f1e100]
+            - generic [ref=f1e101]: ⌘ K
+          - button "Settings" [ref=f1e102] [cursor=pointer]
+          - button "Open profile" [ref=f1e106] [cursor=pointer]: MC
+      - generic [ref=f1e107]:
+        - generic [ref=f1e1130]:
+          - generic [ref=f1e1131]:
+            - generic [ref=f1e1132]: SMALL REPS ADD UP
+            - heading "Progress" [level=1] [ref=f1e1133]
+            - paragraph [ref=f1e1134]: Track practice you log in this browser. Your record starts at zero.
+          - button "＋ Log a practice" [ref=f1e1136] [cursor=pointer]
+        - generic [ref=f1e1137]:
+          - generic [ref=f1e1138]:
+            - generic [ref=f1e1140]:
+              - generic [ref=f1e1141]:
+                - generic [ref=f1e1142]: WEEKLY PRACTICE GOAL
+                - heading "0 of 4 sessions" [level=2] [ref=f1e1143]
+                - paragraph [ref=f1e1144]: 4 more sessions to reach your goal.
+              - generic [ref=f1e1145]: 0%
+            - generic [ref=f1e1147]:
+              - generic [ref=f1e1148]:
+                - generic [ref=f1e1149]:
+                  - heading "This week" [level=2] [ref=f1e1150]
+                  - paragraph [ref=f1e1151]: Practice minutes recorded per day
+                - generic [ref=f1e1152]: Current week
+              - generic [ref=f1e1153]:
+                - generic [ref=f1e1154]:
+                  - generic "0 minutes" [ref=f1e1155]
+                  - generic [ref=f1e1156]: M
+                - generic [ref=f1e1157]:
+                  - generic "0 minutes" [ref=f1e1158]
+                  - generic [ref=f1e1159]: T
+                - generic [ref=f1e1160]:
+                  - generic "0 minutes" [ref=f1e1161]
+                  - generic [ref=f1e1162]: W
+                - generic [ref=f1e1163]:
+                  - generic "0 minutes" [ref=f1e1164]
+                  - generic [ref=f1e1165]: T
+                - generic [ref=f1e1166]:
+                  - generic "0 minutes" [ref=f1e1167]
+                  - generic [ref=f1e1168]: F
+                - generic [ref=f1e1169]:
+                  - generic "0 minutes" [ref=f1e1170]
+                  - generic [ref=f1e1171]: S
+                - generic [ref=f1e1172]:
+                  - generic "0 minutes" [ref=f1e1173]
+                  - generic [ref=f1e1174]: S
+              - paragraph [ref=f1e1176]: Log a practice to start your activity history. No prior sessions are assumed.
+          - generic [ref=f1e1177]:
+            - generic [ref=f1e1178]:
+              - generic [ref=f1e1180]:
+                - generic [ref=f1e1181]: TOTAL SESSIONS
+                - generic [ref=f1e1182]: "0"
+                - generic [ref=f1e1183]: Logged practice blocks
+              - generic [ref=f1e1189]:
+                - generic [ref=f1e1190]: TOTAL MINUTES
+                - generic [ref=f1e1191]: "0"
+                - generic [ref=f1e1192]: Time spent practicing
+            - generic [ref=f1e1197]:
+              - generic [ref=f1e1199]:
+                - heading "Skills to build" [level=2] [ref=f1e1200]
+                - paragraph [ref=f1e1201]: Practice areas to return to
+              - generic [ref=f1e1202]:
+                - generic [ref=f1e1203]:
+                  - generic [ref=f1e1204]: "01"
+                  - generic [ref=f1e1205]:
+                    - strong [ref=f1e1206]: Warrant comparison
+                    - generic [ref=f1e1207]: Explain the causal chain in one clean sentence.
+                - generic [ref=f1e1208]:
+                  - generic [ref=f1e1209]: "02"
+                  - generic [ref=f1e1210]:
+                    - strong [ref=f1e1211]: Summary collapse
+                    - generic [ref=f1e1212]: Choose offense that survives the flow.
+                - generic [ref=f1e1213]:
+                  - generic [ref=f1e1214]: "03"
+                  - generic [ref=f1e1215]:
+                    - strong [ref=f1e1216]: Final focus writing
+                    - generic [ref=f1e1217]: Mirror summary and weigh to the ballot.
+            - generic [ref=f1e1218]:
+              - heading "Your saved record" [level=2] [ref=f1e1221]
+              - generic [ref=f1e1222]:
+                - heading "Practice history" [level=3] [ref=f1e1223]
+                - paragraph [ref=f1e1224]: No sessions logged yet. Finish a round or log practice to start.0 speech reps saved.
+  - status: Draft cleared.

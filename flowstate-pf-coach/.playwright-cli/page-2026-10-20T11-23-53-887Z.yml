@@ -1,0 +1,157 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - link "Flowstate home" [ref=e4] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=e9]:
+          - strong [ref=e10]: flowstate
+          - generic [ref=e11]: THE PF PRACTICE ROOM
+      - generic [ref=e12]:
+        - generic [ref=e13]: "N"
+        - generic [ref=e14]:
+          - strong [ref=e15]: Northview Debate
+          - generic [ref=e16]: Varsity · Public Forum
+        - generic [ref=e17]: ⌄
+      - generic [ref=e18]: WORKSPACE
+      - navigation "Main navigation" [ref=e19]:
+        - button "Overview" [ref=e20] [cursor=pointer]
+        - button "Round room 8" [ref=e25] [cursor=pointer]:
+          - generic [ref=e30]: Round room
+          - generic [ref=e31]: "8"
+        - button "Case lab" [ref=e32] [cursor=pointer]
+        - button "Flow board" [ref=e38] [cursor=pointer]
+        - button "Evidence library" [ref=e44] [cursor=pointer]
+        - button "Crossfire gym" [ref=e51] [cursor=pointer]
+        - button "Speech studio" [ref=e57] [cursor=pointer]
+      - generic [ref=e63]: TEAM TOOLS
+      - navigation "Team tools" [ref=e64]:
+        - button "Tournament kit" [ref=e65] [cursor=pointer]
+        - button "Progress" [ref=e71] [cursor=pointer]
+      - generic [ref=e77]:
+        - generic [ref=e78]: ✳
+        - generic [ref=e79]:
+          - strong [ref=e80]: Coach's corner
+          - paragraph [ref=e81]: Win the ballot by extending offense and weighing it in summary.
+          - button "Open speech guide →" [ref=e82] [cursor=pointer]
+      - button "MC Maya Chen Student debater •••" [ref=e83] [cursor=pointer]:
+        - generic [ref=e84]: MC
+        - generic [ref=e85]:
+          - strong [ref=e86]: Maya Chen
+          - generic [ref=e87]: Student debater
+        - generic [ref=e88]: •••
+    - main [ref=e89]:
+      - generic [ref=e90]:
+        - generic [ref=e91]:
+          - generic [ref=e92]: MY WORKSPACE
+          - generic [ref=e93]: /
+          - strong [ref=e94]: Overview
+        - generic [ref=e95]:
+          - generic [ref=e96]:
+            - searchbox "⌘ K" [ref=e100]
+            - generic [ref=e101]: ⌘ K
+          - button "Settings" [ref=e102] [cursor=pointer]
+          - button "Open profile" [ref=e106] [cursor=pointer]: MC
+      - generic [ref=e107]:
+        - generic [ref=e108]:
+          - generic [ref=e109]:
+            - generic [ref=e110]: TUESDAY, OCTOBER 20
+            - heading "Good afternoon, Maya." [level=1] [ref=e111]
+            - paragraph [ref=e112]: A focused rep today is better than another hour of unfocused prep.
+          - generic [ref=e113]:
+            - button "Edit workspace" [ref=e114] [cursor=pointer]
+            - button "＋ Start a practice round" [ref=e115] [cursor=pointer]
+        - generic [ref=e116]:
+          - generic [ref=e117]:
+            - generic [ref=e119]:
+              - generic [ref=e120]: YOUR NOV/DEC TOPIC ROOM
+              - heading "Make every speech earn its place on the ballot." [level=2] [ref=e121]
+              - paragraph [ref=e122]: Build a clean flow, keep your evidence honest, and give the judge a reason to vote for you.
+              - button "Open round room →" [ref=e123] [cursor=pointer]
+            - generic [ref=e132]:
+              - generic [ref=e134]:
+                - generic [ref=e135]: PRACTICE SESSIONS
+                - generic [ref=e136]: "0"
+                - generic [ref=e137]: Saved on this device
+              - generic [ref=e143]:
+                - generic [ref=e144]: PRACTICE MINUTES
+                - generic [ref=e145]: "0"
+                - generic [ref=e146]: Across all logged reps
+              - generic [ref=e152]:
+                - generic [ref=e153]: SPEECH REPS
+                - generic [ref=e154]: "0"
+                - generic [ref=e155]: Completed speech drills
+            - generic [ref=e159]:
+              - generic [ref=e160]:
+                - generic [ref=e162]:
+                  - heading "Today's practice plan" [level=2] [ref=e163]
+                  - paragraph [ref=e164]: 0 of 3 focus reps complete
+                - generic [ref=e165]:
+                  - generic [ref=e166]:
+                    - button [ref=e167] [cursor=pointer]
+                    - generic [ref=e168]:
+                      - strong [ref=e169]: Warm up your extensions
+                      - generic [ref=e170]: Pick one contention and carry it through the flow.
+                    - generic [ref=e171]: 8 min
+                  - generic [ref=e172]:
+                    - button [ref=e173] [cursor=pointer]
+                    - generic [ref=e174]:
+                      - strong [ref=e175]: Run a crossfire drill
+                      - generic [ref=e176]: Ask short questions that expose the warrant.
+                    - generic [ref=e177]: 6 min
+                  - generic [ref=e178]:
+                    - button [ref=e179] [cursor=pointer]
+                    - generic [ref=e180]:
+                      - strong [ref=e181]: Write the ballot
+                      - generic [ref=e182]: Practice a comparative final focus.
+                    - generic [ref=e183]: 10 min
+              - generic [ref=e184]:
+                - generic [ref=e186]:
+                  - heading "Pick up where you left off" [level=2] [ref=e187]
+                  - paragraph [ref=e188]: Your next useful rep is ready
+                - generic [ref=e189]:
+                  - heading "Final focus · collapse and weigh" [level=3] [ref=e190]
+                  - paragraph [ref=e191]: Choose one offense to extend. Mirror your summary, answer the live flow, and compare impact with a reason the judge can use.
+                  - button "Open final focus draft →" [ref=e193] [cursor=pointer]
+          - generic [ref=e194]:
+            - generic [ref=e195]:
+              - generic [ref=e196]:
+                - generic [ref=e197]: ROUND ROOM
+                - generic [ref=e198]: READY WHEN YOU ARE
+              - heading "Practice the full PF speech order" [level=3] [ref=e200]
+              - paragraph [ref=e201]: Timed speeches, crossfires, prep blocks, and a place to keep your round notes.
+              - generic [ref=e202]:
+                - button "Set up a round →" [ref=e203] [cursor=pointer]
+                - generic [ref=e204]: 4 / 4 / 3 / 2 min
+            - generic [ref=e205]:
+              - generic [ref=e207]:
+                - heading "Research starters" [level=2] [ref=e208]
+                - paragraph [ref=e209]: Prompts to turn into sourced cards
+              - generic [ref=e210]:
+                - generic [ref=e211]:
+                  - generic [ref=e216]:
+                    - strong [ref=e217]: Treaty text
+                    - generic [ref=e218]: What obligations follow ratification? Find the primary text.
+                  - generic [ref=e219]: PRIMARY SOURCE
+                - generic [ref=e221]:
+                  - generic [ref=e226]:
+                    - strong [ref=e227]: Alliance policy
+                    - generic [ref=e228]: How do European NATO members describe deterrence and consultation?
+                  - generic [ref=e229]: OFFICIAL DOCS
+                - generic [ref=e231]:
+                  - generic [ref=e236]:
+                    - strong [ref=e237]: Humanitarian impact
+                    - generic [ref=e238]: What do credible sources document about nuclear weapon effects?
+                  - generic [ref=e239]: RESEARCH LEAD
+            - generic [ref=e241]:
+              - heading "Coach's reminder" [level=2] [ref=e244]
+              - generic [ref=e245]:
+                - strong [ref=e246]: "Evidence integrity:"
+                - text: a plausible statistic is still not evidence. Save the original source and complete citation before marking a card verified.
+              - button "Open evidence library →" [ref=e248] [cursor=pointer]
+        - generic [ref=e249]:
+          - generic [ref=e250]: ✦
+          - generic [ref=e251]:
+            - generic [ref=e252]: Nov/Dec 2026 · ACTIVE WORKSPACE RESOLUTION
+            - strong [ref=e253]: "Resolved: European members of the North Atlantic Treaty Organization should ratify the Treaty on the Prohibition of Nuclear Weapons."
+          - generic [ref=e254]: Change in Settings
+  - status

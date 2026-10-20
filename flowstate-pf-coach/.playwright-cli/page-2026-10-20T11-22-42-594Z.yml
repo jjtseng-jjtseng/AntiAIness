@@ -1,0 +1,142 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - complementary [ref=f1e3]:
+      - link "Flowstate home" [ref=f1e4] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=f1e9]:
+          - strong [ref=f1e10]: flowstate
+          - generic [ref=f1e11]: THE PF PRACTICE ROOM
+      - generic [ref=f1e12]:
+        - generic [ref=f1e13]: "N"
+        - generic [ref=f1e14]:
+          - strong [ref=f1e15]: Northview Debate
+          - generic [ref=f1e16]: Varsity · Public Forum
+        - generic [ref=f1e17]: ⌄
+      - generic [ref=f1e18]: WORKSPACE
+      - navigation "Main navigation" [ref=f1e19]:
+        - button "Overview" [ref=f1e20] [cursor=pointer]
+        - button "Round room 8" [ref=f1e25] [cursor=pointer]:
+          - generic [ref=f1e30]: Round room
+          - generic [ref=f1e31]: "8"
+        - button "Case lab" [ref=f1e32] [cursor=pointer]
+        - button "Flow board" [ref=f1e38] [cursor=pointer]
+        - button "Evidence library" [ref=f1e44] [cursor=pointer]
+        - button "Crossfire gym" [ref=f1e51] [cursor=pointer]
+        - button "Speech studio" [ref=f1e57] [cursor=pointer]
+      - generic [ref=f1e63]: TEAM TOOLS
+      - navigation "Team tools" [ref=f1e64]:
+        - button "Tournament kit" [ref=f1e65] [cursor=pointer]
+        - button "Progress" [ref=f1e71] [cursor=pointer]
+      - generic [ref=f1e77]:
+        - generic [ref=f1e78]: ✳
+        - generic [ref=f1e79]:
+          - strong [ref=f1e80]: Coach's corner
+          - paragraph [ref=f1e81]: Win the ballot by extending offense and weighing it in summary.
+          - button "Open speech guide →" [ref=f1e82] [cursor=pointer]
+      - button "MC Maya Chen Student debater •••" [ref=f1e83] [cursor=pointer]:
+        - generic [ref=f1e84]: MC
+        - generic [ref=f1e85]:
+          - strong [ref=f1e86]: Maya Chen
+          - generic [ref=f1e87]: Student debater
+        - generic [ref=f1e88]: •••
+    - main [ref=f1e89]:
+      - generic [ref=f1e90]:
+        - generic [ref=f1e91]:
+          - generic [ref=f1e92]: MY WORKSPACE
+          - generic [ref=f1e93]: /
+          - strong [ref=f1e94]: Speech studio
+        - generic [ref=f1e95]:
+          - generic [ref=f1e96]:
+            - searchbox "⌘ K" [ref=f1e100]
+            - generic [ref=f1e101]: ⌘ K
+          - button "Settings" [ref=f1e102] [cursor=pointer]
+          - button "Open profile" [ref=f1e106] [cursor=pointer]: MC
+      - generic [ref=f1e107]:
+        - generic [ref=f1e892]:
+          - generic [ref=f1e893]:
+            - generic [ref=f1e894]: WRITE FOR THE FLOW
+            - heading "Speech studio" [level=1] [ref=f1e895]
+            - paragraph [ref=f1e896]: Build a speech from the round, then adapt clarity and speed to the judge.
+          - generic [ref=f1e897]:
+            - button "Clear draft" [ref=f1e898] [cursor=pointer]
+            - button "Build a speech scaffold" [ref=f1e899] [cursor=pointer]
+        - generic [ref=f1e900]:
+          - generic [ref=f1e901]:
+            - generic [ref=f1e903]:
+              - heading "Judge adaptation" [level=2] [ref=f1e904]
+              - paragraph [ref=f1e905]: Signposted, lightly technical, with jargon explained once.
+            - generic [ref=f1e906]:
+              - button "Lay" [ref=f1e907] [cursor=pointer]
+              - button "Flay" [ref=f1e908] [cursor=pointer]
+              - button "Tech" [ref=f1e909] [cursor=pointer]
+            - paragraph [ref=f1e910]: Starting pace estimates only. Prioritize clarity and read the paradigm.
+          - generic [ref=f1e911]:
+            - generic [ref=f1e913]:
+              - heading "Speech job" [level=2] [ref=f1e914]
+              - paragraph [ref=f1e915]: PF role and default time. Check your invitation.
+            - combobox [ref=f1e916]:
+              - option "Constructive A · 4 min · First speaker · Team A" [selected]
+              - option "Constructive B · 4 min · First speaker · Team B"
+              - option "Crossfire 1 · 3 min · First speakers"
+              - option "Rebuttal A · 4 min · Second speaker · Team A"
+              - option "Rebuttal B · 4 min · Second speaker · Team B + frontline"
+              - option "Crossfire 2 · 3 min · Second speakers"
+              - option "Summary A · 3 min · First speaker · Team A"
+              - option "Summary B · 3 min · First speaker · Team B"
+              - option "Grand crossfire · 3 min · All four debaters"
+              - option "Final focus A · 2 min · Second speaker · Team A"
+              - option "Final focus B · 2 min · Second speaker · Team B"
+              - option "Prep time · 3 min · Per team · check invitation"
+        - generic [ref=f1e917]:
+          - generic [ref=f1e918]:
+            - generic [ref=f1e919]:
+              - generic [ref=f1e920]:
+                - heading "Draft" [level=2] [ref=f1e921]
+                - paragraph [ref=f1e922]: Keep analytics and evidence visibly separate.
+              - generic [ref=f1e923]: Pro
+            - textbox "Start with a signpost. Build only from arguments in your flow." [ref=f1e924]: "Roadmap: I will make two contentions, then explain the weighing lens. Pro — Resolved: European members of the North Atlantic Treaty Organization should ratify the Treaty on the Prohibition of Nuclear Weapons. Contention 1: [claim]. Warrant: [explain the causal chain]. Evidence: [CARD NEEDED: source-backed claim + targeted search]. Impact: [who, timeframe, likelihood, and why it matters]. Contention 2: [claim]. Warrant: [explain the causal chain]. Evidence: [CARD NEEDED: source-backed claim + targeted search]. Impact: [who, timeframe, likelihood, and why it matters]. Weighing: [why our impact matters more than theirs]."
+            - generic [ref=f1e925]:
+              - generic [ref=f1e926]:
+                - strong [ref=f1e927]: "88"
+                - text: words
+              - generic [ref=f1e928]:
+                - text: Approx.
+                - strong [ref=f1e929]: 0m 28s
+                - text: at 190 wpm
+              - generic [ref=f1e930]: Autosaved
+          - generic [ref=f1e931]:
+            - generic [ref=f1e932]:
+              - generic [ref=f1e934]:
+                - heading "Speech checklist" [level=2] [ref=f1e935]
+                - paragraph [ref=f1e936]: Flow-ready, not public-speaking filler.
+              - generic [ref=f1e937]:
+                - generic [ref=f1e938]:
+                  - generic [ref=f1e939]: "1"
+                  - generic [ref=f1e940]:
+                    - strong [ref=f1e941]: Roadmap the speech
+                    - generic [ref=f1e942]: 4 minute speech default.
+                - generic [ref=f1e943]:
+                  - generic [ref=f1e944]: "2"
+                  - generic [ref=f1e945]:
+                    - strong [ref=f1e946]: State claim, warrant, evidence, impact
+                    - generic [ref=f1e947]: 4 minute speech default.
+                - generic [ref=f1e948]:
+                  - generic [ref=f1e949]: "3"
+                  - generic [ref=f1e950]:
+                    - strong [ref=f1e951]: Signpost every response
+                    - generic [ref=f1e952]: 4 minute speech default.
+                - generic [ref=f1e953]:
+                  - generic [ref=f1e954]: "4"
+                  - generic [ref=f1e955]:
+                    - strong [ref=f1e956]: End with the judge's reason to vote
+                    - generic [ref=f1e957]: 4 minute speech default.
+            - generic [ref=f1e958]:
+              - heading "Drafting guardrails" [level=2] [ref=f1e961]
+              - generic [ref=f1e962]:
+                - generic [ref=f1e963]: i
+                - generic [ref=f1e964]:
+                  - text: Use only real source text. If no source is ready, write
+                  - strong [ref=f1e965]: "[CARD NEEDED: claim + search lead]"
+                  - text: and keep moving with honest analytics.
+              - paragraph [ref=f1e966]: Final focus mirrors the summary; do not add new arguments or impacts in the last speech.
+  - status: Flow-ready scaffold added. Replace every bracket with round-specific analysis.

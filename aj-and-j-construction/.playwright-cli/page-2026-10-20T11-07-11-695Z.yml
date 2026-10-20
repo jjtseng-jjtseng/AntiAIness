@@ -1,0 +1,315 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - generic [ref=e3]:
+    - generic [ref=e4]: A little inspiration. A lot of possibility.
+    - link "Find your next chapter" [ref=e5] [cursor=pointer]:
+      - /url: "#projects"
+      - text: Find your next chapter
+      - generic [aria-hidden] [ref=e6]: ↗
+  - banner [ref=e7]:
+    - generic [ref=e8]:
+      - link "AJ and J Construction home" [ref=e9] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=e12]:
+          - text: AJ & J
+          - generic [ref=e13]: CONSTRUCTION
+      - navigation "Main navigation" [ref=e14]:
+        - link "What we do" [ref=e15] [cursor=pointer]:
+          - /url: "#services"
+        - link "The possibilities" [ref=e16] [cursor=pointer]:
+          - /url: "#projects"
+        - link "Why AJ & J" [ref=e17] [cursor=pointer]:
+          - /url: "#why-us"
+        - link "Plan your project" [ref=e18] [cursor=pointer]:
+          - /url: "#pricing"
+      - button "Let’s build something" [ref=e19] [cursor=pointer]:
+        - text: Let’s build something
+        - generic [aria-hidden] [ref=e20]: ↗
+  - main [ref=e21]:
+    - region [ref=e22]:
+      - generic [ref=e23]:
+        - paragraph [ref=e24]:
+          - generic [ref=e25]: ✳
+          - text: GOOD HOMES. GOOD PEOPLE.
+        - heading [level=1] [ref=e26]:
+          - text: Your home.Your next
+          - emphasis [ref=e27]: great chapter.
+        - paragraph [ref=e28]: The kitchen everyone gathers in. The space you’ve always needed. Let’s build a home that feels more like you.
+        - generic [ref=e29]:
+          - button "Bring your ideas to life" [ref=e30] [cursor=pointer]:
+            - text: Bring your ideas to life
+            - generic [aria-hidden] [ref=e31]: ↗
+          - link "A little inspiration" [ref=e32] [cursor=pointer]:
+            - /url: "#projects"
+            - text: A little inspiration
+            - generic [aria-hidden] [ref=e33]: ↗
+        - generic [ref=e34]:
+          - generic [ref=e35]:
+            - generic [ref=e36]: ✓
+            - text: A conversation, no commitment
+          - generic [ref=e37]:
+            - generic [ref=e38]: ✓
+            - text: Your vision comes first
+      - generic [ref=e39]:
+        - img "Bright, open-plan home with natural wood details, a garden view, and space to gather" [ref=e40]
+        - generic [ref=e41]: SPACES TO LIVE A LITTLE MORE.
+        - generic [ref=e43]:
+          - generic [aria-hidden] [ref=e44]: ✳
+          - generic [ref=e45]:
+            - text: More than a renovation.
+            - strong [ref=e46]: A fresh start.
+          - link "Explore our renovation services" [ref=e47] [cursor=pointer]:
+            - /url: "#services"
+            - text: ↗
+        - generic [ref=e48]: Design inspiration · stock photography
+    - generic [ref=e50]:
+      - generic [ref=e51]: Built on the things that matter.
+      - generic [ref=e52]: A clear plan
+      - generic [ref=e55]: Honest conversations
+      - generic [ref=e58]: Thoughtful craftsmanship
+      - generic [ref=e61]: Respect for your home
+    - generic [ref=e64]:
+      - generic [ref=e65]:
+        - generic [ref=e66]:
+          - paragraph [ref=e67]: 01 / MAKE IT YOURS
+          - heading [level=2] [ref=e68]:
+            - text: Big ideas. Small details.
+            - emphasis [ref=e69]: We’re here for all of it.
+        - paragraph [ref=e70]: You don’t need to have it all figured out.Just a space you’d love to make better.
+      - generic [ref=e71]:
+        - button "↗ Kitchens For busy mornings, slow Sundays, and everything in between. FROM $18,000 Explore kitchens" [ref=e72] [cursor=pointer]:
+          - generic [ref=e73]: ↗
+          - heading "Kitchens" [level=3] [ref=e77]
+          - paragraph [ref=e78]: For busy mornings, slow Sundays, and everything in between.
+          - generic [ref=e79]:
+            - text: FROM $18,000
+            - generic [ref=e80]: Explore kitchens
+        - button "↗ Bathrooms A little everyday escape, thoughtfully built around your routine. FROM $9,000 Explore bathrooms" [ref=e81] [cursor=pointer]:
+          - generic [ref=e82]: ↗
+          - heading "Bathrooms" [level=3] [ref=e86]
+          - paragraph [ref=e87]: A little everyday escape, thoughtfully built around your routine.
+          - generic [ref=e88]:
+            - text: FROM $9,000
+            - generic [ref=e89]: Explore bathrooms
+        - button "↗ Home renovations More room to grow. Better flow. A whole new way to feel at home. FROM $35,000 Explore renovations" [ref=e90] [cursor=pointer]:
+          - generic [ref=e91]: ↗
+          - heading "Home renovations" [level=3] [ref=e95]
+          - paragraph [ref=e96]: More room to grow. Better flow. A whole new way to feel at home.
+          - generic [ref=e97]:
+            - text: FROM $35,000
+            - generic [ref=e98]: Explore renovations
+        - button "↗ Outdoor living Take the good times outside with a space worth staying in for. FROM $7,500 Explore outdoors" [ref=e99] [cursor=pointer]:
+          - generic [ref=e100]: ↗
+          - heading "Outdoor living" [level=3] [ref=e104]
+          - paragraph [ref=e105]: Take the good times outside with a space worth staying in for.
+          - generic [ref=e106]:
+            - text: FROM $7,500
+            - generic [ref=e107]: Explore outdoors
+      - paragraph [ref=e108]: A starting point for your plans. All prices are illustrative and subject to an individual project quote.
+    - generic [ref=e110]:
+      - generic [ref=e111]:
+        - generic [ref=e112]:
+          - paragraph [ref=e113]: 02 / PICTURE THE POSSIBILITIES
+          - heading [level=2] [ref=e114]:
+            - text: A little inspiration for
+            - emphasis [ref=e115]: your big “what if.”
+        - generic [ref=e116]:
+          - paragraph [ref=e117]: Find a feeling you love.We’ll help you make it your own.
+          - generic [ref=e118]: Inspiration gallery · not completed AJ & J projects
+      - group "Filter inspiration" [ref=e119]:
+        - button "All spaces 04" [pressed] [ref=e120] [cursor=pointer]
+        - button "Kitchens" [ref=e121] [cursor=pointer]
+        - button "Bathrooms" [ref=e122] [cursor=pointer]
+        - button "Living spaces" [ref=e123] [cursor=pointer]
+        - button "Outdoors" [ref=e124] [cursor=pointer]
+      - generic [ref=e125]:
+        - button "Welcoming kitchen with white cabinets, warm wood floors, and natural light KITCHEN RENOVATION The heart of the home Warm. Welcoming. Wonderfully you." [ref=e126] [cursor=pointer]:
+          - generic [ref=e127]:
+            - img "Welcoming kitchen with white cabinets, warm wood floors, and natural light" [ref=e128]
+            - generic [ref=e129]: KITCHEN RENOVATION
+            - generic [aria-hidden] [ref=e130]: ↗
+          - generic [ref=e131]:
+            - heading "The heart of the home" [level=3] [ref=e132]
+            - generic [ref=e133]: Warm. Welcoming. Wonderfully you.
+        - button "Calm bathroom with a wood vanity and modern fixtures BATHROOM RENOVATION Your everyday retreat A quieter kind of luxury." [ref=e134] [cursor=pointer]:
+          - generic [ref=e135]:
+            - img "Calm bathroom with a wood vanity and modern fixtures" [ref=e136]
+            - generic [ref=e137]: BATHROOM RENOVATION
+            - generic [aria-hidden] [ref=e138]: ↗
+          - generic [ref=e139]:
+            - heading "Your everyday retreat" [level=3] [ref=e140]
+            - generic [ref=e141]: A quieter kind of luxury.
+        - button "Comfortable living room with soft textiles and light-filled gathering spaces HOME RENOVATION Room for real life Space to connect. Space to grow." [ref=e142] [cursor=pointer]:
+          - generic [ref=e143]:
+            - img "Comfortable living room with soft textiles and light-filled gathering spaces" [ref=e144]
+            - generic [ref=e145]: HOME RENOVATION
+            - generic [aria-hidden] [ref=e146]: ↗
+          - generic [ref=e147]:
+            - heading "Room for real life" [level=3] [ref=e148]
+            - generic [ref=e149]: Space to connect. Space to grow.
+        - button "Contemporary home with a landscaped outdoor gathering area OUTDOOR LIVING A breath of fresh air Your favorite room, under the sky." [ref=e150] [cursor=pointer]:
+          - generic [ref=e151]:
+            - img "Contemporary home with a landscaped outdoor gathering area" [ref=e152]
+            - generic [ref=e153]: OUTDOOR LIVING
+            - generic [aria-hidden] [ref=e154]: ↗
+          - generic [ref=e155]:
+            - heading "A breath of fresh air" [level=3] [ref=e156]
+            - generic [ref=e157]: Your favorite room, under the sky.
+      - paragraph [ref=e158]: Showing 4 inspiration spaces
+    - generic [ref=e159]:
+      - generic [ref=e160]:
+        - img "Thoughtfully arranged living room with natural finishes" [ref=e161]
+        - generic [ref=e162]: YOUR HOME.OUR RESPONSIBILITY.
+      - generic [ref=e166]:
+        - paragraph [ref=e167]: 03 / PEOPLE FIRST. ALWAYS.
+        - heading [level=2] [ref=e168]:
+          - text: You’re inviting usinto your home.
+          - emphasis [ref=e169]: That means something.
+        - paragraph [ref=e170]: Home projects are personal. The right partner listens, explains the details, and treats your space with care. That’s the kind of experience we want to build with you.
+        - generic [ref=e171]:
+          - generic [ref=e172]: "01"
+          - generic [ref=e173]:
+            - heading "Clarity before the first hammer." [level=3] [ref=e174]
+            - paragraph [ref=e175]: A written scope, a realistic schedule, and pricing you can talk through.
+        - generic [ref=e176]:
+          - generic [ref=e177]: "02"
+          - generic [ref=e178]:
+            - heading "You’re part of the conversation." [level=3] [ref=e179]
+            - paragraph [ref=e180]: Discuss decisions and changes together, before work moves forward.
+        - generic [ref=e181]:
+          - generic [ref=e182]: "03"
+          - generic [ref=e183]:
+            - heading "The details deserve care." [level=3] [ref=e184]
+            - paragraph [ref=e185]: Plan for protecting your space, keeping a tidy site, and a final walkthrough.
+        - button "Get to know your project partner" [ref=e186] [cursor=pointer]:
+          - text: Get to know your project partner
+          - generic [aria-hidden] [ref=e187]: ↗
+    - generic [ref=e189]:
+      - generic [ref=e190]:
+        - paragraph [ref=e191]: 04 / A GOOD PLACE TO START
+        - heading [level=2] [ref=e192]:
+          - text: Big dreams.
+          - emphasis [ref=e193]: Let’s talk numbers.
+        - paragraph [ref=e194]: A little clarity makes the first step easier. Explore a starting budget, then let’s talk about what’s right for your space.
+        - link "Have questions first?" [ref=e195] [cursor=pointer]:
+          - /url: "#faq"
+          - text: Have questions first?
+          - generic [aria-hidden] [ref=e196]: ↗
+        - generic [ref=e197]: No guesswork about the next step.Start with a conversation and a custom scope.
+      - generic [ref=e201]:
+        - generic [ref=e202]:
+          - heading "Your project, at a glance" [level=3] [ref=e203]
+          - generic [ref=e204]: QUICK ESTIMATE
+        - generic [ref=e205]: What are you thinking?
+        - combobox "What are you thinking?" [ref=e206] [cursor=pointer]:
+          - option "Kitchen renovation" [selected]
+          - option "Bathroom renovation"
+          - option "Home renovation"
+          - option "Outdoor living"
+        - generic [ref=e207]:
+          - generic [ref=e208]: About how much space?
+          - status [ref=e209]: 150 sq ft
+        - slider "About how much space?" [ref=e210] [cursor=pointer]: "150"
+        - generic [ref=e211]:
+          - generic [ref=e212]: 80 sq ft
+          - generic [ref=e213]: 400 sq ft
+        - generic [ref=e214]: Your finishing touches
+        - combobox "Your finishing touches" [ref=e215] [cursor=pointer]:
+          - option "Thoughtful essentials" [selected]
+          - option "A little extra — upgraded finishes"
+          - option "Make it special — premium finishes"
+        - generic [ref=e216]:
+          - generic [ref=e217]: Your illustrative project range
+          - strong [ref=e218]: $18,000 – $25,200
+          - paragraph [ref=e219]: Materials + labor · a planning guide, not a quote
+        - button "Let’s make a plan" [ref=e220] [cursor=pointer]:
+          - text: Let’s make a plan
+          - generic [aria-hidden] [ref=e221]: ↗
+        - paragraph [ref=e222]: Demo pricing. Actual costs depend on site conditions, materials, location, permits, and final scope.
+    - generic [ref=e223]:
+      - generic [ref=e224]:
+        - generic [ref=e225]:
+          - paragraph [ref=e226]: 05 / FROM “WHAT IF” TO “WELCOME HOME”
+          - heading [level=2] [ref=e227]:
+            - text: A good project starts
+            - emphasis [ref=e228]: with a simple conversation.
+        - button "Take the first step" [ref=e229] [cursor=pointer]:
+          - text: Take the first step
+          - generic [aria-hidden] [ref=e230]: ↗
+      - generic [ref=e231]:
+        - generic [ref=e232]:
+          - generic [ref=e233]: "01"
+          - heading "Tell us what you’re dreaming of." [level=3] [ref=e236]
+          - paragraph [ref=e237]: A fresh look? More breathing room? Share your ideas, your priorities, and what home means to you.
+        - generic [ref=e238]:
+          - generic [ref=e239]: "02"
+          - heading "Make a plan that feels right." [level=3] [ref=e242]
+          - paragraph [ref=e243]: Talk through the possibilities, define the scope, and agree on the details before getting started.
+        - generic [ref=e244]:
+          - generic [ref=e245]: "03"
+          - heading "Watch your next chapter take shape." [level=3] [ref=e248]
+          - paragraph [ref=e249]: Stay involved along the way, then walk through the finished details together.
+    - generic [ref=e250]:
+      - generic [ref=e251]:
+        - paragraph [ref=e252]: A FEW THINGS YOU MIGHT BE WONDERING
+        - heading [level=2] [ref=e253]:
+          - text: Good questions.
+          - emphasis [ref=e254]: Straight answers.
+        - paragraph [ref=e255]: Every project is different.Let’s make yours a little clearer.
+        - button "Ask us about your project ↗" [ref=e256] [cursor=pointer]
+      - generic [ref=e257]:
+        - group [ref=e258]:
+          - generic "Can I reach out if I’m just exploring?" [ref=e259] [cursor=pointer]:
+            - text: Can I reach out if I’m just exploring?
+            - generic [aria-hidden] [ref=e260]: +
+        - group [ref=e261]:
+          - generic "What’s included in the starting prices?" [ref=e262] [cursor=pointer]:
+            - text: What’s included in the starting prices?
+            - generic [aria-hidden] [ref=e263]: +
+        - group [ref=e264]:
+          - generic "How long will my renovation take?" [ref=e265] [cursor=pointer]:
+            - text: How long will my renovation take?
+            - generic [aria-hidden] [ref=e266]: +
+        - group [ref=e267]:
+          - generic "Can I live at home during the work?" [ref=e268] [cursor=pointer]:
+            - text: Can I live at home during the work?
+            - generic [aria-hidden] [ref=e269]: +
+        - group [ref=e270]:
+          - generic "What happens when I request a project plan?" [ref=e271] [cursor=pointer]:
+            - text: What happens when I request a project plan?
+            - generic [aria-hidden] [ref=e272]: +
+    - generic [ref=e274]:
+      - generic [aria-hidden]: ✳
+      - paragraph [ref=e275]: YOUR NEXT CHAPTER IS WAITING.
+      - heading [level=2] [ref=e276]:
+        - text: Let’s build something
+        - emphasis [ref=e277]: you’ll love coming home to.
+      - button "Start with a conversation" [ref=e278] [cursor=pointer]:
+        - text: Start with a conversation
+        - generic [aria-hidden] [ref=e279]: ↗
+      - paragraph [ref=e280]: Bring your ideas. We’ll bring a way forward.
+  - contentinfo [ref=e281]:
+    - generic [ref=e282]:
+      - link "AJ and J Construction home" [ref=e283] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=e286]:
+          - text: AJ & J
+          - generic [ref=e287]: CONSTRUCTION
+      - paragraph [ref=e288]: Thoughtful spaces.Built around you.
+      - generic [ref=e289]:
+        - link "Our services" [ref=e290] [cursor=pointer]:
+          - /url: "#services"
+        - link "Find inspiration" [ref=e291] [cursor=pointer]:
+          - /url: "#projects"
+      - generic [ref=e292]:
+        - link "Explore pricing" [ref=e293] [cursor=pointer]:
+          - /url: "#pricing"
+        - button "Let’s talk" [ref=e294] [cursor=pointer]
+      - link "Back to top" [ref=e295] [cursor=pointer]:
+        - /url: "#"
+        - text: ↑
+    - generic [ref=e296]:
+      - generic [ref=e297]: © 2026 AJ & J Construction.
+      - generic [ref=e298]: Concept website · illustrative prices & stock imagery
+      - button "Privacy & demo information" [ref=e299] [cursor=pointer]

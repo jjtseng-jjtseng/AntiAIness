@@ -1,0 +1,115 @@
+- generic [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - complementary [ref=f1e3]:
+      - link "Flowstate home" [ref=f1e4] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=f1e9]:
+          - strong [ref=f1e10]: flowstate
+          - generic [ref=f1e11]: THE PF PRACTICE ROOM
+      - generic [ref=f1e12]:
+        - generic [ref=f1e13]: "N"
+        - generic [ref=f1e14]:
+          - strong [ref=f1e15]: Northview Debate
+          - generic [ref=f1e16]: Varsity · Public Forum
+        - generic [ref=f1e17]: ⌄
+      - generic [ref=f1e18]: WORKSPACE
+      - navigation "Main navigation" [ref=f1e19]:
+        - button "Overview" [ref=f1e20] [cursor=pointer]
+        - button "Round room 8" [ref=f1e25] [cursor=pointer]:
+          - generic [ref=f1e30]: Round room
+          - generic [ref=f1e31]: "8"
+        - button "Case lab" [ref=f1e32] [cursor=pointer]
+        - button "Flow board" [ref=f1e38] [cursor=pointer]
+        - button "Evidence library" [ref=f1e44] [cursor=pointer]
+        - button "Crossfire gym" [active] [ref=f1e51] [cursor=pointer]
+        - button "Speech studio" [ref=f1e57] [cursor=pointer]
+      - generic [ref=f1e63]: TEAM TOOLS
+      - navigation "Team tools" [ref=f1e64]:
+        - button "Tournament kit" [ref=f1e65] [cursor=pointer]
+        - button "Progress" [ref=f1e71] [cursor=pointer]
+      - generic [ref=f1e77]:
+        - generic [ref=f1e78]: ✳
+        - generic [ref=f1e79]:
+          - strong [ref=f1e80]: Coach's corner
+          - paragraph [ref=f1e81]: Win the ballot by extending offense and weighing it in summary.
+          - button "Open speech guide →" [ref=f1e82] [cursor=pointer]
+      - button "MC Maya Chen Student debater •••" [ref=f1e83] [cursor=pointer]:
+        - generic [ref=f1e84]: MC
+        - generic [ref=f1e85]:
+          - strong [ref=f1e86]: Maya Chen
+          - generic [ref=f1e87]: Student debater
+        - generic [ref=f1e88]: •••
+    - main [ref=f1e89]:
+      - generic [ref=f1e90]:
+        - generic [ref=f1e91]:
+          - generic [ref=f1e92]: MY WORKSPACE
+          - generic [ref=f1e93]: /
+          - strong [ref=f1e94]: Crossfire gym
+        - generic [ref=f1e95]:
+          - generic [ref=f1e96]:
+            - searchbox "⌘ K" [ref=f1e100]
+            - generic [ref=f1e101]: ⌘ K
+          - button "Settings" [ref=f1e102] [cursor=pointer]
+          - button "Open profile" [ref=f1e106] [cursor=pointer]: MC
+      - generic [ref=f1e107]:
+        - generic [ref=f1e757]:
+          - generic [ref=f1e758]:
+            - generic [ref=f1e759]: ASK TO LEARN, THEN USE THE ANSWER
+            - heading "Crossfire gym" [level=1] [ref=f1e760]
+            - paragraph [ref=f1e761]: Practice short, respectful questions that test the link and set up later speeches.
+          - generic [ref=f1e762]:
+            - button "Reset drill" [ref=f1e763] [cursor=pointer]
+            - button "✓ Log drill" [ref=f1e764] [cursor=pointer]
+        - generic [ref=f1e765]:
+          - generic [ref=f1e766]:
+            - generic [ref=f1e767]:
+              - generic [ref=f1e768]:
+                - generic [ref=f1e769]: Clarify the advocacy
+                - generic [ref=f1e770]: 1 / 8
+              - blockquote [ref=f1e771]: Which European NATO members are you asking to ratify, and what does ratification require them to change?
+              - generic [ref=f1e772]:
+                - generic [ref=f1e773]: Prompt bank · adapt to what was actually said
+                - generic [ref=f1e774]:
+                  - button "←" [ref=f1e775] [cursor=pointer]
+                  - button "Next prompt →" [ref=f1e776] [cursor=pointer]
+                  - button "Copy" [ref=f1e777] [cursor=pointer]
+              - text: "?"
+            - generic [ref=f1e778]:
+              - generic [ref=f1e780]:
+                - heading "Question lenses" [level=2] [ref=f1e781]
+                - paragraph [ref=f1e782]: Pick the job your next question should do.
+              - generic [ref=f1e783]:
+                - button "Clarify advocacy" [ref=f1e784] [cursor=pointer]
+                - button "Test link" [ref=f1e785] [cursor=pointer]
+                - button "Find the warrant" [ref=f1e786] [cursor=pointer]
+                - button "Compare impacts" [ref=f1e787] [cursor=pointer]
+                - button "Check source" [ref=f1e788] [cursor=pointer]
+                - button "Set up a collapse" [ref=f1e789] [cursor=pointer]
+          - generic [ref=f1e790]:
+            - generic [ref=f1e791]:
+              - generic [ref=f1e792]:
+                - generic [ref=f1e793]:
+                  - heading "Three-minute crossfire" [level=2] [ref=f1e794]
+                  - paragraph [ref=f1e795]: Practice the default PF crossfire length.
+                - generic [ref=f1e796]: 3:00 default
+              - generic [ref=f1e797]:
+                - strong [ref=f1e798]: 03:00
+                - generic [ref=f1e799]: practice timer
+              - generic [ref=f1e800]:
+                - button "Start" [ref=f1e801] [cursor=pointer]
+                - button "Pause" [ref=f1e802] [cursor=pointer]
+                - button "Reset" [ref=f1e803] [cursor=pointer]
+            - generic [ref=f1e804]:
+              - generic [ref=f1e806]:
+                - heading "What did you learn?" [level=2] [ref=f1e807]
+                - paragraph [ref=f1e808]: Turn answers into a later speech response.
+              - textbox "Answer → what it concedes → where you will use it in rebuttal or summary..." [ref=f1e809]
+              - generic [ref=f1e810]:
+                - generic [ref=f1e811]: Saved on this device
+                - generic [ref=f1e812]:
+                  - text: "Completed drills:"
+                  - strong [ref=f1e813]: "0"
+            - generic [ref=f1e814]:
+              - generic [ref=f1e815]: ↗
+              - generic [ref=f1e816]: Crossfire is not the ballot. Bring useful concessions into a later speech so the judge can flow them.
+  - status

@@ -1,0 +1,143 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - link "Flowstate home" [ref=e4] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=e9]:
+          - strong [ref=e10]: flowstate
+          - generic [ref=e11]: THE PF PRACTICE ROOM
+      - generic [ref=e12]:
+        - generic [ref=e13]: "N"
+        - generic [ref=e14]:
+          - strong [ref=e15]: Northview Debate
+          - generic [ref=e16]: Varsity · Public Forum
+        - generic [ref=e17]: ⌄
+      - generic [ref=e18]: WORKSPACE
+      - navigation "Main navigation" [ref=e19]:
+        - button "Overview" [ref=e20] [cursor=pointer]
+        - button "Round room 8" [active] [ref=e25] [cursor=pointer]:
+          - generic [ref=e30]: Round room
+          - generic [ref=e31]: "8"
+        - button "Case lab" [ref=e32] [cursor=pointer]
+        - button "Flow board" [ref=e38] [cursor=pointer]
+        - button "Evidence library" [ref=e44] [cursor=pointer]
+        - button "Crossfire gym" [ref=e51] [cursor=pointer]
+        - button "Speech studio" [ref=e57] [cursor=pointer]
+      - generic [ref=e63]: TEAM TOOLS
+      - navigation "Team tools" [ref=e64]:
+        - button "Tournament kit" [ref=e65] [cursor=pointer]
+        - button "Progress" [ref=e71] [cursor=pointer]
+      - generic [ref=e77]:
+        - generic [ref=e78]: ✳
+        - generic [ref=e79]:
+          - strong [ref=e80]: Coach's corner
+          - paragraph [ref=e81]: Win the ballot by extending offense and weighing it in summary.
+          - button "Open speech guide →" [ref=e82] [cursor=pointer]
+      - button "MC Maya Chen Student debater •••" [ref=e83] [cursor=pointer]:
+        - generic [ref=e84]: MC
+        - generic [ref=e85]:
+          - strong [ref=e86]: Maya Chen
+          - generic [ref=e87]: Student debater
+        - generic [ref=e88]: •••
+    - main [ref=e89]:
+      - generic [ref=e90]:
+        - generic [ref=e91]:
+          - generic [ref=e92]: MY WORKSPACE
+          - generic [ref=e93]: /
+          - strong [ref=e94]: Round room
+        - generic [ref=e95]:
+          - generic [ref=e96]:
+            - searchbox "⌘ K" [ref=e100]
+            - generic [ref=e101]: ⌘ K
+          - button "Settings" [ref=e102] [cursor=pointer]
+          - button "Open profile" [ref=e106] [cursor=pointer]: MC
+      - generic [ref=e107]:
+        - generic [ref=e255]:
+          - generic [ref=e256]:
+            - generic [ref=e257]: PRACTICE ROUND
+            - heading "Round room" [level=1] [ref=e258]
+            - paragraph [ref=e259]: Run a timed PF round, or rehearse one speech at a time.
+          - generic [ref=e260]:
+            - button "Reset timers" [ref=e261] [cursor=pointer]
+            - button "✓ Finish & log practice" [ref=e262] [cursor=pointer]
+        - generic [ref=e263]:
+          - generic [ref=e264]: i
+          - generic [ref=e265]:
+            - strong [ref=e266]: "Default NSDA sequence:"
+            - text: 4 / 4 / 3 / 4 / 4 / 3 / 3 / 3 / 3 / 2 / 2, plus 3 minutes of prep per team. Confirm local changes in your invitation.
+        - generic [ref=e267]:
+          - generic [ref=e268]:
+            - generic [ref=e269]:
+              - generic [ref=e270]:
+                - heading "Round flow" [level=2] [ref=e271]
+                - paragraph [ref=e272]: Choose a speech to load its timer.
+              - generic [ref=e273]: 12 segments
+            - generic [ref=e274]:
+              - button "Constructive A 4m" [ref=e275] [cursor=pointer]:
+                - generic [ref=e276]: Constructive A
+                - generic [ref=e277]: 4m
+              - button "Constructive B 4m" [ref=e278] [cursor=pointer]:
+                - generic [ref=e279]: Constructive B
+                - generic [ref=e280]: 4m
+              - button "Crossfire 1 3m" [ref=e281] [cursor=pointer]:
+                - generic [ref=e282]: Crossfire 1
+                - generic [ref=e283]: 3m
+              - button "Rebuttal A 4m" [ref=e284] [cursor=pointer]:
+                - generic [ref=e285]: Rebuttal A
+                - generic [ref=e286]: 4m
+              - button "Rebuttal B 4m" [ref=e287] [cursor=pointer]:
+                - generic [ref=e288]: Rebuttal B
+                - generic [ref=e289]: 4m
+              - button "Crossfire 2 3m" [ref=e290] [cursor=pointer]:
+                - generic [ref=e291]: Crossfire 2
+                - generic [ref=e292]: 3m
+              - button "Summary A 3m" [ref=e293] [cursor=pointer]:
+                - generic [ref=e294]: Summary A
+                - generic [ref=e295]: 3m
+              - button "Summary B 3m" [ref=e296] [cursor=pointer]:
+                - generic [ref=e297]: Summary B
+                - generic [ref=e298]: 3m
+              - button "Grand crossfire 3m" [ref=e299] [cursor=pointer]:
+                - generic [ref=e300]: Grand crossfire
+                - generic [ref=e301]: 3m
+              - button "Final focus A 2m" [ref=e302] [cursor=pointer]:
+                - generic [ref=e303]: Final focus A
+                - generic [ref=e304]: 2m
+              - button "Final focus B 2m" [ref=e305] [cursor=pointer]:
+                - generic [ref=e306]: Final focus B
+                - generic [ref=e307]: 2m
+              - button "Prep time 3m" [ref=e308] [cursor=pointer]:
+                - generic [ref=e309]: Prep time
+                - generic [ref=e310]: 3m
+            - generic [ref=e311]:
+              - generic [ref=e312]: ↗
+              - generic [ref=e313]: The first speaker asks first in first crossfire; the first summary speaker asks first in grand crossfire.
+          - generic [ref=e314]:
+            - generic [ref=e315]:
+              - generic [ref=e316]:
+                - generic [ref=e317]:
+                  - heading "Constructive A" [level=2] [ref=e318]
+                  - paragraph [ref=e319]: First speaker · Team A · 4:00 default
+                - generic [ref=e320]: Pro side
+              - generic [ref=e321]:
+                - strong [ref=e322]: 04:00
+                - generic [ref=e323]: ready
+              - generic [ref=e324]:
+                - button "Start timer" [ref=e325] [cursor=pointer]
+                - button "Reset" [ref=e326] [cursor=pointer]
+                - button "＋ 1 min" [ref=e327] [cursor=pointer]
+            - generic [ref=e328]:
+              - generic [ref=e329]:
+                - generic [ref=e330]:
+                  - heading "Round notes" [level=2] [ref=e331]
+                  - paragraph [ref=e332]: Keep answers tied to arguments that actually appear on the flow.
+                - button "Open speech studio →" [ref=e333] [cursor=pointer]
+              - generic [ref=e334]: Notes for Constructive A
+              - textbox "Roadmap, extensions, frontlines, weighing..." [ref=e335]
+              - generic [ref=e336]:
+                - generic [ref=e337]:
+                  - strong [ref=e338]: "0"
+                  - text: words
+                - generic [ref=e339]: Approx. 0m 00s at 190 wpm
+                - generic [ref=e340]: Autosaved
+  - status

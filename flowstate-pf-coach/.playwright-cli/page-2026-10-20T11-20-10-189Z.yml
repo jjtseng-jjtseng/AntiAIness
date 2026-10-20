@@ -1,0 +1,159 @@
+- generic [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - complementary [ref=f1e3]:
+      - link "Flowstate home" [ref=f1e4] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=f1e9]:
+          - strong [ref=f1e10]: flowstate
+          - generic [ref=f1e11]: THE PF PRACTICE ROOM
+      - generic [ref=f1e12]:
+        - generic [ref=f1e13]: "N"
+        - generic [ref=f1e14]:
+          - strong [ref=f1e15]: Northview Debate
+          - generic [ref=f1e16]: Varsity · Public Forum
+        - generic [ref=f1e17]: ⌄
+      - generic [ref=f1e18]: WORKSPACE
+      - navigation "Main navigation" [ref=f1e19]:
+        - button "Overview" [ref=f1e20] [cursor=pointer]
+        - button "Round room 8" [ref=f1e25] [cursor=pointer]:
+          - generic [ref=f1e30]: Round room
+          - generic [ref=f1e31]: "8"
+        - button "Case lab" [active] [ref=f1e32] [cursor=pointer]
+        - button "Flow board" [ref=f1e38] [cursor=pointer]
+        - button "Evidence library" [ref=f1e44] [cursor=pointer]
+        - button "Crossfire gym" [ref=f1e51] [cursor=pointer]
+        - button "Speech studio" [ref=f1e57] [cursor=pointer]
+      - generic [ref=f1e63]: TEAM TOOLS
+      - navigation "Team tools" [ref=f1e64]:
+        - button "Tournament kit" [ref=f1e65] [cursor=pointer]
+        - button "Progress" [ref=f1e71] [cursor=pointer]
+      - generic [ref=f1e77]:
+        - generic [ref=f1e78]: ✳
+        - generic [ref=f1e79]:
+          - strong [ref=f1e80]: Coach's corner
+          - paragraph [ref=f1e81]: Win the ballot by extending offense and weighing it in summary.
+          - button "Open speech guide →" [ref=f1e82] [cursor=pointer]
+      - button "MC Maya Chen Student debater •••" [ref=f1e83] [cursor=pointer]:
+        - generic [ref=f1e84]: MC
+        - generic [ref=f1e85]:
+          - strong [ref=f1e86]: Maya Chen
+          - generic [ref=f1e87]: Student debater
+        - generic [ref=f1e88]: •••
+    - main [ref=f1e89]:
+      - generic [ref=f1e90]:
+        - generic [ref=f1e91]:
+          - generic [ref=f1e92]: MY WORKSPACE
+          - generic [ref=f1e93]: /
+          - strong [ref=f1e94]: Case lab
+        - generic [ref=f1e95]:
+          - generic [ref=f1e96]:
+            - searchbox "⌘ K" [ref=f1e100]
+            - generic [ref=f1e101]: ⌘ K
+          - button "Settings" [ref=f1e102] [cursor=pointer]
+          - button "Open profile" [ref=f1e106] [cursor=pointer]: MC
+      - generic [ref=f1e107]:
+        - generic [ref=f1e366]:
+          - generic [ref=f1e367]:
+            - generic [ref=f1e368]: BUILD BOTH SIDES
+            - heading "Case lab" [level=1] [ref=f1e369]
+            - paragraph [ref=f1e370]: Shape arguments as claim → warrant → evidence → impact. Keep research leads separate from verified cards.
+          - generic [ref=f1e371]:
+            - button "Export workspace" [ref=f1e372] [cursor=pointer]
+            - button "＋ Add contention" [ref=f1e373] [cursor=pointer]
+        - generic [ref=f1e374]:
+          - generic [ref=f1e375]:
+            - generic [ref=f1e376]:
+              - generic [ref=f1e377]:
+                - heading "Case outline" [level=2] [ref=f1e378]
+                - paragraph [ref=f1e379]: Store both sides; debate positions, not invented proof.
+              - generic [ref=f1e380]:
+                - button "Pro" [ref=f1e381] [cursor=pointer]
+                - button "Con" [ref=f1e382] [cursor=pointer]
+            - generic [ref=f1e383]:
+              - generic [ref=f1e384]: ✳
+              - generic [ref=f1e385]: PF does not require a value/criterion framework or permit a formalized plan/counterplan. Defend the resolution or status quo with clear advocacy.
+            - article [ref=f1e386]:
+              - generic [ref=f1e387]:
+                - strong [ref=f1e388]:
+                  - generic [ref=f1e389]: Contention 1
+                - button "Remove" [ref=f1e390] [cursor=pointer]
+              - generic [ref=f1e391]:
+                - generic [ref=f1e392]:
+                  - generic [ref=f1e393]: Claim · what you argue
+                  - textbox "Write a concise, debatable claim." [ref=f1e394]
+                - generic [ref=f1e395]:
+                  - generic [ref=f1e396]: Warrant · why it is true
+                  - textbox "Explain the causal chain; do not skip links." [ref=f1e397]
+                - generic [ref=f1e398]:
+                  - generic [ref=f1e399]: Impact · who and why it matters
+                  - textbox "Compare likelihood, timeframe, magnitude, reversibility." [ref=f1e400]
+                - generic [ref=f1e401]:
+                  - generic [ref=f1e402]: Evidence plan · source needed?
+                  - 'textbox "[CARD NEEDED: source-backed claim + search lead]" [ref=f1e403]'
+            - article [ref=f1e404]:
+              - generic [ref=f1e405]:
+                - strong [ref=f1e406]:
+                  - generic [ref=f1e407]: Contention 2
+                - button "Remove" [ref=f1e408] [cursor=pointer]
+              - generic [ref=f1e409]:
+                - generic [ref=f1e410]:
+                  - generic [ref=f1e411]: Claim · what you argue
+                  - textbox "Write a concise, debatable claim." [ref=f1e412]
+                - generic [ref=f1e413]:
+                  - generic [ref=f1e414]: Warrant · why it is true
+                  - textbox "Explain the causal chain; do not skip links." [ref=f1e415]
+                - generic [ref=f1e416]:
+                  - generic [ref=f1e417]: Impact · who and why it matters
+                  - textbox "Compare likelihood, timeframe, magnitude, reversibility." [ref=f1e418]
+                - generic [ref=f1e419]:
+                  - generic [ref=f1e420]: Evidence plan · source needed?
+                  - 'textbox "[CARD NEEDED: source-backed claim + search lead]" [ref=f1e421]'
+            - button "＋ Add another contention" [ref=f1e422] [cursor=pointer]
+          - generic [ref=f1e423]:
+            - generic [ref=f1e424]:
+              - generic [ref=f1e426]:
+                - heading "Argument quality check" [level=2] [ref=f1e427]
+                - paragraph [ref=f1e428]: Use before moving a claim into a speech.
+              - generic [ref=f1e429]:
+                - generic [ref=f1e430]:
+                  - generic [ref=f1e431]: "1"
+                  - generic [ref=f1e432]:
+                    - strong [ref=f1e433]: Claim is specific
+                    - generic [ref=f1e434]: Could the opponent reasonably disagree?
+                - generic [ref=f1e435]:
+                  - generic [ref=f1e436]: "2"
+                  - generic [ref=f1e437]:
+                    - strong [ref=f1e438]: Warrant explains the link
+                    - generic [ref=f1e439]: Do not jump from action to impact in one sentence.
+                - generic [ref=f1e440]:
+                  - generic [ref=f1e441]: "3"
+                  - generic [ref=f1e442]:
+                    - strong [ref=f1e443]: Evidence is retrievable
+                    - generic [ref=f1e444]: Save original text, citation, URL, and access date.
+                - generic [ref=f1e445]:
+                  - generic [ref=f1e446]: "4"
+                  - generic [ref=f1e447]:
+                    - strong [ref=f1e448]: Impact is comparative
+                    - generic [ref=f1e449]: Name who, when, likelihood, and why the judge should care.
+            - generic [ref=f1e450]:
+              - generic [ref=f1e452]:
+                - heading "Topic research leads" [level=2] [ref=f1e453]
+                - paragraph [ref=f1e454]: Questions to investigate, not evidence claims.
+              - generic [ref=f1e455]:
+                - generic [ref=f1e456]:
+                  - generic [ref=f1e461]:
+                    - strong [ref=f1e462]: Treaty text
+                    - generic [ref=f1e463]: What obligations follow ratification? Find the primary text.
+                  - generic [ref=f1e464]: PRIMARY SOURCE
+                - generic [ref=f1e466]:
+                  - generic [ref=f1e471]:
+                    - strong [ref=f1e472]: Alliance policy
+                    - generic [ref=f1e473]: How do European NATO members describe deterrence and consultation?
+                  - generic [ref=f1e474]: OFFICIAL DOCS
+                - generic [ref=f1e476]:
+                  - generic [ref=f1e481]:
+                    - strong [ref=f1e482]: Humanitarian impact
+                    - generic [ref=f1e483]: What do credible sources document about nuclear weapon effects?
+                  - generic [ref=f1e484]: RESEARCH LEAD
+              - button "Add a sourced card →" [ref=f1e487] [cursor=pointer]
+  - status

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f5f7fb">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <title>Flowstate — Public Forum Debate Coach</title><link rel="stylesheet" href="styles.css"><script defer src="app.js"></script>
+</head>
+<body><div class="app-frame">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#" data-action="navigate" data-page="home" aria-label="Flowstate home"><span class="brand-mark"><span></span><span></span><span></span></span><span class="brand-copy"><strong>flowstate</strong><small>THE PF PRACTICE ROOM</small></span></a>
+    <div class="team-switcher"><div class="team-avatar">N</div><div class="team-copy"><strong id="team-name">Northview Debate</strong><span>Varsity · Public Forum</span></div><span class="switcher-chevron">⌄</span></div>
+    <div class="nav-label">WORKSPACE</div>
+    <nav class="primary-nav" aria-label="Main navigation">
+      <button class="nav-item active" data-action="navigate" data-page="home"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3.5 10.5 12 3l8.5 7.5v9a1 1 0 0 1-1 1h-5v-6h-5v6h-5a1 1 0 0 1-1-1z"/></svg></span><span>Overview</span></button>
+      <button class="nav-item" data-action="navigate" data-page="round"><span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></svg></span><span>Round room</span><span class="nav-count">8</span></button>
+      <button class="nav-item" data-action="navigate" data-page="cases"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 5.5h16M4 10.5h16M4 15.5h10"/><path d="M3.5 3.5h17v17h-17z"/></svg></span><span>Case lab</span></button>
+      <button class="nav-item" data-action="navigate" data-page="flow"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M5 5h5v5H5zM14 5h5v5h-5zM5 14h5v5H5zM14 14h5v5h-5z"/><path d="M10 7.5h4M7.5 10v4M16.5 10v4M10 16.5h4"/></svg></span><span>Flow board</span></button>
+      <button class="nav-item" data-action="navigate" data-page="evidence"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M5 3.5h10l4 4v13H5z"/><path d="M14.5 3.5v4h4M8 12h8M8 16h8"/></svg></span><span>Evidence library</span><span class="nav-dot"></span></button>
+      <button class="nav-item" data-action="navigate" data-page="crossfire"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 5.5h16v11H9l-5 3z"/><path d="M8 10h8M8 13h5"/></svg></span><span>Crossfire gym</span></button>
+      <button class="nav-item" data-action="navigate" data-page="speech"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M5 3.5h14v17H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span><span>Speech studio</span></button>
+    </nav>
+    <div class="nav-label nav-label-spaced">TEAM TOOLS</div>
+    <nav class="primary-nav" aria-label="Team tools">
+      <button class="nav-item" data-action="navigate" data-page="tournament"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M7 3.5h10v17H7z"/><path d="M10 8h4M10 12h4M10 16h4M4 6v12"/></svg></span><span>Tournament kit</span></button>
+      <button class="nav-item" data-action="navigate" data-page="progress"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5V12M10 19.5V5M16 19.5v-9M22 19.5V8"/></svg></span><span>Progress</span></button>
+    </nav>
+    <div class="sidebar-spacer"></div>
+    <div class="coach-tip"><div class="tip-icon">✳</div><div><strong>Coach's corner</strong><p>Win the ballot by extending offense and weighing it in summary.</p><button data-action="navigate" data-page="speech">Open speech guide <span>→</span></button></div></div>
+    <button class="profile-button" data-action="open-settings"><span class="profile-avatar">MC</span><span class="profile-copy"><strong id="profile-name">Maya Chen</strong><small>Student debater</small></span><span class="profile-menu">•••</span></button>
+  </aside>
+  <main class="main-panel">
+    <header class="topbar"><button class="mobile-menu" data-action="toggle-menu" aria-label="Toggle navigation"><span></span><span></span></button><div class="breadcrumbs"><span>MY WORKSPACE</span><b>/</b><strong id="crumb-current">Overview</strong></div>
+      <div class="topbar-actions"><label class="search-box"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.3"/><path d="m15.5 15.5 4.2 4.2"/></svg><input id="global-search" type="search" placeholder="Search your workspace"><kbd>⌘ K</kbd></label>
+        <button class="icon-button" data-action="open-settings" aria-label="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.2 1-1.3 2.2-1.5-.6a7.7 7.7 0 0 1-1.7 1l-.3 1.6h-2.6l-.3-1.6a7.7 7.7 0 0 1-1.7-1l-1.5.6-1.3-2.2 1.2-1a7.2 7.2 0 0 1 0-2l-1.2-1 1.3-2.2 1.5.6a7.7 7.7 0 0 1 1.7-1l.3-1.6h2.6l.3 1.6a7.7 7.7 0 0 1 1.7 1l1.5-.6 1.3 2.2-1.2 1a7.2 7.2 0 0 1 0 2z"/></svg></button><button class="top-avatar" data-action="open-settings" aria-label="Open profile">MC</button>
+      </div>
+    </header>
+    <div id="page-root" class="page-root"></div>
+  </main>
+</div><div id="modal-root"></div><div id="toast" class="toast" role="status" aria-live="polite"></div></body>
+</html>
+

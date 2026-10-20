@@ -1,0 +1,142 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - complementary [ref=f1e3]:
+      - link "Flowstate home" [ref=f1e4] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=f1e9]:
+          - strong [ref=f1e10]: flowstate
+          - generic [ref=f1e11]: THE PF PRACTICE ROOM
+      - generic [ref=f1e12]:
+        - generic [ref=f1e13]: "N"
+        - generic [ref=f1e14]:
+          - strong [ref=f1e15]: Northview Debate
+          - generic [ref=f1e16]: Varsity · Public Forum
+        - generic [ref=f1e17]: ⌄
+      - generic [ref=f1e18]: WORKSPACE
+      - navigation "Main navigation" [ref=f1e19]:
+        - button "Overview" [ref=f1e20] [cursor=pointer]
+        - button "Round room 8" [ref=f1e25] [cursor=pointer]:
+          - generic [ref=f1e30]: Round room
+          - generic [ref=f1e31]: "8"
+        - button "Case lab" [ref=f1e32] [cursor=pointer]
+        - button "Flow board" [ref=f1e38] [cursor=pointer]
+        - button "Evidence library" [ref=f1e44] [cursor=pointer]
+        - button "Crossfire gym" [ref=f1e51] [cursor=pointer]
+        - button "Speech studio" [ref=f1e57] [cursor=pointer]
+      - generic [ref=f1e63]: TEAM TOOLS
+      - navigation "Team tools" [ref=f1e64]:
+        - button "Tournament kit" [ref=f1e65] [cursor=pointer]
+        - button "Progress" [ref=f1e71] [cursor=pointer]
+      - generic [ref=f1e77]:
+        - generic [ref=f1e78]: ✳
+        - generic [ref=f1e79]:
+          - strong [ref=f1e80]: Coach's corner
+          - paragraph [ref=f1e81]: Win the ballot by extending offense and weighing it in summary.
+          - button "Open speech guide →" [ref=f1e82] [cursor=pointer]
+      - button "MC Maya Chen Student debater •••" [ref=f1e83] [cursor=pointer]:
+        - generic [ref=f1e84]: MC
+        - generic [ref=f1e85]:
+          - strong [ref=f1e86]: Maya Chen
+          - generic [ref=f1e87]: Student debater
+        - generic [ref=f1e88]: •••
+    - main [ref=f1e89]:
+      - generic [ref=f1e90]:
+        - generic [ref=f1e91]:
+          - generic [ref=f1e92]: MY WORKSPACE
+          - generic [ref=f1e93]: /
+          - strong [ref=f1e94]: Speech studio
+        - generic [ref=f1e95]:
+          - generic [ref=f1e96]:
+            - searchbox "⌘ K" [ref=f1e100]
+            - generic [ref=f1e101]: ⌘ K
+          - button "Settings" [ref=f1e102] [cursor=pointer]
+          - button "Open profile" [ref=f1e106] [cursor=pointer]: MC
+      - generic [ref=f1e107]:
+        - generic [ref=f1e967]:
+          - generic [ref=f1e968]:
+            - generic [ref=f1e969]: WRITE FOR THE FLOW
+            - heading "Speech studio" [level=1] [ref=f1e970]
+            - paragraph [ref=f1e971]: Build a speech from the round, then adapt clarity and speed to the judge.
+          - generic [ref=f1e972]:
+            - button "Clear draft" [ref=f1e973] [cursor=pointer]
+            - button "Build a speech scaffold" [ref=f1e974] [cursor=pointer]
+        - generic [ref=f1e975]:
+          - generic [ref=f1e976]:
+            - generic [ref=f1e978]:
+              - heading "Judge adaptation" [level=2] [ref=f1e979]
+              - paragraph [ref=f1e980]: Signposted, lightly technical, with jargon explained once.
+            - generic [ref=f1e981]:
+              - button "Lay" [ref=f1e982] [cursor=pointer]
+              - button "Flay" [ref=f1e983] [cursor=pointer]
+              - button "Tech" [ref=f1e984] [cursor=pointer]
+            - paragraph [ref=f1e985]: Starting pace estimates only. Prioritize clarity and read the paradigm.
+          - generic [ref=f1e986]:
+            - generic [ref=f1e988]:
+              - heading "Speech job" [level=2] [ref=f1e989]
+              - paragraph [ref=f1e990]: PF role and default time. Check your invitation.
+            - combobox [ref=f1e991]:
+              - option "Constructive A · 4 min · First speaker · Team A" [selected]
+              - option "Constructive B · 4 min · First speaker · Team B"
+              - option "Crossfire 1 · 3 min · First speakers"
+              - option "Rebuttal A · 4 min · Second speaker · Team A"
+              - option "Rebuttal B · 4 min · Second speaker · Team B + frontline"
+              - option "Crossfire 2 · 3 min · Second speakers"
+              - option "Summary A · 3 min · First speaker · Team A"
+              - option "Summary B · 3 min · First speaker · Team B"
+              - option "Grand crossfire · 3 min · All four debaters"
+              - option "Final focus A · 2 min · Second speaker · Team A"
+              - option "Final focus B · 2 min · Second speaker · Team B"
+              - option "Prep time · 3 min · Per team · check invitation"
+        - generic [ref=f1e992]:
+          - generic [ref=f1e993]:
+            - generic [ref=f1e994]:
+              - generic [ref=f1e995]:
+                - heading "Draft" [level=2] [ref=f1e996]
+                - paragraph [ref=f1e997]: Keep analytics and evidence visibly separate.
+              - generic [ref=f1e998]: Pro
+            - textbox "Start with a signpost. Build only from arguments in your flow." [ref=f1e999]
+            - generic [ref=f1e1000]:
+              - generic [ref=f1e1001]:
+                - strong [ref=f1e1002]: "0"
+                - text: words
+              - generic [ref=f1e1003]:
+                - text: Approx.
+                - strong [ref=f1e1004]: 0m 00s
+                - text: at 190 wpm
+              - generic [ref=f1e1005]: Autosaved
+          - generic [ref=f1e1006]:
+            - generic [ref=f1e1007]:
+              - generic [ref=f1e1009]:
+                - heading "Speech checklist" [level=2] [ref=f1e1010]
+                - paragraph [ref=f1e1011]: Flow-ready, not public-speaking filler.
+              - generic [ref=f1e1012]:
+                - generic [ref=f1e1013]:
+                  - generic [ref=f1e1014]: "1"
+                  - generic [ref=f1e1015]:
+                    - strong [ref=f1e1016]: Roadmap the speech
+                    - generic [ref=f1e1017]: 4 minute speech default.
+                - generic [ref=f1e1018]:
+                  - generic [ref=f1e1019]: "2"
+                  - generic [ref=f1e1020]:
+                    - strong [ref=f1e1021]: State claim, warrant, evidence, impact
+                    - generic [ref=f1e1022]: 4 minute speech default.
+                - generic [ref=f1e1023]:
+                  - generic [ref=f1e1024]: "3"
+                  - generic [ref=f1e1025]:
+                    - strong [ref=f1e1026]: Signpost every response
+                    - generic [ref=f1e1027]: 4 minute speech default.
+                - generic [ref=f1e1028]:
+                  - generic [ref=f1e1029]: "4"
+                  - generic [ref=f1e1030]:
+                    - strong [ref=f1e1031]: End with the judge's reason to vote
+                    - generic [ref=f1e1032]: 4 minute speech default.
+            - generic [ref=f1e1033]:
+              - heading "Drafting guardrails" [level=2] [ref=f1e1036]
+              - generic [ref=f1e1037]:
+                - generic [ref=f1e1038]: i
+                - generic [ref=f1e1039]:
+                  - text: Use only real source text. If no source is ready, write
+                  - strong [ref=f1e1040]: "[CARD NEEDED: claim + search lead]"
+                  - text: and keep moving with honest analytics.
+              - paragraph [ref=f1e1041]: Final focus mirrors the summary; do not add new arguments or impacts in the last speech.
+  - status: Draft cleared.

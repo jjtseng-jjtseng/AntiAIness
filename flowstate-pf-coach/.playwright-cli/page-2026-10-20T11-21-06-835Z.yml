@@ -1,0 +1,160 @@
+- generic [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - complementary [ref=f1e3]:
+      - link "Flowstate home" [ref=f1e4] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=f1e9]:
+          - strong [ref=f1e10]: flowstate
+          - generic [ref=f1e11]: THE PF PRACTICE ROOM
+      - generic [ref=f1e12]:
+        - generic [ref=f1e13]: "N"
+        - generic [ref=f1e14]:
+          - strong [ref=f1e15]: Northview Debate
+          - generic [ref=f1e16]: Varsity · Public Forum
+        - generic [ref=f1e17]: ⌄
+      - generic [ref=f1e18]: WORKSPACE
+      - navigation "Main navigation" [ref=f1e19]:
+        - button "Overview" [ref=f1e20] [cursor=pointer]
+        - button "Round room 8" [ref=f1e25] [cursor=pointer]:
+          - generic [ref=f1e30]: Round room
+          - generic [ref=f1e31]: "8"
+        - button "Case lab" [ref=f1e32] [cursor=pointer]
+        - button "Flow board" [active] [ref=f1e38] [cursor=pointer]
+        - button "Evidence library" [ref=f1e44] [cursor=pointer]
+        - button "Crossfire gym" [ref=f1e51] [cursor=pointer]
+        - button "Speech studio" [ref=f1e57] [cursor=pointer]
+      - generic [ref=f1e63]: TEAM TOOLS
+      - navigation "Team tools" [ref=f1e64]:
+        - button "Tournament kit" [ref=f1e65] [cursor=pointer]
+        - button "Progress" [ref=f1e71] [cursor=pointer]
+      - generic [ref=f1e77]:
+        - generic [ref=f1e78]: ✳
+        - generic [ref=f1e79]:
+          - strong [ref=f1e80]: Coach's corner
+          - paragraph [ref=f1e81]: Win the ballot by extending offense and weighing it in summary.
+          - button "Open speech guide →" [ref=f1e82] [cursor=pointer]
+      - button "MC Maya Chen Student debater •••" [ref=f1e83] [cursor=pointer]:
+        - generic [ref=f1e84]: MC
+        - generic [ref=f1e85]:
+          - strong [ref=f1e86]: Maya Chen
+          - generic [ref=f1e87]: Student debater
+        - generic [ref=f1e88]: •••
+    - main [ref=f1e89]:
+      - generic [ref=f1e90]:
+        - generic [ref=f1e91]:
+          - generic [ref=f1e92]: MY WORKSPACE
+          - generic [ref=f1e93]: /
+          - strong [ref=f1e94]: Flow board
+        - generic [ref=f1e95]:
+          - generic [ref=f1e96]:
+            - searchbox "⌘ K" [ref=f1e100]
+            - generic [ref=f1e101]: ⌘ K
+          - button "Settings" [ref=f1e102] [cursor=pointer]
+          - button "Open profile" [ref=f1e106] [cursor=pointer]: MC
+      - generic [ref=f1e107]:
+        - generic [ref=f1e488]:
+          - generic [ref=f1e489]:
+            - generic [ref=f1e490]: FOLLOW THE FLOW
+            - heading "Flow board" [level=1] [ref=f1e491]
+            - paragraph [ref=f1e492]: Track offense, responses, extensions, and what survives to the ballot.
+          - generic [ref=f1e493]:
+            - button "Clear board" [ref=f1e494] [cursor=pointer]
+            - button "＋ Add argument" [ref=f1e495] [cursor=pointer]
+        - generic [ref=f1e496]:
+          - generic [ref=f1e497]: i
+          - generic [ref=f1e498]:
+            - text: Starter rows are
+            - strong [ref=f1e499]: research questions and analytic prompts
+            - text: ", not sourced claims. Replace or remove them as the round develops."
+        - generic [ref=f1e500]:
+          - generic [ref=f1e502]:
+            - generic [ref=f1e503]: OPEN ISSUES
+            - generic [ref=f1e504]: "4"
+            - generic [ref=f1e505]: Need an answer or decision
+          - generic [ref=f1e511]:
+            - generic [ref=f1e512]: EXTENDED
+            - generic [ref=f1e513]: "0"
+            - generic [ref=f1e514]: Still alive in the round
+          - generic [ref=f1e519]:
+            - generic [ref=f1e520]: DROPPED
+            - generic [ref=f1e521]: "0"
+            - generic [ref=f1e522]: Flag for a strategic choice
+        - generic [ref=f1e527]:
+          - generic [ref=f1e528]:
+            - generic [ref=f1e529]:
+              - strong [ref=f1e532]: Pro flow
+              - button "＋ Add row" [ref=f1e533] [cursor=pointer]
+            - generic [ref=f1e534]:
+              - article [ref=f1e535]:
+                - generic [ref=f1e536]:
+                  - strong [ref=f1e537]: Engagement vs. isolation
+                  - generic [ref=f1e538]: Open
+                - paragraph [ref=f1e539]: "Research lead: test whether participation creates leverage or mainly signals disapproval."
+                - generic [ref=f1e540]:
+                  - button "Cycle status ↻" [ref=f1e541] [cursor=pointer]
+                  - button "Edit" [ref=f1e542] [cursor=pointer]
+                  - button "Remove" [ref=f1e543] [cursor=pointer]
+              - article [ref=f1e544]:
+                - generic [ref=f1e545]:
+                  - strong [ref=f1e546]: Humanitarian norm
+                  - generic [ref=f1e547]: Open
+                - paragraph [ref=f1e548]: "Question: what changes in state behavior after a legal commitment?"
+                - generic [ref=f1e549]:
+                  - button "Cycle status ↻" [ref=f1e550] [cursor=pointer]
+                  - button "Edit" [ref=f1e551] [cursor=pointer]
+                  - button "Remove" [ref=f1e552] [cursor=pointer]
+          - generic [ref=f1e553]:
+            - generic [ref=f1e554]:
+              - strong [ref=f1e557]: Con flow
+              - button "＋ Add row" [ref=f1e558] [cursor=pointer]
+            - generic [ref=f1e559]:
+              - article [ref=f1e560]:
+                - generic [ref=f1e561]:
+                  - strong [ref=f1e562]: Deterrence and alliance cohesion
+                  - generic [ref=f1e563]: Open
+                - paragraph [ref=f1e564]: "Research lead: identify the causal path to allied coordination."
+                - generic [ref=f1e565]:
+                  - button "Cycle status ↻" [ref=f1e566] [cursor=pointer]
+                  - button "Edit" [ref=f1e567] [cursor=pointer]
+                  - button "Remove" [ref=f1e568] [cursor=pointer]
+              - article [ref=f1e569]:
+                - generic [ref=f1e570]:
+                  - strong [ref=f1e571]: Credibility and security guarantees
+                  - generic [ref=f1e572]: Open
+                - paragraph [ref=f1e573]: "Question: separate symbolic effects from material capability changes."
+                - generic [ref=f1e574]:
+                  - button "Cycle status ↻" [ref=f1e575] [cursor=pointer]
+                  - button "Edit" [ref=f1e576] [cursor=pointer]
+                  - button "Remove" [ref=f1e577] [cursor=pointer]
+        - generic [ref=f1e578]:
+          - generic [ref=f1e579]:
+            - generic [ref=f1e581]:
+              - heading "End-of-round audit" [level=2] [ref=f1e582]
+              - paragraph [ref=f1e583]: Before final focus, check the path to the ballot.
+            - generic [ref=f1e584]:
+              - generic [ref=f1e585]:
+                - generic [ref=f1e586]: ↗
+                - generic [ref=f1e587]:
+                  - strong [ref=f1e588]: Extend offense through summary
+                  - generic [ref=f1e589]: Extend claim and warrant, not just a card name.
+              - generic [ref=f1e590]:
+                - generic [ref=f1e591]: ↔
+                - generic [ref=f1e592]:
+                  - strong [ref=f1e593]: Compare against their best impact
+                  - generic [ref=f1e594]: Use probability, timeframe, magnitude, reversibility, or scope.
+              - generic [ref=f1e595]:
+                - generic [ref=f1e596]: ✓
+                - generic [ref=f1e597]:
+                  - strong [ref=f1e598]: Mirror the summary in final focus
+                  - generic [ref=f1e599]: Do not introduce new arguments in the last speech.
+          - generic [ref=f1e600]:
+            - generic [ref=f1e602]:
+              - heading "Quick status key" [level=2] [ref=f1e603]
+              - paragraph [ref=f1e604]: Click “Cycle status” to update a row.
+            - generic [ref=f1e605]:
+              - generic [ref=f1e606]: Open
+              - generic [ref=f1e607]: Answered
+              - generic [ref=f1e608]: Extended
+              - generic [ref=f1e609]: Dropped
+            - paragraph [ref=f1e610]: Keep each status tied to what was actually said in the round.
+  - status

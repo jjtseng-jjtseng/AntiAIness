@@ -1,0 +1,871 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#263e32" />
+    <meta
+      name="description"
+      content="Make room for a better everyday with AJ and J Construction. Explore home renovations, clear project pricing, and a simpler way to start your next project."
+    />
+    <title>AJ & J Construction — Built around you.</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="announcement">
+      <span>A little inspiration. A lot of possibility.</span
+      ><a href="#projects"
+        >Find your next chapter <span aria-hidden="true">↗</span></a
+      >
+    </div>
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="#" aria-label="AJ and J Construction home"
+          ><svg viewBox="0 0 46 44" fill="none" aria-hidden="true">
+            <path
+              d="M3 23 23 6l20 17M9 20v19h28V20M17 39V25h12v14M3 39h40M31 12V5h6v12"
+            /></svg
+          ><span
+            >AJ <span class="brand-amp">&</span> J<small
+              >CONSTRUCTION</small
+            ></span
+          ></a
+        >
+        <nav class="desktop-nav" aria-label="Main navigation">
+          <a href="#services">What we do</a
+          ><a href="#projects">The possibilities</a
+          ><a href="#why-us">Why AJ & J</a
+          ><a href="#pricing">Plan your project</a>
+        </nav>
+        <button class="button button-dark nav-quote" data-quote>
+          Let’s build something <span aria-hidden="true">↗</span>
+        </button>
+        <button
+          class="menu-toggle"
+          aria-label="Open navigation"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+        >
+          <span></span><span></span>
+        </button>
+      </div>
+      <nav
+        class="mobile-nav"
+        id="mobile-nav"
+        aria-label="Mobile navigation"
+        hidden
+      >
+        <a href="#services">What we do</a
+        ><a href="#projects">The possibilities</a
+        ><a href="#why-us">Why AJ & J</a><a href="#pricing">Plan your project</a
+        ><button class="button button-dark" data-quote>
+          Start your project ↗
+        </button>
+      </nav>
+    </header>
+    <main id="main">
+      <section class="hero container" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span class="tiny-spark">✳</span> GOOD HOMES. GOOD PEOPLE.
+          </p>
+          <h1 id="hero-title">
+            Your home.<br />Your next<br /><em>great chapter.</em>
+          </h1>
+          <p class="hero-description">
+            The kitchen everyone gathers in. The space you’ve always needed.
+            Let’s build a home that feels more like you.
+          </p>
+          <div class="hero-actions">
+            <button class="button button-dark" data-quote>
+              Bring your ideas to life <span aria-hidden="true">↗</span></button
+            ><a class="text-link" href="#projects"
+              >A little inspiration <span aria-hidden="true">↗</span></a
+            >
+          </div>
+          <div class="hero-reassurance">
+            <span><i class="check">✓</i> A conversation, no commitment</span
+            ><span><i class="check">✓</i> Your vision comes first</span>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <img
+            class="hero-image"
+            src="assets/hero.jpg"
+            alt="Contemporary two-story home with warm wood details, a mature tree, and an inviting garden terrace"
+            fetchpriority="high"
+            width="1800"
+            height="1200"
+          />
+          <div class="photo-label">
+            <span class="label-line"></span> SPACES TO LIVE A LITTLE MORE.
+          </div>
+          <div class="hero-note">
+            <span class="note-star" aria-hidden="true">✳</span>
+            <div>
+              More than a renovation.<br /><strong>A fresh start.</strong>
+            </div>
+            <a href="#services" aria-label="Explore our renovation services"
+              >↗</a
+            >
+          </div>
+          <span class="image-disclaimer"
+            >Design inspiration · stock photography</span
+          >
+        </div>
+      </section>
+      <div class="promise-bar">
+        <div class="container promise-inner">
+          <span>Built on the things that matter.</span
+          ><span
+            ><svg aria-hidden="true"><use href="#icon-plan" /></svg> A clear
+            plan</span
+          ><span
+            ><svg aria-hidden="true"><use href="#icon-chat" /></svg> Honest
+            conversations</span
+          ><span
+            ><svg aria-hidden="true"><use href="#icon-home" /></svg> Thoughtful
+            craftsmanship</span
+          ><span
+            ><svg aria-hidden="true"><use href="#icon-heart" /></svg> Respect
+            for your home</span
+          >
+        </div>
+      </div>
+      <section class="section container services" id="services">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">01 / MAKE IT YOURS</p>
+            <h2>
+              Big ideas. Small details.<br /><em>We’re here for all of it.</em>
+            </h2>
+          </div>
+          <p>
+            You don’t need to have it all figured out.<br />Just a space you’d
+            love to make better.
+          </p>
+        </div>
+        <div class="service-grid">
+          <button class="service-card" data-service="Kitchen renovation">
+            <span class="service-top"
+              ><svg aria-hidden="true"><use href="#icon-kitchen" /></svg
+              ><span class="round-arrow">↗</span></span
+            >
+            <h3>Kitchens</h3>
+            <p>For busy mornings, slow Sundays, and everything in between.</p>
+            <span class="service-price"
+              >FROM $18,000 <span>Explore kitchens</span></span
+            >
+          </button>
+          <button class="service-card" data-service="Bathroom renovation">
+            <span class="service-top"
+              ><svg aria-hidden="true"><use href="#icon-bath" /></svg
+              ><span class="round-arrow">↗</span></span
+            >
+            <h3>Bathrooms</h3>
+            <p>
+              A little everyday escape, thoughtfully built around your routine.
+            </p>
+            <span class="service-price"
+              >FROM $9,000 <span>Explore bathrooms</span></span
+            >
+          </button>
+          <button class="service-card" data-service="Home renovation">
+            <span class="service-top"
+              ><svg aria-hidden="true"><use href="#icon-home" /></svg
+              ><span class="round-arrow">↗</span></span
+            >
+            <h3>Home renovations</h3>
+            <p>
+              More room to grow. Better flow. A whole new way to feel at home.
+            </p>
+            <span class="service-price"
+              >FROM $35,000 <span>Explore renovations</span></span
+            >
+          </button>
+          <button class="service-card" data-service="Outdoor living">
+            <span class="service-top"
+              ><svg aria-hidden="true"><use href="#icon-outdoor" /></svg
+              ><span class="round-arrow">↗</span></span
+            >
+            <h3>Outdoor living</h3>
+            <p>
+              Take the good times outside with a space worth staying in for.
+            </p>
+            <span class="service-price"
+              >FROM $7,500 <span>Explore outdoors</span></span
+            >
+          </button>
+        </div>
+        <p class="fine-print">
+          A starting point for your plans. All prices are illustrative and
+          subject to an individual project quote.
+        </p>
+      </section>
+      <section class="projects-section section" id="projects">
+        <div class="container">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">02 / PICTURE THE POSSIBILITIES</p>
+              <h2>
+                A little inspiration for<br /><em>your big “what if.”</em>
+              </h2>
+            </div>
+            <div class="project-intro">
+              <p>
+                Find a feeling you love.<br />We’ll help you make it your own.
+              </p>
+              <span class="small-note"
+                >Inspiration gallery · not completed AJ & J projects</span
+              >
+            </div>
+          </div>
+          <div class="filter-bar" role="group" aria-label="Filter inspiration">
+            <button class="filter active" data-filter="all" aria-pressed="true">
+              All spaces <span>04</span></button
+            ><button class="filter" data-filter="kitchen" aria-pressed="false">
+              Kitchens</button
+            ><button class="filter" data-filter="bathroom" aria-pressed="false">
+              Bathrooms</button
+            ><button class="filter" data-filter="living" aria-pressed="false">
+              Living spaces</button
+            ><button class="filter" data-filter="outdoor" aria-pressed="false">
+              Outdoors
+            </button>
+          </div>
+          <div class="project-grid" id="project-grid">
+            <button
+              class="project-card project-wide"
+              data-project="kitchen"
+              data-category="kitchen"
+            >
+              <div class="project-image">
+                <img
+                  src="assets/kitchen.jpg"
+                  alt="Welcoming kitchen with white cabinets, warm wood floors, and natural light"
+                  loading="lazy"
+                  width="1000"
+                  height="667"
+                /><span class="project-pill">KITCHEN RENOVATION</span
+                ><span class="project-open" aria-hidden="true">↗</span>
+              </div>
+              <div class="project-caption">
+                <h3>The heart of the home</h3>
+                <span>Warm. Welcoming. Wonderfully you.</span>
+              </div>
+            </button>
+            <button
+              class="project-card"
+              data-project="bathroom"
+              data-category="bathroom"
+            >
+              <div class="project-image">
+                <img
+                  src="assets/bathroom.jpg"
+                  alt="Calm bathroom with a freestanding bathtub, vessel sink, and modern fixtures"
+                  loading="lazy"
+                  width="1000"
+                  height="667"
+                /><span class="project-pill">BATHROOM RENOVATION</span
+                ><span class="project-open" aria-hidden="true">↗</span>
+              </div>
+              <div class="project-caption">
+                <h3>Your everyday retreat</h3>
+                <span>A quieter kind of luxury.</span>
+              </div>
+            </button>
+            <button
+              class="project-card"
+              data-project="living"
+              data-category="living"
+            >
+              <div class="project-image">
+                <img
+                  src="assets/living.jpg"
+                  alt="Comfortable living room with soft textiles and light-filled gathering spaces"
+                  loading="lazy"
+                  width="1000"
+                  height="667"
+                /><span class="project-pill">HOME RENOVATION</span
+                ><span class="project-open" aria-hidden="true">↗</span>
+              </div>
+              <div class="project-caption">
+                <h3>Room for real life</h3>
+                <span>Space to connect. Space to grow.</span>
+              </div>
+            </button>
+            <button
+              class="project-card project-wide"
+              data-project="outdoor"
+              data-category="outdoor"
+            >
+              <div class="project-image">
+                <img
+                  src="assets/exterior.jpg"
+                  alt="Contemporary home with a landscaped outdoor gathering area"
+                  loading="lazy"
+                  width="1000"
+                  height="667"
+                /><span class="project-pill">OUTDOOR LIVING</span
+                ><span class="project-open" aria-hidden="true">↗</span>
+              </div>
+              <div class="project-caption">
+                <h3>A breath of fresh air</h3>
+                <span>Your favorite room, under the sky.</span>
+              </div>
+            </button>
+          </div>
+          <p class="gallery-status sr-only" aria-live="polite">
+            Showing 4 inspiration spaces
+          </p>
+        </div>
+      </section>
+      <section class="section container why-section" id="why-us">
+        <div class="why-visual">
+          <img
+            src="assets/living.jpg"
+            alt="Thoughtfully arranged living room with natural finishes"
+            width="1000"
+            height="1200"
+            loading="lazy"
+          />
+          <div class="why-stamp">
+            <svg aria-hidden="true"><use href="#icon-home" /></svg
+            ><span>YOUR HOME.<br />OUR RESPONSIBILITY.</span>
+          </div>
+        </div>
+        <div class="why-copy">
+          <p class="eyebrow">03 / PEOPLE FIRST. ALWAYS.</p>
+          <h2>
+            You’re inviting us<br />into your home.<br /><em
+              >That means something.</em
+            >
+          </h2>
+          <p>
+            Home projects are personal. The right partner listens, explains the
+            details, and treats your space with care. That’s the kind of
+            experience we want to build with you.
+          </p>
+          <div class="commitment">
+            <span>01</span>
+            <div>
+              <h3>Clarity before the first hammer.</h3>
+              <p>
+                A written scope, a realistic schedule, and pricing you can talk
+                through.
+              </p>
+            </div>
+          </div>
+          <div class="commitment">
+            <span>02</span>
+            <div>
+              <h3>You’re part of the conversation.</h3>
+              <p>
+                Discuss decisions and changes together, before work moves
+                forward.
+              </p>
+            </div>
+          </div>
+          <div class="commitment">
+            <span>03</span>
+            <div>
+              <h3>The details deserve care.</h3>
+              <p>
+                Plan for protecting your space, keeping a tidy site, and a final
+                walkthrough.
+              </p>
+            </div>
+          </div>
+          <button class="text-link" data-quote>
+            Get to know your project partner <span aria-hidden="true">↗</span>
+          </button>
+        </div>
+      </section>
+      <section class="section pricing-section" id="pricing">
+        <div class="container pricing-layout">
+          <div class="pricing-copy">
+            <p class="eyebrow">04 / A GOOD PLACE TO START</p>
+            <h2>Big dreams.<br /><em>Let’s talk numbers.</em></h2>
+            <p>
+              A little clarity makes the first step easier. Explore a starting
+              budget, then let’s talk about what’s right for your space.
+            </p>
+            <a href="#faq" class="text-link"
+              >Have questions first? <span aria-hidden="true">↗</span></a
+            >
+            <div class="pricing-footnote">
+              <svg aria-hidden="true"><use href="#icon-plan" /></svg
+              ><span
+                >No guesswork about the next step.<br />Start with a
+                conversation and a custom scope.</span
+              >
+            </div>
+          </div>
+          <div class="estimator">
+            <div class="estimator-top">
+              <h3>Your project, at a glance</h3>
+              <span>QUICK ESTIMATE</span>
+            </div>
+            <label class="field-label" for="estimate-service"
+              >What are you thinking?</label
+            ><select id="estimate-service">
+              <option value="kitchen">Kitchen renovation</option>
+              <option value="bathroom">Bathroom renovation</option>
+              <option value="home">Home renovation</option>
+              <option value="outdoor">Outdoor living</option>
+            </select>
+            <div class="range-label">
+              <label class="field-label" for="project-size"
+                >About how much space?</label
+              ><output id="size-output" for="project-size">150 sq ft</output>
+            </div>
+            <input
+              type="range"
+              id="project-size"
+              min="80"
+              max="400"
+              step="10"
+              value="150"
+            />
+            <div class="range-ends">
+              <span id="size-min">80 sq ft</span
+              ><span id="size-max">400 sq ft</span>
+            </div>
+            <label class="field-label" for="finish-level"
+              >Your finishing touches</label
+            ><select id="finish-level">
+              <option value="1">Thoughtful essentials</option>
+              <option value="1.35">A little extra — upgraded finishes</option>
+              <option value="1.75">Make it special — premium finishes</option>
+            </select>
+            <div class="estimate-result" aria-live="polite">
+              <span>Your illustrative project range</span
+              ><strong id="estimate-price">$18,000 – $25,200</strong>
+              <p>Materials + labor · a planning guide, not a quote</p>
+            </div>
+            <button class="button button-dark full-width" id="estimate-quote">
+              Let’s make a plan <span aria-hidden="true">↗</span>
+            </button>
+            <p class="estimate-disclaimer">
+              Demo pricing. Actual costs depend on site conditions, materials,
+              location, permits, and final scope.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section class="section container process-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">05 / FROM “WHAT IF” TO “WELCOME HOME”</p>
+            <h2>
+              A good project starts<br /><em>with a simple conversation.</em>
+            </h2>
+          </div>
+          <button class="text-link" data-quote>
+            Take the first step <span aria-hidden="true">↗</span>
+          </button>
+        </div>
+        <div class="process-grid">
+          <div>
+            <span class="step-number"
+              >01 <svg aria-hidden="true"><use href="#icon-chat" /></svg
+            ></span>
+            <h3>Tell us what you’re dreaming of.</h3>
+            <p>
+              A fresh look? More breathing room? Share your ideas, your
+              priorities, and what home means to you.
+            </p>
+          </div>
+          <div>
+            <span class="step-number"
+              >02 <svg aria-hidden="true"><use href="#icon-plan" /></svg
+            ></span>
+            <h3>Make a plan that feels right.</h3>
+            <p>
+              Talk through the possibilities, define the scope, and agree on the
+              details before getting started.
+            </p>
+          </div>
+          <div>
+            <span class="step-number"
+              >03 <svg aria-hidden="true"><use href="#icon-home" /></svg
+            ></span>
+            <h3>Watch your next chapter take shape.</h3>
+            <p>
+              Stay involved along the way, then walk through the finished
+              details together.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section class="faq-section section container" id="faq">
+        <div>
+          <p class="eyebrow">A FEW THINGS YOU MIGHT BE WONDERING</p>
+          <h2>Good questions.<br /><em>Straight answers.</em></h2>
+          <p>
+            Every project is different.<br />Let’s make yours a little clearer.
+          </p>
+          <button class="text-link" data-quote>
+            Ask us about your project ↗
+          </button>
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary>
+              Can I reach out if I’m just exploring?<span aria-hidden="true"
+                >+</span
+              >
+            </summary>
+            <p>
+              Absolutely. You don’t need drawings, a materials list, or a
+              finished plan. Tell us what isn’t working in your space and what
+              you’d love to change. That’s a great place to start.
+            </p>
+          </details>
+          <details>
+            <summary>
+              What’s included in the starting prices?<span aria-hidden="true"
+                >+</span
+              >
+            </summary>
+            <p>
+              The prices shown here are illustrative planning examples for
+              materials and labor. A real estimate needs a defined scope and
+              site assessment. Demolition, permits, structural changes,
+              specialist work, and material choices can change the final cost.
+            </p>
+          </details>
+          <details>
+            <summary>
+              How long will my renovation take?<span aria-hidden="true">+</span>
+            </summary>
+            <p>
+              Timing depends on the project size, material availability,
+              permits, and your home’s existing condition. The next step is to
+              create a project-specific schedule together, including what
+              happens before work begins.
+            </p>
+          </details>
+          <details>
+            <summary>
+              Can I live at home during the work?<span aria-hidden="true"
+                >+</span
+              >
+            </summary>
+            <p>
+              Often that’s possible, but it depends on the work and which rooms
+              you need each day. Access, dust control, noise, working hours, and
+              temporary arrangements should all be discussed before the project
+              starts.
+            </p>
+          </details>
+          <details>
+            <summary>
+              What happens when I request a project plan?<span
+                aria-hidden="true"
+                >+</span
+              >
+            </summary>
+            <p>
+              This example website lets you build and download a project brief.
+              It doesn’t send requests or contact information to anyone. When
+              the live contact service is connected, this will become the
+              starting point for a real conversation.
+            </p>
+          </details>
+        </div>
+      </section>
+      <section class="closing-section">
+        <div class="container closing-inner">
+          <span class="closing-spark" aria-hidden="true">✳</span>
+          <p class="eyebrow">YOUR NEXT CHAPTER IS WAITING.</p>
+          <h2>
+            Let’s build something<br /><em>you’ll love coming home to.</em>
+          </h2>
+          <button class="button button-cream" data-quote>
+            Start with a conversation <span aria-hidden="true">↗</span>
+          </button>
+          <p>Bring your ideas. We’ll bring a way forward.</p>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="container footer-main">
+        <a class="brand" href="#" aria-label="AJ and J Construction home"
+          ><svg viewBox="0 0 46 44" fill="none" aria-hidden="true">
+            <path
+              d="M3 23 23 6l20 17M9 20v19h28V20M17 39V25h12v14M3 39h40M31 12V5h6v12"
+            /></svg
+          ><span
+            >AJ <span class="brand-amp">&</span> J<small
+              >CONSTRUCTION</small
+            ></span
+          ></a
+        >
+        <p>Thoughtful spaces.<br />Built around you.</p>
+        <div>
+          <a href="#services">Our services</a
+          ><a href="#projects">Find inspiration</a>
+        </div>
+        <div>
+          <a href="#pricing">Explore pricing</a
+          ><button class="footer-link" data-quote>Let’s talk</button>
+        </div>
+        <a class="back-top" href="#" aria-label="Back to top">↑</a>
+      </div>
+      <div class="container footer-bottom">
+        <span>© <span id="year">2026</span> AJ & J Construction.</span
+        ><span>Concept website · illustrative prices & stock imagery</span
+        ><button class="footer-link" id="privacy-button">
+          Privacy & demo information
+        </button>
+      </div>
+    </footer>
+    <dialog
+      id="quote-dialog"
+      class="quote-dialog"
+      aria-labelledby="quote-title"
+    >
+      <button
+        class="dialog-close"
+        data-close
+        aria-label="Close project planner"
+      >
+        ×
+      </button>
+      <div class="quote-header">
+        <span class="eyebrow">LET’S MAKE ROOM FOR SOMETHING GOOD</span>
+        <h2 id="quote-title">Your next chapter<br /><em>starts here.</em></h2>
+        <p>Tell us a little about the home you have in mind.</p>
+      </div>
+      <div class="form-progress" aria-label="Project planner progress">
+        <span class="active" id="progress-1">01 <span>Your project</span></span
+        ><i></i><span id="progress-2">02 <span>Your details</span></span>
+      </div>
+      <form id="quote-form">
+        <fieldset id="quote-step-1">
+          <legend class="sr-only">Your project</legend>
+          <label for="quote-service">What would you love to work on?</label
+          ><select id="quote-service" name="service" required>
+            <option value="">Choose your project</option>
+            <option>Kitchen renovation</option>
+            <option>Bathroom renovation</option>
+            <option>Home renovation</option>
+            <option>Outdoor living</option>
+            <option>Something else / I’m exploring</option>
+          </select>
+          <div class="form-row">
+            <div>
+              <label for="quote-budget">Your planning budget</label
+              ><select id="quote-budget" name="budget" required>
+                <option value="">Select a range</option>
+                <option>Under $10,000</option>
+                <option>$10,000 – $25,000</option>
+                <option>$25,000 – $50,000</option>
+                <option>$50,000 – $100,000</option>
+                <option>$100,000+</option>
+                <option>I’d like some guidance</option>
+              </select>
+            </div>
+            <div>
+              <label for="quote-timeline">When are you thinking?</label
+              ><select id="quote-timeline" name="timeline" required>
+                <option value="">Select a timeframe</option>
+                <option>As soon as possible</option>
+                <option>In 1–3 months</option>
+                <option>In 3–6 months</option>
+                <option>Just exploring</option>
+              </select>
+            </div>
+          </div>
+          <label for="quote-description"
+            >What are you imagining?
+            <span class="optional">(optional)</span></label
+          ><textarea
+            id="quote-description"
+            name="description"
+            rows="3"
+            maxlength="2000"
+            placeholder="A bigger kitchen, a peaceful bathroom, a deck for summer evenings…"
+          ></textarea>
+          <div id="estimate-carried" class="carried-estimate" hidden></div>
+          <button
+            type="button"
+            class="button button-dark full-width"
+            id="next-step"
+          >
+            Next: your details <span aria-hidden="true">↗</span>
+          </button>
+        </fieldset>
+        <fieldset id="quote-step-2" hidden disabled>
+          <legend class="sr-only">Your details</legend>
+          <label for="quote-name">Your name</label
+          ><input
+            id="quote-name"
+            name="name"
+            autocomplete="name"
+            maxlength="100"
+            required
+            placeholder="First and last name"
+          /><label for="quote-email">Email address</label
+          ><input
+            type="email"
+            id="quote-email"
+            name="email"
+            autocomplete="email"
+            maxlength="254"
+            required
+            placeholder="you@example.com"
+          />
+          <div class="form-row">
+            <div>
+              <label for="quote-phone"
+                >Phone <span class="optional">(optional)</span></label
+              ><input
+                type="tel"
+                id="quote-phone"
+                name="phone"
+                autocomplete="tel"
+                maxlength="40"
+                placeholder="Your phone number"
+              />
+            </div>
+            <div>
+              <label for="quote-zip"
+                >ZIP code <span class="optional">(optional)</span></label
+              ><input
+                id="quote-zip"
+                name="zip"
+                autocomplete="postal-code"
+                maxlength="10"
+                placeholder="Project location"
+              />
+            </div>
+          </div>
+          <p class="demo-form-note">
+            This is an interactive demo. Your details stay in this page and
+            aren’t sent or saved. You can download your brief on the next
+            screen.
+          </p>
+          <button class="button button-dark full-width" type="submit">
+            Create my project brief <span aria-hidden="true">↗</span></button
+          ><button type="button" class="form-back" id="previous-step">
+            ← Back to your project
+          </button>
+        </fieldset>
+      </form>
+      <div class="quote-success" id="quote-success" hidden>
+        <span class="success-icon" aria-hidden="true">✓</span>
+        <h3>A good beginning.</h3>
+        <p>
+          Your project brief is ready. Here’s a little clarity for the next
+          step.
+        </p>
+        <dl id="brief-summary"></dl>
+        <p class="demo-form-note">
+          Demo complete. No request has been sent to AJ & J Construction.
+        </p>
+        <button class="button button-dark full-width" id="download-brief">
+          Download your project brief <span aria-hidden="true">↓</span></button
+        ><button class="form-back" data-close>
+          Keep exploring the possibilities ↗
+        </button>
+      </div>
+    </dialog>
+    <dialog
+      id="project-dialog"
+      class="project-dialog"
+      aria-labelledby="project-title"
+    >
+      <button
+        class="dialog-close"
+        data-close
+        aria-label="Close inspiration details"
+      >
+        ×</button
+      ><img id="project-detail-image" src="assets/kitchen.jpg" alt="" />
+      <div class="project-detail-copy">
+        <p class="eyebrow" id="project-category"></p>
+        <h2 id="project-title"></h2>
+        <p id="project-description"></p>
+        <ul id="project-features"></ul>
+        <div class="project-detail-bottom">
+          <span id="project-starting"></span
+          ><button class="button button-dark" id="project-quote">
+            Make it yours ↗
+          </button>
+        </div>
+        <p class="fine-print">
+          Stock image for design inspiration. This is not a completed AJ & J
+          project. Prices are illustrative.
+        </p>
+      </div>
+    </dialog>
+    <dialog
+      id="privacy-dialog"
+      class="info-dialog"
+      aria-labelledby="privacy-title"
+    >
+      <button
+        class="dialog-close"
+        data-close
+        aria-label="Close privacy information"
+      >
+        ×
+      </button>
+      <p class="eyebrow">A LITTLE TRANSPARENCY</p>
+      <h2 id="privacy-title">About this concept.</h2>
+      <p>
+        This is a front-end demonstration of an AJ & J Construction website.
+        Prices and project examples are illustrative, and gallery photos are
+        stock images, not evidence of completed work.
+      </p>
+      <p>
+        The project planner works entirely in your browser. Contact details are
+        not transmitted or stored by this site. A brief is saved to your device
+        only if you choose to download it. Closing the planner clears the form.
+      </p>
+      <p>
+        No analytics, cookies, or external scripts are used. Images and fonts
+        are included locally. Before launch, confirm real service areas, contact
+        details, business commitments, credentials, pricing, and the privacy
+        policy.
+      </p>
+      <button class="button button-dark" data-close>Got it ↗</button>
+    </dialog>
+    <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <symbol id="icon-home" viewBox="0 0 32 32">
+          <path d="m3 14 13-11 13 11M7 12v17h18V12M12 29V18h8v11" />
+        </symbol>
+        <symbol id="icon-plan" viewBox="0 0 32 32">
+          <path d="M8 5h17v24H6V5h2M12 3h8v5h-8zM11 14h10M11 19h10M11 24h6" />
+        </symbol>
+        <symbol id="icon-chat" viewBox="0 0 32 32">
+          <path d="M27 5H5v17h5v6l7-6h10zM10 11h12M10 16h8" />
+        </symbol>
+        <symbol id="icon-heart" viewBox="0 0 32 32">
+          <path
+            d="M16 27S3 19 3 11c0-7 9-10 13-3 4-7 13-4 13 3 0 8-13 16-13 16Z"
+          />
+        </symbol>
+        <symbol id="icon-kitchen" viewBox="0 0 32 32">
+          <path
+            d="M3 15h26v14H3zM3 20h26M16 15v14M5 15V6h8v9M8 6V3h10v6M21 15v-5h6v5M7 24h4M21 24h4"
+          />
+        </symbol>
+        <symbol id="icon-bath" viewBox="0 0 32 32">
+          <path
+            d="M2 16h28M4 16v5c0 4 3 6 7 6h10c4 0 7-2 7-6v-5M8 27v3M24 27v3M7 16V6c0-5 7-5 7 0M11 7h6M11 11h6"
+          />
+        </symbol>
+        <symbol id="icon-outdoor" viewBox="0 0 32 32">
+          <path d="M4 29h24M16 29V5M5 16 16 3l11 13zM8 22h16M8 22v7M24 22v7" />
+        </symbol>
+      </defs>
+    </svg>
+  </body>
+</html>

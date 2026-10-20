@@ -1,0 +1,141 @@
+- generic [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - complementary [ref=f1e3]:
+      - link "Flowstate home" [ref=f1e4] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=f1e9]:
+          - strong [ref=f1e10]: flowstate
+          - generic [ref=f1e11]: THE PF PRACTICE ROOM
+      - generic [ref=f1e12]:
+        - generic [ref=f1e13]: "N"
+        - generic [ref=f1e14]:
+          - strong [ref=f1e15]: Northview Debate
+          - generic [ref=f1e16]: Varsity · Public Forum
+        - generic [ref=f1e17]: ⌄
+      - generic [ref=f1e18]: WORKSPACE
+      - navigation "Main navigation" [ref=f1e19]:
+        - button "Overview" [ref=f1e20] [cursor=pointer]
+        - button "Round room 8" [ref=f1e25] [cursor=pointer]:
+          - generic [ref=f1e30]: Round room
+          - generic [ref=f1e31]: "8"
+        - button "Case lab" [ref=f1e32] [cursor=pointer]
+        - button "Flow board" [ref=f1e38] [cursor=pointer]
+        - button "Evidence library" [ref=f1e44] [cursor=pointer]
+        - button "Crossfire gym" [ref=f1e51] [cursor=pointer]
+        - button "Speech studio" [ref=f1e57] [cursor=pointer]
+      - generic [ref=f1e63]: TEAM TOOLS
+      - navigation "Team tools" [ref=f1e64]:
+        - button "Tournament kit" [active] [ref=f1e65] [cursor=pointer]
+        - button "Progress" [ref=f1e71] [cursor=pointer]
+      - generic [ref=f1e77]:
+        - generic [ref=f1e78]: ✳
+        - generic [ref=f1e79]:
+          - strong [ref=f1e80]: Coach's corner
+          - paragraph [ref=f1e81]: Win the ballot by extending offense and weighing it in summary.
+          - button "Open speech guide →" [ref=f1e82] [cursor=pointer]
+      - button "MC Maya Chen Student debater •••" [ref=f1e83] [cursor=pointer]:
+        - generic [ref=f1e84]: MC
+        - generic [ref=f1e85]:
+          - strong [ref=f1e86]: Maya Chen
+          - generic [ref=f1e87]: Student debater
+        - generic [ref=f1e88]: •••
+    - main [ref=f1e89]:
+      - generic [ref=f1e90]:
+        - generic [ref=f1e91]:
+          - generic [ref=f1e92]: MY WORKSPACE
+          - generic [ref=f1e93]: /
+          - strong [ref=f1e94]: Tournament kit
+        - generic [ref=f1e95]:
+          - generic [ref=f1e96]:
+            - searchbox "⌘ K" [ref=f1e100]
+            - generic [ref=f1e101]: ⌘ K
+          - button "Settings" [ref=f1e102] [cursor=pointer]
+          - button "Open profile" [ref=f1e106] [cursor=pointer]: MC
+      - generic [ref=f1e107]:
+        - generic [ref=f1e1042]:
+          - generic [ref=f1e1043]:
+            - generic [ref=f1e1044]: ROUND-DAY SYSTEM
+            - heading "Tournament kit" [level=1] [ref=f1e1045]
+            - paragraph [ref=f1e1046]: A reusable checklist for prep, evidence, partner coordination, and tournament logistics.
+          - generic [ref=f1e1047]:
+            - button "Reset checklist" [ref=f1e1048] [cursor=pointer]
+            - button "＋ Add item" [ref=f1e1049] [cursor=pointer]
+        - generic [ref=f1e1050]:
+          - generic [ref=f1e1051]:
+            - generic [ref=f1e1052]:
+              - generic [ref=f1e1053]:
+                - heading "Pre-round checklist" [level=2] [ref=f1e1054]
+                - paragraph [ref=f1e1055]: 0 of 6 complete
+              - generic [ref=f1e1056]: 0% ready
+            - generic [ref=f1e1057]:
+              - generic [ref=f1e1058]:
+                - button [ref=f1e1059] [cursor=pointer]
+                - generic [ref=f1e1060]:
+                  - strong [ref=f1e1061]: Confirm the tournament resolution
+                  - paragraph [ref=f1e1062]: Use your invitation or league topic if it differs from the national topic.
+                - button "Edit" [ref=f1e1063] [cursor=pointer]
+              - generic [ref=f1e1064]:
+                - button [ref=f1e1065] [cursor=pointer]
+                - generic [ref=f1e1066]:
+                  - strong [ref=f1e1067]: Save a complete source for every card
+                  - paragraph [ref=f1e1068]: Keep the full citation, source text, URL, and access date with the card.
+                - button "Edit" [ref=f1e1069] [cursor=pointer]
+              - generic [ref=f1e1070]:
+                - button [ref=f1e1071] [cursor=pointer]
+                - generic [ref=f1e1072]:
+                  - strong [ref=f1e1073]: Prepare both sides and both speaking positions
+                  - paragraph [ref=f1e1074]: The coin flip lets teams choose either side or speaking order.
+                - button "Edit" [ref=f1e1075] [cursor=pointer]
+              - generic [ref=f1e1076]:
+                - button [ref=f1e1077] [cursor=pointer]
+                - generic [ref=f1e1078]:
+                  - strong [ref=f1e1079]: Share speech documents with your partner
+                  - paragraph [ref=f1e1080]: Agree on case names, card labels, and who owns each frontline.
+                - button "Edit" [ref=f1e1081] [cursor=pointer]
+              - generic [ref=f1e1082]:
+                - button [ref=f1e1083] [cursor=pointer]
+                - generic [ref=f1e1084]:
+                  - strong [ref=f1e1085]: Review the judge paradigm
+                  - paragraph [ref=f1e1086]: Check speed, evidence expectations, extension rules, and tournament norms.
+                - button "Edit" [ref=f1e1087] [cursor=pointer]
+              - generic [ref=f1e1088]:
+                - button [ref=f1e1089] [cursor=pointer]
+                - generic [ref=f1e1090]:
+                  - strong [ref=f1e1091]: Pack a round-day kit
+                  - paragraph [ref=f1e1092]: Flow sheets, timer, chargers, water, and backup copies of docs.
+                - button "Edit" [ref=f1e1093] [cursor=pointer]
+          - generic [ref=f1e1094]:
+            - generic [ref=f1e1095]:
+              - generic [ref=f1e1096]:
+                - generic [ref=f1e1097]:
+                  - heading "Current topic" [level=2] [ref=f1e1098]
+                  - paragraph [ref=f1e1099]: Nov/Dec 2026
+                - button "Edit" [ref=f1e1100] [cursor=pointer]
+              - generic [ref=f1e1101]:
+                - heading "Public Forum resolution" [level=3] [ref=f1e1102]
+                - paragraph [ref=f1e1103]: "Resolved: European members of the North Atlantic Treaty Organization should ratify the Treaty on the Prohibition of Nuclear Weapons."
+              - generic [ref=f1e1104]:
+                - generic [ref=f1e1105]: i
+                - generic [ref=f1e1106]: Topic wording and speech rules can vary by tournament. Confirm the current invitation.
+            - generic [ref=f1e1107]:
+              - generic [ref=f1e1109]:
+                - heading "Round essentials" [level=2] [ref=f1e1110]
+                - paragraph [ref=f1e1111]: PF default sequence
+              - generic [ref=f1e1112]:
+                - generic [ref=f1e1113]: Constructives · 4m
+                - generic [ref=f1e1114]: Rebuttals · 4m
+                - generic [ref=f1e1115]: Summaries · 3m
+                - generic [ref=f1e1116]: Final focus · 2m
+                - generic [ref=f1e1117]: Crossfire · 3m
+                - generic [ref=f1e1118]: Prep · 3m
+              - paragraph [ref=f1e1119]: Use the Round room for a full timer sequence and role notes.
+              - button "Open round room →" [ref=f1e1120] [cursor=pointer]
+            - generic [ref=f1e1121]:
+              - generic [ref=f1e1123]:
+                - heading "Keep a portable backup" [level=2] [ref=f1e1124]
+                - paragraph [ref=f1e1125]: Your workspace lives in this browser profile.
+              - paragraph [ref=f1e1126]: Export a JSON backup before clearing browser data or switching computers. Import it later to restore cards, flows, drafts, settings, and checklist.
+              - generic [ref=f1e1127]:
+                - button "Export backup" [ref=f1e1128] [cursor=pointer]
+                - button "Import backup" [ref=f1e1129] [cursor=pointer]
+  - status: Draft cleared.

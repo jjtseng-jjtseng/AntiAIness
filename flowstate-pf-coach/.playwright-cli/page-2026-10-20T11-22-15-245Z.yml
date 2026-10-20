@@ -1,0 +1,91 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - complementary [ref=f1e3]:
+      - link "Flowstate home" [ref=f1e4] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=f1e9]:
+          - strong [ref=f1e10]: flowstate
+          - generic [ref=f1e11]: THE PF PRACTICE ROOM
+      - generic [ref=f1e12]:
+        - generic [ref=f1e13]: "N"
+        - generic [ref=f1e14]:
+          - strong [ref=f1e15]: Northview Debate
+          - generic [ref=f1e16]: Varsity · Public Forum
+        - generic [ref=f1e17]: ⌄
+      - generic [ref=f1e18]: WORKSPACE
+      - navigation "Main navigation" [ref=f1e19]:
+        - button "Overview" [ref=f1e20] [cursor=pointer]
+        - button "Round room 8" [ref=f1e25] [cursor=pointer]:
+          - generic [ref=f1e30]: Round room
+          - generic [ref=f1e31]: "8"
+        - button "Case lab" [ref=f1e32] [cursor=pointer]
+        - button "Flow board" [ref=f1e38] [cursor=pointer]
+        - button "Evidence library" [ref=f1e44] [cursor=pointer]
+        - button "Crossfire gym" [ref=f1e51] [cursor=pointer]
+        - button "Speech studio" [ref=f1e57] [cursor=pointer]
+      - generic [ref=f1e63]: TEAM TOOLS
+      - navigation "Team tools" [ref=f1e64]:
+        - button "Tournament kit" [ref=f1e65] [cursor=pointer]
+        - button "Progress" [ref=f1e71] [cursor=pointer]
+      - generic [ref=f1e77]:
+        - generic [ref=f1e78]: ✳
+        - generic [ref=f1e79]:
+          - strong [ref=f1e80]: Coach's corner
+          - paragraph [ref=f1e81]: Win the ballot by extending offense and weighing it in summary.
+          - button "Open speech guide →" [ref=f1e82] [cursor=pointer]
+      - button "MC Maya Chen Student debater •••" [ref=f1e83] [cursor=pointer]:
+        - generic [ref=f1e84]: MC
+        - generic [ref=f1e85]:
+          - strong [ref=f1e86]: Maya Chen
+          - generic [ref=f1e87]: Student debater
+        - generic [ref=f1e88]: •••
+    - main [ref=f1e89]:
+      - generic [ref=f1e90]:
+        - generic [ref=f1e91]:
+          - generic [ref=f1e92]: MY WORKSPACE
+          - generic [ref=f1e93]: /
+          - strong [ref=f1e94]: Evidence library
+        - generic [ref=f1e95]:
+          - generic [ref=f1e96]:
+            - searchbox "⌘ K" [ref=f1e100]
+            - generic [ref=f1e101]: ⌘ K
+          - button "Settings" [ref=f1e102] [cursor=pointer]
+          - button "Open profile" [ref=f1e106] [cursor=pointer]: MC
+      - generic [ref=f1e107]:
+        - generic [ref=f1e712]:
+          - generic [ref=f1e713]:
+            - generic [ref=f1e714]: RESEARCH WITH RECEIPTS
+            - heading "Evidence library" [level=1] [ref=f1e715]
+            - paragraph [ref=f1e716]: Keep the full source close. Only mark a card verified after checking it against the original.
+          - generic [ref=f1e717]:
+            - button "Export backup" [ref=f1e718] [cursor=pointer]
+            - button "＋ Add evidence card" [ref=f1e719] [cursor=pointer]
+        - generic [ref=f1e720]:
+          - generic [ref=f1e722]:
+            - generic [ref=f1e723]: SAVED CARDS
+            - generic [ref=f1e724]: "0"
+            - generic [ref=f1e725]: Stored locally in this browser
+          - generic [ref=f1e731]:
+            - generic [ref=f1e732]: VERIFIED BY YOU
+            - generic [ref=f1e733]: "0"
+            - generic [ref=f1e734]: Manually checked against source
+        - generic [ref=f1e739]:
+          - generic [ref=f1e740]:
+            - generic [ref=f1e741]:
+              - button "All cards (0)" [ref=f1e742] [cursor=pointer]
+              - button "UNVERIFIED (0)" [ref=f1e743] [cursor=pointer]
+              - button "VERIFIED (0)" [ref=f1e744] [cursor=pointer]
+            - button "Import workspace backup" [ref=f1e745] [cursor=pointer]
+          - generic [ref=f1e746]:
+            - generic [ref=f1e747]: "!"
+            - generic [ref=f1e748]:
+              - text: Never cite AI or a research lead as evidence. This app does not fetch or verify sources.
+              - strong [ref=f1e749]: UNVERIFIED
+              - text: is the default; change it only after inspecting the original text and citation.
+          - generic [ref=f1e751]:
+            - generic [ref=f1e752]: ✳
+            - heading "Your evidence library is ready" [level=3] [ref=f1e753]
+            - paragraph [ref=f1e754]: Add a source-backed card with the full cite and original text. Research leads stay separate until verified.
+            - button "Add your first card" [ref=f1e755] [cursor=pointer]
+          - paragraph [ref=f1e756]: A useful card record includes author qualifications, publication date, source, title, access date, full URL, and complete source text. Keep a copy available if requested.
+  - status

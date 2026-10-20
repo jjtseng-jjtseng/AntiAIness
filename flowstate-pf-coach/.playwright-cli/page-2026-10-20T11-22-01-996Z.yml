@@ -1,0 +1,144 @@
+- generic [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - complementary [ref=f1e3]:
+      - link "Flowstate home" [ref=f1e4] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=f1e9]:
+          - strong [ref=f1e10]: flowstate
+          - generic [ref=f1e11]: THE PF PRACTICE ROOM
+      - generic [ref=f1e12]:
+        - generic [ref=f1e13]: "N"
+        - generic [ref=f1e14]:
+          - strong [ref=f1e15]: Northview Debate
+          - generic [ref=f1e16]: Varsity · Public Forum
+        - generic [ref=f1e17]: ⌄
+      - generic [ref=f1e18]: WORKSPACE
+      - navigation "Main navigation" [ref=f1e19]:
+        - button "Overview" [ref=f1e20] [cursor=pointer]
+        - button "Round room 8" [ref=f1e25] [cursor=pointer]:
+          - generic [ref=f1e30]: Round room
+          - generic [ref=f1e31]: "8"
+        - button "Case lab" [ref=f1e32] [cursor=pointer]
+        - button "Flow board" [ref=f1e38] [cursor=pointer]
+        - button "Evidence library" [ref=f1e44] [cursor=pointer]
+        - button "Crossfire gym" [ref=f1e51] [cursor=pointer]
+        - button "Speech studio" [ref=f1e57] [cursor=pointer]
+      - generic [ref=f1e63]: TEAM TOOLS
+      - navigation "Team tools" [ref=f1e64]:
+        - button "Tournament kit" [ref=f1e65] [cursor=pointer]
+        - button "Progress" [ref=f1e71] [cursor=pointer]
+      - generic [ref=f1e77]:
+        - generic [ref=f1e78]: ✳
+        - generic [ref=f1e79]:
+          - strong [ref=f1e80]: Coach's corner
+          - paragraph [ref=f1e81]: Win the ballot by extending offense and weighing it in summary.
+          - button "Open speech guide →" [ref=f1e82] [cursor=pointer]
+      - button "MC Maya Chen Student debater •••" [ref=f1e83] [cursor=pointer]:
+        - generic [ref=f1e84]: MC
+        - generic [ref=f1e85]:
+          - strong [ref=f1e86]: Maya Chen
+          - generic [ref=f1e87]: Student debater
+        - generic [ref=f1e88]: •••
+    - main [ref=f1e89]:
+      - generic [ref=f1e90]:
+        - generic [ref=f1e91]:
+          - generic [ref=f1e92]: MY WORKSPACE
+          - generic [ref=f1e93]: /
+          - strong [ref=f1e94]: Evidence library
+        - generic [ref=f1e95]:
+          - generic [ref=f1e96]:
+            - searchbox "⌘ K" [ref=f1e100]
+            - generic [ref=f1e101]: ⌘ K
+          - button "Settings" [ref=f1e102] [cursor=pointer]
+          - button "Open profile" [ref=f1e106] [cursor=pointer]: MC
+      - generic [ref=f1e107]:
+        - generic [ref=f1e611]:
+          - generic [ref=f1e612]:
+            - generic [ref=f1e613]: RESEARCH WITH RECEIPTS
+            - heading "Evidence library" [level=1] [ref=f1e614]
+            - paragraph [ref=f1e615]: Keep the full source close. Only mark a card verified after checking it against the original.
+          - generic [ref=f1e616]:
+            - button "Export backup" [ref=f1e617] [cursor=pointer]
+            - button "＋ Add evidence card" [active] [ref=f1e618] [cursor=pointer]
+        - generic [ref=f1e619]:
+          - generic [ref=f1e621]:
+            - generic [ref=f1e622]: SAVED CARDS
+            - generic [ref=f1e623]: "0"
+            - generic [ref=f1e624]: Stored locally in this browser
+          - generic [ref=f1e630]:
+            - generic [ref=f1e631]: VERIFIED BY YOU
+            - generic [ref=f1e632]: "0"
+            - generic [ref=f1e633]: Manually checked against source
+        - generic [ref=f1e638]:
+          - generic [ref=f1e639]:
+            - generic [ref=f1e640]:
+              - button "All cards (0)" [ref=f1e641] [cursor=pointer]
+              - button "UNVERIFIED (0)" [ref=f1e642] [cursor=pointer]
+              - button "VERIFIED (0)" [ref=f1e643] [cursor=pointer]
+            - button "Import workspace backup" [ref=f1e644] [cursor=pointer]
+          - generic [ref=f1e645]:
+            - generic [ref=f1e646]: "!"
+            - generic [ref=f1e647]:
+              - text: Never cite AI or a research lead as evidence. This app does not fetch or verify sources.
+              - strong [ref=f1e648]: UNVERIFIED
+              - text: is the default; change it only after inspecting the original text and citation.
+          - generic [ref=f1e650]:
+            - generic [ref=f1e651]: ✳
+            - heading "Your evidence library is ready" [level=3] [ref=f1e652]
+            - paragraph [ref=f1e653]: Add a source-backed card with the full cite and original text. Research leads stay separate until verified.
+            - button "Add your first card" [ref=f1e654] [cursor=pointer]
+          - paragraph [ref=f1e655]: A useful card record includes author qualifications, publication date, source, title, access date, full URL, and complete source text. Keep a copy available if requested.
+  - dialog "Add evidence card" [ref=f1e657]:
+    - generic [ref=f1e658]:
+      - generic [ref=f1e659]:
+        - heading "Add evidence card" [level=2] [ref=f1e660]
+        - paragraph [ref=f1e661]: Store a traceable source record. The app does not fetch or verify sources.
+      - button "Close" [ref=f1e662] [cursor=pointer]: ×
+    - generic [ref=f1e663]:
+      - generic [ref=f1e664]:
+        - generic [ref=f1e665]:
+          - generic [ref=f1e666]: Tag · what this card supports
+          - textbox "Do not overclaim the highlighted text" [ref=f1e667]
+        - generic [ref=f1e668]:
+          - generic [ref=f1e669]: Author / organization
+          - textbox [ref=f1e670]
+        - generic [ref=f1e671]:
+          - generic [ref=f1e672]: Author qualifications
+          - textbox [ref=f1e673]
+        - generic [ref=f1e674]:
+          - generic [ref=f1e675]: Publication year
+          - textbox [ref=f1e676]
+        - generic [ref=f1e677]:
+          - generic [ref=f1e678]: Publication date
+          - textbox [ref=f1e679]
+        - generic [ref=f1e680]:
+          - generic [ref=f1e681]: Publication / source
+          - textbox [ref=f1e682]
+        - generic [ref=f1e683]:
+          - generic [ref=f1e684]: Article or document title
+          - textbox [ref=f1e685]
+        - generic [ref=f1e686]:
+          - generic [ref=f1e687]: Full URL
+          - textbox "https://..." [ref=f1e688]
+        - generic [ref=f1e689]:
+          - generic [ref=f1e690]: Date accessed
+          - textbox [ref=f1e691]
+        - generic [ref=f1e692]:
+          - generic [ref=f1e693]: Page / section
+          - textbox [ref=f1e694]
+        - generic [ref=f1e695]:
+          - generic [ref=f1e696]: Complete source paragraph(s) · verbatim
+          - textbox "Paste the complete passage and preserve surrounding context." [ref=f1e697]
+        - generic [ref=f1e698]:
+          - generic [ref=f1e699]: Read-aloud excerpt / highlighted text
+          - textbox "Copy exact highlighted words in read order." [ref=f1e700]
+        - generic [ref=f1e702]:
+          - checkbox "I checked the complete citation and quoted text against the original, kept context, and can produce the source if asked." [ref=f1e703]
+          - generic [ref=f1e704]: I checked the complete citation and quoted text against the original, kept context, and can produce the source if asked.
+        - generic [ref=f1e706]:
+          - generic [ref=f1e707]: "!"
+          - generic [ref=f1e708]: Checking this box records your manual review. It does not mean the app verified the card.
+      - generic [ref=f1e709]:
+        - button "Cancel" [ref=f1e710] [cursor=pointer]
+        - button "Save card" [ref=f1e711] [cursor=pointer]
+  - status
