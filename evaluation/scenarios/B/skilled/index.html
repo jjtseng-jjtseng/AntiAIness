@@ -1,0 +1,921 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Global Equity Core – Portfolio risk</title>
+<meta name="description" content="Main screen of a portfolio risk dashboard: holdings, day P&L, return vs benchmark, sector exposure and active limit alerts for Global Equity Core.">
+<!--
+Brief
+  Product: a portfolio risk dashboard. On this screen a PM checks, several times a day, whether
+  the book is where it should be: P&L, return vs benchmark, where the risk sits, and which limits
+  are breached. Desktop, bright office, mid-session (15:42 ET). Light theme, dense, credible.
+  Focal point: the day's P&L (the one large number) and, below it, the holdings ledger where the
+  work happens. Fast to find: breaches. Real content only: the figures in the brief, nothing else.
+  Originality: low. PMs want familiar conventions executed precisely, not a new idiom.
+
+Direction card
+  Direction: "Ledger with limits drawn in". Credibility is numbers set correctly, and the
+    risk limits drawn into the same bars as the data, so a breach is visible where it happens.
+  The memorable thing: inline exposure bars with the risk limit drawn into them where the brief
+    gives one: the IT sector bar runs up to a 30% limit tick; the NVDA weight bar is red and
+    flagged "Breach" in the row, matching the alert.
+  Type: IBM Plex Sans, tabular figures everywhere. 12px column headers, 13px body and table,
+    15px section titles, 20px portfolio name, 30px day P&L. Six sizes. No mono: a ledger, not a
+    terminal.
+  Color: page #f3f4f6, surfaces white, hairlines #d9dde3, text #16191e, muted #5b6472.
+    Accent (links, active nav, portfolio series) ink blue #1f4e8c. Semantic: up #157347, down
+    #b42318, breach #b42318, warning #8a5a00. Benchmark series is grey. Accent never decorates.
+  Shape & surface: 2px radius; 1px borders only; no shadows; panels are regions of one grid.
+  Density: analysis-tool dense: 34px rows, 8px base unit.
+  Imagery: none; the table and sector bars are the imagery.
+  Motion: none beyond hover/focus; transitions disabled under prefers-reduced-motion.
+  Voice: the desk's nouns (NAV, VaR, tracking error, active return); no insights copy.
+  Conventions kept: top nav with the five sections, red/green with the sign as second cue,
+    right-aligned numbers, sortable columns, frozen first column on narrow screens.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f3f4f6;
+    --surface: #ffffff;
+    --surface-sunken: #f7f8fa;
+    --line: #d9dde3;
+    --line-strong: #b9c0ca;
+    --text: #16191e;
+    --muted: #5b6472;
+    --accent: #1f4e8c;
+    --accent-soft: #e4ecf7;
+    --up: #157347;
+    --down: #b42318;
+    --breach: #b42318;
+    --breach-soft: #fbeae7;
+    --warn: #8a5a00;
+    --warn-soft: #fdf3dc;
+    --bar: #9fb6d4;
+    --bar-strong: #1f4e8c;
+    --bar-risk: #c7cdd6;
+    --focus: #1f4e8c;
+    --radius: 2px;
+    --u: 8px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { background: var(--bg); }
+
+  body {
+    margin: 0;
+    font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--text);
+    background: var(--bg);
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--accent); }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: stretch;
+    gap: calc(var(--u) * 3);
+    padding: 0 calc(var(--u) * 3);
+    min-height: 48px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: var(--u);
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+    padding-right: calc(var(--u) * 3);
+    border-right: 1px solid var(--line);
+  }
+
+  .brand-mark {
+    width: 18px; height: 18px;
+    border: 2px solid var(--accent);
+    border-radius: var(--radius);
+    display: inline-block;
+    position: relative;
+  }
+  .brand-mark::after {
+    content: "";
+    position: absolute;
+    left: 3px; right: 3px; bottom: 3px;
+    height: 5px;
+    background: var(--accent);
+  }
+
+  .nav { display: flex; align-items: stretch; flex: 1 1 auto; min-width: 0; }
+  .nav ul {
+    list-style: none;
+    margin: 0; padding: 0;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav ul::-webkit-scrollbar { display: none; }
+  .nav a {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 calc(var(--u) * 2);
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+  }
+  .nav a:hover { color: var(--text); background: var(--surface-sunken); }
+  .nav a[aria-current="page"] {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+  }
+  .nav a:focus-visible { outline-offset: -2px; }
+
+  .asof {
+    display: flex;
+    align-items: center;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .asof time { color: var(--text); }
+
+  /* ---------- Page header ---------- */
+  .page {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: calc(var(--u) * 2) calc(var(--u) * 3) calc(var(--u) * 4);
+  }
+
+  .page-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--u) calc(var(--u) * 4);
+    margin-bottom: calc(var(--u) * 2);
+  }
+  .page-head h1 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.2;
+  }
+  .page-head dl {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--u) calc(var(--u) * 3);
+    margin: 0;
+  }
+  .page-head dl div { display: flex; gap: 6px; }
+  .page-head dt { color: var(--muted); }
+  .page-head dd { margin: 0; font-weight: 500; }
+
+  /* ---------- Layout ---------- */
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    grid-template-areas:
+      "summary summary"
+      "holdings side";
+    gap: calc(var(--u) * 2);
+    align-items: start;
+  }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  .panel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--u);
+    padding: calc(var(--u) * 1.5) calc(var(--u) * 2);
+    border-bottom: 1px solid var(--line);
+  }
+  .panel-head h2 {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.2;
+  }
+  .panel-head .note { color: var(--muted); }
+
+  /* ---------- Summary strip ---------- */
+  .summary {
+    grid-area: summary;
+    display: grid;
+    grid-template-columns: minmax(220px, 1.1fr) minmax(300px, 1.6fr) minmax(220px, 1.2fr);
+  }
+  .summary > section {
+    padding: calc(var(--u) * 2);
+    min-width: 0;
+  }
+  .summary > section + section { border-left: 1px solid var(--line); }
+  .summary h2 {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    margin: 0 0 var(--u);
+    line-height: 1.2;
+  }
+
+  .pnl-value {
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .pnl-pct {
+    font-size: 15px;
+    font-weight: 500;
+    margin-left: var(--u);
+  }
+  .pnl-line {
+    margin: var(--u) 0 0;
+    color: var(--muted);
+  }
+  .pnl-line b { font-weight: 500; color: var(--text); }
+
+  .returns {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .returns th, .returns td {
+    padding: 5px 0;
+    text-align: right;
+    font-weight: 400;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  .returns thead th {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 500;
+    border-bottom-color: var(--line-strong);
+  }
+  .returns tbody tr:last-child td, .returns tbody tr:last-child th { border-bottom: 0; }
+  .returns th[scope="row"] { text-align: left; font-weight: 500; }
+  .returns td.active { font-weight: 500; }
+
+  .risk-list {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: var(--u) calc(var(--u) * 3);
+    margin: 0;
+  }
+  .risk-list div { min-width: 0; }
+  .risk-list dt { color: var(--muted); font-size: 12px; margin-bottom: 2px; }
+  .risk-list dd {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  .risk-list dd small {
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .up { color: var(--up); }
+  .down { color: var(--down); }
+
+  /* ---------- Holdings ---------- */
+  .holdings { grid-area: holdings; min-width: 0; }
+
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .holdings table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 780px;
+  }
+  .holdings caption {
+    text-align: left;
+    padding: var(--u) calc(var(--u) * 2);
+    color: var(--muted);
+    border-bottom: 1px solid var(--line);
+  }
+  .holdings th, .holdings td {
+    padding: 0 calc(var(--u) * 1.5);
+    height: 34px;
+    border-bottom: 1px solid var(--line);
+    text-align: right;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .holdings th:first-child, .holdings td:first-child { padding-left: calc(var(--u) * 2); text-align: left; }
+  .holdings th:last-child, .holdings td:last-child { padding-right: calc(var(--u) * 2); }
+  .holdings thead th {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    background: var(--surface-sunken);
+    border-bottom-color: var(--line-strong);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  .holdings thead th.text { text-align: left; }
+  .holdings tbody tr:hover td { background: var(--surface-sunken); }
+  .holdings tbody tr:last-child td { border-bottom: 0; }
+  .holdings td.name { font-weight: 500; text-align: left; }
+  .holdings td.ticker { text-align: left; color: var(--muted); }
+  .holdings tfoot td {
+    background: var(--surface-sunken);
+    border-top: 1px solid var(--line-strong);
+    border-bottom: 0;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .holdings tfoot td:first-child { color: var(--text); }
+
+  .sort-btn {
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .sort-btn:hover { color: var(--text); }
+  .sort-btn::after {
+    content: "";
+    width: 0; height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid currentColor;
+    opacity: 0;
+  }
+  th[aria-sort="descending"] .sort-btn::after { opacity: 1; }
+  th[aria-sort="ascending"] .sort-btn::after {
+    opacity: 1;
+    border-top: 0;
+    border-bottom: 5px solid currentColor;
+  }
+  th[aria-sort] .sort-btn { color: var(--text); }
+
+  /* Bar cells: number + inline bar with the limit tick drawn through it */
+  .bar-cell { width: 176px; }
+  .bar-cell .cell {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--u);
+  }
+  .bar {
+    position: relative;
+    width: 104px;
+    height: 10px;
+    background: var(--surface-sunken);
+    border-radius: 1px;
+    flex: none;
+  }
+  .bar i {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    background: var(--bar);
+    border-radius: 1px;
+  }
+  .bar.risk i { background: var(--bar-risk); }
+  .bar .limit {
+    position: absolute;
+    top: -3px; bottom: -3px;
+    width: 0;
+    border-left: 2px solid var(--text);
+  }
+  .bar.over i { background: var(--breach); }
+  .flag {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--breach);
+  }
+
+  /* ---------- Side column ---------- */
+  .side {
+    grid-area: side;
+    display: grid;
+    gap: calc(var(--u) * 2);
+    min-width: 0;
+  }
+
+  .alerts { list-style: none; margin: 0; padding: 0; }
+  .alerts li {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    gap: calc(var(--u) * 1.5);
+    align-items: baseline;
+    padding: calc(var(--u) * 1.25) calc(var(--u) * 2);
+    border-bottom: 1px solid var(--line);
+  }
+  .alerts li:last-child { border-bottom: 0; }
+  .alerts .sev {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 1px 6px;
+    border-radius: var(--radius);
+    text-align: center;
+  }
+  .alerts .breach .sev { color: var(--breach); background: var(--breach-soft); }
+  .alerts .warning .sev { color: var(--warn); background: var(--warn-soft); }
+  .alerts .breach { background: #fffafa; }
+  .alerts .when { color: var(--muted); font-size: 12px; white-space: nowrap; }
+  .alerts .when:empty::before { content: "–"; }
+
+  .sectors { list-style: none; margin: 0; padding: calc(var(--u) * 1.5) calc(var(--u) * 2) calc(var(--u) * 2); }
+  .sectors li {
+    display: grid;
+    grid-template-columns: 1fr 52px;
+    grid-template-rows: auto auto;
+    column-gap: var(--u);
+    padding: 5px 0;
+  }
+  .sectors .label { grid-column: 1; }
+  .sectors .value { grid-column: 2; text-align: right; font-weight: 500; }
+  .sectors .track {
+    grid-column: 1 / -1;
+    position: relative;
+    height: 8px;
+    background: var(--surface-sunken);
+    margin-top: 3px;
+  }
+  .sectors .track i {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    background: var(--bar-strong);
+  }
+  .sectors .track .limit {
+    position: absolute;
+    top: -3px; bottom: -3px;
+    width: 0;
+    border-left: 2px solid var(--text);
+  }
+  .sectors .track .limit span {
+    position: absolute;
+    left: 6px;
+    top: -1px;
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    line-height: 1;
+  }
+  .sectors .warn-row .value { color: var(--warn); }
+  .sectors .scale {
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: 12px;
+    padding: 6px 0 0;
+    border-top: 1px solid var(--line);
+    margin-top: 6px;
+  }
+
+  /* ---------- Footer ---------- */
+  .foot {
+    margin-top: calc(var(--u) * 2);
+    color: var(--muted);
+    font-size: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--u) calc(var(--u) * 3);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1100px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "summary"
+        "side"
+        "holdings";
+    }
+    .side { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); align-items: start; }
+  }
+
+  @media (max-width: 760px) {
+    .topbar { flex-wrap: wrap; padding: 0 calc(var(--u) * 2); min-height: 0; }
+    .brand { height: 44px; border-right: 0; padding-right: 0; }
+    .asof { height: 44px; margin-left: auto; font-size: 12px; }
+    .nav { order: 3; flex-basis: 100%; border-top: 1px solid var(--line); }
+    .nav a { height: 40px; }
+    .page { padding: calc(var(--u) * 2) calc(var(--u) * 2) calc(var(--u) * 3); }
+    .summary { grid-template-columns: minmax(0, 1fr); }
+    .summary > section + section { border-left: 0; border-top: 1px solid var(--line); }
+    .risk-list { grid-template-columns: repeat(3, 1fr); }
+    .side { grid-template-columns: minmax(0, 1fr); }
+    .holdings th:first-child, .holdings td:first-child {
+      position: sticky;
+      left: 0;
+      background: var(--surface);
+      z-index: 2;
+      border-right: 1px solid var(--line);
+    }
+    .holdings thead th:first-child { background: var(--surface-sunken); z-index: 3; }
+    .holdings tbody tr:hover td:first-child { background: var(--surface-sunken); }
+    .holdings tfoot td:first-child { background: var(--surface-sunken); }
+  }
+
+  @media (max-width: 420px) {
+    .page-head dl { gap: 4px calc(var(--u) * 2); }
+    .risk-list dd { font-size: 16px; }
+    .pnl-value { font-size: 28px; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .nav a, .sort-btn, .holdings tbody td { transition: background-color 120ms, color 120ms; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <span>Portfolio risk</span>
+  </div>
+  <nav class="nav" aria-label="Primary">
+    <ul>
+      <li><a href="#" aria-current="page">Portfolio</a></li>
+      <li><a href="#">Risk</a></li>
+      <li><a href="#">Trades</a></li>
+      <li><a href="#">Reports</a></li>
+      <li><a href="#">Settings</a></li>
+    </ul>
+  </nav>
+  <div class="asof">As of&nbsp;<time datetime="2026-10-21T15:42:00-04:00">Oct 21, 2026, 15:42 ET</time></div>
+</header>
+
+<main class="page">
+  <div class="page-head">
+    <h1>Global Equity Core</h1>
+    <dl>
+      <div><dt>NAV</dt><dd>$842.6M</dd></div>
+      <div><dt>Benchmark</dt><dd>MSCI ACWI</dd></div>
+    </dl>
+  </div>
+
+  <div class="grid">
+
+    <div class="summary panel">
+      <section aria-labelledby="pnl-h">
+        <h2 id="pnl-h">Day P&amp;L</h2>
+        <p class="pnl-value up">+$3.21M<span class="pnl-pct">+0.38%</span></p>
+        <p class="pnl-line">MSCI ACWI 1D <b class="up">+0.21%</b>, active <b class="up">+0.17 pp</b></p>
+      </section>
+
+      <section aria-labelledby="ret-h">
+        <h2 id="ret-h">Return vs benchmark</h2>
+        <table class="returns">
+          <thead>
+            <tr>
+              <th scope="col" class="visually-hidden">Period</th>
+              <th scope="col">Portfolio</th>
+              <th scope="col">MSCI ACWI</th>
+              <th scope="col">Active</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1D</th>
+              <td class="up">+0.38%</td>
+              <td class="up">+0.21%</td>
+              <td class="active up">+0.17 pp</td>
+            </tr>
+            <tr>
+              <th scope="row">1M</th>
+              <td class="up">+2.4%</td>
+              <td class="up">+1.9%</td>
+              <td class="active up">+0.5 pp</td>
+            </tr>
+            <tr>
+              <th scope="row">YTD</th>
+              <td class="up">+11.2%</td>
+              <td class="up">+9.8%</td>
+              <td class="active up">+1.4 pp</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section aria-labelledby="risk-h">
+        <h2 id="risk-h">Risk</h2>
+        <dl class="risk-list">
+          <div>
+            <dt>95% 1-day VaR</dt>
+            <dd>$9.4M <small>1.12% of NAV</small></dd>
+          </div>
+          <div>
+            <dt>Tracking error</dt>
+            <dd>2.3%</dd>
+          </div>
+          <div>
+            <dt>Beta</dt>
+            <dd>0.97</dd>
+          </div>
+        </dl>
+      </section>
+    </div>
+
+    <section class="holdings panel" aria-labelledby="hold-h">
+      <div class="panel-head">
+        <h2 id="hold-h">Holdings</h2>
+        <span class="note">12 shown, by weight</span>
+      </div>
+      <div class="table-wrap">
+        <table id="holdings">
+          <thead>
+            <tr>
+              <th scope="col" class="text" aria-sort="none"><button class="sort-btn" type="button" data-col="0" data-type="text">Name</button></th>
+              <th scope="col" class="text" aria-sort="none"><button class="sort-btn" type="button" data-col="1" data-type="text">Ticker</button></th>
+              <th scope="col" class="bar-cell" aria-sort="descending"><button class="sort-btn" type="button" data-col="2" data-type="num">Weight</button></th>
+              <th scope="col" aria-sort="none"><button class="sort-btn" type="button" data-col="3" data-type="num">1D</button></th>
+              <th scope="col" aria-sort="none"><button class="sort-btn" type="button" data-col="4" data-type="num">1M</button></th>
+              <th scope="col" class="bar-cell" aria-sort="none"><button class="sort-btn" type="button" data-col="5" data-type="num">Contrib. to risk</button></th>
+              <th scope="col" aria-sort="none"><button class="sort-btn" type="button" data-col="6" data-type="num">VaR 95%</button></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="name">Microsoft</td><td class="ticker">MSFT</td>
+              <td class="bar-cell" data-v="6.8"><span class="cell">6.8%<span class="bar" aria-hidden="true"><i style="width:85%"></i></span></span></td>
+              <td class="up" data-v="0.9">+0.9%</td>
+              <td class="up" data-v="3.1">+3.1%</td>
+              <td class="bar-cell" data-v="7.4"><span class="cell">7.4%<span class="bar risk" aria-hidden="true"><i style="width:74%"></i></span></span></td>
+              <td data-v="0.71">$0.71M</td>
+            </tr>
+            <tr>
+              <td class="name">Apple</td><td class="ticker">AAPL</td>
+              <td class="bar-cell" data-v="5.9"><span class="cell">5.9%<span class="bar" aria-hidden="true"><i style="width:73.75%"></i></span></span></td>
+              <td class="up" data-v="0.4">+0.4%</td>
+              <td class="up" data-v="1.2">+1.2%</td>
+              <td class="bar-cell" data-v="6.0"><span class="cell">6.0%<span class="bar risk" aria-hidden="true"><i style="width:60%"></i></span></span></td>
+              <td data-v="0.58">$0.58M</td>
+            </tr>
+            <tr>
+              <td class="name">Nvidia</td><td class="ticker">NVDA</td>
+              <td class="bar-cell" data-v="5.1"><span class="cell"><span class="flag">Breach</span> 5.1%<span class="bar over" aria-hidden="true"><i style="width:63.75%"></i></span></span></td>
+              <td class="up" data-v="2.3">+2.3%</td>
+              <td class="up" data-v="8.7">+8.7%</td>
+              <td class="bar-cell" data-v="9.8"><span class="cell">9.8%<span class="bar risk" aria-hidden="true"><i style="width:98%"></i></span></span></td>
+              <td data-v="0.94">$0.94M</td>
+            </tr>
+            <tr>
+              <td class="name">Amazon</td><td class="ticker">AMZN</td>
+              <td class="bar-cell" data-v="4.2"><span class="cell">4.2%<span class="bar" aria-hidden="true"><i style="width:52.5%"></i></span></span></td>
+              <td class="up" data-v="0.6">+0.6%</td>
+              <td class="up" data-v="2.0">+2.0%</td>
+              <td class="bar-cell" data-v="4.9"><span class="cell">4.9%<span class="bar risk" aria-hidden="true"><i style="width:49%"></i></span></span></td>
+              <td data-v="0.47">$0.47M</td>
+            </tr>
+            <tr>
+              <td class="name">ASML</td><td class="ticker">ASML</td>
+              <td class="bar-cell" data-v="3.1"><span class="cell">3.1%<span class="bar" aria-hidden="true"><i style="width:38.75%"></i></span></span></td>
+              <td class="down" data-v="-1.1">&minus;1.1%</td>
+              <td class="down" data-v="-0.8">&minus;0.8%</td>
+              <td class="bar-cell" data-v="4.1"><span class="cell">4.1%<span class="bar risk" aria-hidden="true"><i style="width:41%"></i></span></span></td>
+              <td data-v="0.40">$0.40M</td>
+            </tr>
+            <tr>
+              <td class="name">Novo Nordisk</td><td class="ticker">NOVO B</td>
+              <td class="bar-cell" data-v="2.9"><span class="cell">2.9%<span class="bar" aria-hidden="true"><i style="width:36.25%"></i></span></span></td>
+              <td class="down" data-v="-2.4">&minus;2.4%</td>
+              <td class="down" data-v="-6.1">&minus;6.1%</td>
+              <td class="bar-cell" data-v="3.8"><span class="cell">3.8%<span class="bar risk" aria-hidden="true"><i style="width:38%"></i></span></span></td>
+              <td data-v="0.37">$0.37M</td>
+            </tr>
+            <tr>
+              <td class="name">TSMC</td><td class="ticker">2330</td>
+              <td class="bar-cell" data-v="2.7"><span class="cell">2.7%<span class="bar" aria-hidden="true"><i style="width:33.75%"></i></span></span></td>
+              <td class="up" data-v="1.5">+1.5%</td>
+              <td class="up" data-v="4.4">+4.4%</td>
+              <td class="bar-cell" data-v="3.9"><span class="cell">3.9%<span class="bar risk" aria-hidden="true"><i style="width:39%"></i></span></span></td>
+              <td data-v="0.38">$0.38M</td>
+            </tr>
+            <tr>
+              <td class="name">JPMorgan</td><td class="ticker">JPM</td>
+              <td class="bar-cell" data-v="2.5"><span class="cell">2.5%<span class="bar" aria-hidden="true"><i style="width:31.25%"></i></span></span></td>
+              <td class="up" data-v="0.2">+0.2%</td>
+              <td class="up" data-v="1.1">+1.1%</td>
+              <td class="bar-cell" data-v="2.2"><span class="cell">2.2%<span class="bar risk" aria-hidden="true"><i style="width:22%"></i></span></span></td>
+              <td data-v="0.21">$0.21M</td>
+            </tr>
+            <tr>
+              <td class="name">Nestlé</td><td class="ticker">NESN</td>
+              <td class="bar-cell" data-v="2.2"><span class="cell">2.2%<span class="bar" aria-hidden="true"><i style="width:27.5%"></i></span></span></td>
+              <td class="down" data-v="-0.3">&minus;0.3%</td>
+              <td class="up" data-v="0.4">+0.4%</td>
+              <td class="bar-cell" data-v="1.4"><span class="cell">1.4%<span class="bar risk" aria-hidden="true"><i style="width:14%"></i></span></span></td>
+              <td data-v="0.14">$0.14M</td>
+            </tr>
+            <tr>
+              <td class="name">Toyota</td><td class="ticker">7203</td>
+              <td class="bar-cell" data-v="2.0"><span class="cell">2.0%<span class="bar" aria-hidden="true"><i style="width:25%"></i></span></span></td>
+              <td class="up" data-v="0.8">+0.8%</td>
+              <td class="up" data-v="2.6">+2.6%</td>
+              <td class="bar-cell" data-v="1.9"><span class="cell">1.9%<span class="bar risk" aria-hidden="true"><i style="width:19%"></i></span></span></td>
+              <td data-v="0.18">$0.18M</td>
+            </tr>
+            <tr>
+              <td class="name">LVMH</td><td class="ticker">MC</td>
+              <td class="bar-cell" data-v="1.8"><span class="cell">1.8%<span class="bar" aria-hidden="true"><i style="width:22.5%"></i></span></span></td>
+              <td class="down" data-v="-1.6">&minus;1.6%</td>
+              <td class="down" data-v="-3.3">&minus;3.3%</td>
+              <td class="bar-cell" data-v="2.3"><span class="cell">2.3%<span class="bar risk" aria-hidden="true"><i style="width:23%"></i></span></span></td>
+              <td data-v="0.22">$0.22M</td>
+            </tr>
+            <tr>
+              <td class="name">Shell</td><td class="ticker">SHEL</td>
+              <td class="bar-cell" data-v="1.7"><span class="cell">1.7%<span class="bar" aria-hidden="true"><i style="width:21.25%"></i></span></span></td>
+              <td class="up" data-v="1.1">+1.1%</td>
+              <td class="up" data-v="3.9">+3.9%</td>
+              <td class="bar-cell" data-v="1.6"><span class="cell">1.6%<span class="bar risk" aria-hidden="true"><i style="width:16%"></i></span></span></td>
+              <td data-v="0.15">$0.15M</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2">Sum of 12 shown</td>
+              <td>40.9%</td>
+              <td></td>
+              <td></td>
+              <td>49.3%</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+
+    <div class="side">
+      <section class="panel" aria-labelledby="alerts-h">
+        <div class="panel-head">
+          <h2 id="alerts-h">Active alerts</h2>
+          <span class="note">1 breach, 2 warnings</span>
+        </div>
+        <ul class="alerts">
+          <li class="breach">
+            <span class="sev">Breach</span>
+            <span>NVDA weight 5.1% exceeds 5.0% single-name limit</span>
+            <time class="when" datetime="2026-10-21T09:31:00-04:00">09:31</time>
+          </li>
+          <li class="warning">
+            <span class="sev">Warning</span>
+            <span>Sector IT 28.4% approaching 30% limit</span>
+            <span class="when"></span>
+          </li>
+          <li class="warning">
+            <span class="sev">Warning</span>
+            <span>FX hedge ratio EUR 93% below 95% target</span>
+            <span class="when"></span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="panel" aria-labelledby="sector-h">
+        <div class="panel-head">
+          <h2 id="sector-h">Exposure by sector</h2>
+          <span class="note">% of NAV</span>
+        </div>
+        <ol class="sectors">
+          <li class="warn-row">
+            <span class="label">Information Technology</span>
+            <span class="value">28.4%</span>
+            <span class="track" aria-hidden="true"><i style="width:71%"></i><span class="limit" style="left:75%"><span>30% limit</span></span></span>
+          </li>
+          <li>
+            <span class="label">Financials</span>
+            <span class="value">15.1%</span>
+            <span class="track" aria-hidden="true"><i style="width:37.75%"></i></span>
+          </li>
+          <li>
+            <span class="label">Health Care</span>
+            <span class="value">12.6%</span>
+            <span class="track" aria-hidden="true"><i style="width:31.5%"></i></span>
+          </li>
+          <li>
+            <span class="label">Consumer Discretionary</span>
+            <span class="value">11.0%</span>
+            <span class="track" aria-hidden="true"><i style="width:27.5%"></i></span>
+          </li>
+          <li>
+            <span class="label">Industrials</span>
+            <span class="value">10.2%</span>
+            <span class="track" aria-hidden="true"><i style="width:25.5%"></i></span>
+          </li>
+          <li>
+            <span class="label">Communication</span>
+            <span class="value">7.9%</span>
+            <span class="track" aria-hidden="true"><i style="width:19.75%"></i></span>
+          </li>
+          <li>
+            <span class="label">Energy</span>
+            <span class="value">4.8%</span>
+            <span class="track" aria-hidden="true"><i style="width:12%"></i></span>
+          </li>
+          <li>
+            <span class="label">Staples</span>
+            <span class="value">4.5%</span>
+            <span class="track" aria-hidden="true"><i style="width:11.25%"></i></span>
+          </li>
+          <li>
+            <span class="label">Other</span>
+            <span class="value">5.5%</span>
+            <span class="track" aria-hidden="true"><i style="width:13.75%"></i></span>
+          </li>
+          <li class="scale" aria-hidden="true"><span>0%</span><span>40%</span></li>
+        </ol>
+      </section>
+    </div>
+
+  </div>
+
+  <p class="foot">
+    <span>Global Equity Core, NAV $842.6M, benchmark MSCI ACWI.</span>
+    <span>Figures as of Oct 21, 2026, 15:42 ET.</span>
+  </p>
+</main>
+
+<script>
+  // Column sorting for the holdings table. Values are read from data-v (numbers) or cell text.
+  (function () {
+    var table = document.getElementById('holdings');
+    if (!table) return;
+    var tbody = table.tBodies[0];
+    var headers = table.tHead.querySelectorAll('th');
+
+    function cellValue(row, col, type) {
+      var cell = row.cells[col];
+      if (type === 'num') return parseFloat(cell.getAttribute('data-v'));
+      return cell.textContent.trim().toLowerCase();
+    }
+
+    table.tHead.addEventListener('click', function (e) {
+      var btn = e.target.closest('.sort-btn');
+      if (!btn) return;
+      var col = +btn.getAttribute('data-col');
+      var type = btn.getAttribute('data-type');
+      var th = btn.parentNode;
+      var current = th.getAttribute('aria-sort');
+      var dir = current === 'descending' ? 'ascending' : 'descending';
+      if (current === 'none' && type === 'text') dir = 'ascending';
+
+      for (var i = 0; i < headers.length; i++) headers[i].setAttribute('aria-sort', 'none');
+      th.setAttribute('aria-sort', dir);
+
+      var rows = Array.prototype.slice.call(tbody.rows);
+      rows.sort(function (a, b) {
+        var va = cellValue(a, col, type), vb = cellValue(b, col, type);
+        var r = va < vb ? -1 : va > vb ? 1 : 0;
+        return dir === 'ascending' ? r : -r;
+      });
+      for (var j = 0; j < rows.length; j++) tbody.appendChild(rows[j]);
+    });
+  })();
+</script>
+</body>
+</html>

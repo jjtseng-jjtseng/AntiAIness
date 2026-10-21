@@ -1,47 +1,77 @@
 {
-  "D-baseline": {
+  "B-baseline": {
     "errors": [],
     "audit": {
-      "textEls": 49,
-      "tiny": 21,
-      "under12": 21,
-      "distinctSizes": 11,
+      "textEls": 225,
+      "tiny": 0,
+      "under12": 16,
+      "distinctSizes": 7,
       "sizes": [
-        "10px×19",
-        "18px×6",
-        "20px×5",
-        "16px×4",
-        "22px×4",
-        "14px×3"
+        "14px×140",
+        "12px×32",
+        "13px×32",
+        "11px×16",
+        "24px×3",
+        "20px×1"
       ],
       "families": [
-        "Press Start 2P×29",
-        "VT323×20"
+        "IBM Plex Sans×225"
       ],
       "h1": {
-        "text": "Hollow Vale",
-        "size": "72px",
-        "family": "\"Press Start 2P\""
+        "text": "Global Equity Core",
+        "size": "20px",
+        "family": "\"IBM Plex Sans\""
       },
-      "glyphTotal": 9,
+      "glyphTotal": 6,
       "eyebrows": 0,
-      "accentWords": "2/3",
-      "cardGrids": 0,
-      "grads": 2,
-      "glows": 18,
+      "accentWords": "0/5",
+      "cardGrids": 1,
+      "grads": 0,
+      "glows": 14,
       "blurs": 0,
-      "distinctRadii": 0,
+      "distinctRadii": 4,
       "overflowX": false,
-      "height": 2373,
+      "height": 1187,
       "notes": [
-        "43% of text elements render under 11px (real sites: 0–5%). Raise label and body sizes; aim for ≤ 7 sizes.",
-        "11 distinct font sizes. A scale of 5–7 reads as designed.",
-        "h1 is 72px while most text is small: poster-scale contrast. Bring display and body closer.",
-        "9 ornament glyphs in visible text (·5 ↑2 ↓2). Arrows-after-links and ✳/✦ ornaments are a known tell.",
-        "2/3 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all.",
-        "18 glow-style shadows (0 0 Npx). Only things that emit light should glow.",
-        "24 uppercase text elements. Tracked-caps micro-labels as the universal label style is a tell."
+        "6 ornament glyphs in visible text (·6). Arrows-after-links and ✳/✦ ornaments are a known tell.",
+        "14 glow-style shadows (0 0 Npx). Only things that emit light should glow."
       ]
+    }
+  },
+  "B-skilled": {
+    "errors": [],
+    "audit": {
+      "textEls": 175,
+      "tiny": 0,
+      "under12": 0,
+      "distinctSizes": 6,
+      "sizes": [
+        "13px×141",
+        "12px×25",
+        "15px×4",
+        "18px×3",
+        "20px×1",
+        "30px×1"
+      ],
+      "families": [
+        "IBM Plex Sans×175"
+      ],
+      "h1": {
+        "text": "Global Equity Core",
+        "size": "20px",
+        "family": "\"IBM Plex Sans\""
+      },
+      "glyphTotal": 0,
+      "eyebrows": 0,
+      "accentWords": "0/7",
+      "cardGrids": 0,
+      "grads": 0,
+      "glows": 0,
+      "blurs": 0,
+      "distinctRadii": 2,
+      "overflowX": false,
+      "height": 1041,
+      "notes": []
     }
   }
 }
