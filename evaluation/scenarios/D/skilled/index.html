@@ -1,0 +1,816 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hollow Vale — interface mock</title>
+<meta name="description" content="Static UI mock for Hollow Vale, a browser roguelike: title screen, in-game HUD and pause menu drawn in the game's 16-colour pixel palette.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jacquard+12&family=Jersey+10&display=swap" rel="stylesheet">
+<style>
+/* ------------------------------------------------------------
+   Hollow Vale — the 16-colour palette. Every colour on the page,
+   in the art and in the chrome, is one of these sixteen.
+   ------------------------------------------------------------ */
+:root{
+  --c0:#0b0a10; /* void            */
+  --c1:#1a1823; /* deep stone      */
+  --c2:#2b2838; /* stone           */
+  --c3:#433f55; /* stone, lit      */
+  --c4:#6b6882; /* mortar          */
+  --c5:#a7a4b8; /* bone, grey      */
+  --c6:#e8e4d8; /* bone, white     */
+  --c7:#3d1f24; /* blood, dried    */
+  --c8:#8c2f36; /* blood           */
+  --c9:#d9553f; /* ember           */
+  --c10:#e7a53c;/* torch gold      */
+  --c11:#5a3e2b;/* wood, leather   */
+  --c12:#233d2e;/* moss, dark      */
+  --c13:#4f8a5a;/* moss            */
+  --c14:#2b4a6b;/* cold, dark      */
+  --c15:#6fa3c7;/* cold            */
+
+  /* one game pixel, in screen pixels */
+  --px:2px;
+  --u1:var(--px);
+  --u2:calc(var(--px)*2);
+  --u3:calc(var(--px)*3);
+  --u4:calc(var(--px)*4);
+  --u6:calc(var(--px)*6);
+  --u8:calc(var(--px)*8);
+
+  --font-world:"Jacquard 12","Jersey 10",ui-monospace,monospace;
+  --font-ui:"Jersey 10",ui-monospace,"Courier New",monospace;
+
+  /* type scale: 4 sizes. Jersey 10 is a 10px-grid face, so it is used
+     at 20 and 30; Jacquard 12 is a 12px-grid face, used at 48 and 72. */
+  --fs-ui:20px;
+  --fs-menu:30px;
+  --fs-num:calc(var(--px)*10);
+  --fs-logo:calc(var(--px)*24);
+
+  /* pixel frames: 6x6 nine-slice, corner pixel notched */
+  --frame-panel:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6' shape-rendering='crispEdges'%3E%3Cpath fill='%230b0a10' d='M1 0h4v1H1zM0 1h1v4H0zM5 1h1v4H5zM1 5h4v1H1z'/%3E%3Cpath fill='%23433f55' d='M1 1h4v4H1z'/%3E%3C/svg%3E");
+  --frame-slot:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6' shape-rendering='crispEdges'%3E%3Cpath fill='%230b0a10' d='M1 0h4v1H1zM0 1h1v4H0zM5 1h1v4H5zM1 5h4v1H1z'/%3E%3Cpath fill='%236b6882' d='M1 1h4v4H1z'/%3E%3C/svg%3E");
+  --frame-gold:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6' shape-rendering='crispEdges'%3E%3Cpath fill='%230b0a10' d='M1 0h4v1H1zM0 1h1v4H0zM5 1h1v4H5zM1 5h4v1H1z'/%3E%3Cpath fill='%23e7a53c' d='M1 1h4v4H1z'/%3E%3C/svg%3E");
+  --frame-bone:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6' shape-rendering='crispEdges'%3E%3Cpath fill='%230b0a10' d='M1 0h4v1H1zM0 1h1v4H0zM5 1h1v4H5zM1 5h4v1H1z'/%3E%3Cpath fill='%23a7a4b8' d='M1 1h4v4H1z'/%3E%3C/svg%3E");
+}
+@media (min-width:900px){ :root{ --px:3px; } }
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ background:var(--c0); }
+body{
+  margin:0;
+  background:var(--c0);
+  color:var(--c6);
+  font-family:var(--font-ui);
+  font-size:var(--fs-ui);
+  line-height:1.2;
+  -webkit-font-smoothing:none;
+  font-smooth:never;
+  image-rendering:pixelated;
+}
+svg{ display:block; shape-rendering:crispEdges; }
+kbd{ font-family:inherit; }
+.sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+:focus-visible{
+  outline:var(--u1) solid var(--c10);
+  outline-offset:var(--u1);
+}
+
+/* ---- the mock sheet: minimal, non-diegetic chrome ---- */
+.sheet{ max-width:1152px; margin:0 auto; padding:var(--u6) 16px var(--u8); }
+.sheet-head{
+  display:flex; flex-wrap:wrap; gap:var(--u2) var(--u6);
+  align-items:baseline; justify-content:space-between;
+  color:var(--c5);
+  margin-bottom:var(--u6);
+}
+.sheet-head strong{ color:var(--c6); font-weight:400; }
+.sheet-label{
+  font:400 var(--fs-ui)/1 var(--font-ui);
+  color:var(--c5);
+  margin:var(--u8) 0 var(--u3);
+  display:flex; align-items:center; gap:var(--u3);
+}
+.sheet-label .n{
+  display:inline-grid; place-items:center;
+  min-width:var(--u8); height:var(--u8);
+  background:var(--c1); color:var(--c6);
+  border:var(--u1) solid var(--c3);
+}
+.sheet-foot{ margin-top:var(--u8); color:var(--c5); }
+.palette{ display:flex; flex-wrap:wrap; gap:var(--u1); margin:var(--u2) 0 0; padding:0; list-style:none; }
+.palette li{
+  width:var(--u8); height:var(--u8);
+  background:var(--sw);
+  border:var(--u1) solid var(--c0);
+  outline:var(--u1) solid var(--c3);
+  margin:var(--u1);
+}
+
+/* ---- shared stage ---- */
+.stage{
+  position:relative;
+  width:100%;
+  background:var(--c0);
+  border:var(--u1) solid var(--c3);
+  box-shadow:0 0 0 var(--u1) var(--c0);
+  overflow:hidden;
+}
+@media (min-width:720px){ .stage{ aspect-ratio:16/9; } }
+
+.panel{
+  background:var(--c1);
+  background-clip:padding-box;
+  border:var(--u2) solid transparent;
+  border-image:var(--frame-panel) 2 / var(--u2) stretch;
+}
+
+/* ---- menus (title, pause) ---- */
+.menu{ list-style:none; margin:0; padding:0; display:grid; gap:var(--u1); }
+.menu-item{
+  display:flex; align-items:center; gap:var(--u3);
+  width:100%;
+  background:none; border:0; margin:0;
+  padding:var(--u2) var(--u3) var(--u2) var(--u2);
+  font:400 var(--fs-menu)/1 var(--font-ui);
+  color:var(--c6);
+  text-align:left;
+  cursor:pointer;
+  min-height:44px;
+}
+.menu-item .cursor{
+  width:var(--u6); height:var(--u6);
+  flex:none;
+  visibility:hidden;
+}
+.menu-item:hover,
+.menu-item:focus-visible,
+.menu-item[aria-current="true"]{ color:var(--c10); }
+.menu-item:hover .cursor,
+.menu-item:focus-visible .cursor,
+.menu-item[aria-current="true"] .cursor{ visibility:visible; }
+.menu-item:active{ color:var(--c9); transform:translateY(var(--u1)); }
+.menu-item.is-danger:hover,
+.menu-item.is-danger:focus-visible{ color:var(--c9); }
+.menu-item.is-danger .cursor path{ fill:var(--c9); }
+
+.hint{
+  display:flex; flex-wrap:wrap; align-items:center; gap:var(--u2);
+  color:var(--c5);
+  font-size:var(--fs-ui);
+  margin:0;
+}
+.hint kbd,
+.slot kbd{
+  display:inline-grid; place-items:center;
+  min-width:calc(var(--px)*9);
+  height:calc(var(--px)*9);
+  padding:0 var(--u1);
+  background:var(--c2);
+  color:var(--c6);
+  border:var(--u1) solid var(--c4);
+  border-bottom-width:var(--u2);
+  line-height:1;
+}
+
+/* ---- title screen ---- */
+.stage--title{ display:flex; flex-direction:column; }
+.keyart{ width:100%; aspect-ratio:16/9; }
+.title-block{
+  position:relative; z-index:1;
+  padding:var(--u6) var(--u6) var(--u4);
+  display:grid; gap:var(--u4);
+}
+.logotype{
+  font:400 var(--fs-logo)/1 var(--font-world);
+  color:var(--c6);
+  text-shadow:var(--u1) var(--u1) 0 var(--c0), var(--u2) var(--u2) 0 var(--c7);
+  margin:0 0 var(--u2);
+  letter-spacing:0;
+}
+.stage--title .menu{ max-width:calc(var(--px)*120); }
+.last-run{
+  margin:0;
+  color:var(--c5);
+  display:flex; align-items:center; gap:var(--u2);
+  font-variant-numeric:tabular-nums;
+}
+.last-run .stairs{ width:var(--u4); height:var(--u4); }
+.title-hint{ margin-top:var(--u2); }
+@media (min-width:720px){
+  .keyart{ position:absolute; inset:0; width:100%; height:100%; aspect-ratio:auto; }
+  .title-block{
+    position:absolute; inset:0;
+    padding:var(--u8) var(--u8) var(--u6);
+    grid-template-rows:auto 1fr auto auto;
+    align-content:start;
+    width:min(100%, calc(var(--px)*200));
+  }
+  .logotype{ grid-row:1; }
+  .stage--title .menu{ grid-row:2; align-self:end; }
+  .last-run{ grid-row:3; }
+  .title-hint{ position:absolute; right:var(--u6); bottom:var(--u6); margin:0; }
+}
+
+/* torch flicker: two frames, as the game would do it */
+@keyframes flicker{ 0%,49%{ transform:translate(0,0); } 50%,100%{ transform:translate(0,-1px); } }
+.flame{ animation:flicker 420ms steps(1) infinite; transform-origin:center; }
+.flame--b{ animation-delay:210ms; }
+@keyframes blink{ 0%,49%{ opacity:1; } 50%,100%{ opacity:0; } }
+.menu-item[aria-current="true"] .cursor{ animation:blink 1s steps(1) infinite; }
+.menu-item:hover .cursor, .menu-item:focus-visible .cursor{ animation:none; }
+@media (prefers-reduced-motion:reduce){
+  .flame, .menu-item[aria-current="true"] .cursor{ animation:none; }
+  .menu-item:active{ transform:none; }
+}
+
+/* ---- HUD stage ---- */
+.viewport{ position:relative; background:var(--c1); width:100%; aspect-ratio:16/9; }
+.scene{ position:absolute; inset:0; width:100%; height:100%; }
+
+/* narrow: HUD elements flow in a grid under the viewport; vitals and
+   meta still sit on the viewport (they share its grid cell). */
+.stage--hud{
+  display:grid;
+  grid-template-columns:1fr auto;
+  grid-template-areas:
+    "view view"
+    "items items"
+    "log map"
+    "hint hint";
+  gap:var(--u3);
+  padding-bottom:var(--u3);
+}
+.stage--hud .viewport{ grid-area:view; }
+.hud, .hud-tr{ display:contents; }
+.hud-vitals{ grid-area:view; align-self:start; justify-self:start; margin:var(--u2); z-index:1; }
+.hud-meta{ grid-area:view; align-self:start; justify-self:end; margin:var(--u2); z-index:1; }
+.hud-map{ grid-area:map; margin:0 var(--u3) 0 0; }
+.hud-items{ grid-area:items; justify-self:center; }
+.hud-log{ grid-area:log; margin:0 0 0 var(--u3); align-self:start; }
+.hud-hint{ grid-area:hint; justify-self:end; margin:0 var(--u3) 0 0; }
+
+@media (min-width:720px){
+  .stage--hud{ display:block; padding:0; }
+  .stage--hud .viewport{ position:absolute; inset:0; height:100%; aspect-ratio:auto; }
+  .hud{ display:block; position:absolute; inset:0; }
+  .hud-tr{ display:grid; gap:var(--u2); justify-items:end; position:absolute; top:var(--u4); right:var(--u4); }
+  .hud-vitals{ position:absolute; top:var(--u4); left:var(--u4); margin:0; }
+  .hud-meta{ position:static; margin:0; }
+  .hud-map{ margin:0; }
+  .hud-items{ position:absolute; bottom:var(--u4); left:50%; transform:translateX(-50%); }
+  .hud-log{ position:absolute; bottom:var(--u4); left:var(--u4); margin:0; max-width:34%; }
+  .hud-hint{ position:absolute; bottom:var(--u4); right:var(--u4); margin:0; }
+}
+
+/* vitals */
+.hud-vitals{ padding:var(--u2) var(--u3); display:grid; gap:var(--u2); }
+.stat{ display:grid; grid-template-columns:calc(var(--px)*22) auto auto; align-items:center; column-gap:var(--u3); }
+.stat-label{ color:var(--c5); font-size:var(--fs-ui); line-height:1; }
+.stat-value{ font-size:var(--fs-num); line-height:1; color:var(--c6); font-variant-numeric:tabular-nums; min-width:calc(var(--px)*20); }
+.stat-value .of{ color:var(--c5); }
+.bar{
+  position:relative;
+  width:calc(var(--px)*52);
+  height:calc(var(--px)*7);
+  background:var(--c7);
+  border:var(--u1) solid var(--c0);
+  box-shadow:inset 0 0 0 var(--u1) var(--c2);
+  padding:var(--u1);
+}
+.bar-fill{
+  display:block; height:100%; width:var(--v);
+  background:var(--c8);
+  box-shadow:inset 0 var(--u1) 0 var(--c9);
+}
+/* ticks every 10 HP */
+.bar::after{
+  content:""; position:absolute; inset:var(--u1);
+  background:repeating-linear-gradient(to right, transparent 0 calc(20% - var(--u1)), var(--c0) calc(20% - var(--u1)) 20%);
+  background-size:calc(100% + var(--u1)) 100%;
+  pointer-events:none;
+}
+.pips{ display:flex; gap:var(--u1); }
+.pip{
+  width:calc(var(--px)*9); height:calc(var(--px)*7);
+  background:var(--c12);
+  border:var(--u1) solid var(--c0);
+  box-shadow:inset 0 0 0 var(--u1) var(--c2);
+}
+.pip.on{ background:var(--c13); box-shadow:inset 0 var(--u1) 0 var(--c6), inset 0 0 0 var(--u1) var(--c12); }
+
+/* gold & floor */
+.hud-meta{ padding:var(--u2) var(--u3); margin:0; display:grid; gap:var(--u1); }
+.hud-meta > div{ display:grid; grid-template-columns:auto 1fr; align-items:baseline; column-gap:var(--u3); }
+.hud-meta dt{ color:var(--c5); font-size:var(--fs-ui); line-height:1; }
+.hud-meta dd{
+  margin:0; display:flex; align-items:center; justify-content:flex-end; gap:var(--u2);
+  font-size:var(--fs-num); line-height:1; font-variant-numeric:tabular-nums;
+}
+.hud-meta dd svg{ width:var(--u6); height:var(--u6); }
+
+/* minimap */
+.hud-map{ padding:var(--u2); display:grid; gap:var(--u1); justify-items:center; }
+.hud-map svg{ width:calc(var(--px)*48); height:calc(var(--px)*30); background:var(--c0); }
+.hud-map figcaption{ color:var(--c5); font-size:var(--fs-ui); line-height:1; }
+
+/* item bar */
+.hud-items{ list-style:none; margin:0; padding:0; display:flex; gap:var(--u2); }
+.slot{
+  position:relative;
+  width:calc(var(--px)*30);
+  display:grid; justify-items:center; gap:var(--u1);
+  padding:var(--u2) var(--u1) var(--u1);
+  background:var(--c1);
+  background-clip:padding-box;
+  border:var(--u2) solid transparent;
+  border-image:var(--frame-slot) 2 / var(--u2) stretch;
+}
+.slot.is-selected{ border-image-source:var(--frame-gold); }
+.slot kbd{ position:absolute; top:calc(var(--u2) * -1); left:calc(var(--u2) * -1); }
+.slot .icon{ width:calc(var(--px)*12); height:calc(var(--px)*12); }
+.slot-name{ font-size:var(--fs-ui); line-height:1; color:var(--c6); white-space:nowrap; }
+.slot .count{
+  position:absolute; right:var(--u1); top:calc(var(--px)*13);
+  font-size:var(--fs-ui); line-height:1; color:var(--c10);
+  background:var(--c0); padding:0 var(--u1);
+}
+
+/* log */
+.hud-log{ padding:var(--u2) var(--u3); font-size:var(--fs-ui); line-height:1.2; color:var(--c6); }
+.hud-log::before{ content:"> "; color:var(--c15); }
+.hud-hint{ margin:0; }
+
+/* ---- pause ---- */
+.dim{
+  position:absolute; inset:0; z-index:2;
+  background:repeating-conic-gradient(var(--c0) 0 25%, transparent 0 50%);
+  background-size:var(--u2) var(--u2);
+}
+.pause{
+  position:absolute; inset:0; z-index:3;
+  display:grid; place-items:center;
+  padding:var(--u4);
+}
+.pause-box{
+  width:min(100%, calc(var(--px)*110));
+  background:var(--c1);
+  background-clip:padding-box;
+  border:var(--u2) solid transparent;
+  border-image:var(--frame-bone) 2 / var(--u2) stretch;
+  box-shadow:var(--u2) var(--u2) 0 var(--c0);
+  padding:var(--u4) var(--u4) var(--u3);
+  display:grid; gap:var(--u3);
+}
+.pause-title{
+  font:400 calc(var(--fs-logo)/1.5) /1 var(--font-world);
+  margin:0;
+  color:var(--c6);
+  text-align:center;
+  text-shadow:var(--u1) var(--u1) 0 var(--c0);
+}
+.pause-run{ margin:0; color:var(--c5); text-align:center; font-variant-numeric:tabular-nums; }
+.pause .hint{ justify-content:center; margin-top:var(--u1); }
+</style>
+</head>
+<body>
+
+<!-- ============ shared pixel art: scene, key art, icons ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="pat-brick" width="16" height="16" patternUnits="userSpaceOnUse">
+      <rect width="16" height="16" fill="#1a1823"/>
+      <rect x="0" y="7" width="16" height="1" fill="#0b0a10"/>
+      <rect x="0" y="15" width="16" height="1" fill="#0b0a10"/>
+      <rect x="7" y="0" width="1" height="7" fill="#0b0a10"/>
+      <rect x="15" y="8" width="1" height="7" fill="#0b0a10"/>
+    </pattern>
+    <pattern id="pat-floor" width="12" height="12" patternUnits="userSpaceOnUse">
+      <rect width="12" height="12" fill="#2b2838"/>
+      <rect x="0" y="11" width="12" height="1" fill="#1a1823"/>
+      <rect x="11" y="0" width="1" height="12" fill="#1a1823"/>
+      <rect x="2" y="2" width="1" height="1" fill="#1a1823"/>
+    </pattern>
+    <pattern id="dither-c1" width="2" height="2" patternUnits="userSpaceOnUse"><rect width="1" height="1" fill="#1a1823"/><rect x="1" y="1" width="1" height="1" fill="#1a1823"/></pattern>
+    <pattern id="dither-c2" width="2" height="2" patternUnits="userSpaceOnUse"><rect width="1" height="1" fill="#2b2838"/><rect x="1" y="1" width="1" height="1" fill="#2b2838"/></pattern>
+    <pattern id="dither-c3" width="2" height="2" patternUnits="userSpaceOnUse"><rect width="1" height="1" fill="#433f55"/><rect x="1" y="1" width="1" height="1" fill="#433f55"/></pattern>
+    <pattern id="dither-c14" width="2" height="2" patternUnits="userSpaceOnUse"><rect width="1" height="1" fill="#2b4a6b"/><rect x="1" y="1" width="1" height="1" fill="#2b4a6b"/></pattern>
+
+    <!-- a wall torch, 6 wide x 14 tall, origin top-left -->
+    <symbol id="torch" viewBox="0 0 6 14">
+      <rect x="2" y="8" width="2" height="6" fill="#5a3e2b"/>
+      <rect x="1" y="8" width="4" height="1" fill="#6b6882"/>
+      <g class="flame">
+        <rect x="1" y="3" width="4" height="4" fill="#d9553f"/>
+        <rect x="2" y="1" width="2" height="2" fill="#d9553f"/>
+        <rect x="2" y="4" width="2" height="2" fill="#e7a53c"/>
+      </g>
+    </symbol>
+    <symbol id="torch-b" viewBox="0 0 6 14">
+      <rect x="2" y="8" width="2" height="6" fill="#5a3e2b"/>
+      <rect x="1" y="8" width="4" height="1" fill="#6b6882"/>
+      <g class="flame flame--b">
+        <rect x="1" y="3" width="4" height="4" fill="#d9553f"/>
+        <rect x="2" y="1" width="2" height="2" fill="#d9553f"/>
+        <rect x="2" y="4" width="2" height="2" fill="#e7a53c"/>
+      </g>
+    </symbol>
+
+    <!-- the dungeon viewport: a hall on floor 4 -->
+    <symbol id="scene" viewBox="0 0 192 108" preserveAspectRatio="xMidYMid slice">
+      <rect width="192" height="108" fill="url(#pat-brick)"/>
+      <!-- torchlight on the wall -->
+      <rect x="20" y="4" width="22" height="24" fill="url(#dither-c2)"/>
+      <rect x="150" y="4" width="22" height="24" fill="url(#dither-c2)"/>
+      <!-- floor -->
+      <rect x="0" y="44" width="192" height="64" fill="url(#pat-floor)"/>
+      <rect x="0" y="44" width="192" height="2" fill="#433f55"/>
+      <rect x="0" y="46" width="192" height="1" fill="#0b0a10"/>
+      <rect x="48" y="59" width="11" height="11" fill="#433f55"/>
+      <rect x="96" y="83" width="11" height="11" fill="#433f55"/>
+      <rect x="62" y="90" width="7" height="1" fill="#1a1823"/>
+      <rect x="68" y="88" width="1" height="3" fill="#1a1823"/>
+      <rect x="110" y="56" width="1" height="6" fill="#1a1823"/>
+      <!-- locked door -->
+      <rect x="84" y="12" width="26" height="34" fill="#433f55"/>
+      <rect x="86" y="14" width="22" height="32" fill="#5a3e2b"/>
+      <rect x="93" y="14" width="1" height="32" fill="#0b0a10"/>
+      <rect x="100" y="14" width="1" height="32" fill="#0b0a10"/>
+      <rect x="86" y="20" width="22" height="2" fill="#6b6882"/>
+      <rect x="86" y="36" width="22" height="2" fill="#6b6882"/>
+      <rect x="102" y="27" width="4" height="5" fill="#e7a53c"/>
+      <rect x="103" y="28" width="2" height="1" fill="#0b0a10"/>
+      <rect x="103" y="29" width="1" height="2" fill="#0b0a10"/>
+      <!-- torches -->
+      <use href="#torch" x="28" y="12" width="6" height="14"/>
+      <use href="#torch-b" x="158" y="12" width="6" height="14"/>
+      <!-- pillar -->
+      <rect x="6" y="22" width="14" height="3" fill="#433f55"/>
+      <rect x="8" y="24" width="10" height="72" fill="#433f55"/>
+      <rect x="8" y="24" width="2" height="72" fill="#6b6882"/>
+      <rect x="16" y="24" width="2" height="72" fill="#2b2838"/>
+      <rect x="6" y="94" width="14" height="4" fill="#433f55"/>
+      <rect x="6" y="98" width="14" height="1" fill="#0b0a10"/>
+      <!-- stairs down -->
+      <rect x="126" y="62" width="36" height="30" fill="#433f55"/>
+      <rect x="128" y="64" width="32" height="26" fill="#0b0a10"/>
+      <rect x="128" y="64" width="32" height="5" fill="#2b2838"/>
+      <rect x="128" y="69" width="32" height="1" fill="#433f55"/>
+      <rect x="131" y="70" width="26" height="5" fill="#1a1823"/>
+      <rect x="131" y="75" width="26" height="1" fill="#2b2838"/>
+      <rect x="134" y="81" width="20" height="1" fill="#1a1823"/>
+      <!-- skull and bone -->
+      <rect x="40" y="86" width="5" height="4" fill="#e8e4d8"/>
+      <rect x="41" y="87" width="1" height="1" fill="#0b0a10"/>
+      <rect x="43" y="87" width="1" height="1" fill="#0b0a10"/>
+      <rect x="41" y="90" width="3" height="1" fill="#a7a4b8"/>
+      <rect x="47" y="90" width="6" height="1" fill="#a7a4b8"/>
+      <rect x="46" y="89" width="1" height="1" fill="#a7a4b8"/>
+      <rect x="53" y="91" width="1" height="1" fill="#a7a4b8"/>
+      <!-- the player, holding a torch -->
+      <g transform="translate(72 66)">
+        <rect x="1" y="12" width="7" height="1" fill="#1a1823"/>
+        <rect x="2" y="0" width="4" height="1" fill="#433f55"/>
+        <rect x="1" y="1" width="6" height="4" fill="#433f55"/>
+        <rect x="3" y="2" width="2" height="2" fill="#e8e4d8"/>
+        <rect x="3" y="3" width="2" height="1" fill="#0b0a10"/>
+        <rect x="1" y="5" width="6" height="4" fill="#3d1f24"/>
+        <rect x="0" y="6" width="8" height="2" fill="#3d1f24"/>
+        <rect x="1" y="9" width="2" height="2" fill="#3d1f24"/>
+        <rect x="5" y="9" width="2" height="2" fill="#3d1f24"/>
+        <rect x="1" y="11" width="2" height="1" fill="#0b0a10"/>
+        <rect x="5" y="11" width="2" height="1" fill="#0b0a10"/>
+        <rect x="9" y="4" width="1" height="4" fill="#5a3e2b"/>
+        <g class="flame">
+          <rect x="8" y="1" width="3" height="3" fill="#d9553f"/>
+          <rect x="9" y="0" width="1" height="1" fill="#d9553f"/>
+          <rect x="9" y="2" width="1" height="1" fill="#e7a53c"/>
+        </g>
+      </g>
+      <!-- cold air -->
+      <rect x="112" y="94" width="80" height="14" fill="url(#dither-c14)"/>
+      <rect x="20" y="100" width="40" height="8" fill="url(#dither-c14)"/>
+      <rect x="120" y="98" width="1" height="1" fill="#6fa3c7"/>
+      <rect x="141" y="102" width="1" height="1" fill="#6fa3c7"/>
+      <rect x="170" y="96" width="1" height="1" fill="#6fa3c7"/>
+      <rect x="184" y="104" width="1" height="1" fill="#6fa3c7"/>
+      <rect x="33" y="103" width="1" height="1" fill="#6fa3c7"/>
+    </symbol>
+
+    <!-- title key art: the vale at night, the entrance to the hollow -->
+    <symbol id="keyart" viewBox="0 0 192 108" preserveAspectRatio="xMidYMid slice">
+      <rect width="192" height="108" fill="#0b0a10"/>
+      <g fill="#a7a4b8">
+        <rect x="12" y="10" width="1" height="1"/><rect x="40" y="6" width="1" height="1"/><rect x="70" y="18" width="1" height="1"/>
+        <rect x="96" y="8" width="1" height="1"/><rect x="124" y="14" width="1" height="1"/><rect x="140" y="4" width="1" height="1"/>
+        <rect x="176" y="24" width="1" height="1"/><rect x="58" y="28" width="1" height="1"/><rect x="150" y="32" width="1" height="1"/>
+      </g>
+      <g fill="#6b6882">
+        <rect x="84" y="26" width="1" height="1"/><rect x="166" y="34" width="1" height="1"/><rect x="30" y="18" width="1" height="1"/>
+        <rect x="110" y="4" width="1" height="1"/><rect x="20" y="30" width="1" height="1"/>
+      </g>
+      <!-- moon -->
+      <g fill="#a7a4b8">
+        <rect x="163" y="8" width="4" height="1"/><rect x="161" y="9" width="8" height="1"/>
+        <rect x="160" y="10" width="10" height="6"/>
+        <rect x="161" y="16" width="8" height="1"/><rect x="163" y="17" width="4" height="1"/>
+      </g>
+      <g fill="#6b6882">
+        <rect x="164" y="11" width="2" height="1"/><rect x="167" y="13" width="1" height="2"/><rect x="162" y="14" width="2" height="1"/>
+      </g>
+      <!-- far ridge -->
+      <path fill="#1a1823" d="M0 50H16V44H32V38H48V46H64V34H84V42H104V36H124V44H144V40H164V48H192V108H0Z"/>
+      <!-- near hills -->
+      <path fill="#2b2838" d="M0 70H20V64H40V58H60V66H84V60H108V66H126V62H148V68H172V72H192V108H0Z"/>
+      <!-- dead trees -->
+      <g fill="#3d1f24">
+        <rect x="98" y="40" width="2" height="22"/><rect x="94" y="46" width="4" height="1"/><rect x="92" y="44" width="2" height="2"/>
+        <rect x="100" y="42" width="5" height="1"/><rect x="104" y="40" width="1" height="2"/><rect x="96" y="50" width="2" height="1"/>
+        <rect x="100" y="52" width="4" height="1"/><rect x="103" y="50" width="1" height="2"/><rect x="98" y="38" width="1" height="2"/><rect x="99" y="36" width="1" height="2"/>
+        <rect x="24" y="52" width="2" height="14"/><rect x="21" y="56" width="3" height="1"/><rect x="26" y="54" width="3" height="1"/><rect x="28" y="52" width="1" height="2"/><rect x="24" y="50" width="1" height="2"/>
+      </g>
+      <!-- the path -->
+      <rect x="40" y="100" width="120" height="6" fill="url(#dither-c1)"/>
+      <rect x="96" y="94" width="60" height="6" fill="url(#dither-c1)"/>
+      <!-- torchlight on the ground -->
+      <rect x="104" y="70" width="16" height="18" fill="url(#dither-c3)"/>
+      <rect x="148" y="70" width="16" height="18" fill="url(#dither-c3)"/>
+      <!-- the arch, stairs descending -->
+      <g fill="#433f55">
+        <rect x="118" y="56" width="5" height="30"/><rect x="145" y="56" width="5" height="30"/>
+        <rect x="128" y="44" width="12" height="3"/><rect x="124" y="47" width="20" height="3"/>
+        <rect x="121" y="50" width="26" height="3"/><rect x="119" y="53" width="30" height="3"/>
+        <rect x="116" y="86" width="36" height="3"/>
+      </g>
+      <rect x="132" y="44" width="4" height="3" fill="#6b6882"/>
+      <rect x="118" y="56" width="1" height="30" fill="#6b6882"/>
+      <rect x="145" y="56" width="1" height="30" fill="#6b6882"/>
+      <rect x="116" y="89" width="36" height="1" fill="#1a1823"/>
+      <rect x="123" y="56" width="22" height="30" fill="#0b0a10"/>
+      <rect x="126" y="53" width="16" height="3" fill="#0b0a10"/>
+      <rect x="130" y="50" width="8" height="3" fill="#0b0a10"/>
+      <rect x="123" y="56" width="22" height="8" fill="#1a1823"/>
+      <g fill="#433f55">
+        <rect x="124" y="66" width="20" height="1"/><rect x="126" y="71" width="16" height="1"/>
+        <rect x="128" y="76" width="12" height="1"/><rect x="130" y="81" width="8" height="1"/>
+      </g>
+      <g fill="#2b2838">
+        <rect x="124" y="64" width="20" height="2"/><rect x="126" y="69" width="16" height="2"/>
+      </g>
+      <use href="#torch" x="110" y="58" width="6" height="14"/>
+      <use href="#torch-b" x="152" y="58" width="6" height="14"/>
+      <!-- bones by the path -->
+      <rect x="80" y="94" width="4" height="3" fill="#e8e4d8"/>
+      <rect x="81" y="95" width="1" height="1" fill="#0b0a10"/><rect x="83" y="95" width="1" height="1" fill="#0b0a10"/>
+      <rect x="70" y="96" width="6" height="1" fill="#a7a4b8"/><rect x="69" y="95" width="1" height="1" fill="#a7a4b8"/><rect x="76" y="97" width="1" height="1" fill="#a7a4b8"/>
+      <!-- cold air in the hollow -->
+      <rect x="100" y="90" width="92" height="12" fill="url(#dither-c14)"/>
+      <rect x="0" y="96" width="30" height="8" fill="url(#dither-c14)"/>
+      <g fill="#6fa3c7">
+        <rect x="110" y="93" width="1" height="1"/><rect x="140" y="97" width="1" height="1"/><rect x="170" y="91" width="1" height="1"/>
+        <rect x="184" y="99" width="1" height="1"/><rect x="126" y="95" width="1" height="1"/><rect x="12" y="100" width="1" height="1"/>
+      </g>
+    </symbol>
+
+    <!-- icons, 12x12 -->
+    <symbol id="i-torch" viewBox="0 0 12 12">
+      <rect x="5" y="5" width="2" height="7" fill="#5a3e2b"/>
+      <rect x="4" y="5" width="4" height="1" fill="#6b6882"/>
+      <rect x="4" y="1" width="4" height="4" fill="#d9553f"/>
+      <rect x="5" y="0" width="2" height="1" fill="#d9553f"/>
+      <rect x="5" y="2" width="2" height="2" fill="#e7a53c"/>
+    </symbol>
+    <symbol id="i-key" viewBox="0 0 12 12">
+      <g fill="#5a3e2b">
+        <rect x="1" y="3" width="5" height="1"/><rect x="1" y="7" width="5" height="1"/>
+        <rect x="1" y="4" width="1" height="3"/><rect x="5" y="4" width="1" height="3"/>
+        <rect x="6" y="5" width="5" height="2"/><rect x="9" y="7" width="1" height="2"/><rect x="11" y="7" width="1" height="1"/>
+      </g>
+      <g fill="#d9553f">
+        <rect x="2" y="3" width="1" height="1"/><rect x="5" y="6" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/>
+      </g>
+    </symbol>
+    <symbol id="i-potion" viewBox="0 0 12 12">
+      <rect x="5" y="0" width="2" height="1" fill="#5a3e2b"/>
+      <rect x="4" y="1" width="4" height="1" fill="#a7a4b8"/>
+      <rect x="5" y="2" width="2" height="1" fill="#a7a4b8"/>
+      <rect x="3" y="3" width="6" height="1" fill="#a7a4b8"/>
+      <rect x="2" y="4" width="1" height="7" fill="#a7a4b8"/>
+      <rect x="9" y="4" width="1" height="7" fill="#a7a4b8"/>
+      <rect x="3" y="11" width="6" height="1" fill="#a7a4b8"/>
+      <rect x="3" y="6" width="6" height="5" fill="#4f8a5a"/>
+      <rect x="3" y="4" width="1" height="2" fill="#e8e4d8"/>
+      <rect x="4" y="7" width="1" height="1" fill="#e8e4d8"/>
+    </symbol>
+    <symbol id="i-coin" viewBox="0 0 8 8">
+      <rect x="2" y="0" width="4" height="8" fill="#e7a53c"/>
+      <rect x="0" y="2" width="8" height="4" fill="#e7a53c"/>
+      <rect x="1" y="1" width="1" height="1" fill="#e7a53c"/><rect x="6" y="1" width="1" height="1" fill="#e7a53c"/>
+      <rect x="1" y="6" width="1" height="1" fill="#e7a53c"/><rect x="6" y="6" width="1" height="1" fill="#e7a53c"/>
+      <rect x="3" y="3" width="2" height="2" fill="#5a3e2b"/>
+      <rect x="2" y="1" width="1" height="1" fill="#e8e4d8"/>
+      <rect x="5" y="6" width="2" height="1" fill="#5a3e2b"/><rect x="6" y="4" width="1" height="2" fill="#5a3e2b"/>
+    </symbol>
+    <symbol id="i-stairs" viewBox="0 0 8 8">
+      <g fill="#a7a4b8">
+        <rect x="0" y="0" width="2" height="2"/><rect x="2" y="2" width="2" height="2"/><rect x="4" y="4" width="2" height="2"/><rect x="6" y="6" width="2" height="2"/>
+      </g>
+      <g fill="#433f55">
+        <rect x="0" y="2" width="2" height="6"/><rect x="2" y="4" width="2" height="4"/><rect x="4" y="6" width="2" height="2"/>
+      </g>
+    </symbol>
+    <symbol id="i-cursor" viewBox="0 0 8 8">
+      <path fill="#e7a53c" d="M0 0h2v1h2v1h2v1h2v2H6v1H4v1H2v1H0z"/>
+    </symbol>
+    <!-- minimap: five rooms known on floor 4; current room marked -->
+    <symbol id="minimap" viewBox="0 0 64 40">
+      <g fill="#433f55">
+        <rect x="4" y="16" width="10" height="8"/><rect x="20" y="16" width="10" height="8"/>
+        <rect x="20" y="4" width="10" height="8"/><rect x="36" y="16" width="10" height="8"/><rect x="36" y="28" width="10" height="8"/>
+      </g>
+      <g fill="#6b6882">
+        <rect x="14" y="19" width="6" height="1"/><rect x="25" y="12" width="1" height="4"/>
+        <rect x="30" y="19" width="6" height="1"/><rect x="41" y="24" width="1" height="4"/>
+      </g>
+      <rect x="40" y="19" width="2" height="2" fill="#e7a53c"/>
+      <rect x="42" y="31" width="2" height="2" fill="#a7a4b8"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="sheet">
+  <header class="sheet-head">
+    <p style="margin:0"><strong>Hollow Vale</strong> interface mock</p>
+    <p style="margin:0">Title screen, in-game HUD, pause menu</p>
+  </header>
+
+  <main>
+    <!-- ================= 1. TITLE SCREEN ================= -->
+    <section aria-labelledby="h-title">
+      <h2 id="h-title" class="sheet-label"><span class="n" aria-hidden="true">1</span>Title screen</h2>
+      <div class="stage stage--title">
+        <div class="title-block">
+          <h1 class="logotype">Hollow Vale</h1>
+          <nav aria-label="Title menu">
+            <ul class="menu" data-menu>
+              <li><button type="button" class="menu-item" aria-current="true" data-go="#screen-hud"><svg class="cursor" aria-hidden="true"><use href="#i-cursor"/></svg>New run</button></li>
+              <li><button type="button" class="menu-item" data-go="#screen-hud"><svg class="cursor" aria-hidden="true"><use href="#i-cursor"/></svg>Continue</button></li>
+              <li><button type="button" class="menu-item"><svg class="cursor" aria-hidden="true"><use href="#i-cursor"/></svg>Settings</button></li>
+            </ul>
+          </nav>
+          <p class="last-run"><svg class="stairs" aria-hidden="true"><use href="#i-stairs"/></svg><span>Last run: Floor 7 · 2,340 gold · 18:24</span></p>
+          <p class="hint title-hint"><kbd>↑</kbd><kbd>↓</kbd> choose <kbd>Enter</kbd> confirm</p>
+        </div>
+        <svg class="keyart" role="img" aria-label="Key art: a moonlit valley with dead trees; a stone arch in the hillside, lit by two torches, with stairs leading down into the dark.">
+          <use href="#keyart"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ================= 2. IN-GAME HUD ================= -->
+    <section aria-labelledby="h-hud" id="screen-hud">
+      <h2 id="h-hud" class="sheet-label"><span class="n" aria-hidden="true">2</span>In-game HUD</h2>
+      <div class="stage stage--hud">
+        <div class="viewport">
+          <svg class="scene" role="img" aria-label="Game viewport placeholder: a stone hall with a locked door, lit torches, a pillar, and stairs leading down. The player stands holding a torch.">
+            <use href="#scene"/>
+          </svg>
+        </div>
+        <div class="hud">
+          <div class="hud-vitals panel">
+            <div class="stat">
+              <span class="stat-label" id="l-hp">HP</span>
+              <div class="bar" role="meter" aria-labelledby="l-hp" aria-valuemin="0" aria-valuemax="50" aria-valuenow="34"><span class="bar-fill" style="--v:68%"></span></div>
+              <span class="stat-value" aria-hidden="true">34<span class="of">/50</span></span>
+            </div>
+            <div class="stat">
+              <span class="stat-label" id="l-st">Stamina</span>
+              <div class="pips" role="meter" aria-labelledby="l-st" aria-valuemin="0" aria-valuemax="5" aria-valuenow="3">
+                <i class="pip on"></i><i class="pip on"></i><i class="pip on"></i><i class="pip"></i><i class="pip"></i>
+              </div>
+              <span class="stat-value" aria-hidden="true">3<span class="of">/5</span></span>
+            </div>
+          </div>
+          <div class="hud-tr">
+            <dl class="hud-meta panel">
+              <div><dt>Gold</dt><dd><svg aria-hidden="true"><use href="#i-coin"/></svg>412</dd></div>
+              <div><dt>Floor</dt><dd><svg aria-hidden="true"><use href="#i-stairs"/></svg>4</dd></div>
+            </dl>
+            <figure class="hud-map panel">
+              <svg role="img" aria-label="Minimap placeholder: five explored rooms on floor 4, current room marked"><use href="#minimap"/></svg>
+              <figcaption>Map</figcaption>
+            </figure>
+          </div>
+          <ul class="hud-items" aria-label="Items">
+            <li class="slot is-selected" aria-current="true"><kbd aria-hidden="true">1</kbd><svg class="icon" aria-hidden="true"><use href="#i-torch"/></svg><span class="slot-name">Torch</span></li>
+            <li class="slot"><kbd aria-hidden="true">2</kbd><svg class="icon" aria-hidden="true"><use href="#i-key"/></svg><span class="slot-name">Rusted Key</span></li>
+            <li class="slot"><kbd aria-hidden="true">3</kbd><svg class="icon" aria-hidden="true"><use href="#i-potion"/></svg><span class="slot-name">Potion</span><span class="count">×2</span></li>
+          </ul>
+          <p class="hud-log panel" role="log">You descend. The air is colder.</p>
+          <p class="hint hud-hint"><kbd>Esc</kbd> pause</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 3. PAUSE MENU ================= -->
+    <section aria-labelledby="h-pause" id="screen-pause">
+      <h2 id="h-pause" class="sheet-label"><span class="n" aria-hidden="true">3</span>Pause menu</h2>
+      <div class="stage stage--hud">
+        <div class="viewport" aria-hidden="true">
+          <svg class="scene"><use href="#scene"/></svg>
+        </div>
+        <div class="hud" aria-hidden="true">
+          <div class="hud-vitals panel">
+            <div class="stat">
+              <span class="stat-label">HP</span>
+              <div class="bar"><span class="bar-fill" style="--v:68%"></span></div>
+              <span class="stat-value">34<span class="of">/50</span></span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Stamina</span>
+              <div class="pips"><i class="pip on"></i><i class="pip on"></i><i class="pip on"></i><i class="pip"></i><i class="pip"></i></div>
+              <span class="stat-value">3<span class="of">/5</span></span>
+            </div>
+          </div>
+          <div class="hud-tr">
+            <dl class="hud-meta panel">
+              <div><dt>Gold</dt><dd><svg><use href="#i-coin"/></svg>412</dd></div>
+              <div><dt>Floor</dt><dd><svg><use href="#i-stairs"/></svg>4</dd></div>
+            </dl>
+            <figure class="hud-map panel"><svg><use href="#minimap"/></svg><figcaption>Map</figcaption></figure>
+          </div>
+          <ul class="hud-items">
+            <li class="slot is-selected"><kbd>1</kbd><svg class="icon"><use href="#i-torch"/></svg><span class="slot-name">Torch</span></li>
+            <li class="slot"><kbd>2</kbd><svg class="icon"><use href="#i-key"/></svg><span class="slot-name">Rusted Key</span></li>
+            <li class="slot"><kbd>3</kbd><svg class="icon"><use href="#i-potion"/></svg><span class="slot-name">Potion</span><span class="count">×2</span></li>
+          </ul>
+          <p class="hud-log panel">You descend. The air is colder.</p>
+          <p class="hint hud-hint"><kbd>Esc</kbd> pause</p>
+        </div>
+        <div class="dim" aria-hidden="true"></div>
+        <div class="pause">
+          <div class="pause-box" role="dialog" aria-labelledby="pause-title">
+            <h3 id="pause-title" class="pause-title">Paused</h3>
+            <p class="pause-run">Floor 4 · 412 gold</p>
+            <ul class="menu" data-menu>
+              <li><button type="button" class="menu-item" aria-current="true" data-go="#screen-hud"><svg class="cursor" aria-hidden="true"><use href="#i-cursor"/></svg>Resume</button></li>
+              <li><button type="button" class="menu-item"><svg class="cursor" aria-hidden="true"><use href="#i-cursor"/></svg>Settings</button></li>
+              <li><button type="button" class="menu-item is-danger" data-go="#h-title"><svg class="cursor" aria-hidden="true"><use href="#i-cursor"/></svg>Abandon run</button></li>
+            </ul>
+            <p class="hint"><kbd>Esc</kbd> resume</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="sheet-foot">
+    <p style="margin:0">The 16-colour palette, used for the world and the interface alike.</p>
+    <ul class="palette" aria-label="Palette swatches">
+      <li style="--sw:#0b0a10" title="void"></li><li style="--sw:#1a1823" title="deep stone"></li><li style="--sw:#2b2838" title="stone"></li><li style="--sw:#433f55" title="stone, lit"></li>
+      <li style="--sw:#6b6882" title="mortar"></li><li style="--sw:#a7a4b8" title="bone, grey"></li><li style="--sw:#e8e4d8" title="bone, white"></li><li style="--sw:#3d1f24" title="blood, dried"></li>
+      <li style="--sw:#8c2f36" title="blood"></li><li style="--sw:#d9553f" title="ember"></li><li style="--sw:#e7a53c" title="torch gold"></li><li style="--sw:#5a3e2b" title="wood"></li>
+      <li style="--sw:#233d2e" title="moss, dark"></li><li style="--sw:#4f8a5a" title="moss"></li><li style="--sw:#2b4a6b" title="cold, dark"></li><li style="--sw:#6fa3c7" title="cold"></li>
+    </ul>
+  </footer>
+</div>
+
+<script>
+/* Progressive enhancement: arrow keys move the cursor inside a menu,
+   Enter/click follows the item's target when it has one. */
+(function(){
+  var menus = document.querySelectorAll('[data-menu]');
+  Array.prototype.forEach.call(menus, function(menu){
+    var items = menu.querySelectorAll('.menu-item');
+    function select(i){
+      Array.prototype.forEach.call(items, function(b, j){
+        if (j === i) { b.setAttribute('aria-current', 'true'); b.focus(); }
+        else b.removeAttribute('aria-current');
+      });
+    }
+    Array.prototype.forEach.call(items, function(btn, i){
+      btn.addEventListener('keydown', function(e){
+        var n = items.length;
+        if (e.key === 'ArrowDown') { e.preventDefault(); select((i + 1) % n); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); select((i - 1 + n) % n); }
+        else if (e.key === 'Home') { e.preventDefault(); select(0); }
+        else if (e.key === 'End') { e.preventDefault(); select(n - 1); }
+      });
+      btn.addEventListener('click', function(){
+        select(i);
+        var go = btn.getAttribute('data-go');
+        if (go) {
+          var t = document.querySelector(go);
+          if (t) t.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+        }
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
