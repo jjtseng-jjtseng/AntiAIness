@@ -443,48 +443,6 @@
       "notes": []
     }
   },
-  "F-baseline": {
-    "errors": [],
-    "audit": {
-      "textEls": 117,
-      "tiny": 2,
-      "under12": 9,
-      "distinctSizes": 15,
-      "sizes": [
-        "13px×28",
-        "16px×16",
-        "15px×15",
-        "17px×9",
-        "48px×9",
-        "12px×8"
-      ],
-      "families": [
-        "Manrope×108",
-        "Instrument Serif×5",
-        "ui-monospace×4"
-      ],
-      "h1": {
-        "text": "Notes that keep up with the way you think.",
-        "size": "76.8px",
-        "family": "Manrope"
-      },
-      "glyphTotal": 0,
-      "eyebrows": 5,
-      "accentWords": "5/6",
-      "cardGrids": 1,
-      "grads": 0,
-      "glows": 1,
-      "blurs": 1,
-      "distinctRadii": 12,
-      "overflowX": false,
-      "height": 4726,
-      "notes": [
-        "15 distinct font sizes. A scale of 5–7 reads as designed.",
-        "5 tracked-uppercase eyebrows directly above headings. Keep only where the label carries a real category.",
-        "5/6 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all."
-      ]
-    }
-  },
   "G-baseline": {
     "errors": [],
     "audit": {

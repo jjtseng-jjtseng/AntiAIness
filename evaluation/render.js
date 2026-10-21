@@ -22,7 +22,8 @@ const only = process.argv.slice(2);
       if (!fs.existsSync(file)) continue;
       const id = `${scen}-${variant}`;
       for (const [vp, w, h] of [['desktop', 1440, 900], ['mobile', 390, 844]]) {
-        const ctx = await browser.newContext({ viewport: { width: w, height: h } });
+        // reducedMotion: static screenshots; also makes scroll-reveal pages show all content
+        const ctx = await browser.newContext({ viewport: { width: w, height: h }, reducedMotion: 'reduce' });
         const page = await ctx.newPage();
         const errors = [];
         page.on('pageerror', e => errors.push(String(e)));
