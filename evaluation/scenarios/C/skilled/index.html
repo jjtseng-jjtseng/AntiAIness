@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sumwise – add and subtract up to 100</title>
+<meta name="description" content="A practice game for children aged 7 to 9: addition and subtraction with numbers up to 100.">
+<!--
+  Brief
+  Sumwise is a browser practice game: a child aged 7–9 answers ten addition/subtraction
+  problems (numbers up to 100), picking one of four answers. Used on a tablet, usually in a
+  bright room, often with a parent or teacher nearby. Session: a few minutes.
+  Focal point, home: the Play button. Focal point, problem screen: the problem itself.
+  Real content: the name Sumwise; Addition / Subtraction / Mixed; "Maya", 12 stars;
+  47 + 28 = ? with 75, 65, 85, 74; problem 3 of 10; a hint; correct / incorrect feedback.
+  Nothing else may be invented (no testimonials, logos, statistics).
+
+  Direction card
+  Direction: "Base-ten blocks" — the UI is made of the tens rods and ones cubes children
+     already use in class, so the game looks like the maths, not like a website.
+  The memorable thing: the blocks. The hint draws the problem as rods and cubes; the
+     progress bar is ten cubes that fill in; every button is a pressable block with a
+     solid bottom edge instead of a shadow.
+  Type: Fredoka (rounded, heavy, open counters) for numbers, buttons and headings;
+     Nunito for sentences. Body 17–18px, labels 15px, numbers 40px, the problem 64–80px.
+  Color: sky background #E9F2FF, white surfaces, ink #1B2B4B, muted #4F5F7A.
+     Rods are blue #2E6BE6, cubes are amber #F7A41D, stars are the same amber.
+     Play and primary actions are deep orange #CC4700 (the only place it appears).
+     Semantic: correct #15803D, not-yet #C62828, never used for decoration.
+  Shape & surface: 14px radius on controls, 22px on screens; boundaries are either a
+     1.5px ink border or the block edge, never both, and no drop shadows.
+  Density: sparse. Targets at least 56px tall; one thing to do per screen.
+  Imagery: SVG blocks only, drawn with one stroke weight. No mascot.
+  Motion: feedback only — the block press, a short shake for a wrong pick, a star
+     bump for a right one. Off under prefers-reduced-motion.
+  Voice: short, warm, second person to the child ("Pick the answer"). The one line for
+     adults is plain and factual.
+  Conventions kept: a big Play button, stars as the reward, "3 of 10", a 2×2 answer grid,
+     a hint button, a home button in the corner.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #E9F2FF;
+    --surface: #FFFFFF;
+    --ink: #1B2B4B;
+    --muted: #4F5F7A;
+    --line: #C9D6EA;
+    --rod: #2E6BE6;
+    --rod-edge: #1C4BB0;
+    --cube: #F7A41D;
+    --cube-edge: #C27A07;
+    --play: #CC4700;
+    --play-edge: #8F3200;
+    --ok: #15803D;
+    --ok-edge: #0E5A2A;
+    --ok-tint: #E6F5EB;
+    --no: #C62828;
+    --no-edge: #8E1B1B;
+    --no-tint: #FDECEC;
+    --focus: #1B2B4B;
+    --r-control: 14px;
+    --r-screen: 22px;
+    --edge: 6px;
+    --space: 8px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--sky);
+    color: var(--ink);
+    font-family: "Nunito", system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 1.45;
+    font-variant-numeric: tabular-nums;
+  }
+  h1, h2, h3, button, .num, .mode-name, .stars, .counter {
+    font-family: "Fredoka", "Nunito", system-ui, sans-serif;
+  }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+  /* Page frame */
+  .page {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+    display: grid;
+    gap: 40px;
+  }
+  .screen {
+    background: var(--surface);
+    border: 1.5px solid var(--line);
+    border-radius: var(--r-screen);
+    padding: 24px 20px 28px;
+  }
+  @media (min-width: 640px) {
+    .page { padding: 40px 24px 64px; }
+    .screen { padding: 32px 36px 36px; }
+  }
+
+  /* Block buttons: the one shape language for every pressable thing */
+  .block {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    min-height: 56px;
+    padding: 10px 22px;
+    border: 0;
+    border-radius: var(--r-control);
+    border-bottom: var(--edge) solid var(--edge-color, var(--rod-edge));
+    background: var(--block-color, var(--rod));
+    color: #fff;
+    font-family: "Fredoka", sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 1.1;
+    text-decoration: none;
+    transition: transform 90ms ease-out, border-bottom-width 90ms ease-out;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .block:hover { filter: brightness(1.06); }
+  .block:active {
+    transform: translateY(4px);
+    border-bottom-width: 2px;
+  }
+  .block:disabled { cursor: default; filter: none; }
+  .block.play {
+    --block-color: var(--play);
+    --edge-color: var(--play-edge);
+    min-height: 76px;
+    font-size: 30px;
+    padding: 12px 48px;
+  }
+  .block.quiet {
+    --block-color: var(--surface);
+    --edge-color: var(--line);
+    color: var(--ink);
+    border: 1.5px solid var(--line);
+    border-bottom: var(--edge) solid var(--line);
+    font-size: 22px;
+  }
+  .block.quiet:hover { filter: none; background: #F3F7FD; }
+
+  /* Home screen */
+  .home-top {
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    flex-wrap: wrap;
+  }
+  .player {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 6px 16px 6px 6px;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    font-size: 18px;
+  }
+  .avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--rod); color: #fff;
+    display: grid; place-items: center;
+    font-family: "Fredoka", sans-serif; font-weight: 700; font-size: 22px;
+  }
+  .player-name { font-weight: 700; }
+  .stars {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-weight: 600; font-size: 18px; color: var(--ink);
+  }
+  .stars svg { width: 22px; height: 22px; flex: none; }
+
+  .hero {
+    display: grid;
+    gap: 20px;
+    align-items: center;
+    margin-top: 24px;
+  }
+  @media (min-width: 640px) {
+    .hero { grid-template-columns: 1fr auto; gap: 32px; }
+  }
+  .hero h1 {
+    margin: 0;
+    font-size: clamp(48px, 9vw, 72px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .hero h1 .wise { color: var(--rod); }
+  .hero p { margin: 10px 0 0; font-size: 18px; color: var(--muted); max-width: 32ch; }
+  .logo-blocks { width: 200px; max-width: 100%; height: auto; justify-self: start; }
+  @media (min-width: 640px) { .logo-blocks { width: 220px; justify-self: end; } }
+
+  fieldset {
+    border: 0; margin: 32px 0 0; padding: 0; min-width: 0;
+  }
+  legend {
+    padding: 0; margin-bottom: 12px;
+    font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 22px;
+  }
+  .modes {
+    display: grid; gap: 12px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 560px) { .modes { grid-template-columns: repeat(3, 1fr); } }
+  .mode { position: relative; display: block; }
+  .mode-card {
+    display: flex; align-items: center; gap: 14px;
+    min-height: 72px;
+    padding: 12px 16px;
+    border: 1.5px solid var(--line);
+    border-radius: var(--r-control);
+    background: var(--surface);
+    cursor: pointer;
+    transition: border-color 120ms, background-color 120ms;
+  }
+  .mode-sign {
+    width: 44px; height: 44px; flex: none;
+    border-radius: 10px;
+    background: var(--sky);
+    color: var(--rod);
+    display: grid; place-items: center;
+    font-family: "Fredoka", sans-serif; font-weight: 700; font-size: 30px;
+  }
+  .mode-name { font-weight: 600; font-size: 22px; }
+  .mode-sub { display: block; font-size: 15px; color: var(--muted); }
+  .mode input:checked + .mode-card {
+    border-color: var(--rod);
+    border-width: 2.5px;
+    padding: 11px 15px;
+    background: #EEF4FF;
+  }
+  .mode input:checked + .mode-card .mode-sign { background: var(--rod); color: #fff; }
+  .mode input:focus-visible + .mode-card { outline: 3px solid var(--focus); outline-offset: 3px; }
+  .mode-card:hover { background: #F3F7FD; }
+
+  .play-row {
+    margin-top: 28px;
+    display: flex; flex-direction: column; gap: 16px; align-items: center;
+  }
+  @media (min-width: 640px) { .play-row { align-items: flex-start; } }
+  .adult-note {
+    margin: 0; font-size: 15px; color: var(--muted); max-width: 70ch;
+  }
+  .adult-note strong { color: var(--ink); font-weight: 700; }
+
+  /* Problem screen */
+  .play-top {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    flex-wrap: wrap;
+  }
+  .home-btn {
+    width: 56px; height: 56px; padding: 0; min-height: 0;
+    border-radius: var(--r-control);
+  }
+  .home-btn svg { width: 26px; height: 26px; }
+  .progress { display: grid; gap: 6px; justify-items: center; flex: 1 1 auto; }
+  @media (max-width: 559px) {
+    .progress { order: 3; flex-basis: 100%; margin-top: 4px; }
+  }
+  .counter { font-weight: 600; font-size: 18px; }
+  .cubes {
+    display: flex; gap: 5px; margin: 0; padding: 0; list-style: none;
+  }
+  .cubes li {
+    width: 18px; height: 18px; border-radius: 4px;
+    border: 1.5px solid var(--line);
+    background: var(--surface);
+  }
+  .cubes li.done { background: var(--rod); border-color: var(--rod-edge); }
+  .cubes li.now { background: var(--cube); border-color: var(--cube-edge); }
+  .cubes li.earned { background: var(--cube); border-color: var(--cube-edge); }
+  .stars-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    min-height: 56px; padding: 0 16px;
+    border: 1.5px solid var(--line); border-radius: var(--r-control);
+    font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 22px;
+  }
+  .stars-chip svg { width: 24px; height: 24px; }
+  .stars-chip.bump svg { animation: bump 420ms ease-out; }
+  @keyframes bump {
+    0% { transform: scale(1); } 40% { transform: scale(1.5) rotate(-12deg); } 100% { transform: scale(1); }
+  }
+
+  .problem {
+    margin: 28px 0 24px;
+    text-align: center;
+    font-family: "Fredoka", sans-serif;
+    font-weight: 600;
+    font-size: clamp(56px, 13vw, 84px);
+    line-height: 1;
+    letter-spacing: 0.01em;
+    display: flex; justify-content: center; align-items: center; gap: 0.22em;
+    flex-wrap: wrap;
+  }
+  .problem .op { color: var(--rod); }
+  .problem .q {
+    display: inline-grid; place-items: center;
+    min-width: 1.5em; height: 1.3em;
+    border: 3px dashed var(--line);
+    border-radius: 18px;
+    color: var(--muted);
+    font-size: 0.8em;
+  }
+  .problem .q.ok { border-style: solid; border-color: var(--ok); color: var(--ok); }
+  .problem .q.no { border-color: var(--no); color: var(--no); }
+
+  .choices {
+    display: grid; gap: 14px;
+    grid-template-columns: repeat(2, 1fr);
+    margin: 0;
+  }
+  @media (min-width: 640px) { .choices { grid-template-columns: repeat(4, 1fr); gap: 16px; } }
+  .choice {
+    --block-color: var(--surface);
+    --edge-color: var(--ink);
+    min-height: 88px;
+    border: 2px solid var(--ink);
+    border-bottom-width: var(--edge);
+    color: var(--ink);
+    font-size: 40px;
+    font-weight: 600;
+  }
+  .choice:hover { filter: none; background: #F3F7FD; }
+  .choice.correct {
+    --block-color: var(--ok);
+    --edge-color: var(--ok-edge);
+    border-color: var(--ok-edge);
+    color: #fff;
+  }
+  .choice.wrong {
+    --block-color: var(--no-tint);
+    --edge-color: var(--no);
+    border-color: var(--no);
+    color: var(--no);
+    text-decoration: line-through;
+    text-decoration-thickness: 3px;
+  }
+  .choice.wrong:hover, .choice.correct:hover { background: var(--block-color); }
+  .choice.shake { animation: shake 320ms ease-in-out; }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-7px); }
+    75% { transform: translateX(7px); }
+  }
+  .choice:disabled { opacity: 1; }
+  .choice.dim:disabled { opacity: 0.45; }
+
+  .feedback {
+    margin-top: 20px;
+    min-height: 68px;
+    border-radius: var(--r-control);
+    padding: 12px 18px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    flex-wrap: wrap;
+    font-size: 18px;
+    font-weight: 700;
+    visibility: hidden;
+  }
+  .feedback.show { visibility: visible; }
+  .feedback.ok { background: var(--ok-tint); color: var(--ok); }
+  .feedback.no { background: var(--no-tint); color: var(--no); }
+  .feedback.done { background: #FFF3DC; color: var(--ink); }
+  .feedback .msg { display: inline-flex; align-items: center; gap: 10px; }
+  .feedback .msg svg { width: 28px; height: 28px; flex: none; }
+  .feedback .block { min-height: 52px; font-size: 22px; }
+  .feedback .block.next { --block-color: var(--ok); --edge-color: var(--ok-edge); }
+  .feedback .block.again { --block-color: var(--play); --edge-color: var(--play-edge); }
+
+  .hint-row { margin-top: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .hint-btn { align-self: flex-start; }
+  .hint-btn svg { width: 24px; height: 24px; }
+  .hint {
+    border: 1.5px solid var(--line);
+    border-radius: var(--r-control);
+    padding: 16px 18px;
+    display: grid; gap: 14px;
+  }
+  .hint[hidden] { display: none; }
+  .hint p { margin: 0; font-size: 18px; }
+  .hint p strong { font-family: "Fredoka", sans-serif; font-weight: 600; }
+  .blocks-figure {
+    display: flex; flex-wrap: wrap; align-items: flex-end; gap: 18px 28px;
+    margin: 0; padding: 0;
+  }
+  .blocks-figure figure { margin: 0; display: grid; gap: 6px; justify-items: start; }
+  .blocks-figure figcaption {
+    font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 18px; color: var(--muted);
+  }
+  .blocks-figure svg { display: block; height: auto; }
+  .blocks-figure .opsign {
+    font-family: "Fredoka", sans-serif; font-weight: 700; font-size: 40px; color: var(--rod);
+    align-self: center; padding-bottom: 16px;
+  }
+  @media (max-width: 559px) {
+    .blocks-figure { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .blocks-figure .opsign { align-self: flex-start; padding: 0 0 0 4px; line-height: 1; }
+  }
+
+  /* Reviewer strip: the two feedback states side by side, labeled */
+  .states {
+    border: 1.5px dashed var(--line);
+    border-radius: var(--r-screen);
+    padding: 20px;
+  }
+  .states h2 { margin: 0 0 4px; font-size: 22px; font-weight: 600; }
+  .states > p { margin: 0 0 16px; color: var(--muted); font-size: 15px; max-width: 70ch; }
+  .states-grid { display: grid; gap: 16px; }
+  @media (min-width: 640px) { .states-grid { grid-template-columns: 1fr 1fr; } }
+  .state-sample { display: grid; gap: 10px; }
+  .state-sample .choice { pointer-events: none; }
+  .state-sample .feedback { visibility: visible; margin: 0; }
+  .state-sample .label { font-size: 15px; font-weight: 700; color: var(--muted); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .block:active { transform: none; }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <!-- Screen 1: home -->
+  <section class="screen" id="home" aria-labelledby="home-title">
+    <div class="home-top">
+      <div class="player" aria-label="Player: Maya, 12 stars">
+        <span class="avatar" aria-hidden="true">M</span>
+        <span class="player-name">Maya</span>
+        <span class="stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z" fill="#F7A41D" stroke="#C27A07" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          <span id="home-stars">12</span> stars
+        </span>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div>
+        <h1 id="home-title">Sum<span class="wise">wise</span></h1>
+        <p>Add and subtract numbers up to 100. Ten problems a round, a star for each one you get right first time.</p>
+      </div>
+      <svg class="logo-blocks" viewBox="0 0 220 120" role="img" aria-label="Three tens rods and five ones cubes">
+        <g stroke="#1C4BB0" stroke-width="2" stroke-linejoin="round">
+          <rect x="12" y="10" width="18" height="100" rx="3" fill="#2E6BE6"/>
+          <rect x="40" y="10" width="18" height="100" rx="3" fill="#2E6BE6"/>
+          <rect x="68" y="10" width="18" height="100" rx="3" fill="#2E6BE6"/>
+          <path d="M12 20h18M12 30h18M12 40h18M12 50h18M12 60h18M12 70h18M12 80h18M12 90h18M12 100h18M40 20h18M40 30h18M40 40h18M40 50h18M40 60h18M40 70h18M40 80h18M40 90h18M40 100h18M68 20h18M68 30h18M68 40h18M68 50h18M68 60h18M68 70h18M68 80h18M68 90h18M68 100h18" fill="none"/>
+        </g>
+        <g stroke="#C27A07" stroke-width="2" stroke-linejoin="round" fill="#F7A41D">
+          <rect x="106" y="88" width="22" height="22" rx="3"/>
+          <rect x="134" y="88" width="22" height="22" rx="3"/>
+          <rect x="162" y="88" width="22" height="22" rx="3"/>
+          <rect x="190" y="88" width="22" height="22" rx="3"/>
+          <rect x="120" y="60" width="22" height="22" rx="3"/>
+        </g>
+      </svg>
+    </div>
+
+    <form id="setup" novalidate>
+      <fieldset>
+        <legend>What do you want to practice?</legend>
+        <div class="modes">
+          <label class="mode">
+            <input class="sr-only" type="radio" name="mode" value="add" checked>
+            <span class="mode-card">
+              <span class="mode-sign" aria-hidden="true">+</span>
+              <span><span class="mode-name">Addition</span><span class="mode-sub">like 47 + 28</span></span>
+            </span>
+          </label>
+          <label class="mode">
+            <input class="sr-only" type="radio" name="mode" value="sub">
+            <span class="mode-card">
+              <span class="mode-sign" aria-hidden="true">&minus;</span>
+              <span><span class="mode-name">Subtraction</span><span class="mode-sub">like 63 &minus; 27</span></span>
+            </span>
+          </label>
+          <label class="mode">
+            <input class="sr-only" type="radio" name="mode" value="mix">
+            <span class="mode-card">
+              <span class="mode-sign" aria-hidden="true">&plusmn;</span>
+              <span><span class="mode-name">Mixed</span><span class="mode-sub">both, shuffled</span></span>
+            </span>
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="play-row">
+        <button class="block play" type="submit" id="play-btn">
+          <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z" fill="currentColor"/></svg>
+          Play
+        </button>
+        <p class="adult-note"><strong>For parents and teachers:</strong> each round is ten problems with numbers up to 100. A hint shows the problem as tens and ones.</p>
+      </div>
+    </form>
+  </section>
+
+  <!-- Screen 2: problem -->
+  <section class="screen" id="play" aria-labelledby="play-title">
+    <h2 class="sr-only" id="play-title">Problem screen</h2>
+    <div class="play-top">
+      <a class="block quiet home-btn" href="#home" aria-label="Back to home">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11.5 12 4l8.5 7.5V20a1 1 0 0 1-1 1h-5v-6H9.5v6h-5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="progress">
+        <div class="counter" id="counter">Problem 3 of 10</div>
+        <ol class="cubes" id="cubes" aria-hidden="true"></ol>
+      </div>
+      <div class="stars-chip" id="stars-chip" aria-live="polite" aria-label="12 stars">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z" fill="#F7A41D" stroke="#C27A07" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        <span id="play-stars">12</span>
+      </div>
+    </div>
+
+    <p class="problem" id="problem" aria-live="polite">
+      <span class="num" id="p-a">47</span>
+      <span class="op" id="p-op" aria-label="plus">+</span>
+      <span class="num" id="p-b">28</span>
+      <span class="op" aria-label="equals">=</span>
+      <span class="q" id="p-q">?</span>
+    </p>
+
+    <div class="choices" id="choices" role="group" aria-label="Pick the answer">
+      <button class="block choice" type="button" data-v="75">75</button>
+      <button class="block choice" type="button" data-v="65">65</button>
+      <button class="block choice" type="button" data-v="85">85</button>
+      <button class="block choice" type="button" data-v="74">74</button>
+    </div>
+
+    <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+
+    <div class="hint-row">
+      <button class="block quiet hint-btn" type="button" id="hint-btn" aria-expanded="false" aria-controls="hint">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.7.6 1 1.3 1 2.1h5c0-.8.3-1.5 1-2.1A6 6 0 0 0 12 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Show a hint
+      </button>
+      <div class="hint" id="hint" hidden>
+        <p id="hint-text"></p>
+        <div class="blocks-figure" id="hint-blocks"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reviewer strip: both feedback states, static, labeled -->
+  <section class="states" aria-labelledby="states-title">
+    <h2 id="states-title">Feedback states</h2>
+    <p>Static preview of the two answer states for review. In the screen above they appear when an answer is picked.</p>
+    <div class="states-grid">
+      <div class="state-sample">
+        <span class="label">Correct answer</span>
+        <button class="block choice correct" type="button" tabindex="-1" aria-hidden="true">75</button>
+        <div class="feedback show ok">
+          <span class="msg"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7.5 12.5l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>That's right! 47 + 28 = 75</span>
+          <span class="block next" aria-hidden="true">Next</span>
+        </div>
+      </div>
+      <div class="state-sample">
+        <span class="label">Incorrect answer</span>
+        <button class="block choice wrong" type="button" tabindex="-1" aria-hidden="true">65</button>
+        <div class="feedback show no">
+          <span class="msg"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>Not 65. Have another go.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  "use strict";
+  var TOTAL = 10;
+  var stars = 12;
+  var mode = "add";
+  var index = 2;            // zero-based: starts on problem 3 of 10
+  var current = null;
+  var firstTry = true;
+  var answered = false;
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var $ = function (id) { return document.getElementById(id); };
+  var counterEl = $("counter"), cubesEl = $("cubes"), choicesEl = $("choices");
+  var feedbackEl = $("feedback"), hintBtn = $("hint-btn"), hintEl = $("hint");
+  var hintText = $("hint-text"), hintBlocks = $("hint-blocks");
+  var pA = $("p-a"), pB = $("p-b"), pOp = $("p-op"), pQ = $("p-q");
+
+  var CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7.5 12.5l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var CROSS = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>';
+
+  function rand(n) { return Math.floor(Math.random() * n); }
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) { var j = rand(i + 1); var t = arr[i]; arr[i] = arr[j]; arr[j] = t; }
+    return arr;
+  }
+
+  function makeProblem(op) {
+    if (op === "mix") op = rand(2) ? "add" : "sub";
+    var a, b;
+    if (op === "add") {
+      a = 11 + rand(79); b = 11 + rand(Math.min(89 - a + 10, 79));
+      if (a + b > 100) b = 100 - a;
+    } else {
+      a = 21 + rand(80); b = 2 + rand(a - 2);
+    }
+    var ans = op === "add" ? a + b : a - b;
+    var pool = [ans + 10, ans - 10, ans + 1, ans - 1, ans + 2, ans - 2, ans + 9, ans - 9, ans + 11, ans - 11];
+    var picks = [], seen = {}; seen[ans] = true;
+    shuffle(pool).forEach(function (v) {
+      if (picks.length < 3 && v >= 0 && v <= 100 && !seen[v]) { seen[v] = true; picks.push(v); }
+    });
+    return { a: a, b: b, op: op, ans: ans, choices: shuffle(picks.concat([ans])) };
+  }
+
+  // The problem from the brief is the first one shown.
+  var briefProblem = { a: 47, b: 28, op: "add", ans: 75, choices: [75, 65, 85, 74] };
+
+  function renderCubes() {
+    var html = "";
+    for (var i = 0; i < TOTAL; i++) {
+      var cls = i < index ? "done" : (i === index ? "now" : "");
+      html += '<li class="' + cls + '"></li>';
+    }
+    cubesEl.innerHTML = html;
+  }
+
+  function renderProblem(p) {
+    current = p; firstTry = true; answered = false;
+    pA.textContent = p.a; pB.textContent = p.b;
+    pOp.textContent = p.op === "add" ? "+" : "−";
+    pOp.setAttribute("aria-label", p.op === "add" ? "plus" : "minus");
+    pQ.textContent = "?"; pQ.className = "q";
+    counterEl.textContent = "Problem " + (index + 1) + " of " + TOTAL;
+    renderCubes();
+    choicesEl.innerHTML = p.choices.map(function (v) {
+      return '<button class="block choice" type="button" data-v="' + v + '">' + v + '</button>';
+    }).join("");
+    feedbackEl.className = "feedback"; feedbackEl.innerHTML = "";
+    hideHint();
+  }
+
+  function choiceButtons() { return Array.prototype.slice.call(choicesEl.querySelectorAll(".choice")); }
+
+  function onChoice(btn) {
+    if (answered) return;
+    var v = Number(btn.getAttribute("data-v"));
+    var sign = current.op === "add" ? "+" : "−";
+    if (v === current.ans) {
+      answered = true;
+      btn.classList.add("correct");
+      choiceButtons().forEach(function (b) { b.disabled = true; if (b !== btn) b.classList.add("dim"); });
+      pQ.textContent = current.ans; pQ.className = "q ok";
+      if (firstTry) { stars += 1; updateStars(true); }
+      var last = index === TOTAL - 1;
+      feedbackEl.className = "feedback show ok";
+      feedbackEl.innerHTML = '<span class="msg">' + CHECK + "That's right! " + current.a + " " + sign + " " + current.b + " = " + current.ans + "</span>" +
+        '<button class="block ' + (last ? "again" : "next") + '" type="button" id="next-btn">' + (last ? "Round done! Play again" : "Next") + "</button>";
+      $("next-btn").focus();
+    } else {
+      firstTry = false;
+      btn.classList.add("wrong");
+      btn.disabled = true;
+      if (!reduceMotion) { btn.classList.add("shake"); setTimeout(function () { btn.classList.remove("shake"); }, 350); }
+      pQ.className = "q no";
+      feedbackEl.className = "feedback show no";
+      feedbackEl.innerHTML = '<span class="msg">' + CROSS + "Not " + v + ". Have another go.</span>";
+    }
+  }
+
+  function next() {
+    if (index >= TOTAL - 1) {
+      index = 0;
+    } else {
+      index += 1;
+    }
+    renderProblem(makeProblem(mode));
+  }
+
+  function updateStars(bump) {
+    $("play-stars").textContent = stars; $("home-stars").textContent = stars;
+    var chip = $("stars-chip");
+    chip.setAttribute("aria-label", stars + " stars");
+    if (bump && !reduceMotion) {
+      chip.classList.remove("bump"); void chip.offsetWidth; chip.classList.add("bump");
+    }
+  }
+
+  // Base-ten block drawing: one stroke weight, rods blue, cubes amber.
+  function blocksSVG(n, faded) {
+    var tens = Math.floor(n / 10), ones = n % 10;
+    var unit = 12, gap = 4, rodH = unit * 10, rodW = unit;
+    var cols = Math.max(tens, 1), onesCols = Math.min(ones, 5);
+    var w = tens * (rodW + gap) + (ones ? 8 + onesCols * (unit + gap) : 0) + 4;
+    var h = rodH + 4;
+    var s = '<svg width="' + w + '" height="' + h + '" viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="' + n + ' as ' + tens + ' tens and ' + ones + ' ones">';
+    var op = faded ? ' opacity="0.35"' : "";
+    s += '<g stroke="#1C4BB0" stroke-width="1.5" stroke-linejoin="round" fill="#2E6BE6"' + op + ">";
+    for (var t = 0; t < tens; t++) {
+      var x = 2 + t * (rodW + gap);
+      s += '<rect x="' + x + '" y="2" width="' + rodW + '" height="' + rodH + '" rx="2"/>';
+      var lines = "";
+      for (var k = 1; k < 10; k++) lines += "M" + x + " " + (2 + k * unit) + "h" + rodW;
+      s += '<path d="' + lines + '" fill="none"/>';
+    }
+    s += "</g>";
+    s += '<g stroke="#C27A07" stroke-width="1.5" stroke-linejoin="round" fill="#F7A41D"' + op + ">";
+    var ox = 2 + tens * (rodW + gap) + (tens ? 8 : 0);
+    for (var o = 0; o < ones; o++) {
+      var col = o % 5, row = Math.floor(o / 5);
+      s += '<rect x="' + (ox + col * (unit + gap)) + '" y="' + (2 + rodH - unit - row * (unit + gap)) + '" width="' + unit + '" height="' + unit + '" rx="2"/>';
+    }
+    s += "</g></svg>";
+    return s;
+  }
+
+  function showHint() {
+    var p = current;
+    var ta = Math.floor(p.a / 10) * 10, oa = p.a % 10, tb = Math.floor(p.b / 10) * 10, ob = p.b % 10;
+    var text, figs;
+    if (p.op === "add") {
+      text = "<strong>Start with the tens:</strong> " + ta + " + " + tb + " = " + (ta + tb) + ". ";
+      if (oa && ob) text += "<strong>Now the ones:</strong> " + oa + " + " + ob + ". Put them together.";
+      else text += "<strong>Then the ones:</strong> there are " + (oa + ob) + " left over.";
+      figs = fig(p.a, false) + '<span class="opsign" aria-hidden="true">+</span>' + fig(p.b, false);
+    } else {
+      text = "<strong>Take the tens away first:</strong> " + p.a + " − " + tb + " = " + (p.a - tb) + ". ";
+      text += ob ? "<strong>Then take away " + ob + " more.</strong>" : "<strong>No ones to take away.</strong> You're there.";
+      figs = fig(p.a, false) + '<span class="opsign" aria-hidden="true">−</span>' + fig(p.b, true);
+    }
+    hintText.innerHTML = text;
+    hintBlocks.innerHTML = figs;
+    hintEl.hidden = false;
+    hintBtn.setAttribute("aria-expanded", "true");
+    hintBtn.lastChild.textContent = " Hide the hint";
+  }
+  function fig(n, faded) {
+    return "<figure>" + blocksSVG(n, faded) + "<figcaption>" + n + "</figcaption></figure>";
+  }
+  function hideHint() {
+    hintEl.hidden = true;
+    hintBtn.setAttribute("aria-expanded", "false");
+    hintBtn.lastChild.textContent = " Show a hint";
+  }
+
+  // Events
+  choicesEl.addEventListener("click", function (e) {
+    var btn = e.target.closest(".choice");
+    if (btn && !btn.disabled) onChoice(btn);
+  });
+  feedbackEl.addEventListener("click", function (e) {
+    if (e.target.closest("#next-btn")) next();
+  });
+  hintBtn.addEventListener("click", function () {
+    if (hintEl.hidden) showHint(); else hideHint();
+  });
+  $("setup").addEventListener("submit", function (e) {
+    e.preventDefault();
+    mode = document.querySelector('input[name="mode"]:checked').value;
+    index = 0;
+    renderProblem(makeProblem(mode));
+    var play = $("play");
+    play.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    setTimeout(function () { choicesEl.querySelector(".choice").focus({ preventScroll: true }); }, reduceMotion ? 0 : 450);
+  });
+
+  // Initial state: exactly the problem from the brief, at 3 of 10.
+  renderProblem(briefProblem);
+  updateStars(false);
+})();
+</script>
+</body>
+</html>
