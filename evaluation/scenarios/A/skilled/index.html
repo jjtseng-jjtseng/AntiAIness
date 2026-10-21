@@ -1,0 +1,766 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pulse — per-endpoint API monitoring</title>
+<meta name="description" content="Pulse records p50, p95 and p99 latency, error rate and throughput per endpoint, and lines incidents up against your deploys. Two-line SDK for Node, Python, Go and Java.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<!--
+  Direction card
+  Direction: "The screen is the pitch" — the hero is Pulse's own endpoint view drawn flat
+    with the sample data from the brief; everything after it is a text-led spec sheet.
+  Memorable thing: the deploy marker (#4821) standing on the incident chart. The
+    deploy-to-regression link is the product's thesis, so it is the one designed object.
+  Type: IBM Plex Sans for text, IBM Plex Mono for endpoints, numbers and code.
+    Sizes: 13 / 14 / 16 / 19 / 24 / 30 / 44. Body 16. Nothing under 13px.
+  Color: blue-black surfaces; one amber accent for actions, the chart series and focus;
+    red reserved for 5xx and incidents; green only for "better than last week".
+  Shape & surface: 1px borders, 4px controls / 6px panels, no shadows. One effect: the 10%
+    area wash under the chart line.
+  Density: dense for a marketing page — engineers read spec sheets, not poetry.
+  Imagery: product UI only, rendered from the brief's sample data and labelled as such.
+  Motion: state feedback and the chart crosshair. Nothing ambient.
+  Voice: plain, specific, says what is recorded and what is not yet true (SOC 2 in progress).
+  Conventions kept: top nav with a Docs link and a button CTA; plans in three columns;
+    a footer with the company facts.
+  Dark theme: the client asked for it, and the audience lives in dark dashboards and
+    on-call at night. Surfaces are blue-black rather than pure black so borders can be quiet.
+-->
+<style>
+  :root {
+    --bg: #0c1117;
+    --surface: #121922;
+    --raised: #182230;
+    --border: #273446;
+    --border-strong: #3a4a60;
+    --text: #e7edf3;
+    --text-2: #b4c0cd;
+    --muted: #8e9cab;
+    --accent: #f0b43f;
+    --accent-ink: #1a1304;
+    --accent-hover: #f7c45c;
+    --danger: #ee6e6e;
+    --danger-wash: rgba(238, 110, 110, 0.14);
+    --good: #5fcf8e;
+    --grid: #1f2a38;
+    --axis: #2d3a4c;
+    --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --w: 1120px;
+    --gutter: 16px;
+    color-scheme: dark;
+  }
+  @media (min-width: 720px) { :root { --gutter: 32px; } }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { margin: 0; font-weight: 600; line-height: 1.2; }
+  h1 { font-size: 34px; letter-spacing: -0.01em; max-width: 24ch; }
+  h2 { font-size: 30px; letter-spacing: -0.01em; }
+  h3 { font-size: 19px; }
+  @media (min-width: 720px) { h1 { font-size: 44px; } }
+  p { margin: 0; }
+  a { color: var(--text); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { color: var(--accent-hover); }
+  code, pre, .mono { font-family: var(--mono); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+  .skip {
+    position: absolute; left: 8px; top: -48px; padding: 8px 12px;
+    background: var(--accent); color: var(--accent-ink); font-weight: 500; z-index: 20; border-radius: 4px;
+  }
+  .skip:focus { top: 8px; }
+  .wrap { width: 100%; max-width: var(--w); margin: 0 auto; padding: 0 var(--gutter); }
+  .lead { font-size: 19px; line-height: 1.5; color: var(--text-2); max-width: 62ch; }
+  .muted { color: var(--muted); }
+  .small { font-size: 14px; }
+  .tnum { font-variant-numeric: tabular-nums; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 44px; padding: 0 18px; border-radius: 4px; border: 1px solid var(--border-strong);
+    background: var(--raised); color: var(--text); font: 500 16px/1 var(--sans);
+    text-decoration: none; cursor: pointer; white-space: nowrap;
+    transition: background-color 150ms, border-color 150ms, color 150ms;
+  }
+  .btn:hover { background: #1f2b3b; border-color: #4a5c75; color: var(--text); }
+  .btn:active { background: #16202c; }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: var(--accent-ink); }
+  .btn-primary:active { background: #e2a52f; }
+  .btn-primary:focus-visible { outline-color: var(--text); }
+
+  /* Header */
+  .site-header { border-bottom: 1px solid var(--border); background: var(--bg); }
+  .site-header .wrap { display: flex; align-items: center; gap: 24px; min-height: 64px; }
+  .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 19px; text-decoration: none; color: var(--text); }
+  .brand svg { display: block; }
+  .nav { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+  .nav ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
+  .nav a:not(.btn) {
+    display: inline-flex; align-items: center; min-height: 40px; padding: 0 12px;
+    color: var(--text-2); text-decoration: none; border-radius: 4px; font-size: 16px;
+  }
+  .nav a:not(.btn):hover { color: var(--text); background: var(--raised); }
+  .nav .btn { margin-left: 8px; min-height: 40px; }
+  .menu-btn {
+    display: none; margin-left: auto; min-height: 40px; min-width: 44px; padding: 0 12px;
+    background: transparent; border: 1px solid var(--border-strong); border-radius: 4px; color: var(--text);
+    font: 500 16px var(--sans); cursor: pointer;
+  }
+  @media (max-width: 719px) {
+    .menu-btn { display: inline-flex; align-items: center; gap: 8px; }
+    .nav { display: none; position: absolute; left: 0; right: 0; top: 64px; z-index: 10;
+      flex-direction: column; align-items: stretch; gap: 0;
+      background: var(--surface); border-bottom: 1px solid var(--border); padding: 8px var(--gutter) 16px; }
+    .nav[data-open="true"] { display: flex; }
+    .nav ul { flex-direction: column; gap: 0; }
+    .nav a:not(.btn) { min-height: 44px; font-size: 16px; }
+    .nav .btn { margin: 8px 0 0; }
+    .site-header { position: relative; }
+  }
+
+  /* Hero */
+  .hero { padding: 48px 0 32px; }
+  @media (min-width: 720px) { .hero { padding: 72px 0 40px; } }
+  .hero .lead { margin-top: 20px; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .hero-sub { margin-top: 14px; font-size: 14px; color: var(--muted); max-width: 62ch; }
+
+  /* Product screen */
+  .screen {
+    margin: 40px 0 0; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); overflow: hidden;
+  }
+  .screen-bar {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 12px 16px;
+    border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text-2);
+  }
+  .screen-bar strong { color: var(--text); font-weight: 500; }
+  .screen-bar .tag { margin-left: auto; color: var(--muted); }
+  .screen-body { display: grid; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 900px) {
+    .screen-body { grid-template-columns: 400px minmax(0, 1fr); }
+    .screen-left { border-right: 1px solid var(--border); }
+  }
+  .screen-left { border-bottom: 1px solid var(--border); display: flex; flex-direction: column; }
+  @media (min-width: 900px) { .screen-left { border-bottom: 0; } }
+
+  .ep-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .ep-table th, .ep-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .ep-table th:first-child, .ep-table td:first-child { padding-left: 16px; }
+  .ep-table th:last-child, .ep-table td:last-child { padding-right: 16px; }
+  .ep-table th { font-weight: 500; color: var(--muted); font-size: 13px; }
+  .ep-table td.num, .ep-table th.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .ep-table td.ep { font-family: var(--mono); }
+  .ep-table .method { color: var(--muted); margin-right: 6px; }
+  .ep-table tr:hover td { background: var(--raised); }
+  .delta-bad { color: var(--danger); }
+  .delta-good { color: var(--good); }
+  .delta-flat { color: var(--text-2); }
+  .delta::before { content: ""; display: inline-block; width: 0; height: 0; margin-right: 6px; vertical-align: 2px; border-left: 4px solid transparent; border-right: 4px solid transparent; }
+  .delta-bad::before { border-bottom: 6px solid currentColor; }
+  .delta-good::before { border-top: 6px solid currentColor; }
+  .delta-flat::before { width: 8px; height: 2px; border: 0; background: currentColor; vertical-align: 4px; }
+
+  .figures { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); flex: 1; }
+  .figure { padding: 16px; }
+  .figure + .figure { border-left: 1px solid var(--border); }
+  .figure .label { font-size: 13px; color: var(--muted); }
+  .figure .value { font-size: 30px; font-weight: 600; line-height: 1.2; margin-top: 4px; }
+  .figure .unit { font-size: 14px; font-weight: 400; color: var(--text-2); margin-left: 4px; }
+  @media (max-width: 479px) {
+    .figures { grid-template-columns: minmax(0, 1fr); }
+    .figure { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 12px 16px; }
+    .figure + .figure { border-left: 0; border-top: 1px solid var(--border); }
+    .figure .value { margin-top: 0; }
+  }
+
+  .chart-wrap { padding: 16px; }
+  .chart-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; font-size: 14px; }
+  .chart-head strong { font-weight: 500; }
+  .chart-head .key { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; }
+  .key i { display: inline-block; width: 14px; height: 2px; background: var(--accent); }
+  .key i.band { width: 12px; height: 10px; background: var(--danger-wash); border: 1px solid var(--danger); }
+  .key i.mark { width: 0; height: 12px; border-left: 2px solid var(--text-2); }
+  .chart { position: relative; margin-top: 12px; }
+  .chart svg { display: block; width: 100%; height: 220px; }
+  .chart svg:focus-visible { outline-offset: 0; }
+  .chart .tip {
+    position: absolute; top: 30px; left: 0; pointer-events: none; display: none;
+    background: var(--raised); border: 1px solid var(--border-strong); border-radius: 4px; padding: 8px 10px;
+    font-size: 13px; line-height: 1.4; white-space: nowrap; color: var(--text-2); min-width: 120px;
+  }
+  .chart .tip b { display: block; font-size: 16px; color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .chart .tip .t { display: block; font-family: var(--mono); color: var(--muted); }
+  .chart[data-active="true"] .tip { display: block; }
+  .axis-text { font-family: var(--mono); font-size: 13px; fill: var(--muted); }
+  .marker-text { font-family: var(--mono); font-size: 13px; fill: var(--text-2); }
+
+  .incident {
+    display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: start;
+    margin-top: 16px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); font-size: 14px;
+  }
+  .incident .sq { width: 10px; height: 10px; margin-top: 6px; background: var(--danger); border-radius: 2px; }
+  .incident .title { font-weight: 500; }
+  .incident .meta { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .incident .meta .mono { color: var(--text-2); }
+  .chart-table { margin-top: 12px; font-size: 14px; }
+  .chart-table summary { cursor: pointer; color: var(--text-2); padding: 6px 0; width: max-content; }
+  .chart-table table { border-collapse: collapse; margin-top: 8px; width: 100%; max-width: 360px; }
+  .chart-table td, .chart-table th { padding: 4px 8px; text-align: right; border-bottom: 1px solid var(--border); font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 400; }
+  .chart-table th { color: var(--muted); font-size: 13px; }
+  .chart-table td:first-child, .chart-table th:first-child { text-align: left; }
+  .caption { margin-top: 12px; font-size: 13px; color: var(--muted); max-width: 90ch; }
+
+  /* Sections */
+  section { padding: 56px 0; border-top: 1px solid var(--border); }
+  @media (min-width: 720px) { section { padding: 80px 0; } }
+  .section-head { max-width: 62ch; }
+  .section-head p { margin-top: 12px; color: var(--text-2); }
+
+  .spec { margin: 36px 0 0; display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--border); }
+  .spec > div { display: grid; grid-template-columns: 1fr; gap: 6px 24px; padding: 20px 0; border-bottom: 1px solid var(--border); }
+  @media (min-width: 720px) { .spec > div { grid-template-columns: 240px 1fr; } }
+  .spec dt { font-weight: 600; font-size: 19px; }
+  .spec dd { margin: 0; color: var(--text-2); max-width: 64ch; }
+  .spec dd code { font-size: 14px; color: var(--text); background: var(--raised); padding: 1px 6px; border-radius: 3px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr; gap: 32px; }
+  @media (min-width: 900px) { .two-col { grid-template-columns: 1fr 1fr; gap: 64px; } }
+  .dest { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 0; border-top: 1px solid var(--border); }
+  .dest li { display: grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .dest li .name { font-weight: 500; }
+  .dest li .how { color: var(--text-2); }
+
+  /* Install */
+  .sdk { margin-top: 32px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); overflow: hidden; max-width: 760px; }
+  .tabs { display: flex; border-bottom: 1px solid var(--border); overflow-x: auto; }
+  .tab {
+    min-height: 44px; padding: 0 18px; background: transparent; border: 0; border-bottom: 2px solid transparent;
+    color: var(--text-2); font: 500 16px var(--sans); cursor: pointer; margin-bottom: -1px;
+  }
+  .tab:hover { color: var(--text); background: var(--raised); }
+  .tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); }
+  .tab:focus-visible { outline-offset: -3px; }
+  .panel { padding: 18px 20px; }
+  .panel[hidden] { display: none; }
+  .panel pre { margin: 0; font-size: 14px; line-height: 1.6; color: var(--text); overflow-x: auto; }
+  .panel .ln { display: inline-block; width: 2ch; color: var(--muted); user-select: none; }
+  .panel .c { color: var(--muted); }
+  .panel .placeholder-note { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); }
+
+  /* Retention */
+  .ret { width: 100%; max-width: 640px; margin-top: 32px; border-collapse: collapse; font-size: 16px; }
+  .ret th, .ret td { text-align: left; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .ret th { color: var(--muted); font-weight: 500; font-size: 13px; }
+  .ret td:last-child, .ret th:last-child { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .ret caption { text-align: left; caption-side: top; font-weight: 600; font-size: 19px; padding-bottom: 12px; }
+  .status { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 4px; font-size: 14px; color: var(--text-2); }
+  .status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
+
+  /* Pricing */
+  .plans { margin-top: 36px; display: grid; grid-template-columns: 1fr; gap: 16px; }
+  @media (min-width: 720px) { .plans { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
+  .plan { border: 1px solid var(--border); border-radius: 6px; background: var(--surface); padding: 24px; display: flex; flex-direction: column; }
+  .plan.featured { border-color: var(--accent); }
+  .plan h3 { font-size: 19px; }
+  .plan .price { margin-top: 12px; font-size: 30px; font-weight: 600; line-height: 1.1; }
+  .plan .price .per { font-size: 16px; font-weight: 400; color: var(--muted); margin-left: 4px; }
+  .plan ul { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 8px; color: var(--text-2); font-size: 16px; }
+  .plan ul li { padding-left: 18px; position: relative; }
+  .plan ul li::before { content: ""; position: absolute; left: 0; top: 10px; width: 8px; height: 2px; background: var(--border-strong); }
+  .plan .btn { margin-top: 24px; width: 100%; }
+  .plan .fine { margin-top: auto; padding-top: 14px; font-size: 13px; color: var(--muted); }
+  .plans-note { margin-top: 16px; font-size: 13px; color: var(--muted); max-width: 72ch; }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--border); padding: 40px 0 48px; font-size: 14px; color: var(--text-2); }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 16px 48px; align-items: flex-start; }
+  footer .col { display: grid; gap: 8px; }
+  footer a { color: var(--text-2); }
+  footer .brand { font-size: 19px; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="Pulse home">
+      <svg width="28" height="20" viewBox="0 0 28 20" aria-hidden="true">
+        <path d="M1 13h7l3-10 5 16 3-9 2 3h6" fill="none" stroke="#f0b43f" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      </svg>
+      Pulse
+    </a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <ul>
+        <li><a href="#records">What it records</a></li>
+        <li><a href="#alerts">Alerts</a></li>
+        <li><a href="#install">Install</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="https://docs.pulse.dev">Docs</a></li>
+      </ul>
+      <a class="btn btn-primary" href="#pricing">Start 14-day trial</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero">
+    <div class="wrap">
+      <h1>Per-endpoint latency, error rate and throughput, lined up against your deploys.</h1>
+      <p class="lead">Pulse records p50, p95 and p99 latency, error rate and throughput for every endpoint, and marks each deploy on the incident timeline, so a regression and the release that caused it sit on the same line.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#pricing">Start a 14-day Business trial</a>
+        <a class="btn" href="#install">Install in two lines</a>
+      </div>
+      <p class="hero-sub">SDKs for Node, Python, Go and Java. Free plan with 3 endpoints. Documentation at <a href="https://docs.pulse.dev">docs.pulse.dev</a>.</p>
+
+      <figure class="screen" aria-labelledby="screen-caption">
+        <div class="screen-bar">
+          <strong>Endpoints</strong>
+          <span class="mono">Oct 14, 06:00–11:00</span>
+          <span class="tag">Rendered with sample data</span>
+        </div>
+        <div class="screen-body">
+          <div class="screen-left">
+            <table class="ep-table">
+              <thead>
+                <tr>
+                  <th scope="col">Endpoint</th>
+                  <th scope="col" class="num">p95</th>
+                  <th scope="col" class="num">vs 7d</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="ep"><span class="method">GET</span>/v1/orders</td>
+                  <td class="num">412 ms</td>
+                  <td class="num"><span class="delta delta-bad">+18%</span></td>
+                </tr>
+                <tr>
+                  <td class="ep"><span class="method">POST</span>/v1/checkout</td>
+                  <td class="num">1,204 ms</td>
+                  <td class="num"><span class="delta delta-good">−3%</span></td>
+                </tr>
+                <tr>
+                  <td class="ep"><span class="method">GET</span>/v1/search</td>
+                  <td class="num">236 ms</td>
+                  <td class="num"><span class="delta delta-flat">+1%</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="figures">
+              <div class="figure">
+                <div class="label">Error rate, all endpoints</div>
+                <div class="value">0.42<span class="unit">%</span></div>
+              </div>
+              <div class="figure">
+                <div class="label">Throughput</div>
+                <div class="value">2,310<span class="unit">req/min</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-wrap">
+            <div class="chart-head">
+              <strong>5xx rate for POST /v1/checkout</strong>
+              <span class="key"><i></i> 5xx rate</span>
+              <span class="key"><i class="band"></i> incident</span>
+              <span class="key"><i class="mark"></i> deploy</span>
+            </div>
+            <div class="chart" id="chart">
+              <svg id="chart-svg" role="img" tabindex="0" aria-label="Line chart of 5xx rate for POST /v1/checkout on Oct 14 between 06:00 and 11:00, with a deploy marker for deploy 4821 and an incident band from 08:12 to 08:47. Use arrow keys to read values."></svg>
+              <div class="tip" id="chart-tip" aria-live="polite"></div>
+            </div>
+            <div class="incident">
+              <span class="sq" aria-hidden="true"></span>
+              <div>
+                <div class="title">Elevated 5xx on /v1/checkout</div>
+                <div class="meta">Oct 14, 08:12–08:47 (35 min). Caused by deploy <span class="mono">#4821</span>.</div>
+              </div>
+            </div>
+            <details class="chart-table">
+              <summary>Chart values as a table</summary>
+              <table id="chart-table-el">
+                <thead><tr><th scope="col">Time</th><th scope="col">5xx rate</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </details>
+          </div>
+        </div>
+        <figcaption class="caption" id="screen-caption" style="padding: 0 16px 14px;">Pulse's endpoint view, rendered here with sample data. Deltas compare each endpoint's p95 with the previous 7 days.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <section id="records">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What Pulse records</h2>
+        <p>Three series per endpoint, plus the timeline that puts them next to your deploys. Each series is kept for your plan's retention window.</p>
+      </div>
+      <dl class="spec">
+        <div>
+          <dt>Latency</dt>
+          <dd>p50, p95 and p99 for every endpoint. The table above shows p95 because that is the number most teams alert on; p50 and p99 are recorded alongside it.</dd>
+        </div>
+        <div>
+          <dt>Error rate</dt>
+          <dd>The share of responses that failed, per endpoint. The sample above shows a service running at <code>0.42%</code> overall, with a 5xx spike on one endpoint.</dd>
+        </div>
+        <div>
+          <dt>Throughput</dt>
+          <dd>Requests per minute, per endpoint, so a latency change can be read next to the load it happened under rather than in isolation.</dd>
+        </div>
+        <div>
+          <dt>Incident timeline with deploy markers</dt>
+          <dd>Every deploy is a marker on the timeline, so an incident and the release before it sit on the same line, which is how <code>#4821</code> ends up named on the chart above.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="alerts">
+    <div class="wrap two-col">
+      <div class="section-head">
+        <h2>Alerts with per-endpoint thresholds</h2>
+        <p>A p95 ceiling that is right for <code class="mono">/v1/search</code> is wrong for <code class="mono">/v1/checkout</code>. Pulse sets thresholds per endpoint, on latency, error rate or throughput, and routes each rule to the place the on-call engineer will see it.</p>
+        <p>Each rule picks its own destination: Slack, PagerDuty or email.</p>
+      </div>
+      <div>
+        <h3>Where alerts go</h3>
+        <ul class="dest">
+          <li><span class="name">Slack</span><span class="how">For the rules the whole team should see as they fire.</span></li>
+          <li><span class="name">PagerDuty</span><span class="how">For the endpoints that should wake someone up.</span></li>
+          <li><span class="name">Email</span><span class="how">For the rules that can wait until morning.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="install">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Install in two lines</h2>
+        <p>Integration is a two-line SDK. Node, Python, Go and Java are supported today; pick your language below.</p>
+      </div>
+      <div class="sdk">
+        <div class="tabs" role="tablist" aria-label="SDK language">
+          <button class="tab" role="tab" id="tab-node" aria-selected="true" aria-controls="panel-node" type="button">Node</button>
+          <button class="tab" role="tab" id="tab-python" aria-selected="false" aria-controls="panel-python" tabindex="-1" type="button">Python</button>
+          <button class="tab" role="tab" id="tab-go" aria-selected="false" aria-controls="panel-go" tabindex="-1" type="button">Go</button>
+          <button class="tab" role="tab" id="tab-java" aria-selected="false" aria-controls="panel-java" tabindex="-1" type="button">Java</button>
+        </div>
+        <div class="panel" role="tabpanel" id="panel-node" aria-labelledby="tab-node" tabindex="0">
+<pre><code><span class="ln">1</span><span class="c">// import the Pulse SDK for Node</span>
+<span class="ln">2</span><span class="c">// initialize it with your project key</span></code></pre>
+          <p class="placeholder-note">Placeholder: the exact two lines for Node are in the docs at <a href="https://docs.pulse.dev">docs.pulse.dev</a>.</p>
+        </div>
+        <div class="panel" role="tabpanel" id="panel-python" aria-labelledby="tab-python" tabindex="0" hidden>
+<pre><code><span class="ln">1</span><span class="c"># import the Pulse SDK for Python</span>
+<span class="ln">2</span><span class="c"># initialize it with your project key</span></code></pre>
+          <p class="placeholder-note">Placeholder: the exact two lines for Python are in the docs at <a href="https://docs.pulse.dev">docs.pulse.dev</a>.</p>
+        </div>
+        <div class="panel" role="tabpanel" id="panel-go" aria-labelledby="tab-go" tabindex="0" hidden>
+<pre><code><span class="ln">1</span><span class="c">// import the Pulse SDK for Go</span>
+<span class="ln">2</span><span class="c">// initialize it with your project key</span></code></pre>
+          <p class="placeholder-note">Placeholder: the exact two lines for Go are in the docs at <a href="https://docs.pulse.dev">docs.pulse.dev</a>.</p>
+        </div>
+        <div class="panel" role="tabpanel" id="panel-java" aria-labelledby="tab-java" tabindex="0" hidden>
+<pre><code><span class="ln">1</span><span class="c">// import the Pulse SDK for Java</span>
+<span class="ln">2</span><span class="c">// initialize it with your project key</span></code></pre>
+          <p class="placeholder-note">Placeholder: the exact two lines for Java are in the docs at <a href="https://docs.pulse.dev">docs.pulse.dev</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="retention">
+    <div class="wrap two-col">
+      <div>
+        <div class="section-head">
+          <h2>Retention and security</h2>
+          <p>How long the series are kept depends on the plan. Business keeps 13 months, enough to compare against the same week last year.</p>
+        </div>
+        <table class="ret">
+          <caption>Retention by plan</caption>
+          <thead><tr><th scope="col">Plan</th><th scope="col">Retention</th></tr></thead>
+          <tbody>
+            <tr><td>Free</td><td>7 days</td></tr>
+            <tr><td>Team</td><td>30 days</td></tr>
+            <tr><td>Business</td><td>13 months</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <h3>Compliance</h3>
+        <p style="margin-top:12px; color: var(--text-2);">A SOC 2 Type II audit is in progress. Pulse is not yet certified, and we would rather say so here than imply otherwise. Single sign-on is available on the Business plan.</p>
+        <div class="status"><span class="dot" aria-hidden="true"></span>SOC 2 Type II: audit in progress, not yet certified</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Pricing</h2>
+        <p>Three plans, priced by endpoint count. Every Business trial runs for 14 days with the full plan.</p>
+      </div>
+      <div class="plans">
+        <div class="plan">
+          <h3>Free</h3>
+          <div class="price">$0</div>
+          <ul>
+            <li>3 endpoints</li>
+            <li>7-day retention</li>
+          </ul>
+          <a class="btn" href="#pricing-note">Create a free project</a>
+        </div>
+        <div class="plan">
+          <h3>Team</h3>
+          <div class="price">$49<span class="per">per month</span></div>
+          <ul>
+            <li>50 endpoints</li>
+            <li>5 seats</li>
+            <li>30-day retention</li>
+          </ul>
+          <a class="btn" href="#pricing-note">Choose Team</a>
+        </div>
+        <div class="plan featured">
+          <h3>Business</h3>
+          <div class="price">$199<span class="per">per month</span></div>
+          <ul>
+            <li>Unlimited endpoints</li>
+            <li>13-month retention</li>
+            <li>SSO</li>
+          </ul>
+          <a class="btn btn-primary" href="#pricing-note">Start a 14-day trial</a>
+          <p class="fine">The trial runs on the full Business plan.</p>
+        </div>
+      </div>
+      <p class="plans-note" id="pricing-note">Sign-up links are placeholders in this build. Setup instructions for every plan are at <a href="https://docs.pulse.dev">docs.pulse.dev</a>.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="col">
+      <a class="brand" href="#" aria-label="Pulse home">
+        <svg width="24" height="17" viewBox="0 0 28 20" aria-hidden="true">
+          <path d="M1 13h7l3-10 5 16 3-9 2 3h6" fill="none" stroke="#f0b43f" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+        </svg>
+        Pulse
+      </a>
+      <span>API monitoring for engineering teams.</span>
+      <span class="muted">Founded 2025. A team of eight in Toronto.</span>
+    </div>
+    <div class="col">
+      <a href="https://docs.pulse.dev">Documentation</a>
+      <a href="#install">Install</a>
+      <a href="#pricing">Pricing</a>
+    </div>
+    <div class="col">
+      <a href="#records">What it records</a>
+      <a href="#alerts">Alerts</a>
+      <a href="#retention">Retention and security</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* Mobile menu */
+  var menuBtn = document.querySelector('.menu-btn');
+  var nav = document.getElementById('nav');
+  if (menuBtn && nav) {
+    menuBtn.addEventListener('click', function () {
+      var open = nav.getAttribute('data-open') === 'true';
+      nav.setAttribute('data-open', open ? 'false' : 'true');
+      menuBtn.setAttribute('aria-expanded', open ? 'false' : 'true');
+      menuBtn.textContent = open ? 'Menu' : 'Close';
+    });
+    nav.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A' && window.innerWidth < 720) {
+        nav.setAttribute('data-open', 'false');
+        menuBtn.setAttribute('aria-expanded', 'false');
+        menuBtn.textContent = 'Menu';
+      }
+    });
+  }
+
+  /* SDK tabs */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  function selectTab(tab) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+  }
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener('click', function () { selectTab(tab); });
+    tab.addEventListener('keydown', function (e) {
+      var j = i;
+      if (e.key === 'ArrowRight') j = (i + 1) % tabs.length;
+      else if (e.key === 'ArrowLeft') j = (i - 1 + tabs.length) % tabs.length;
+      else if (e.key === 'Home') j = 0;
+      else if (e.key === 'End') j = tabs.length - 1;
+      else return;
+      e.preventDefault();
+      selectTab(tabs[j]);
+      tabs[j].focus();
+    });
+  });
+
+  /* Hero chart: 5xx rate for POST /v1/checkout, Oct 14 06:00–11:00, 5-minute points.
+     Sample data. The incident window (08:12–08:47) and deploy #4821 come from the brief;
+     the per-point values are illustrative. */
+  var START = 6 * 60, END = 11 * 60, STEP = 5;
+  var INCIDENT = [8 * 60 + 12, 8 * 60 + 47];
+  var DEPLOY = 8 * 60 + 9;
+  var spike = { 26: 0.41, 27: 3.9, 28: 5.6, 29: 5.9, 30: 5.4, 31: 5.7, 32: 5.2, 33: 4.1, 34: 0.62 };
+  var data = [];
+  for (var i = 0, t = START; t <= END; i++, t += STEP) {
+    var v = spike[i] !== undefined ? spike[i]
+      : 0.34 + 0.09 * Math.sin(i * 0.9) + ((i * 7919) % 13) / 13 * 0.12;
+    data.push({ t: t, v: Math.round(v * 100) / 100 });
+  }
+  function hhmm(m) { var h = Math.floor(m / 60), mm = m % 60; return (h < 10 ? '0' : '') + h + ':' + (mm < 10 ? '0' : '') + mm; }
+
+  var chart = document.getElementById('chart');
+  var svg = document.getElementById('chart-svg');
+  var tip = document.getElementById('chart-tip');
+  var NS = 'http://www.w3.org/2000/svg';
+  var pad = { l: 36, r: 12, t: 22, b: 26 };
+  var H = 220, W = 0, yMax = 6.5, active = -1;
+  var els = {};
+
+  function el(name, attrs, parent) {
+    var n = document.createElementNS(NS, name);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    (parent || svg).appendChild(n);
+    return n;
+  }
+  function x(t) { return pad.l + (t - START) / (END - START) * (W - pad.l - pad.r); }
+  function y(v) { return pad.t + (1 - v / yMax) * (H - pad.t - pad.b); }
+
+  function draw() {
+    W = svg.clientWidth || 600;
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    var yTicks = [0, 2, 4, 6];
+    yTicks.forEach(function (v) {
+      el('line', { x1: pad.l, x2: W - pad.r, y1: y(v), y2: y(v), stroke: v === 0 ? '#2d3a4c' : '#1f2a38', 'stroke-width': 1 });
+      var tx = el('text', { x: pad.l - 8, y: y(v) + 4, 'text-anchor': 'end', 'class': 'axis-text' });
+      tx.textContent = v + '%';
+    });
+    var hourStep = W < 560 ? 2 : 1;
+    for (var h = 6; h <= 11; h += hourStep) {
+      var tx2 = el('text', { x: x(h * 60), y: H - 8, 'text-anchor': h === 6 ? 'start' : (h === 11 ? 'end' : 'middle'), 'class': 'axis-text' });
+      tx2.textContent = hhmm(h * 60);
+    }
+    /* incident band */
+    el('rect', { x: x(INCIDENT[0]), y: pad.t, width: x(INCIDENT[1]) - x(INCIDENT[0]), height: H - pad.t - pad.b, fill: 'rgba(238,110,110,0.14)' });
+    el('line', { x1: x(INCIDENT[0]), x2: x(INCIDENT[0]), y1: pad.t, y2: H - pad.b, stroke: '#ee6e6e', 'stroke-width': 1, 'stroke-opacity': 0.6 });
+    el('line', { x1: x(INCIDENT[1]), x2: x(INCIDENT[1]), y1: pad.t, y2: H - pad.b, stroke: '#ee6e6e', 'stroke-width': 1, 'stroke-opacity': 0.6 });
+    /* area + line */
+    var d = '', area = 'M' + x(data[0].t) + ',' + y(0);
+    data.forEach(function (p, i) {
+      d += (i ? 'L' : 'M') + x(p.t).toFixed(1) + ',' + y(p.v).toFixed(1);
+      area += 'L' + x(p.t).toFixed(1) + ',' + y(p.v).toFixed(1);
+    });
+    area += 'L' + x(data[data.length - 1].t) + ',' + y(0) + 'Z';
+    el('path', { d: area, fill: '#f0b43f', 'fill-opacity': 0.1 });
+    el('path', { d: d, fill: 'none', stroke: '#f0b43f', 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' });
+    /* deploy marker */
+    var dx = x(DEPLOY);
+    el('line', { x1: dx, x2: dx, y1: pad.t - 4, y2: H - pad.b, stroke: '#b4c0cd', 'stroke-width': 2 });
+    el('rect', { x: dx - 4, y: pad.t - 10, width: 8, height: 8, fill: '#b4c0cd', rx: 1 });
+    var ml = el('text', { x: dx + 8, y: pad.t - 2, 'class': 'marker-text' });
+    ml.textContent = 'deploy #4821';
+    /* crosshair */
+    els.cross = el('line', { x1: 0, x2: 0, y1: pad.t, y2: H - pad.b, stroke: '#8e9cab', 'stroke-width': 1, visibility: 'hidden' });
+    els.dot = el('circle', { r: 5, fill: '#f0b43f', stroke: '#121922', 'stroke-width': 2, visibility: 'hidden' });
+    if (active >= 0) setActive(active);
+  }
+
+  function setActive(i) {
+    active = i;
+    var p = data[i];
+    chart.setAttribute('data-active', 'true');
+    var px = x(p.t), py = y(p.v);
+    els.cross.setAttribute('x1', px); els.cross.setAttribute('x2', px);
+    els.cross.setAttribute('visibility', 'visible');
+    els.dot.setAttribute('cx', px); els.dot.setAttribute('cy', py);
+    els.dot.setAttribute('visibility', 'visible');
+    while (tip.firstChild) tip.removeChild(tip.firstChild);
+    var b = document.createElement('b'); b.textContent = p.v.toFixed(2) + '%';
+    var s = document.createElement('span'); s.textContent = '5xx rate';
+    var tt = document.createElement('span'); tt.className = 't'; tt.textContent = 'Oct 14, ' + hhmm(p.t);
+    tip.appendChild(b); tip.appendChild(s); tip.appendChild(tt);
+    var tw = tip.offsetWidth || 130;
+    var left = px + 12;
+    if (left + tw > W - pad.r) left = px - tw - 12;
+    tip.style.left = Math.max(0, left) + 'px';
+  }
+  function clear() { active = -1; chart.setAttribute('data-active', 'false'); els.cross.setAttribute('visibility', 'hidden'); els.dot.setAttribute('visibility', 'hidden'); }
+  function nearest(clientX) {
+    var r = svg.getBoundingClientRect();
+    var t = START + (clientX - r.left - pad.l) / (W - pad.l - pad.r) * (END - START);
+    var i = Math.round((t - START) / STEP);
+    return Math.max(0, Math.min(data.length - 1, i));
+  }
+  svg.addEventListener('pointermove', function (e) { setActive(nearest(e.clientX)); });
+  svg.addEventListener('pointerleave', clear);
+  svg.addEventListener('keydown', function (e) {
+    var i = active < 0 ? 26 : active;
+    if (e.key === 'ArrowRight') i = Math.min(data.length - 1, i + 1);
+    else if (e.key === 'ArrowLeft') i = Math.max(0, i - 1);
+    else if (e.key === 'Home') i = 0;
+    else if (e.key === 'End') i = data.length - 1;
+    else if (e.key === 'Escape') { clear(); return; }
+    else return;
+    e.preventDefault();
+    setActive(i);
+  });
+  svg.addEventListener('blur', clear);
+
+  /* table twin, every 15 minutes */
+  var tbody = document.querySelector('#chart-table-el tbody');
+  data.forEach(function (p) {
+    if ((p.t - START) % 15 !== 0) return;
+    var tr = document.createElement('tr');
+    var td1 = document.createElement('td'); td1.textContent = hhmm(p.t);
+    var td2 = document.createElement('td'); td2.textContent = p.v.toFixed(2) + '%';
+    tr.appendChild(td1); tr.appendChild(td2); tbody.appendChild(tr);
+  });
+
+  draw();
+  if ('ResizeObserver' in window) new ResizeObserver(draw).observe(chart);
+  else window.addEventListener('resize', draw);
+})();
+</script>
+</body>
+</html>
