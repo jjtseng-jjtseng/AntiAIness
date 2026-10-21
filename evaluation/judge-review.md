@@ -25,7 +25,8 @@ A fresh agent (same model family, no conversation history, no access to the skil
   "V2": "original",
   "V3": "baseline"
  }
-}```
+}
+```
 
 Prompt: `prompts/judge.md`. Note that this is an AI judgment by a model related to the one that produced the designs; it is used as a second, uncontaminated opinion, not as ground truth. See README.md for the author's own comparison and the limitations.
 

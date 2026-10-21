@@ -1,25 +1,26 @@
 # Third blind review (round 4: clean re-test of skill v1.2)
 
-A fresh Opus 5.5 agent with no access to the skill, the prompts or the variant names reviewed screenshots relabeled V1–V3 in a seeded random order. Its text follows unedited. Label mapping, revealed after the review was written:
+A fresh model 2 agent with no access to the skill, the prompts or the variant names reviewed screenshots relabeled V1–V3 in a seeded random order. Its text follows unedited. Label mapping, revealed after the review was written:
 
 ```
 {
  "A": {
-  "V1": "baseline-opus",
-  "V2": "skilled-v12-opus"
+  "V1": "baseline-m2",
+  "V2": "skilled-v12-m2"
  },
  "C": {
-  "V1": "skilled-v12-opus",
-  "V2": "baseline-opus"
+  "V1": "skilled-v12-m2",
+  "V2": "baseline-m2"
  },
  "E": {
   "V1": "original",
-  "V2": "baseline-opus",
-  "V3": "skilled-v12-opus"
+  "V2": "baseline-m2",
+  "V3": "skilled-v12-m2"
  }
-}```
+}
+```
 
-Variant names: `baseline-opus` = Opus 5.5, no skill. `skilled-v12-opus` = Opus 5.5 with skill v1.2 (no worked examples overlapping the scenarios). `original` = the unmodified page.
+Variant names: `baseline-m2` = model 2, no skill. `skilled-v12-m2` = model 2 with skill v1.2 (no worked examples overlapping the scenarios). `original` = the unmodified page.
 
 Decoded result: **A** baseline > skill v1.2 (small, low confidence). **C** skill v1.2 > baseline (small, low confidence). **E** baseline > skill v1.2 > original (medium confidence between the two improvements; high that both beat the original).
 

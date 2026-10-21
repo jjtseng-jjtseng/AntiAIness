@@ -1,10 +1,10 @@
 # Second judge prompt (re-test of skill v1.1)
 
-Run on a fresh Opus 5.5 agent with screenshots relabeled V1–V4 in a seeded random order (mapping in `../judge-review-2.md`). Variants per scenario:
+Run on a fresh model 2 agent with screenshots relabeled V1–V4 in a seeded random order (mapping in `../judge-review-2.md`). Variants per scenario:
 
-- A, C: Opus 5.5 baseline, Opus 5.5 with skill v1.1, Fable 5.1 with skill v1.0
+- A, C: model 2 baseline, model 2 with skill v1.1, model 1 with skill v1.0
 - E: the original page, plus the same three improvements
-- F, G (vague briefs): Fable 5.1 baseline, Fable 5.1 with skill v1.0
+- F, G (vague briefs): model 1 baseline, model 1 with skill v1.0
 
 Instructions given (abridged; the brief texts were the same as in `judge.md`):
 

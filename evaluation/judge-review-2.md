@@ -1,24 +1,24 @@
 # Second blind review (re-test of skill v1.1, plus vague briefs F and G)
 
-A fresh Opus 5.5 agent with no access to the skill, the prompts or the variant names reviewed screenshots relabeled V1–V4 in a seeded random order. Its text follows unedited. Label mapping, revealed after the review was written:
+A fresh model 2 agent with no access to the skill, the prompts or the variant names reviewed screenshots relabeled V1–V4 in a seeded random order. Its text follows unedited. Label mapping, revealed after the review was written:
 
 ```
 {
  "A": {
-  "V1": "skilled-v11-opus",
-  "V2": "baseline-opus",
+  "V1": "skilled-v11-m2",
+  "V2": "baseline-m2",
   "V3": "skilled"
  },
  "C": {
-  "V1": "baseline-opus",
-  "V2": "skilled-v11-opus",
+  "V1": "baseline-m2",
+  "V2": "skilled-v11-m2",
   "V3": "skilled"
  },
  "E": {
-  "V1": "skilled-v11-opus",
+  "V1": "skilled-v11-m2",
   "V2": "original",
   "V3": "skilled",
-  "V4": "baseline-opus"
+  "V4": "baseline-m2"
  },
  "F": {
   "V1": "baseline",
@@ -28,9 +28,10 @@ A fresh Opus 5.5 agent with no access to the skill, the prompts or the variant n
   "V1": "skilled",
   "V2": "baseline"
  }
-}```
+}
+```
 
-Variant names: `baseline-opus` = Opus 5.5, no skill. `skilled-v11-opus` = Opus 5.5 with skill v1.1. `skilled` = Fable 5.1 with skill v1.0. `baseline` (F, G) = Fable 5.1, no skill. `original` = the unmodified page.
+Variant names: `baseline-m2` = model 2, no skill. `skilled-v11-m2` = model 2 with skill v1.1. `skilled` = model 1 with skill v1.0. `baseline` (F, G) = model 1, no skill. `original` = the unmodified page.
 
 **Caveat recorded after this review:** skill v1.0 and v1.1 contained worked examples for products close to scenarios A and C. The skill-guided A and C results here are therefore partly contaminated. See README.md, "Contamination".
 

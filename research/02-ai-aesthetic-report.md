@@ -85,6 +85,12 @@ Validation (`../evaluation/`) showed the advice-absorption mechanism happening i
 
 The lesson generalizes: any list of things to avoid becomes a style once a model optimizes against it. The countermeasure is to make *delivery* as explicit as *avoidance*: name the requested character and the visible decision that delivers it, and check the first screenful for it.
 
+Later rounds tested both halves of this. Once the skill named its own over-correction and made delivery an explicit step (v1.1 and later), skill-guided builds stopped converging on one face and palette. Their primary faces included Saira, Andika, Figtree, Atkinson Hyperlegible and Fira Sans, each chosen for its product. The final round also showed which default an unguided strong model now reaches for. Given two vague briefs ("make it look modern", "a Snake game with a nice UI"), it produced the second generation, not the first:
+- cream paper, serif headlines with one italic word, and small monospace labels led by a dash;
+- cream with a terracotta accent around the game.
+
+The blind reviewer had not seen this report. It still called these "the current default editorial palette" and "the current default 'tasteful' palette". **(evidence, n=1 per scenario)**
+
 ## 9. Implications for a skill
 
 1. Teach a **decision procedure** (brief → direction → content inventory → structure → craft → render → diagnose), not a banned list.

@@ -26,7 +26,14 @@ The repository's `CLAUDE.md` and `AGENTS.md` add a one-line pointer so that UI w
 
 For improve requests it first lists what carries your current aesthetic and keeps those carriers. For critique requests it follows `references/diagnostics.md` and returns concrete findings with fixes and a "what to keep" list.
 
-What the evaluation in `evaluation/` found, in short: the skill reliably removes default tells and makes pages more specific to their product; its early versions over-corrected into a quiet house style, which later versions address. Read `evaluation/README.md` before relying on it, including the contamination section.
+What the evaluation in `evaluation/` found, in short:
+
+- The skill reliably removes default tells and makes pages more specific to their product.
+- It helps most on vague briefs ("make it look modern"), where the reviewer preferred the skill-guided build in all four blind comparisons.
+- On precise briefs, against a strong baseline from the same model, its effect on judged quality was small and mixed.
+- Its early versions over-corrected into a quiet house style, which later versions address.
+
+Read `evaluation/README.md` before relying on it, including the contamination section and the limitations.
 
 ## Example prompts
 

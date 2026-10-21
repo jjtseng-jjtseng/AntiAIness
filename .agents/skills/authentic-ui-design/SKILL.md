@@ -3,7 +3,7 @@ name: authentic-ui-design
 description: Design and build websites, web apps, dashboards, game UIs, landing pages and mobile screens with deliberate, product-specific art direction instead of the recognizable AI-default look. Use whenever creating or redesigning any user interface, picking fonts, colors, layout or components, reviewing why a UI "looks AI-generated", improving a design that is polished but generic, or working from user-supplied screenshots, sites or design systems. Preserves the user's requested style (sleek, minimal, playful, retro, luxurious, utilitarian, editorial) rather than imposing a house look.
 license: MIT
 metadata:
-  version: "1.3.0"
+  version: "1.4.0"
   source: https://github.com/jjtseng-jjtseng/AntiAIness
 ---
 
@@ -97,11 +97,12 @@ Guidance:
 - **Shape**: one radius policy from the product's materials. One boundary technique per element class.
 - **Effects** (gradient, blur, glow, grain, glass): only if the direction card names them, with a job, in ≤ 2 places. When the brief asks for them, do them well rather than not at all.
 - **Components**: hover, focus-visible, active, disabled, loading, empty, error. Visible focus rings. Touch targets ≥ 40px.
+- **Metaphors and skeuomorphs** (a device, a desk, a cockpit) carry character, not usability: label the primary action in words, keep score and status readable at the size the metaphor actually renders, and name in text any choice that differs only by color.
 - **Every input modality**: anything driven by keys (games, editors, shortcuts) needs a visible equivalent on touch devices, and copy that matches the device ("tap" vs "press"). Render with touch emulation to check.
 - **Responsive**: design the narrow layout as its own layout. No horizontal overflow at 320/390/768/1024/1440.
 - **Motion**: respond to user actions and data changes; one orchestrated moment at most; respect `prefers-reduced-motion`.
 - **Copy**: sentence case, concrete nouns and verbs, says something only this product could say. No fragment pairs ("A little X. A lot of Y."), no "Your X. Your Y.", no accent-word reflex, no `↗` after every link, no `✳` ornaments, no "Supercharge / Unleash / Elevate / Seamless".
-- **Finish pass**: no half-empty rows (a two-column section with nothing in one column), parallel items aligned (buttons at the same height across pricing cards), no dead zones in app screens, marketing pages end with a plain, specific next step.
+- **Finish pass**: no half-empty rows (a two-column section with nothing in one column), parallel items aligned (buttons at the same height across pricing cards), no dead zones in app screens, marketing pages end with a plain, specific next step, and the ending holds its rank (a closing heading no smaller than the section headings; rules and dividers on the content grid).
 
 ### 5. Render, audit, fix the cause
 
@@ -122,7 +123,7 @@ Ask these of the rendered result. A "yes" in the first four groups must be justi
 - Tracked uppercase micro-labels as a reflex? The accent-word formula on every heading?
 
 **Color and effects**
-- A palette any product could have (indigo gradient; cream + forest green + serif; black + lime + mono)?
+- A palette any product could have (indigo gradient; cream + forest green + serif; black + lime + mono; white + gray bands + framework blue)?
 - Gradients, glows, blur or glass without a named job? The same radius on everything?
 
 **Intent**

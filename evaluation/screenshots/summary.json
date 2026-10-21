@@ -44,7 +44,7 @@
       ]
     }
   },
-  "A-baseline-opus": {
+  "A-baseline-m2": {
     "errors": [],
     "audit": {
       "textEls": 222,
@@ -126,7 +126,7 @@
       ]
     }
   },
-  "A-skilled-v11-opus": {
+  "A-skilled-v11-m2": {
     "errors": [],
     "audit": {
       "textEls": 158,
@@ -163,7 +163,7 @@
       "notes": []
     }
   },
-  "A-skilled-v12-opus": {
+  "A-skilled-v12-m2": {
     "errors": [],
     "audit": {
       "textEls": 164,
@@ -317,7 +317,7 @@
       ]
     }
   },
-  "C-baseline-opus": {
+  "C-baseline-m2": {
     "errors": [],
     "audit": {
       "textEls": 62,
@@ -394,7 +394,7 @@
       "notes": []
     }
   },
-  "C-skilled-v11-opus": {
+  "C-skilled-v11-m2": {
     "errors": [],
     "audit": {
       "textEls": 59,
@@ -431,7 +431,7 @@
       "notes": []
     }
   },
-  "C-skilled-v12-opus": {
+  "C-skilled-v12-m2": {
     "errors": [],
     "audit": {
       "textEls": 50,
@@ -577,7 +577,7 @@
         "family": "Fraunces"
       },
       "glyphTotal": 10,
-      "eyebrows": 9,
+      "eyebrows": 12,
       "accentWords": "7/8",
       "cardGrids": 4,
       "grads": 0,
@@ -589,14 +589,14 @@
       "notes": [
         "21 distinct font sizes. A scale of 5–7 reads as designed.",
         "10 ornament glyphs in visible text (↗6 ·3 ↑1). Arrows-after-links and ✳/✦ ornaments are a known tell.",
-        "9 tracked-uppercase eyebrows directly above headings. Keep only where the label carries a real category.",
+        "12 eyebrow labels directly above headings (tracked uppercase, or small mono / rule-led labels). Keep only where the label carries a real category.",
         "7/8 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all.",
         "4 grids of 3–8 identical styled cards. Check each: would a list, table, paragraph or single image serve better?",
         "18 uppercase text elements. Tracked-caps micro-labels as the universal label style is a tell."
       ]
     }
   },
-  "E-baseline-opus": {
+  "E-baseline-m2": {
     "errors": [],
     "audit": {
       "textEls": 150,
@@ -721,7 +721,7 @@
       ]
     }
   },
-  "E-skilled-v11-opus": {
+  "E-skilled-v11-m2": {
     "errors": [],
     "audit": {
       "textEls": 148,
@@ -758,7 +758,7 @@
       "notes": []
     }
   },
-  "E-skilled-v12-opus": {
+  "E-skilled-v12-m2": {
     "errors": [],
     "audit": {
       "textEls": 148,
@@ -840,7 +840,7 @@
       ]
     }
   },
-  "F-baseline-opus": {
+  "F-baseline-m2": {
     "errors": [],
     "audit": {
       "textEls": 144,
@@ -866,7 +866,7 @@
         "family": "\"Instrument Serif\""
       },
       "glyphTotal": 1,
-      "eyebrows": 0,
+      "eyebrows": 5,
       "accentWords": "4/5",
       "cardGrids": 1,
       "grads": 5,
@@ -877,7 +877,8 @@
       "height": 4777,
       "notes": [
         "15 distinct font sizes. A scale of 5–7 reads as designed.",
-        "4/5 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all."
+        "4/5 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all.",
+        "5 eyebrow labels directly above headings (tracked uppercase, or small mono / rule-led labels). Keep only where the label carries a real category."
       ]
     }
   },
@@ -919,7 +920,7 @@
       "notes": []
     }
   },
-  "F-skilled-v13-opus": {
+  "F-skilled-v13-m2": {
     "errors": [],
     "audit": {
       "textEls": 115,
@@ -998,7 +999,7 @@
       ]
     }
   },
-  "G-baseline-opus": {
+  "G-baseline-m2": {
     "errors": [],
     "audit": {
       "textEls": 31,
@@ -1071,7 +1072,7 @@
       "notes": []
     }
   },
-  "G-skilled-v13-opus": {
+  "G-skilled-v13-m2": {
     "errors": [],
     "audit": {
       "textEls": 32,

@@ -8,7 +8,7 @@ No more Ai slop websites, ui, or games (in terms of how they look/feel). Get rid
 | `.agents/skills/authentic-ui-design/` | The Agent Skill (canonical copy, read by Codex and other Agent-Skills agents) |
 | `.claude/skills/authentic-ui-design/` | Identical copy for Claude Code (`node scripts/sync-skills.js` keeps it in sync) |
 | `research/` | What makes UIs read as AI-generated: analysis of the examples below, the three-layer model, external references |
-| `evaluation/` | Baseline vs skill-guided builds of seven briefs, renders, audit numbers, a blind review, and what changed in the skill as a result |
+| `evaluation/` | Baseline vs skill-guided builds of seven briefs over five rounds, renders, audit numbers, four blind reviews, and what changed in the skill after each |
 | `docs/USAGE.md` | How to invoke the skill in Claude Code and Codex, and how to use it in another repository |
 | `scripts/` | `sync-skills.js` (copy canonical skill to `.claude/`), `check-skills.js` (validate both copies against the Agent Skills spec) |
 | `codecraft.html`, `aj-and-j-construction/`, `flowstate-pf-coach/`, `neon-tetris/`, `raspberry-pi-showcase/`, `red-cross-support/`, `starfall-courier/` | The AI-generated examples studied in `research/`. Preserved as-is |

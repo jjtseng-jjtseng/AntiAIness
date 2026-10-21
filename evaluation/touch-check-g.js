@@ -2,7 +2,7 @@
 const { chromium, devices } = require('/opt/node22/lib/node_modules/playwright');
 (async () => {
   const b = await chromium.launch();
-  for (const v of ['baseline-opus', 'skilled-v13-opus']) {
+  for (const v of ['baseline-m2', 'skilled-v13-m2']) {
     const ctx = await b.newContext({ ...devices['iPhone 13'], reducedMotion: 'reduce' });
     const p = await ctx.newPage();
     const errs = []; p.on('pageerror', e => errs.push(String(e)));

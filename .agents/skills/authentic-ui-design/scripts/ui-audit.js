@@ -84,14 +84,22 @@ const COLLECT = () => {
   const glyphs = (text.match(/[↗↘↖↙→←↑↓✳✦✧✶✷⋆★☆◆◇•·]/g) || []);
   const glyphCounts = {};
   for (const g of glyphs) glyphCounts[g] = (glyphCounts[g] || 0) + 1;
-  // Eyebrow-ish labels: short uppercase tracked text directly before a heading
+  // Eyebrow-ish labels directly before a heading: short tracked uppercase text, or the
+  // sentence-case variant (a small monospace label, or one led by a drawn rule or a dash)
   let eyebrows = 0;
   for (const h of document.querySelectorAll('h1,h2,h3')) {
     const prev = h.previousElementSibling;
-    if (!prev) continue;
+    if (!prev || !vis(prev)) continue;
     const cs = getComputedStyle(prev);
     const t = prev.textContent.trim();
-    if (t && t.length < 60 && (cs.textTransform === 'uppercase' || /^[A-Z0-9 \/·.\-&,'’]+$/.test(t)) && parseFloat(cs.letterSpacing || '0') > 0) eyebrows++;
+    if (!t || t.length >= 60) continue;
+    const tracked = (cs.textTransform === 'uppercase' || /^[A-Z0-9 \/·.\-&,'’]+$/.test(t)) && parseFloat(cs.letterSpacing || '0') > 0;
+    const size = parseFloat(cs.fontSize), hSize = parseFloat(getComputedStyle(h).fontSize);
+    const mono = /mono|courier|consolas|menlo/i.test(cs.fontFamily);
+    const before = getComputedStyle(prev, '::before');
+    const rule = (before.content !== 'none' && before.content !== 'normal' && parseFloat(before.height) <= 2 && parseFloat(before.width) >= 8) || /^[—–]/.test(t);
+    const label = !/[.!?]$/.test(t) && size <= 14 && size < hSize * 0.6 && (mono || rule);
+    if (tracked || label) eyebrows++;
   }
   // Repeated card grids: parents with >=3 same-tag children that each have border or shadow or background and similar size
   let cardGrids = 0;
@@ -156,7 +164,7 @@ const COLLECT = () => {
   if (r.distinctSizes > 9) notes.push(`${r.distinctSizes} distinct font sizes. A scale of 5–7 reads as designed.`);
   if (r.h1 && parseFloat(r.h1.size) > 64 && pct(r.under12) > 30) notes.push(`h1 is ${r.h1.size} while most text is small: poster-scale contrast. Bring display and body closer.`);
   if (r.glyphTotal >= 6) notes.push(`${r.glyphTotal} ornament glyphs in visible text (${Object.entries(r.glyphs).map(([k, v]) => k + v).join(' ')}). Arrows-after-links and ✳/✦ ornaments are a known tell.`);
-  if (r.eyebrows >= 3) notes.push(`${r.eyebrows} tracked-uppercase eyebrows directly above headings. Keep only where the label carries a real category.`);
+  if (r.eyebrows >= 3) notes.push(`${r.eyebrows} eyebrow labels directly above headings (tracked uppercase, or small mono / rule-led labels). Keep only where the label carries a real category.`);
   if (r.headings && r.accentWords / r.headings >= 0.5) notes.push(`${r.accentWords}/${r.headings} h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all.`);
   if (r.cardGrids >= 3) notes.push(`${r.cardGrids} grids of 3–8 identical styled cards. Check each: would a list, table, paragraph or single image serve better?`);
   if (r.grads >= 6) notes.push(`${r.grads} gradient backgrounds. Gradients should have ≤ 2 named jobs.`);
