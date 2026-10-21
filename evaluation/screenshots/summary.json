@@ -840,6 +840,47 @@
       ]
     }
   },
+  "F-baseline-opus": {
+    "errors": [],
+    "audit": {
+      "textEls": 144,
+      "tiny": 2,
+      "under12": 16,
+      "distinctSizes": 15,
+      "sizes": [
+        "14px×27",
+        "13px×25",
+        "12px×18",
+        "15px×18",
+        "17px×15",
+        "11px×12"
+      ],
+      "families": [
+        "Geist×100",
+        "Geist Mono×32",
+        "Instrument Serif×12"
+      ],
+      "h1": {
+        "text": "Write it down.Find it again.",
+        "size": "116px",
+        "family": "\"Instrument Serif\""
+      },
+      "glyphTotal": 1,
+      "eyebrows": 0,
+      "accentWords": "4/5",
+      "cardGrids": 1,
+      "grads": 5,
+      "glows": 0,
+      "blurs": 1,
+      "distinctRadii": 13,
+      "overflowX": false,
+      "height": 4777,
+      "notes": [
+        "15 distinct font sizes. A scale of 5–7 reads as designed.",
+        "4/5 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all."
+      ]
+    }
+  },
   "F-skilled": {
     "errors": [],
     "audit": {
@@ -876,6 +917,46 @@
       "overflowX": false,
       "height": 3849,
       "notes": []
+    }
+  },
+  "F-skilled-v13-opus": {
+    "errors": [],
+    "audit": {
+      "textEls": 115,
+      "tiny": 0,
+      "under12": 0,
+      "distinctSizes": 8,
+      "sizes": [
+        "15px×54",
+        "17px×28",
+        "13px×22",
+        "20px×3",
+        "36px×3",
+        "26px×2"
+      ],
+      "families": [
+        "Atkinson Hyperlegible Next×104",
+        "Atkinson Hyperlegible Mono×10",
+        "Arial×1"
+      ],
+      "h1": {
+        "text": "The gate code, the flight time, the book someone recommended.",
+        "size": "60px",
+        "family": "\"Atkinson Hyperlegible Next\""
+      },
+      "glyphTotal": 0,
+      "eyebrows": 0,
+      "accentWords": "0/5",
+      "cardGrids": 0,
+      "grads": 3,
+      "glows": 0,
+      "blurs": 0,
+      "distinctRadii": 7,
+      "overflowX": false,
+      "height": 3791,
+      "notes": [
+        "Some paragraphs run ~185 characters per line. Keep running text at 45–90."
+      ]
     }
   },
   "G-baseline": {
@@ -917,6 +998,43 @@
       ]
     }
   },
+  "G-baseline-opus": {
+    "errors": [],
+    "audit": {
+      "textEls": 31,
+      "tiny": 0,
+      "under12": 0,
+      "distinctSizes": 7,
+      "sizes": [
+        "15px×10",
+        "13px×7",
+        "16px×5",
+        "14px×4",
+        "17px×3",
+        "28px×1"
+      ],
+      "families": [
+        "Bricolage Grotesque×28",
+        "JetBrains Mono×3"
+      ],
+      "h1": {
+        "text": "Snake",
+        "size": "56px",
+        "family": "\"Bricolage Grotesque\""
+      },
+      "glyphTotal": 4,
+      "eyebrows": 0,
+      "accentWords": "0/5",
+      "cardGrids": 0,
+      "grads": 0,
+      "glows": 0,
+      "blurs": 0,
+      "distinctRadii": 6,
+      "overflowX": false,
+      "height": 931,
+      "notes": []
+    }
+  },
   "G-skilled": {
     "errors": [],
     "audit": {
@@ -951,6 +1069,43 @@
       "overflowX": false,
       "height": 900,
       "notes": []
+    }
+  },
+  "G-skilled-v13-opus": {
+    "errors": [],
+    "audit": {
+      "textEls": 32,
+      "tiny": 0,
+      "under12": 0,
+      "distinctSizes": 5,
+      "sizes": [
+        "16px×10",
+        "14px×9",
+        "17px×9",
+        "12px×3",
+        "48px×1"
+      ],
+      "families": [
+        "Fira Sans×32"
+      ],
+      "h1": {
+        "text": "Snake",
+        "size": "48px",
+        "family": "\"Fira Sans\""
+      },
+      "glyphTotal": 4,
+      "eyebrows": 0,
+      "accentWords": "0/4",
+      "cardGrids": 0,
+      "grads": 35,
+      "glows": 0,
+      "blurs": 0,
+      "distinctRadii": 8,
+      "overflowX": false,
+      "height": 1071,
+      "notes": [
+        "35 gradient backgrounds. Gradients should have ≤ 2 named jobs."
+      ]
     }
   }
 }
