@@ -24,8 +24,9 @@ This folder holds a small, controlled experiment: the same briefs built by fresh
 | 2 | Fable 5.1 | none vs v1.0 | F, G (vague) | `judge-review-2.md` |
 | 3 | Opus 5.5 | none vs v1.1 | A, C, E | `judge-review-2.md` (with the round 1 skilled builds as a third variant) |
 | 4 | Opus 5.5 | v1.2 (round 3 baselines reused) | A, C, E | `judge-review-3.md` |
+| 5 | Opus 5.5 | none vs v1.3 | F, G (vague) | `judge-review-4.md` |
 
-Output folders: `scenarios/<id>/baseline` and `skilled` are rounds 1–2; `baseline-opus` and `skilled-v11-opus` are round 3; `skilled-v12-opus` is round 4; `E/original` is the unmodified page.
+Output folders: `scenarios/<id>/baseline` and `skilled` are rounds 1–2; `baseline-opus` and `skilled-v11-opus` are round 3 (and `baseline-opus` for F and G is round 5); `skilled-v12-opus` is round 4; `skilled-v13-opus` is round 5; `E/original` is the unmodified page.
 
 ## Measured signals
 
@@ -116,7 +117,33 @@ v1.2 replaces the three direction cards with unrelated products (an electric-mot
 
 ## Round 4 (skill v1.2, Opus 5.5): clean re-test
 
-Pending. This section is completed when the round 4 builds and review finish.
+Same briefs as rounds 1 and 3; Opus 5.5 baselines from round 3; skill v1.2 with no overlapping examples. Reviewed blind against the baseline only (and the original page for E).
+
+| Variant | Text under 11px | Font sizes | Ornament glyphs | Eyebrows | Accent-word headings | Identical card grids | Gradients | Primary faces |
+|---|---|---|---|---|---|---|---|---|
+| A skilled v1.2 (Opus) | 0/164 (0%) | 7 | 0 | 0 | 0/6 | 1 | 3 | Archivo, JetBrains Mono |
+| C skilled v1.2 (Opus) | 0/50 (0%) | 9 | 0 | 0 | 0/4 | 3† | 0 | Andika, Baloo 2 |
+| E skilled v1.2 (Opus) | 0/148 (0%) | 7 | 0 | 0 | 1/8 | 0 | 0 | Nunito Sans, Gelasio |
+
+† The answer tiles and mode choices, which are legitimately parallel.
+
+| Scenario | Ranking (best first) | Reviewer's confidence | The reviewer's reasons, condensed |
+|---|---|---|---|
+| A sleek tech | **baseline** > skill v1.2 | low, "small difference" | The baseline "delivers every word of the brief, including 'a bit futuristic'" with lime-on-black and instrument framing; the skill-guided page is the better product demo (deploy, latency, 5xx and incident on one axis, a working alert rule) but "futuristic shows up only in the glowing p95 line" and "sky-blue on navy reads as standard SaaS" |
+| C kids' game | **skill v1.2** > baseline | low, "small difference" | The skill-guided game's "core ideas come from the subject itself" (a base-ten unit cube as mascot, digits colored by place value, carrying explained in tens and ones); the baseline is more polished and more colorful and uses green for correct, where the skill-guided game used yellow |
+| E improve existing | **baseline** > skill v1.2 > original | medium between the two; high that both beat the original | The baseline kept the hero mockup and annotated it with the studio's reasoning, which "shows the studio's expertise instead of claiming it"; the skill-guided page kept more of the original's accents and has the best path to action, but its text-only hero "gives a design studio little visual evidence of its own craft" |
+
+What this means:
+
+- **Against a strong same-model baseline on a precise brief, the skill's effect on judged quality is small and mixed.** Opus 5.5 with a detailed brief and the common constraints already avoids most surface tells and produces specific work. The skill still removed the remaining measurable tells (the A baseline had 7 eyebrows, 10 ornament glyphs and 37 gradients; the skill-guided page had none), but the reviewer did not reward that by itself.
+- **The skill's remaining bias is restraint.** Where the baseline won, it committed harder to the requested genre (A) or turned decoration into evidence instead of removing it (E). Where the skill won, its idea came from the subject (C).
+- **Contamination mattered less than feared for A.** Without the leaked example, the v1.2 build still made the deploy-marker chart the hero, because the brief itself names deploy markers and the causing deploy. It also chose the same Archivo + JetBrains Mono pairing as the baseline, so the model's own type defaults persist under the skill.
+
+Changes in v1.3, each from a reviewer's reason above: "genre vocabulary is allowed" (use the requested genre on purpose; distinctiveness comes from the product's material); "turn decoration into evidence before deleting it"; "keep semantic colors conventional"; matching rows in the over-correction table. v1.3 is tested only on the vague briefs in round 5.
+
+## Round 5 (skill v1.3, Opus 5.5): vague briefs
+
+Pending. This section is completed when the round 5 builds and review finish.
 
 ## Limitations
 
