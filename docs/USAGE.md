@@ -18,13 +18,15 @@ The repository's `CLAUDE.md` and `AGENTS.md` add a one-line pointer so that UI w
 
 ## What it does when it runs
 
-1. Writes a short brief (what the product does, who uses it, the requested aesthetic, what content is real).
-2. Writes a 6–10 line "direction card" (memorable thing, type, color roles, shape, density, imagery, motion, voice, conventions kept), each line justified by the brief.
+1. Writes a short brief (what the product does, who uses it, the requested character in your exact words, what content is real).
+2. Writes a 7–11 line "direction card". The first line turns each of your adjectives into a visible decision ("futuristic → a squared display face and one luminous accent on live data"). The rest covers the memorable thing, type, color roles and proportions, shape, density, imagery, motion, voice and the conventions kept on purpose.
 3. Builds the structure from a content inventory, not a template.
-4. Executes with the craft rules (type scale and sizes, color roles, spacing, states, responsive, accessibility).
-5. Renders, runs the default-tells checklist, diagnoses by layer, fixes causes.
+4. Executes with the craft rules (type scale and sizes, color, spacing, states, touch and keyboard, responsive, accessibility) and a finish pass.
+5. Renders, runs the checklist (tells by layer, then fidelity and finish), and fixes causes rather than adding effects.
 
-For critique requests it follows `references/diagnostics.md` and returns concrete findings with fixes and a "what to keep" list.
+For improve requests it first lists what carries your current aesthetic and keeps those carriers. For critique requests it follows `references/diagnostics.md` and returns concrete findings with fixes and a "what to keep" list.
+
+What the evaluation in `evaluation/` found, in short: the skill reliably removes default tells and makes pages more specific to their product; its early versions over-corrected into a quiet house style, which later versions address. Read `evaluation/README.md` before relying on it, including the contamination section.
 
 ## Example prompts
 
