@@ -181,6 +181,9 @@ button { font: inherit; color: inherit; }
   font-family: var(--mono); font-size: 15px; color: var(--ink);
 }
 .q:hover, .q[aria-pressed="true"] { background: var(--marker); color: var(--on-marker); }
+@media (prefers-color-scheme: dark) {
+  .q:not(:hover):not([aria-pressed="true"]) { background: linear-gradient(transparent 80%, var(--marker) 80%, var(--marker) 92%, transparent 92%); }
+}
 
 /* ---------- demo app ---------- */
 .demo { padding-bottom: 8px; }
@@ -284,8 +287,7 @@ mark { background: var(--marker); color: var(--on-marker); border-radius: 2px; p
   font-size: 17px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere;
   outline: none; min-height: 160px; padding-bottom: 8px;
 }
-.pane-ed:focus-within .ed-scroll { box-shadow: inset 0 0 0 2px var(--pen); }
-.pane-ed:focus-within .ed-scroll:has(.back:focus) { box-shadow: none; }
+.ed-scroll:has(#title:focus, #body:focus) { box-shadow: inset 0 0 0 2px var(--pen); }
 .body > div { position: relative; margin: 0 0 6px; }
 .body > [data-t="h"] { font-size: 20px; font-weight: 700; line-height: 1.3; margin: 20px 0 6px; }
 .body > [data-t="h"]:first-child { margin-top: 0; }
@@ -330,7 +332,7 @@ mark { background: var(--marker); color: var(--on-marker); border-radius: 2px; p
   background: var(--pen-soft); border: 0; color: var(--pen); font-weight: 650;
 }
 .chip-link:hover { color: var(--pen-strong); }
-.demo-note { margin-top: 14px; font-size: 13px; color: var(--ink-2); }
+.demo-note { margin-top: 14px; max-width: 60em; font-size: 13px; color: var(--ink-2); }
 
 @media (max-width: 1079px) {
   .app {
@@ -434,7 +436,7 @@ code {
 .mini-foot { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-2); }
 .mini-foot .chip-link { min-height: 28px; font-size: 13px; cursor: default; display: inline-flex; align-items: center; margin-left: 6px; }
 .minis:nth-child(1) .mini:nth-child(2) { margin-top: 72px; }
-.connector { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: visible; }
+.connector { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; overflow: visible; }
 .connector path { fill: none; stroke: var(--pen); stroke-width: 1.5; stroke-dasharray: 4 4; }
 .connector circle { fill: var(--pen); }
 .org-figure figcaption { margin-top: 18px; font-size: 15px; color: var(--ink-2); }
@@ -774,8 +776,11 @@ code {
     return out + esc(s.slice(i));
   }
   function snippet(n) {
-    const t = [...frag(n.body).children].map(d => d.textContent.replace(/\s+/g, ' ').trim()).filter(Boolean)
-      .map(x => /[.!?:,;…”)]$/.test(x) || /^#\S+$/.test(x) ? x : x + '.').join(' ');
+    const t = [...frag(n.body).children].map(d => {
+      const x = d.textContent.replace(/\s+/g, ' ').trim();
+      if (!x || /[.!?:,;…”)]$/.test(x) || /^#\S+$/.test(x)) return x;
+      return x + (d.dataset.t === 'h' ? ':' : d.dataset.t === 'p' ? '.' : ',');
+    }).filter(Boolean).join(' ');
     if (!t) return '<em>No text yet</em>';
     if (query) {
       const j = t.toLowerCase().indexOf(query);
@@ -1082,7 +1087,10 @@ code {
     announce(`${done ? 'Checked' : 'Unchecked'}: ${b.textContent.trim() || 'to-do'}`);
   }
 
+  let swallowSpace = false;
   body.addEventListener('beforeinput', e => {
+    const swallow = swallowSpace; swallowSpace = false;
+    if (swallow && e.inputType === 'insertText' && e.data === ' ') { e.preventDefault(); return; }
     if (e.inputType === 'insertParagraph') { e.preventDefault(); splitBlock(); save(); }
   });
   body.addEventListener('keydown', e => {
@@ -1103,7 +1111,7 @@ code {
     if (r && r.collapsed && r.startContainer.nodeType === 3 && r.startOffset > 0) {
       const ch = r.startContainer.data[r.startOffset - 1];
       if (ch === ' ' || ch === ' ') { applyBlockRule() || applyTagRule(); }
-      else if (ch === ']') applyLinkRule();
+      else if (ch === ']') swallowSpace = applyLinkRule();
     }
     save();
   });
@@ -1209,14 +1217,13 @@ code {
   function drawConnector() {
     const a = $('#mini-link'), b = $('#mini-back');
     const cols = getComputedStyle(minis).gridTemplateColumns.split(' ').length;
-    if (cols < 2) { svg.innerHTML = ''; return; }
+    if (cols < 2) { svg.innerHTML = ''; svg.removeAttribute('viewBox'); return; }
     const o = minis.getBoundingClientRect(), ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
     const x1 = ra.right - o.left + 6, y1 = ra.top + ra.height / 2 - o.top;
     const card = b.closest('.mini').getBoundingClientRect();
     const x2 = card.left - o.left, y2 = rb.top + rb.height / 2 - o.top;
     const dx = Math.max(40, (x2 - x1) * 0.5);
     svg.setAttribute('viewBox', `0 0 ${o.width} ${o.height}`);
-    svg.setAttribute('width', o.width); svg.setAttribute('height', o.height);
     svg.innerHTML = `<path d="M${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}"/>` +
       `<circle cx="${x1}" cy="${y1}" r="3.5"/><circle cx="${x2}" cy="${y2}" r="3.5"/>`;
   }
