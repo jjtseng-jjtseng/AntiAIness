@@ -1,0 +1,47 @@
+{
+  "D-baseline": {
+    "errors": [],
+    "audit": {
+      "textEls": 49,
+      "tiny": 21,
+      "under12": 21,
+      "distinctSizes": 11,
+      "sizes": [
+        "10px×19",
+        "18px×6",
+        "20px×5",
+        "16px×4",
+        "22px×4",
+        "14px×3"
+      ],
+      "families": [
+        "Press Start 2P×29",
+        "VT323×20"
+      ],
+      "h1": {
+        "text": "Hollow Vale",
+        "size": "72px",
+        "family": "\"Press Start 2P\""
+      },
+      "glyphTotal": 9,
+      "eyebrows": 0,
+      "accentWords": "2/3",
+      "cardGrids": 0,
+      "grads": 2,
+      "glows": 18,
+      "blurs": 0,
+      "distinctRadii": 0,
+      "overflowX": false,
+      "height": 2373,
+      "notes": [
+        "43% of text elements render under 11px (real sites: 0–5%). Raise label and body sizes; aim for ≤ 7 sizes.",
+        "11 distinct font sizes. A scale of 5–7 reads as designed.",
+        "h1 is 72px while most text is small: poster-scale contrast. Bring display and body closer.",
+        "9 ornament glyphs in visible text (·5 ↑2 ↓2). Arrows-after-links and ✳/✦ ornaments are a known tell.",
+        "2/3 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all.",
+        "18 glow-style shadows (0 0 Npx). Only things that emit light should glow.",
+        "24 uppercase text elements. Tracked-caps micro-labels as the universal label style is a tell."
+      ]
+    }
+  }
+}

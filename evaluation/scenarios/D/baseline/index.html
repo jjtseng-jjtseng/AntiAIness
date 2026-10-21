@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hollow Vale</title>
+<meta name="description" content="UI mock for Hollow Vale, a browser roguelike dungeon crawler: title screen, in-game HUD and pause menu.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* 16-color palette */
+    --void: #0b0a12;
+    --shadow: #1a1726;
+    --slate: #2b2640;
+    --stone: #45405c;
+    --stone-lt: #6e6a86;
+    --ash: #a39e8f;
+    --bone: #e8dcc0;
+    --ivory: #fff6e0;
+    --blood-dk: #5a1e2a;
+    --blood: #d84a3f;
+    --ember: #e8743c;
+    --gold: #f0c040;
+    --moss-dk: #2f5a3a;
+    --moss: #6fae4a;
+    --cold: #2f5c8f;
+    --ice: #7fc8e8;
+
+    --font-pixel: 'Press Start 2P', 'Courier New', monospace;
+    --font-term: 'VT323', 'Courier New', monospace;
+    --px: 4px;
+    --dither: repeating-conic-gradient(var(--void) 0 25%, transparent 0 50%) 0 0 / 4px 4px;
+    color-scheme: dark;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { background: var(--void); scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--bone);
+    font-family: var(--font-term);
+    font-size: 22px;
+    line-height: 1.2;
+    background-color: var(--void);
+    background-image:
+      repeating-linear-gradient(0deg, transparent 0 3px, rgba(11, 10, 18, .45) 3px 4px);
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: unset;
+    overflow-x: hidden;
+  }
+
+  svg { display: block; shape-rendering: crispEdges; }
+  .scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 3px;
+  }
+
+  /* ---------- page chrome: a build banner and the three screens ---------- */
+  .build {
+    display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: baseline;
+    width: min(100% - 32px, 1200px);
+    margin: 28px auto 0;
+    font: 10px/1.6 var(--font-pixel);
+    color: var(--ash);
+    text-transform: uppercase;
+  }
+  .build b { color: var(--bone); font-weight: normal; }
+  .build nav { margin-left: auto; }
+  .build nav a {
+    color: var(--ash); text-decoration: none; padding: 6px 8px; display: inline-block;
+  }
+  .build nav a:hover { color: var(--ivory); }
+
+  .screen {
+    position: relative;
+    width: min(100% - 32px, 1200px);
+    margin: 44px auto 64px;
+    background: var(--shadow);
+    border: var(--px) solid var(--stone);
+    box-shadow:
+      0 0 0 var(--px) var(--void),
+      0 0 0 calc(var(--px) * 2) var(--slate),
+      calc(var(--px) * 3) calc(var(--px) * 3) 0 calc(var(--px) * 2) var(--void);
+  }
+  .screen::before, .screen::after {
+    content: ""; position: absolute; width: 8px; height: 8px; background: var(--stone-lt);
+    box-shadow: 2px 2px 0 var(--void); z-index: 3;
+  }
+  .screen::before { right: -4px; top: -4px; }
+  .screen::after  { right: -4px; bottom: -4px; }
+
+  .tag {
+    position: absolute; left: 12px; top: calc(-1 * var(--px));
+    transform: translateY(-100%);
+    margin: 0; padding: 6px 10px 5px;
+    font: 10px/1 var(--font-pixel);
+    color: var(--ash);
+    text-transform: uppercase; letter-spacing: 1px;
+    background: var(--void);
+    border: var(--px) solid var(--stone);
+    border-bottom: 0;
+  }
+  .tag em { font-style: normal; color: var(--gold); }
+
+  .hints {
+    display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center;
+    margin: 0; padding: 10px 14px;
+    font-size: 20px; color: var(--ash);
+    background: var(--void);
+    border-top: var(--px) solid var(--stone);
+  }
+  kbd {
+    display: inline-block; min-width: 24px; padding: 5px 6px 4px;
+    font: 10px/1 var(--font-pixel); color: var(--bone); text-align: center;
+    background: var(--slate);
+    border: 2px solid var(--stone);
+    box-shadow: inset -2px -2px 0 var(--void), inset 2px 2px 0 var(--stone-lt), 0 2px 0 var(--void);
+    vertical-align: 2px;
+  }
+
+  /* ---------- menus ---------- */
+  .menu { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; justify-items: start; }
+  .menu button {
+    position: relative;
+    display: block;
+    padding: 12px 16px 12px 40px;
+    font: 14px/1 var(--font-pixel);
+    letter-spacing: 1px; text-transform: uppercase; text-align: left;
+    color: var(--bone);
+    background: none; border: 0; cursor: pointer;
+    text-shadow: 3px 3px 0 var(--void);
+  }
+  .menu button::before {
+    content: ""; position: absolute; left: 12px; top: 50%; width: 12px; height: 14px;
+    transform: translateY(-50%);
+    background: var(--gold);
+    clip-path: polygon(0 0, 33.3% 0, 33.3% 14.3%, 66.6% 14.3%, 66.6% 28.6%, 100% 28.6%, 100% 71.4%, 66.6% 71.4%, 66.6% 85.7%, 33.3% 85.7%, 33.3% 100%, 0 100%);
+    opacity: 0;
+  }
+  .menu button:hover, .menu button:focus-visible { color: var(--ivory); }
+  .menu button:hover::before, .menu button:focus-visible::before { opacity: 1; animation: blink 1s steps(1) infinite; }
+  .menu button:active { transform: translate(2px, 2px); }
+  .menu button.danger { color: var(--ember); }
+  .menu button.danger:hover, .menu button.danger:focus-visible { color: var(--ivory); background: var(--blood-dk); }
+
+  /* ---------- 1. title screen ---------- */
+  .title {
+    position: relative; overflow: hidden;
+    aspect-ratio: 16 / 9;
+    display: grid;
+    grid-template-rows: 1fr auto;
+  }
+  .title-body {
+    position: relative; z-index: 1;
+    display: grid; align-content: center; justify-items: center; gap: 32px;
+    padding: 56px 16px 40px;
+    text-align: center;
+  }
+  .logo {
+    margin: 0;
+    font: clamp(28px, 6.2vw, 72px)/1.15 var(--font-pixel);
+    letter-spacing: .04em; text-transform: uppercase;
+    color: var(--bone);
+  }
+  @supports (-webkit-background-clip: text) or (background-clip: text) {
+    .logo span {
+      display: inline-block;
+      background: linear-gradient(var(--ivory) 0 46%, var(--bone) 46% 64%, var(--gold) 64% 100%);
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 4px 0 var(--blood-dk)) drop-shadow(0 4px 0 var(--void));
+    }
+  }
+  .title .menu { gap: 2px; }
+  .title .menu button { font-size: clamp(12px, 1.6vw, 16px); }
+  .lastrun {
+    margin: 0; padding: 8px 14px;
+    font-size: 22px; color: var(--ash);
+    background: var(--void);
+    border: 2px solid var(--slate);
+  }
+  .lastrun b { font-weight: normal; color: var(--bone); }
+  .lastrun .gold { color: var(--gold); }
+  .lastrun .sep { color: var(--stone-lt); padding: 0 .25em; }
+  .title .hints { position: relative; z-index: 1; }
+
+  .ember { animation: rise 6s linear infinite; animation-delay: var(--d, 0s); }
+
+  /* ---------- 2. in-game HUD ---------- */
+  .game { position: relative; aspect-ratio: 16 / 9; overflow: hidden; }
+  .vp { position: absolute; inset: 0; }
+
+  .panel {
+    position: absolute; z-index: 2;
+    padding: 10px 12px;
+    background: var(--shadow);
+    border: 2px solid var(--stone);
+    box-shadow: inset -2px -2px 0 var(--void), inset 2px 2px 0 var(--slate), 4px 4px 0 var(--void);
+  }
+  .lbl {
+    display: block; margin: 0 0 4px;
+    font: 10px/1 var(--font-pixel); color: var(--ash); text-transform: uppercase; letter-spacing: 1px;
+  }
+  .val { font-size: 24px; color: var(--bone); }
+  .val .gold { color: var(--gold); }
+
+  .stats { left: 16px; top: 16px; width: 272px; display: grid; gap: 10px; }
+  .stat { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; align-items: end; }
+  .stat .val { line-height: 1; }
+  .bar {
+    grid-column: 1 / -1; position: relative;
+    height: 16px;
+    background: var(--blood-dk);
+    border: 2px solid var(--stone);
+    box-shadow: inset 0 0 0 1px var(--void);
+  }
+  .bar > i {
+    position: absolute; inset: 1px auto 1px 1px; width: var(--pct, 50%);
+    background: var(--blood);
+    box-shadow: inset 0 3px 0 var(--ember), inset 0 -2px 0 var(--blood-dk);
+  }
+  .bar::after {
+    content: ""; position: absolute; inset: 1px;
+    background: repeating-linear-gradient(90deg, transparent 0 calc(10% - 2px), var(--void) 0 10%);
+    pointer-events: none;
+  }
+  .pips { display: flex; gap: 4px; grid-column: 1 / -1; margin: 0; padding: 0; list-style: none; }
+  .pips li {
+    width: 24px; height: 14px;
+    background: var(--slate);
+    border: 2px solid var(--stone);
+    box-shadow: inset 0 0 0 1px var(--void);
+  }
+  .pips li.on { background: var(--moss); box-shadow: inset 0 3px 0 var(--ivory), inset 0 -3px 0 var(--moss-dk); }
+
+  .run { right: 16px; top: 16px; display: grid; grid-auto-flow: column; gap: 18px; text-align: right; }
+  .run .val { font-size: 28px; line-height: 1; }
+
+  .log { left: 16px; bottom: 16px; width: 300px; font-size: 21px; }
+  .log ul { list-style: none; margin: 0; padding: 0; }
+  .log li { color: var(--bone); }
+  .log li::before { content: ">"; color: var(--stone-lt); margin-right: .4em; }
+  .log li.muted { color: var(--ash); }
+  .log .cursor { color: var(--gold); animation: blink 1s steps(1) infinite; }
+
+  .items { left: 50%; bottom: 16px; transform: translateX(-50%); padding: 10px; }
+  .slots { list-style: none; margin: 0; padding: 0; display: flex; gap: 10px; }
+  .slot {
+    position: relative; width: 78px; display: grid; justify-items: center; gap: 4px;
+    text-align: center;
+  }
+  .slot .box {
+    position: relative; width: 56px; height: 56px; display: grid; place-items: center;
+    background: var(--void);
+    border: 2px solid var(--stone);
+    box-shadow: inset 2px 2px 0 var(--slate), inset -2px -2px 0 var(--shadow);
+  }
+  .slot .icon { width: 32px; height: 32px; }
+  .slot .key {
+    position: absolute; left: -2px; top: -2px; padding: 3px 4px 2px;
+    font: 8px/1 var(--font-pixel); color: var(--void);
+    background: var(--ash);
+  }
+  .slot .count {
+    position: absolute; right: -2px; bottom: -2px; padding: 3px 4px 2px;
+    font: 8px/1 var(--font-pixel); color: var(--void);
+    background: var(--gold);
+  }
+  .slot .name { font-size: 18px; color: var(--ash); line-height: 1; }
+
+  .minimap { right: 16px; bottom: 16px; margin: 0; }
+  .minimap .grid {
+    display: grid; grid-template-columns: repeat(9, 12px); grid-auto-rows: 12px; gap: 0;
+    padding: 4px; background: var(--void); border: 2px solid var(--slate);
+  }
+  .minimap i { display: block; }
+  .minimap .c-room { background: var(--stone); box-shadow: inset 0 0 0 1px var(--slate); }
+  .minimap .c-hall { background: var(--slate); }
+  .minimap .c-here { background: var(--gold); animation: blink 1.2s steps(1) infinite; }
+  .minimap figcaption { margin-top: 6px; font-size: 16px; color: var(--ash); text-align: right; }
+
+  /* ---------- 3. pause menu ---------- */
+  .pause { position: relative; aspect-ratio: 16 / 9; overflow: hidden; }
+  .dim {
+    position: absolute; inset: 0; z-index: 1;
+    background: var(--dither);
+  }
+  .dialog {
+    position: absolute; z-index: 2; left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(100% - 32px, 400px);
+    padding: 20px 20px 18px;
+    background: var(--shadow);
+    border: var(--px) solid var(--stone);
+    box-shadow:
+      inset -3px -3px 0 var(--void), inset 3px 3px 0 var(--slate),
+      0 0 0 var(--px) var(--void), 8px 8px 0 var(--px) var(--void);
+  }
+  .dialog h2 {
+    margin: 0 0 16px; padding-bottom: 12px;
+    font: 20px/1 var(--font-pixel); color: var(--ivory); text-align: center; letter-spacing: 2px;
+    text-shadow: 3px 3px 0 var(--blood-dk);
+    border-bottom: 2px solid var(--stone);
+  }
+  .dialog .menu { justify-items: stretch; }
+  .dialog .menu button { width: 100%; }
+  .dialog .hints { margin: 16px -20px -18px; padding: 10px 14px; font-size: 18px; }
+
+  /* ---------- motion ---------- */
+  @keyframes blink { 50% { opacity: 0; } }
+  @keyframes flick { 50% { opacity: 0; } }
+  @keyframes rise {
+    0%   { transform: translateY(0); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { transform: translateY(-40px); opacity: 0; }
+  }
+  .flame-a { animation: flick .9s steps(1) infinite; }
+  .flame-b { animation: flick .9s steps(1) infinite; animation-delay: .45s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; }
+    .flame-b { display: none; }
+    .ember { opacity: 1; }
+  }
+
+  /* ---------- responsive: stack the HUD under 820px ---------- */
+  @media (max-width: 819px) {
+    .game {
+      aspect-ratio: auto; display: grid; gap: 12px; padding: 12px;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "stats run"
+        "vp vp"
+        "items items"
+        "log map";
+    }
+    .vp { position: relative; grid-area: vp; aspect-ratio: 16 / 9; border: 2px solid var(--stone); }
+    .panel { position: static; transform: none; width: auto; }
+    .stats { grid-area: stats; }
+    .run { grid-area: run; grid-auto-flow: row; text-align: left; align-content: start; }
+    .items { grid-area: items; justify-self: center; }
+    .log { grid-area: log; }
+    .minimap { grid-area: map; justify-self: end; }
+    .minimap figcaption { text-align: left; }
+    .pause { aspect-ratio: auto; min-height: 480px; }
+  }
+  @media (max-width: 1000px) {
+    .title { aspect-ratio: auto; min-height: 520px; }
+  }
+  @media (max-width: 520px) {
+    body { font-size: 20px; }
+    .game { grid-template-columns: 1fr; grid-template-areas: "stats" "run" "vp" "items" "log" "map"; }
+    .run { grid-auto-flow: column; }
+    .minimap { justify-self: start; }
+    .slots { gap: 6px; }
+    .slot { width: 70px; }
+    .build nav { margin-left: 0; }
+    .menu button { padding-left: 34px; }
+    .pause { min-height: 460px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="build">
+  <span><b>Hollow Vale</b> · UI mock</span>
+  <span>3 screens · 16 colors</span>
+  <nav aria-label="Jump to screen">
+    <a href="#title">01 Title</a>
+    <a href="#game">02 HUD</a>
+    <a href="#pause">03 Pause</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ============ 01 TITLE SCREEN ============ -->
+  <section class="screen title" id="title" aria-labelledby="logo">
+    <p class="tag"><em>01</em> Title screen</p>
+    
+<svg class="scene" viewBox="0 0 160 90" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="v-d25" width="2" height="2" patternUnits="userSpaceOnUse"><rect width="1" height="1" fill="#0b0a12"/></pattern>
+    <pattern id="v-cold25" width="2" height="2" patternUnits="userSpaceOnUse"><rect width="1" height="1" fill="#2f5c8f"/></pattern>
+    <pattern id="v-cold50" width="2" height="2" patternUnits="userSpaceOnUse"><rect width="1" height="1" fill="#2f5c8f"/><rect x="1" y="1" width="1" height="1" fill="#2f5c8f"/></pattern>
+  </defs>
+  <rect width="160" height="90" fill="#0b0a12"/>
+  <rect x="8" y="6" width="1" height="1" fill="#fff6e0"/><rect x="21" y="14" width="1" height="1" fill="#e8dcc0"/><rect x="37" y="4" width="1" height="1" fill="#a39e8f"/><rect x="52" y="18" width="1" height="1" fill="#fff6e0"/><rect x="70" y="9" width="1" height="1" fill="#e8dcc0"/><rect x="88" y="3" width="1" height="1" fill="#a39e8f"/><rect x="103" y="22" width="1" height="1" fill="#fff6e0"/><rect x="131" y="7" width="1" height="1" fill="#e8dcc0"/><rect x="146" y="16" width="1" height="1" fill="#a39e8f"/><rect x="155" y="30" width="1" height="1" fill="#fff6e0"/><rect x="14" y="28" width="1" height="1" fill="#e8dcc0"/><rect x="61" y="27" width="1" height="1" fill="#a39e8f"/><rect x="98" y="30" width="1" height="1" fill="#fff6e0"/><rect x="119" y="36" width="1" height="1" fill="#e8dcc0"/><rect x="139" y="40" width="1" height="1" fill="#a39e8f"/><rect x="4" y="42" width="1" height="1" fill="#fff6e0"/><rect x="80" y="22" width="1" height="1" fill="#e8dcc0"/>
+  <rect x="124" y="9" width="1" height="1" fill="#e8dcc0"/><rect x="121" y="10" width="7" height="1" fill="#e8dcc0"/><rect x="120" y="11" width="9" height="1" fill="#e8dcc0"/><rect x="119" y="12" width="11" height="1" fill="#e8dcc0"/><rect x="118" y="13" width="13" height="1" fill="#e8dcc0"/><rect x="118" y="14" width="13" height="1" fill="#e8dcc0"/><rect x="118" y="15" width="13" height="1" fill="#e8dcc0"/><rect x="117" y="16" width="15" height="1" fill="#e8dcc0"/><rect x="118" y="17" width="13" height="1" fill="#e8dcc0"/><rect x="118" y="18" width="13" height="1" fill="#e8dcc0"/><rect x="118" y="19" width="13" height="1" fill="#e8dcc0"/><rect x="119" y="20" width="11" height="1" fill="#e8dcc0"/><rect x="120" y="21" width="9" height="1" fill="#e8dcc0"/><rect x="121" y="22" width="7" height="1" fill="#e8dcc0"/><rect x="124" y="23" width="1" height="1" fill="#e8dcc0"/>
+  <rect x="127" y="7" width="1" height="1" fill="#0b0a12"/><rect x="124" y="8" width="7" height="1" fill="#0b0a12"/><rect x="123" y="9" width="9" height="1" fill="#0b0a12"/><rect x="122" y="10" width="11" height="1" fill="#0b0a12"/><rect x="121" y="11" width="13" height="1" fill="#0b0a12"/><rect x="121" y="12" width="13" height="1" fill="#0b0a12"/><rect x="121" y="13" width="13" height="1" fill="#0b0a12"/><rect x="120" y="14" width="15" height="1" fill="#0b0a12"/><rect x="121" y="15" width="13" height="1" fill="#0b0a12"/><rect x="121" y="16" width="13" height="1" fill="#0b0a12"/><rect x="121" y="17" width="13" height="1" fill="#0b0a12"/><rect x="122" y="18" width="11" height="1" fill="#0b0a12"/><rect x="123" y="19" width="9" height="1" fill="#0b0a12"/><rect x="124" y="20" width="7" height="1" fill="#0b0a12"/><rect x="127" y="21" width="1" height="1" fill="#0b0a12"/>
+  <rect x="118" y="19" width="1" height="1" fill="#fff6e0"/>
+  <polygon fill="#2b2640" points="0,62 18,44 32,54 50,32 68,50 90,38 108,52 128,34 146,50 160,42 160,90 0,90"/>
+  <rect y="60" width="160" height="30" fill="url(#v-d25)"/>
+  <polygon fill="#1a1726" points="0,76 24,64 48,72 76,60 100,70 124,62 160,70 160,90 0,90"/>
+  <!-- the gate -->
+  <rect x="68" y="52" width="24" height="3" fill="#45405c"/>
+  <rect x="78" y="50" width="4" height="2" fill="#6e6a86"/>
+  <rect x="68" y="55" width="4" height="35" fill="#45405c"/>
+  <rect x="88" y="55" width="4" height="35" fill="#45405c"/>
+  <rect x="68" y="55" width="1" height="35" fill="#6e6a86"/>
+  <rect x="88" y="55" width="1" height="35" fill="#6e6a86"/>
+  <rect x="72" y="55" width="16" height="35" fill="#0b0a12"/>
+  <rect x="73" y="66" width="14" height="24" fill="url(#v-cold25)"/>
+  <rect x="76" y="76" width="8" height="14" fill="url(#v-cold50)"/>
+  <rect x="79" y="84" width="2" height="6" fill="#7fc8e8"/>
+  <rect x="71" y="60" width="1" height="2" fill="#2f5a3a"/>
+  <rect x="91" y="72" width="1" height="3" fill="#2f5a3a"/>
+  <rect x="58" y="88" width="10" height="2" fill="#2b2640"/>
+  <rect x="92" y="88" width="12" height="2" fill="#2b2640"/>
+  <rect class="ember" style="--d:0.0s" x="60" y="84" width="1" height="1" fill="#f0c040"/><rect class="ember" style="--d:1.3s" x="72" y="78" width="1" height="1" fill="#e8743c"/><rect class="ember" style="--d:2.6s" x="92" y="86" width="1" height="1" fill="#f0c040"/><rect class="ember" style="--d:3.9s" x="104" y="80" width="1" height="1" fill="#e8743c"/><rect class="ember" style="--d:5.2s" x="66" y="70" width="1" height="1" fill="#f0c040"/><rect class="ember" style="--d:6.5s" x="98" y="72" width="1" height="1" fill="#e8743c"/>
+</svg>
+    <div class="title-body">
+      <h1 class="logo" id="logo"><span>Hollow Vale</span></h1>
+      <nav aria-label="Title menu">
+        <ul class="menu" data-menu>
+          <li><button type="button" data-go="#game">New run</button></li>
+          <li><button type="button" data-go="#game">Continue</button></li>
+          <li><button type="button">Settings</button></li>
+        </ul>
+      </nav>
+      <p class="lastrun">Last run <span class="sep">—</span> <b>Floor 7</b><span class="sep">·</span><b class="gold">2,340 gold</b><span class="sep">·</span><b>18:24</b></p>
+    </div>
+    <p class="hints"><span><kbd>↑</kbd> <kbd>↓</kbd> select</span><span><kbd>⏎</kbd> confirm</span></p>
+  </section>
+
+  <!-- ============ 02 IN-GAME HUD ============ -->
+  <section class="screen" id="game" aria-labelledby="game-h" tabindex="-1">
+    <h2 class="tag" id="game-h"><em>02</em> In-game HUD</h2>
+    <div class="game">
+      <div class="vp">
+<svg class="scene" viewBox="0 0 160 90" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Placeholder dungeon scene: a hooded wanderer holding a torch faces a skeleton beside a stairway leading down.">
+  <defs>
+    <pattern id="brick" width="8" height="8" patternUnits="userSpaceOnUse">
+      <rect width="8" height="8" fill="#2b2640"/>
+      <rect width="8" height="1" fill="#1a1726"/>
+      <rect x="7" width="1" height="4" fill="#1a1726"/>
+      <rect y="1" width="7" height="1" fill="#45405c"/>
+      <rect y="4" width="8" height="1" fill="#1a1726"/>
+      <rect x="3" y="4" width="1" height="4" fill="#1a1726"/>
+      <rect y="5" width="3" height="1" fill="#45405c"/>
+      <rect x="4" y="5" width="3" height="1" fill="#45405c"/>
+    </pattern>
+    <pattern id="floor" width="8" height="8" patternUnits="userSpaceOnUse">
+      <rect width="8" height="8" fill="#1a1726"/>
+      <rect width="8" height="1" fill="#0b0a12"/>
+      <rect width="1" height="8" fill="#0b0a12"/>
+      <rect x="1" y="1" width="6" height="1" fill="#2b2640"/>
+      <rect x="1" y="1" width="1" height="6" fill="#2b2640"/>
+    </pattern>
+    <pattern id="floorLit" width="8" height="8" patternUnits="userSpaceOnUse">
+      <rect width="8" height="8" fill="#2b2640"/>
+      <rect width="8" height="1" fill="#1a1726"/>
+      <rect width="1" height="8" fill="#1a1726"/>
+      <rect x="1" y="1" width="6" height="1" fill="#45405c"/>
+      <rect x="1" y="1" width="1" height="6" fill="#45405c"/>
+    </pattern>
+    <pattern id="d50" width="2" height="2" patternUnits="userSpaceOnUse">
+      <rect width="1" height="1" fill="#0b0a12"/><rect x="1" y="1" width="1" height="1" fill="#0b0a12"/>
+    </pattern>
+    <pattern id="d25" width="2" height="2" patternUnits="userSpaceOnUse">
+      <rect width="1" height="1" fill="#0b0a12"/>
+    </pattern>
+    <pattern id="lit50" width="2" height="2" patternUnits="userSpaceOnUse">
+      <rect width="1" height="1" fill="#6e6a86"/><rect x="1" y="1" width="1" height="1" fill="#6e6a86"/>
+    </pattern>
+    <pattern id="lit25" width="2" height="2" patternUnits="userSpaceOnUse">
+      <rect x="1" width="1" height="1" fill="#6e6a86"/>
+    </pattern>
+    <pattern id="cold25" width="2" height="2" patternUnits="userSpaceOnUse">
+      <rect width="1" height="1" fill="#2f5c8f"/>
+    </pattern>
+  </defs>
+  <rect width="160" height="90" fill="#0b0a12"/>
+  <!-- back wall -->
+  <rect width="160" height="32" fill="url(#brick)"/>
+  <rect y="31" width="160" height="1" fill="#45405c"/>
+  <rect y="32" width="160" height="1" fill="#0b0a12"/>
+  <!-- floor -->
+  <rect y="33" width="160" height="57" fill="url(#floor)"/>
+  <rect x="32" y="33" width="96" height="57" fill="url(#floorLit)"/>
+  <rect x="32" y="33" width="8" height="57" fill="url(#d50)"/>
+  <rect x="120" y="33" width="8" height="57" fill="url(#d50)"/>
+  <rect x="40" y="74" width="80" height="16" fill="url(#d25)"/>
+  <!-- stairway down -->
+  <rect x="66" y="4" width="28" height="2" fill="#45405c"/>
+  <rect x="78" y="2" width="4" height="2" fill="#6e6a86"/>
+  <rect x="66" y="6" width="2" height="26" fill="#45405c"/>
+  <rect x="92" y="6" width="2" height="26" fill="#45405c"/>
+  <rect x="68" y="6" width="24" height="26" fill="#0b0a12"/>
+  <rect x="70" y="18" width="20" height="1" fill="#45405c"/>
+  <rect x="70" y="22" width="20" height="1" fill="#2b2640"/>
+  <rect x="70" y="26" width="20" height="1" fill="#1a1726"/>
+  <rect x="70" y="27" width="20" height="5" fill="url(#cold25)"/>
+  <rect x="68" y="20" width="1" height="1" fill="#2f5a3a"/>
+  <rect x="68" y="25" width="1" height="2" fill="#2f5a3a"/>
+  <rect x="91" y="12" width="1" height="2" fill="#2f5a3a"/>
+  <rect x="93" y="28" width="1" height="1" fill="#6fae4a"/>
+  <rect x="65" y="30" width="1" height="1" fill="#6fae4a"/>
+  <!-- pillars -->
+  <rect x="12" width="6" height="33" fill="#45405c"/>
+  <rect x="12" width="1" height="33" fill="#6e6a86"/>
+  <rect x="17" width="1" height="33" fill="#2b2640"/>
+  <rect x="10" width="10" height="3" fill="#6e6a86"/>
+  <rect x="10" y="30" width="10" height="3" fill="#6e6a86"/>
+  <rect x="142" width="6" height="33" fill="#45405c"/>
+  <rect x="142" width="1" height="33" fill="#6e6a86"/>
+  <rect x="147" width="1" height="33" fill="#2b2640"/>
+  <rect x="140" width="10" height="3" fill="#6e6a86"/>
+  <rect x="140" y="30" width="10" height="3" fill="#6e6a86"/>
+  <!-- torches -->
+  
+    <rect x="27" y="4" width="15" height="22" fill="url(#lit25)"/>
+    <rect x="30" y="7" width="9" height="14" fill="url(#lit50)"/>
+    <rect x="32" y="19" width="5" height="1" fill="#6e6a86"/>
+    <rect x="34" y="14" width="1" height="5" fill="#5a1e2a"/>
+    <g class="flame flame-a"><rect x="34" y="10" width="1" height="1" fill="#e8743c"/><rect x="34" y="11" width="2" height="1" fill="#e8743c"/><rect x="33" y="12" width="1" height="1" fill="#e8743c"/><rect x="34" y="12" width="1" height="1" fill="#f0c040"/><rect x="35" y="12" width="1" height="1" fill="#e8743c"/><rect x="34" y="13" width="1" height="1" fill="#f0c040"/></g>
+    <g class="flame flame-b"><rect x="33" y="10" width="1" height="1" fill="#e8743c"/><rect x="33" y="11" width="2" height="1" fill="#e8743c"/><rect x="33" y="12" width="1" height="1" fill="#e8743c"/><rect x="34" y="12" width="1" height="1" fill="#f0c040"/><rect x="35" y="12" width="1" height="1" fill="#e8743c"/><rect x="34" y="13" width="1" height="1" fill="#f0c040"/></g>
+  
+    <rect x="118" y="4" width="15" height="22" fill="url(#lit25)"/>
+    <rect x="121" y="7" width="9" height="14" fill="url(#lit50)"/>
+    <rect x="123" y="19" width="5" height="1" fill="#6e6a86"/>
+    <rect x="125" y="14" width="1" height="5" fill="#5a1e2a"/>
+    <g class="flame flame-a"><rect x="125" y="10" width="1" height="1" fill="#e8743c"/><rect x="125" y="11" width="2" height="1" fill="#e8743c"/><rect x="124" y="12" width="1" height="1" fill="#e8743c"/><rect x="125" y="12" width="1" height="1" fill="#f0c040"/><rect x="126" y="12" width="1" height="1" fill="#e8743c"/><rect x="125" y="13" width="1" height="1" fill="#f0c040"/></g>
+    <g class="flame flame-b"><rect x="124" y="10" width="1" height="1" fill="#e8743c"/><rect x="124" y="11" width="2" height="1" fill="#e8743c"/><rect x="124" y="12" width="1" height="1" fill="#e8743c"/><rect x="125" y="12" width="1" height="1" fill="#f0c040"/><rect x="126" y="12" width="1" height="1" fill="#e8743c"/><rect x="125" y="13" width="1" height="1" fill="#f0c040"/></g>
+  <!-- debris and puddle -->
+  <rect x="42" y="70" width="10" height="3" fill="#2f5c8f"/>
+  <rect x="44" y="69" width="6" height="1" fill="#2f5c8f"/>
+  <rect x="45" y="70" width="2" height="1" fill="#7fc8e8"/>
+  <rect x="24" y="40" width="2" height="1" fill="#45405c"/>
+  <rect x="22" y="41" width="5" height="1" fill="#45405c"/>
+  <rect x="23" y="42" width="3" height="1" fill="#2b2640"/>
+  <rect x="134" y="36" width="3" height="1" fill="#45405c"/>
+  <rect x="133" y="37" width="5" height="1" fill="#2b2640"/>
+  <g><rect x="121" y="62" width="3" height="1" fill="#a39e8f"/><rect x="120" y="63" width="1" height="1" fill="#a39e8f"/><rect x="121" y="63" width="1" height="1" fill="#1a1726"/><rect x="122" y="63" width="1" height="1" fill="#a39e8f"/><rect x="123" y="63" width="1" height="1" fill="#1a1726"/><rect x="124" y="63" width="1" height="1" fill="#a39e8f"/><rect x="121" y="64" width="3" height="1" fill="#a39e8f"/><rect x="121" y="65" width="1" height="1" fill="#a39e8f"/><rect x="123" y="65" width="1" height="1" fill="#a39e8f"/></g>
+  <g><rect x="126" y="70" width="1" height="1" fill="#a39e8f"/><rect x="129" y="70" width="1" height="1" fill="#a39e8f"/><rect x="127" y="71" width="2" height="1" fill="#a39e8f"/><rect x="126" y="72" width="4" height="1" fill="#a39e8f"/><rect x="127" y="73" width="2" height="1" fill="#a39e8f"/><rect x="126" y="74" width="1" height="1" fill="#a39e8f"/><rect x="129" y="74" width="1" height="1" fill="#a39e8f"/></g>
+  <!-- actors -->
+  <rect x="65" y="64" width="9" height="1" fill="#0b0a12"/>
+  <rect x="101" y="64" width="7" height="1" fill="#0b0a12"/>
+  <g><rect x="69" y="52" width="1" height="1" fill="#45405c"/><rect x="68" y="53" width="3" height="1" fill="#45405c"/><rect x="64" y="54" width="1" height="1" fill="#f0c040"/><rect x="67" y="54" width="5" height="1" fill="#45405c"/><rect x="64" y="55" width="1" height="1" fill="#e8743c"/><rect x="66" y="55" width="7" height="1" fill="#45405c"/><rect x="64" y="56" width="1" height="1" fill="#e8743c"/><rect x="66" y="56" width="1" height="1" fill="#45405c"/><rect x="67" y="56" width="5" height="1" fill="#1a1726"/><rect x="72" y="56" width="1" height="1" fill="#45405c"/><rect x="64" y="57" width="1" height="1" fill="#5a1e2a"/><rect x="66" y="57" width="1" height="1" fill="#45405c"/><rect x="67" y="57" width="1" height="1" fill="#1a1726"/><rect x="68" y="57" width="1" height="1" fill="#7fc8e8"/><rect x="69" y="57" width="1" height="1" fill="#1a1726"/><rect x="70" y="57" width="1" height="1" fill="#7fc8e8"/><rect x="71" y="57" width="1" height="1" fill="#1a1726"/><rect x="72" y="57" width="1" height="1" fill="#45405c"/><rect x="64" y="58" width="1" height="1" fill="#a39e8f"/><rect x="66" y="58" width="1" height="1" fill="#45405c"/><rect x="67" y="58" width="5" height="1" fill="#1a1726"/><rect x="72" y="58" width="1" height="1" fill="#45405c"/><rect x="64" y="59" width="1" height="1" fill="#a39e8f"/><rect x="65" y="59" width="8" height="1" fill="#45405c"/><rect x="65" y="60" width="8" height="1" fill="#45405c"/><rect x="65" y="61" width="8" height="1" fill="#45405c"/><rect x="65" y="62" width="8" height="1" fill="#45405c"/><rect x="65" y="63" width="8" height="1" fill="#1a1726"/></g>
+  <g><rect x="101" y="52" width="5" height="1" fill="#e8dcc0"/><rect x="101" y="53" width="1" height="1" fill="#e8dcc0"/><rect x="102" y="53" width="1" height="1" fill="#1a1726"/><rect x="103" y="53" width="1" height="1" fill="#e8dcc0"/><rect x="104" y="53" width="1" height="1" fill="#1a1726"/><rect x="105" y="53" width="1" height="1" fill="#e8dcc0"/><rect x="101" y="54" width="5" height="1" fill="#e8dcc0"/><rect x="102" y="55" width="3" height="1" fill="#e8dcc0"/><rect x="102" y="56" width="1" height="1" fill="#a39e8f"/><rect x="103" y="56" width="1" height="1" fill="#e8dcc0"/><rect x="104" y="56" width="1" height="1" fill="#a39e8f"/><rect x="107" y="56" width="1" height="1" fill="#6e6a86"/><rect x="101" y="57" width="1" height="1" fill="#e8dcc0"/><rect x="102" y="57" width="1" height="1" fill="#a39e8f"/><rect x="103" y="57" width="1" height="1" fill="#e8dcc0"/><rect x="104" y="57" width="1" height="1" fill="#a39e8f"/><rect x="105" y="57" width="1" height="1" fill="#e8dcc0"/><rect x="107" y="57" width="1" height="1" fill="#6e6a86"/><rect x="101" y="58" width="1" height="1" fill="#e8dcc0"/><rect x="102" y="58" width="1" height="1" fill="#a39e8f"/><rect x="103" y="58" width="1" height="1" fill="#e8dcc0"/><rect x="104" y="58" width="1" height="1" fill="#a39e8f"/><rect x="105" y="58" width="1" height="1" fill="#e8dcc0"/><rect x="107" y="58" width="1" height="1" fill="#6e6a86"/><rect x="101" y="59" width="1" height="1" fill="#e8dcc0"/><rect x="102" y="59" width="1" height="1" fill="#a39e8f"/><rect x="103" y="59" width="1" height="1" fill="#e8dcc0"/><rect x="104" y="59" width="1" height="1" fill="#a39e8f"/><rect x="105" y="59" width="1" height="1" fill="#e8dcc0"/><rect x="106" y="59" width="1" height="1" fill="#a39e8f"/><rect x="107" y="59" width="1" height="1" fill="#6e6a86"/><rect x="102" y="60" width="3" height="1" fill="#a39e8f"/><rect x="107" y="60" width="1" height="1" fill="#a39e8f"/><rect x="102" y="61" width="1" height="1" fill="#e8dcc0"/><rect x="104" y="61" width="1" height="1" fill="#e8dcc0"/><rect x="102" y="62" width="1" height="1" fill="#e8dcc0"/><rect x="104" y="62" width="1" height="1" fill="#e8dcc0"/><rect x="101" y="63" width="2" height="1" fill="#e8dcc0"/><rect x="104" y="63" width="2" height="1" fill="#e8dcc0"/></g>
+  <!-- darkness at the edges -->
+  <rect width="10" height="90" fill="url(#d50)"/>
+  <rect x="10" width="12" height="90" fill="url(#d25)"/>
+  <rect x="150" width="10" height="90" fill="url(#d50)"/>
+  <rect x="138" width="12" height="90" fill="url(#d25)"/>
+  <rect y="84" width="160" height="6" fill="url(#d50)"/>
+</svg></div>
+
+      <div class="panel stats">
+        <div class="stat">
+          <span class="lbl">HP</span>
+          <span class="val"><span class="sr-only">Hit points </span>34<span class="sep">/</span>50</span>
+          <div class="bar" role="meter" aria-label="Hit points" aria-valuemin="0" aria-valuemax="50" aria-valuenow="34" aria-valuetext="34 of 50"><i style="--pct:68%"></i></div>
+        </div>
+        <div class="stat">
+          <span class="lbl">Stamina</span>
+          <span class="val"><span class="sr-only">Stamina </span>3<span class="sep">/</span>5</span>
+          <ul class="pips" role="meter" aria-label="Stamina" aria-valuemin="0" aria-valuemax="5" aria-valuenow="3" aria-valuetext="3 of 5">
+            <li class="on"></li><li class="on"></li><li class="on"></li><li></li><li></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel run">
+        <div><span class="lbl">Gold</span><span class="val gold">412</span></div>
+        <div><span class="lbl">Floor</span><span class="val">4</span></div>
+      </div>
+
+      <div class="panel log" role="log" aria-label="Message log">
+        <span class="lbl">Log</span>
+        <ul>
+          <li>You descend. The air is colder.</li>
+          <li aria-hidden="true"><span class="cursor">_</span></li>
+        </ul>
+      </div>
+
+      <div class="panel items">
+        <ul class="slots" aria-label="Items">
+          <li class="slot">
+            <div class="box"><span class="key" aria-hidden="true">1</span><svg class="icon" viewBox="0 0 8 8" role="img" aria-label="Torch"><g><rect x="3" y="0" width="1" height="1" fill="#e8743c"/><rect x="2" y="1" width="2" height="1" fill="#e8743c"/><rect x="1" y="2" width="1" height="1" fill="#e8743c"/><rect x="2" y="2" width="1" height="1" fill="#f0c040"/><rect x="3" y="2" width="1" height="1" fill="#e8743c"/><rect x="1" y="3" width="1" height="1" fill="#e8743c"/><rect x="2" y="3" width="2" height="1" fill="#f0c040"/><rect x="4" y="3" width="1" height="1" fill="#e8743c"/><rect x="2" y="4" width="2" height="1" fill="#f0c040"/><rect x="2" y="5" width="2" height="1" fill="#5a1e2a"/><rect x="2" y="6" width="2" height="1" fill="#5a1e2a"/><rect x="1" y="7" width="4" height="1" fill="#a39e8f"/></g></svg></div>
+            <span class="name">Torch</span>
+          </li>
+          <li class="slot">
+            <div class="box"><span class="key" aria-hidden="true">2</span><svg class="icon" viewBox="0 0 8 8" role="img" aria-label="Rusted Key"><g><rect x="1" y="1" width="3" height="1" fill="#e8743c"/><rect x="0" y="2" width="1" height="1" fill="#e8743c"/><rect x="1" y="2" width="1" height="1" fill="#5a1e2a"/><rect x="2" y="2" width="1" height="1" fill="#5a1e2a"/><rect x="3" y="2" width="1" height="1" fill="#e8743c"/><rect x="0" y="3" width="1" height="1" fill="#e8743c"/><rect x="1" y="3" width="1" height="1" fill="#5a1e2a"/><rect x="3" y="3" width="5" height="1" fill="#e8743c"/><rect x="0" y="4" width="1" height="1" fill="#e8743c"/><rect x="1" y="4" width="1" height="1" fill="#5a1e2a"/><rect x="3" y="4" width="2" height="1" fill="#e8743c"/><rect x="5" y="4" width="1" height="1" fill="#5a1e2a"/><rect x="6" y="4" width="1" height="1" fill="#e8743c"/><rect x="7" y="4" width="1" height="1" fill="#5a1e2a"/><rect x="1" y="5" width="3" height="1" fill="#e8743c"/><rect x="5" y="5" width="1" height="1" fill="#e8743c"/><rect x="7" y="5" width="1" height="1" fill="#e8743c"/></g></svg></div>
+            <span class="name">Rusted Key</span>
+          </li>
+          <li class="slot">
+            <div class="box"><span class="key" aria-hidden="true">3</span><svg class="icon" viewBox="0 0 8 8" role="img" aria-label="Potion"><g><rect x="3" y="0" width="2" height="1" fill="#a39e8f"/><rect x="3" y="1" width="2" height="1" fill="#6e6a86"/><rect x="2" y="2" width="1" height="1" fill="#6e6a86"/><rect x="5" y="2" width="1" height="1" fill="#6e6a86"/><rect x="1" y="3" width="1" height="1" fill="#6e6a86"/><rect x="6" y="3" width="1" height="1" fill="#6e6a86"/><rect x="1" y="4" width="1" height="1" fill="#6e6a86"/><rect x="2" y="4" width="1" height="1" fill="#fff6e0"/><rect x="3" y="4" width="3" height="1" fill="#d84a3f"/><rect x="6" y="4" width="1" height="1" fill="#6e6a86"/><rect x="1" y="5" width="1" height="1" fill="#6e6a86"/><rect x="2" y="5" width="4" height="1" fill="#d84a3f"/><rect x="6" y="5" width="1" height="1" fill="#6e6a86"/><rect x="1" y="6" width="1" height="1" fill="#6e6a86"/><rect x="2" y="6" width="4" height="1" fill="#d84a3f"/><rect x="6" y="6" width="1" height="1" fill="#6e6a86"/><rect x="2" y="7" width="4" height="1" fill="#6e6a86"/></g></svg><span class="count"><span class="sr-only">quantity </span>×2</span></div>
+            <span class="name">Potion</span>
+          </li>
+        </ul>
+      </div>
+
+      <figure class="panel minimap">
+        <div class="grid" role="img" aria-label="Minimap placeholder"><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-room"></i><i class="c-room"></i><i class="c-hall"></i><i class="c-room"></i><i class="c-room"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-room"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-room"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-room"></i><i class="c-none"></i><i class="c-none"></i><i class="c-room"></i><i class="c-room"></i><i class="c-hall"></i><i class="c-none"></i><i class="c-hall"></i><i class="c-room"></i><i class="c-room"></i><i class="c-none"></i><i class="c-none"></i><i class="c-here"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i><i class="c-none"></i></div>
+        <figcaption>Minimap · placeholder</figcaption>
+      </figure>
+    </div>
+    <p class="hints"><span><kbd>1</kbd>–<kbd>3</kbd> use item</span><span><kbd>Esc</kbd> pause</span></p>
+  </section>
+
+  <!-- ============ 03 PAUSE MENU ============ -->
+  <section class="screen" id="pause" aria-labelledby="pause-h" tabindex="-1">
+    <p class="tag"><em>03</em> Pause menu</p>
+    <div class="pause">
+      <div class="vp" aria-hidden="true">
+<svg class="scene" viewBox="0 0 160 90" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+    <pattern id="p-brick" width="8" height="8" patternUnits="userSpaceOnUse">
+      <rect width="8" height="8" fill="#2b2640"/>
+      <rect width="8" height="1" fill="#1a1726"/>
+      <rect x="7" width="1" height="4" fill="#1a1726"/>
+      <rect y="1" width="7" height="1" fill="#45405c"/>
+      <rect y="4" width="8" height="1" fill="#1a1726"/>
+      <rect x="3" y="4" width="1" height="4" fill="#1a1726"/>
+      <rect y="5" width="3" height="1" fill="#45405c"/>
+      <rect x="4" y="5" width="3" height="1" fill="#45405c"/>
+    </pattern>
+    <pattern id="p-floor" width="8" height="8" patternUnits="userSpaceOnUse">
+      <rect width="8" height="8" fill="#1a1726"/>
+      <rect width="8" height="1" fill="#0b0a12"/>
+      <rect width="1" height="8" fill="#0b0a12"/>
+      <rect x="1" y="1" width="6" height="1" fill="#2b2640"/>
+      <rect x="1" y="1" width="1" height="6" fill="#2b2640"/>
+    </pattern>
+    <pattern id="p-floorLit" width="8" height="8" patternUnits="userSpaceOnUse">
+      <rect width="8" height="8" fill="#2b2640"/>
+      <rect width="8" height="1" fill="#1a1726"/>
+      <rect width="1" height="8" fill="#1a1726"/>
+      <rect x="1" y="1" width="6" height="1" fill="#45405c"/>
+      <rect x="1" y="1" width="1" height="6" fill="#45405c"/>
+    </pattern>
+    <pattern id="p-d50" width="2" height="2" patternUnits="userSpaceOnUse">
+      <rect width="1" height="1" fill="#0b0a12"/><rect x="1" y="1" width="1" height="1" fill="#0b0a12"/>
+    </pattern>
+    <pattern id="p-d25" width="2" height="2" patternUnits="userSpaceOnUse">
+      <rect width="1" height="1" fill="#0b0a12"/>
+    </pattern>
+    <pattern id="p-lit50" width="2" height="2" patternUnits="userSpaceOnUse">
+      <rect width="1" height="1" fill="#6e6a86"/><rect x="1" y="1" width="1" height="1" fill="#6e6a86"/>
+    </pattern>
+    <pattern id="p-lit25" width="2" height="2" patternUnits="userSpaceOnUse">
+      <rect x="1" width="1" height="1" fill="#6e6a86"/>
+    </pattern>
+    <pattern id="p-cold25" width="2" height="2" patternUnits="userSpaceOnUse">
+      <rect width="1" height="1" fill="#2f5c8f"/>
+    </pattern>
+  </defs>
+  <rect width="160" height="90" fill="#0b0a12"/>
+  <!-- back wall -->
+  <rect width="160" height="32" fill="url(#p-brick)"/>
+  <rect y="31" width="160" height="1" fill="#45405c"/>
+  <rect y="32" width="160" height="1" fill="#0b0a12"/>
+  <!-- floor -->
+  <rect y="33" width="160" height="57" fill="url(#p-floor)"/>
+  <rect x="32" y="33" width="96" height="57" fill="url(#p-floorLit)"/>
+  <rect x="32" y="33" width="8" height="57" fill="url(#p-d50)"/>
+  <rect x="120" y="33" width="8" height="57" fill="url(#p-d50)"/>
+  <rect x="40" y="74" width="80" height="16" fill="url(#p-d25)"/>
+  <!-- stairway down -->
+  <rect x="66" y="4" width="28" height="2" fill="#45405c"/>
+  <rect x="78" y="2" width="4" height="2" fill="#6e6a86"/>
+  <rect x="66" y="6" width="2" height="26" fill="#45405c"/>
+  <rect x="92" y="6" width="2" height="26" fill="#45405c"/>
+  <rect x="68" y="6" width="24" height="26" fill="#0b0a12"/>
+  <rect x="70" y="18" width="20" height="1" fill="#45405c"/>
+  <rect x="70" y="22" width="20" height="1" fill="#2b2640"/>
+  <rect x="70" y="26" width="20" height="1" fill="#1a1726"/>
+  <rect x="70" y="27" width="20" height="5" fill="url(#p-cold25)"/>
+  <rect x="68" y="20" width="1" height="1" fill="#2f5a3a"/>
+  <rect x="68" y="25" width="1" height="2" fill="#2f5a3a"/>
+  <rect x="91" y="12" width="1" height="2" fill="#2f5a3a"/>
+  <rect x="93" y="28" width="1" height="1" fill="#6fae4a"/>
+  <rect x="65" y="30" width="1" height="1" fill="#6fae4a"/>
+  <!-- pillars -->
+  <rect x="12" width="6" height="33" fill="#45405c"/>
+  <rect x="12" width="1" height="33" fill="#6e6a86"/>
+  <rect x="17" width="1" height="33" fill="#2b2640"/>
+  <rect x="10" width="10" height="3" fill="#6e6a86"/>
+  <rect x="10" y="30" width="10" height="3" fill="#6e6a86"/>
+  <rect x="142" width="6" height="33" fill="#45405c"/>
+  <rect x="142" width="1" height="33" fill="#6e6a86"/>
+  <rect x="147" width="1" height="33" fill="#2b2640"/>
+  <rect x="140" width="10" height="3" fill="#6e6a86"/>
+  <rect x="140" y="30" width="10" height="3" fill="#6e6a86"/>
+  <!-- torches -->
+  
+    <rect x="27" y="4" width="15" height="22" fill="url(#p-lit25)"/>
+    <rect x="30" y="7" width="9" height="14" fill="url(#p-lit50)"/>
+    <rect x="32" y="19" width="5" height="1" fill="#6e6a86"/>
+    <rect x="34" y="14" width="1" height="5" fill="#5a1e2a"/>
+    <g class="flame flame-a"><rect x="34" y="10" width="1" height="1" fill="#e8743c"/><rect x="34" y="11" width="2" height="1" fill="#e8743c"/><rect x="33" y="12" width="1" height="1" fill="#e8743c"/><rect x="34" y="12" width="1" height="1" fill="#f0c040"/><rect x="35" y="12" width="1" height="1" fill="#e8743c"/><rect x="34" y="13" width="1" height="1" fill="#f0c040"/></g>
+    <g class="flame flame-b"><rect x="33" y="10" width="1" height="1" fill="#e8743c"/><rect x="33" y="11" width="2" height="1" fill="#e8743c"/><rect x="33" y="12" width="1" height="1" fill="#e8743c"/><rect x="34" y="12" width="1" height="1" fill="#f0c040"/><rect x="35" y="12" width="1" height="1" fill="#e8743c"/><rect x="34" y="13" width="1" height="1" fill="#f0c040"/></g>
+  
+    <rect x="118" y="4" width="15" height="22" fill="url(#p-lit25)"/>
+    <rect x="121" y="7" width="9" height="14" fill="url(#p-lit50)"/>
+    <rect x="123" y="19" width="5" height="1" fill="#6e6a86"/>
+    <rect x="125" y="14" width="1" height="5" fill="#5a1e2a"/>
+    <g class="flame flame-a"><rect x="125" y="10" width="1" height="1" fill="#e8743c"/><rect x="125" y="11" width="2" height="1" fill="#e8743c"/><rect x="124" y="12" width="1" height="1" fill="#e8743c"/><rect x="125" y="12" width="1" height="1" fill="#f0c040"/><rect x="126" y="12" width="1" height="1" fill="#e8743c"/><rect x="125" y="13" width="1" height="1" fill="#f0c040"/></g>
+    <g class="flame flame-b"><rect x="124" y="10" width="1" height="1" fill="#e8743c"/><rect x="124" y="11" width="2" height="1" fill="#e8743c"/><rect x="124" y="12" width="1" height="1" fill="#e8743c"/><rect x="125" y="12" width="1" height="1" fill="#f0c040"/><rect x="126" y="12" width="1" height="1" fill="#e8743c"/><rect x="125" y="13" width="1" height="1" fill="#f0c040"/></g>
+  <!-- debris and puddle -->
+  <rect x="42" y="70" width="10" height="3" fill="#2f5c8f"/>
+  <rect x="44" y="69" width="6" height="1" fill="#2f5c8f"/>
+  <rect x="45" y="70" width="2" height="1" fill="#7fc8e8"/>
+  <rect x="24" y="40" width="2" height="1" fill="#45405c"/>
+  <rect x="22" y="41" width="5" height="1" fill="#45405c"/>
+  <rect x="23" y="42" width="3" height="1" fill="#2b2640"/>
+  <rect x="134" y="36" width="3" height="1" fill="#45405c"/>
+  <rect x="133" y="37" width="5" height="1" fill="#2b2640"/>
+  <g><rect x="121" y="62" width="3" height="1" fill="#a39e8f"/><rect x="120" y="63" width="1" height="1" fill="#a39e8f"/><rect x="121" y="63" width="1" height="1" fill="#1a1726"/><rect x="122" y="63" width="1" height="1" fill="#a39e8f"/><rect x="123" y="63" width="1" height="1" fill="#1a1726"/><rect x="124" y="63" width="1" height="1" fill="#a39e8f"/><rect x="121" y="64" width="3" height="1" fill="#a39e8f"/><rect x="121" y="65" width="1" height="1" fill="#a39e8f"/><rect x="123" y="65" width="1" height="1" fill="#a39e8f"/></g>
+  <g><rect x="126" y="70" width="1" height="1" fill="#a39e8f"/><rect x="129" y="70" width="1" height="1" fill="#a39e8f"/><rect x="127" y="71" width="2" height="1" fill="#a39e8f"/><rect x="126" y="72" width="4" height="1" fill="#a39e8f"/><rect x="127" y="73" width="2" height="1" fill="#a39e8f"/><rect x="126" y="74" width="1" height="1" fill="#a39e8f"/><rect x="129" y="74" width="1" height="1" fill="#a39e8f"/></g>
+  <!-- actors -->
+  <rect x="65" y="64" width="9" height="1" fill="#0b0a12"/>
+  <rect x="101" y="64" width="7" height="1" fill="#0b0a12"/>
+  <g><rect x="69" y="52" width="1" height="1" fill="#45405c"/><rect x="68" y="53" width="3" height="1" fill="#45405c"/><rect x="64" y="54" width="1" height="1" fill="#f0c040"/><rect x="67" y="54" width="5" height="1" fill="#45405c"/><rect x="64" y="55" width="1" height="1" fill="#e8743c"/><rect x="66" y="55" width="7" height="1" fill="#45405c"/><rect x="64" y="56" width="1" height="1" fill="#e8743c"/><rect x="66" y="56" width="1" height="1" fill="#45405c"/><rect x="67" y="56" width="5" height="1" fill="#1a1726"/><rect x="72" y="56" width="1" height="1" fill="#45405c"/><rect x="64" y="57" width="1" height="1" fill="#5a1e2a"/><rect x="66" y="57" width="1" height="1" fill="#45405c"/><rect x="67" y="57" width="1" height="1" fill="#1a1726"/><rect x="68" y="57" width="1" height="1" fill="#7fc8e8"/><rect x="69" y="57" width="1" height="1" fill="#1a1726"/><rect x="70" y="57" width="1" height="1" fill="#7fc8e8"/><rect x="71" y="57" width="1" height="1" fill="#1a1726"/><rect x="72" y="57" width="1" height="1" fill="#45405c"/><rect x="64" y="58" width="1" height="1" fill="#a39e8f"/><rect x="66" y="58" width="1" height="1" fill="#45405c"/><rect x="67" y="58" width="5" height="1" fill="#1a1726"/><rect x="72" y="58" width="1" height="1" fill="#45405c"/><rect x="64" y="59" width="1" height="1" fill="#a39e8f"/><rect x="65" y="59" width="8" height="1" fill="#45405c"/><rect x="65" y="60" width="8" height="1" fill="#45405c"/><rect x="65" y="61" width="8" height="1" fill="#45405c"/><rect x="65" y="62" width="8" height="1" fill="#45405c"/><rect x="65" y="63" width="8" height="1" fill="#1a1726"/></g>
+  <g><rect x="101" y="52" width="5" height="1" fill="#e8dcc0"/><rect x="101" y="53" width="1" height="1" fill="#e8dcc0"/><rect x="102" y="53" width="1" height="1" fill="#1a1726"/><rect x="103" y="53" width="1" height="1" fill="#e8dcc0"/><rect x="104" y="53" width="1" height="1" fill="#1a1726"/><rect x="105" y="53" width="1" height="1" fill="#e8dcc0"/><rect x="101" y="54" width="5" height="1" fill="#e8dcc0"/><rect x="102" y="55" width="3" height="1" fill="#e8dcc0"/><rect x="102" y="56" width="1" height="1" fill="#a39e8f"/><rect x="103" y="56" width="1" height="1" fill="#e8dcc0"/><rect x="104" y="56" width="1" height="1" fill="#a39e8f"/><rect x="107" y="56" width="1" height="1" fill="#6e6a86"/><rect x="101" y="57" width="1" height="1" fill="#e8dcc0"/><rect x="102" y="57" width="1" height="1" fill="#a39e8f"/><rect x="103" y="57" width="1" height="1" fill="#e8dcc0"/><rect x="104" y="57" width="1" height="1" fill="#a39e8f"/><rect x="105" y="57" width="1" height="1" fill="#e8dcc0"/><rect x="107" y="57" width="1" height="1" fill="#6e6a86"/><rect x="101" y="58" width="1" height="1" fill="#e8dcc0"/><rect x="102" y="58" width="1" height="1" fill="#a39e8f"/><rect x="103" y="58" width="1" height="1" fill="#e8dcc0"/><rect x="104" y="58" width="1" height="1" fill="#a39e8f"/><rect x="105" y="58" width="1" height="1" fill="#e8dcc0"/><rect x="107" y="58" width="1" height="1" fill="#6e6a86"/><rect x="101" y="59" width="1" height="1" fill="#e8dcc0"/><rect x="102" y="59" width="1" height="1" fill="#a39e8f"/><rect x="103" y="59" width="1" height="1" fill="#e8dcc0"/><rect x="104" y="59" width="1" height="1" fill="#a39e8f"/><rect x="105" y="59" width="1" height="1" fill="#e8dcc0"/><rect x="106" y="59" width="1" height="1" fill="#a39e8f"/><rect x="107" y="59" width="1" height="1" fill="#6e6a86"/><rect x="102" y="60" width="3" height="1" fill="#a39e8f"/><rect x="107" y="60" width="1" height="1" fill="#a39e8f"/><rect x="102" y="61" width="1" height="1" fill="#e8dcc0"/><rect x="104" y="61" width="1" height="1" fill="#e8dcc0"/><rect x="102" y="62" width="1" height="1" fill="#e8dcc0"/><rect x="104" y="62" width="1" height="1" fill="#e8dcc0"/><rect x="101" y="63" width="2" height="1" fill="#e8dcc0"/><rect x="104" y="63" width="2" height="1" fill="#e8dcc0"/></g>
+  <!-- darkness at the edges -->
+  <rect width="10" height="90" fill="url(#p-d50)"/>
+  <rect x="10" width="12" height="90" fill="url(#p-d25)"/>
+  <rect x="150" width="10" height="90" fill="url(#p-d50)"/>
+  <rect x="138" width="12" height="90" fill="url(#p-d25)"/>
+  <rect y="84" width="160" height="6" fill="url(#p-d50)"/>
+</svg></div>
+      <div class="dim"></div>
+      <div class="dialog" role="dialog" aria-modal="false" aria-labelledby="pause-h">
+        <h2 id="pause-h">Paused</h2>
+        <nav aria-label="Pause menu">
+          <ul class="menu" data-menu>
+            <li><button type="button" data-go="#game">Resume</button></li>
+            <li><button type="button">Settings</button></li>
+            <li><button type="button" class="danger" data-go="#title">Abandon run</button></li>
+          </ul>
+        </nav>
+        <p class="hints"><span><kbd>↑</kbd> <kbd>↓</kbd> select</span><span><kbd>⏎</kbd> confirm</span><span><kbd>Esc</kbd> resume</span></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Arrow-key navigation inside menus, and the few wired-up buttons jump between screens.
+  (function () {
+    document.querySelectorAll('[data-menu]').forEach(function (menu) {
+      var btns = Array.prototype.slice.call(menu.querySelectorAll('button'));
+      menu.addEventListener('keydown', function (e) {
+        var i = btns.indexOf(document.activeElement);
+        if (i < 0) return;
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          btns[(i + (e.key === 'ArrowDown' ? 1 : btns.length - 1)) % btns.length].focus();
+        }
+      });
+    });
+    function go(sel) {
+      var el = document.querySelector(sel);
+      if (!el) return;
+      el.scrollIntoView({ block: 'start' });
+      var target = el.querySelector('button') || el;
+      target.focus({ preventScroll: true });
+    }
+    document.querySelectorAll('[data-go]').forEach(function (b) {
+      b.addEventListener('click', function () { go(b.getAttribute('data-go')); });
+    });
+    var game = document.getElementById('game');
+    game.addEventListener('keydown', function (e) { if (e.key === 'Escape') go('#pause'); });
+    document.getElementById('pause').addEventListener('keydown', function (e) { if (e.key === 'Escape') go('#game'); });
+  })();
+</script>
+</body>
+</html>

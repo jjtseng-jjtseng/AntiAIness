@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Global Equity Core — Portfolio Risk</title>
+<meta name="description" content="Main screen of a portfolio risk dashboard: holdings, P&amp;L, returns vs benchmark, sector exposure and active alerts for the Global Equity Core portfolio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #eef0f3;
+    --surface: #ffffff;
+    --surface-2: #f6f7f9;
+    --line: #d5d9e0;
+    --line-soft: #e6e9ee;
+    --ink: #13161c;
+    --ink-2: #454b58;
+    --muted: #646b78;
+    --accent: #1f5fae;
+    --accent-soft: #e4eefb;
+    --series-1: #2a78d6;
+    --series-1-track: #dbe8f8;
+    --benchmark: #8a8f99;
+    --pos: #006300;
+    --neg: #b3261e;
+    --crit: #d03b3b;
+    --crit-soft: #fbe9e9;
+    --warn: #fab219;
+    --warn-soft: #fff4d6;
+    --focus: #1f5fae;
+    --radius: 4px;
+    --font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { font-size: 14px; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); }
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+  button { font: inherit; color: inherit; }
+
+  .skip-link {
+    position: absolute; left: 8px; top: -48px;
+    background: var(--ink); color: #fff; padding: 8px 12px; border-radius: var(--radius);
+    z-index: 100; text-decoration: none;
+  }
+  .skip-link:focus { top: 8px; }
+
+  .num { font-variant-numeric: tabular-nums; }
+  .pos { color: var(--pos); }
+  .neg { color: var(--neg); }
+  .visually-hidden {
+    position: absolute !important; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; z-index: 20;
+  }
+  .topbar-inner {
+    max-width: 1440px; margin: 0 auto; padding: 0 16px;
+    display: flex; align-items: stretch; gap: 20px; min-height: 48px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 600; letter-spacing: 0.01em; white-space: nowrap;
+  }
+  .brand-mark {
+    width: 22px; height: 22px; border-radius: 3px; background: var(--ink);
+    display: grid; place-items: center;
+  }
+  .brand-mark svg { display: block; }
+  .brand-sub { color: var(--muted); font-weight: 400; }
+  .nav { display: flex; align-items: stretch; overflow-x: auto; scrollbar-width: none; }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 2px; }
+  .nav a {
+    display: flex; align-items: center; height: 100%; padding: 0 12px;
+    color: var(--ink-2); text-decoration: none; font-weight: 500;
+    border-bottom: 2px solid transparent; white-space: nowrap;
+  }
+  .nav a:hover { color: var(--ink); background: var(--surface-2); }
+  .nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+  .nav a:focus-visible { outline-offset: -2px; }
+  .topbar-right {
+    margin-left: auto; display: flex; align-items: center; gap: 14px;
+    color: var(--muted); white-space: nowrap;
+  }
+  .live-dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--pos); margin-right: 6px; vertical-align: middle;
+  }
+
+  /* ---------- Page ---------- */
+  .page { max-width: 1440px; margin: 0 auto; padding: 16px; }
+  .page-head {
+    display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 24px;
+    margin-bottom: 14px;
+  }
+  .page-head h1 { font-size: 20px; font-weight: 600; margin: 0; line-height: 1.2; }
+  .page-head .meta { color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 16px; }
+  .page-head .meta strong { color: var(--ink); font-weight: 500; }
+  .page-head .asof { margin-left: auto; color: var(--muted); }
+
+  .grid {
+    display: grid; gap: 12px;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    min-width: 0;
+  }
+  .card-head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+    padding: 10px 14px 8px; border-bottom: 1px solid var(--line-soft);
+  }
+  .card-head h2 { font-size: 13px; font-weight: 600; margin: 0; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-2); }
+  .card-head .sub { color: var(--muted); font-size: 12px; }
+  .card-body { padding: 12px 14px; }
+
+  /* ---------- KPI tiles ---------- */
+  .kpis { grid-column: 1 / -1; display: grid; gap: 12px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .kpi { padding: 12px 14px; display: flex; flex-direction: column; gap: 2px; }
+  .kpi .label { color: var(--muted); font-size: 12px; }
+  .kpi .value { font-size: 24px; font-weight: 600; line-height: 1.15; letter-spacing: -0.01em; }
+  .kpi.hero .value { font-size: 40px; }
+  .kpi .delta { font-size: 13px; color: var(--ink-2); }
+  .kpi .foot { color: var(--muted); font-size: 12px; margin-top: 4px; }
+
+  /* ---------- Returns ---------- */
+  .returns { grid-column: span 4; }
+  .returns table { width: 100%; border-collapse: collapse; }
+  .returns th, .returns td { padding: 6px 0; text-align: right; border-bottom: 1px solid var(--line-soft); }
+  .returns th { font-weight: 500; color: var(--muted); font-size: 12px; }
+  .returns th:first-child, .returns td:first-child { text-align: left; }
+  .returns tbody tr:last-child td { border-bottom: 0; }
+  .returns td:first-child { font-weight: 500; }
+  .bars { margin-top: 12px; }
+  .legend { display: flex; gap: 14px; font-size: 12px; color: var(--ink-2); margin-bottom: 8px; }
+  .legend span::before {
+    content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px;
+    margin-right: 6px; vertical-align: -1px; background: var(--swatch);
+  }
+  .bar-group { display: grid; grid-template-columns: 36px 1fr; gap: 2px 10px; align-items: center; margin-bottom: 8px; }
+  .bar-group .g-label { grid-row: span 2; font-size: 12px; color: var(--muted); }
+  .track { position: relative; height: 10px; background: transparent; }
+  .track .fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 0 3px 3px 0; }
+  .fill.port { background: var(--series-1); }
+  .fill.bench { background: var(--benchmark); }
+  .axis { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-left: 46px; border-top: 1px solid var(--line-soft); padding-top: 3px; }
+
+  /* ---------- Sector exposure ---------- */
+  .sectors { grid-column: span 4; }
+  .sector-rows { display: grid; gap: 7px; }
+  .sector-row { display: grid; grid-template-columns: 156px 1fr 48px; align-items: center; gap: 10px; }
+  .sector-row .s-label { font-size: 13px; color: var(--ink-2); line-height: 1.15; }
+  .sector-row .s-value { text-align: right; font-size: 13px; }
+  .sector-track { position: relative; height: 14px; }
+  .sector-track .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--series-1); border-radius: 0 4px 4px 0; }
+  .sector-track .fill.other { background: var(--benchmark); }
+  .limit-line {
+    position: absolute; top: -4px; bottom: -4px; width: 0; border-left: 1px solid var(--crit);
+  }
+  .sector-rows-wrap { position: relative; }
+  .sector-limit {
+    position: absolute; top: -18px; font-size: 11px; color: var(--neg); transform: translateX(-100%); white-space: nowrap;
+  }
+  .sector-axis { display: grid; grid-template-columns: 156px 1fr 48px; gap: 10px; margin-top: 6px; }
+  .sector-axis div { grid-column: 2; display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); border-top: 1px solid var(--line-soft); padding-top: 3px; }
+
+  /* ---------- Alerts ---------- */
+  .alerts { grid-column: span 4; }
+  .alert-list { list-style: none; margin: 0; padding: 0; }
+  .alert {
+    display: grid; grid-template-columns: 20px 1fr auto; gap: 4px 10px; align-items: start;
+    padding: 10px 14px; border-bottom: 1px solid var(--line-soft);
+  }
+  .alert:last-child { border-bottom: 0; }
+  .alert-icon { width: 18px; height: 18px; margin-top: 1px; }
+  .alert-msg { font-size: 13px; line-height: 1.35; }
+  .alert-kind { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .alert.breach .alert-kind { color: var(--neg); }
+  .alert.warning .alert-kind { color: #7a5200; }
+  .alert-time { font-size: 12px; color: var(--muted); white-space: nowrap; text-align: right; }
+  .alert-meta { grid-column: 2; display: flex; gap: 10px; align-items: baseline; }
+  .alert-meta .ack {
+    background: none; border: 1px solid var(--line); border-radius: 3px; padding: 1px 8px;
+    font-size: 12px; color: var(--ink-2); cursor: pointer;
+  }
+  .alert-meta .ack:hover { background: var(--surface-2); border-color: var(--ink-2); }
+  .alert.acked { opacity: 0.55; }
+  .alert.acked .ack { visibility: hidden; }
+  .pill {
+    display: inline-block; font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 10px;
+    border: 1px solid transparent;
+  }
+  .pill.crit { background: var(--crit-soft); color: var(--neg); border-color: #f1c4c4; }
+  .pill.warn { background: var(--warn-soft); color: #7a5200; border-color: #f2d58a; }
+  .alert-count { display: flex; gap: 6px; }
+
+  /* ---------- Holdings table ---------- */
+  .holdings { grid-column: 1 / -1; }
+  .table-wrap { overflow-x: auto; }
+  table.holdings-table { width: 100%; border-collapse: collapse; min-width: 760px; }
+  .holdings-table th, .holdings-table td {
+    padding: 7px 12px; border-bottom: 1px solid var(--line-soft); white-space: nowrap;
+    text-align: right;
+  }
+  .holdings-table th { font-weight: 500; color: var(--muted); font-size: 12px; background: var(--surface-2); position: sticky; top: 0; }
+  .holdings-table th:nth-child(1), .holdings-table td:nth-child(1),
+  .holdings-table th:nth-child(2), .holdings-table td:nth-child(2) { text-align: left; }
+  .holdings-table th:nth-child(1), .holdings-table td:nth-child(1) {
+    position: sticky; left: 0; background: var(--surface); z-index: 1;
+    box-shadow: inset -1px 0 0 var(--line-soft);
+  }
+  .holdings-table th:nth-child(1) { background: var(--surface-2); z-index: 2; }
+  .holdings-table tbody tr:hover td { background: var(--surface-2); }
+  .holdings-table tbody tr:hover td:nth-child(1) { background: var(--surface-2); }
+  .holdings-table td.name { font-weight: 500; }
+  .holdings-table td.ticker { color: var(--ink-2); }
+  .holdings-table th button {
+    background: none; border: 0; padding: 0; cursor: pointer; color: inherit; font: inherit;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .holdings-table th button:hover { color: var(--ink); }
+  .holdings-table th .arrow { width: 8px; display: inline-block; font-size: 10px; color: var(--accent); }
+  .holdings-table th[aria-sort] button { color: var(--ink); font-weight: 600; }
+  .risk-cell { display: inline-grid; grid-template-columns: 64px 44px; gap: 8px; align-items: center; }
+  .risk-meter { height: 8px; background: var(--series-1-track); border-radius: 0 3px 3px 0; position: relative; }
+  .risk-meter span { position: absolute; left: 0; top: 0; bottom: 0; background: var(--series-1); border-radius: 0 3px 3px 0; }
+  .flag {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--crit);
+    margin-left: 6px; vertical-align: 1px;
+  }
+  .holdings-table tfoot td { font-weight: 500; background: var(--surface-2); border-top: 1px solid var(--line); border-bottom: 0; color: var(--ink-2); }
+  .holdings-table tfoot td:nth-child(1) { background: var(--surface-2); }
+  .table-note { padding: 8px 14px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--line-soft); display: flex; flex-wrap: wrap; gap: 4px 18px; }
+
+  footer.page-foot { color: var(--muted); font-size: 12px; padding: 16px 0 8px; display: flex; flex-wrap: wrap; gap: 4px 20px; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1100px) {
+    .returns, .sectors, .alerts { grid-column: span 6; }
+    .alerts { grid-column: 1 / -1; }
+  }
+  @media (max-width: 760px) {
+    .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .kpi.hero { grid-column: 1 / -1; }
+    .returns, .sectors, .alerts { grid-column: 1 / -1; }
+    .topbar-inner { flex-wrap: wrap; gap: 0 12px; padding-top: 6px; }
+    .brand { min-height: 36px; }
+    .topbar-right { margin-left: auto; min-height: 36px; }
+    .nav { order: 3; width: 100%; margin: 0 -16px; padding: 0 16px; }
+    .nav a { padding: 9px 10px; }
+    .page-head .asof { margin-left: 0; }
+    .sector-row { grid-template-columns: 112px 1fr 44px; }
+    .sector-row .s-label { font-size: 12px; }
+    .sector-axis { grid-template-columns: 112px 1fr 44px; }
+    .kpi.hero .value { font-size: 34px; }
+  }
+  @media (max-width: 420px) {
+    .topbar-right .user { display: none; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .nav a, .ack, .holdings-table tbody tr td { transition: background-color 120ms ease, color 120ms ease; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+  }
+  @media (forced-colors: active) {
+    .fill, .risk-meter span, .sector-track .fill { forced-color-adjust: none; background: CanvasText; }
+    .limit-line { border-left-color: Highlight; }
+  }
+  @media print {
+    .topbar { position: static; }
+    .card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 14 14"><path d="M1 11 L5 6 L8 8.5 L13 2" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <span>Portfolio Risk <span class="brand-sub">/ Global Equity Core</span></span>
+    </div>
+    <nav class="nav" aria-label="Primary">
+      <ul>
+        <li><a href="#main" aria-current="page">Portfolio</a></li>
+        <li><a href="#">Risk</a></li>
+        <li><a href="#">Trades</a></li>
+        <li><a href="#">Reports</a></li>
+        <li><a href="#">Settings</a></li>
+      </ul>
+    </nav>
+    <div class="topbar-right">
+      <span><span class="live-dot" aria-hidden="true"></span>Live · 15:42 ET</span>
+      <span class="user">[User name]</span>
+    </div>
+  </div>
+</header>
+
+<main id="main" class="page">
+  <div class="page-head">
+    <h1>Global Equity Core</h1>
+    <div class="meta">
+      <span>NAV <strong class="num">$842.6M</strong></span>
+      <span>Benchmark <strong>MSCI ACWI</strong></span>
+      <span>Base currency <strong>USD</strong></span>
+    </div>
+    <div class="asof">As of <time datetime="2026-10-21T15:42-04:00">Oct 21, 2026, 15:42 ET</time></div>
+  </div>
+
+  <div class="grid">
+    <!-- KPI row -->
+    <section class="kpis" aria-label="Key figures">
+      <div class="card kpi hero">
+        <span class="label">Day P&amp;L</span>
+        <span class="value pos">+$3.21M</span>
+        <span class="delta"><span class="pos num">+0.38%</span> on NAV · benchmark 1D <span class="num">+0.21%</span></span>
+      </div>
+      <div class="card kpi">
+        <span class="label">95% 1-day VaR</span>
+        <span class="value">$9.4M</span>
+        <span class="delta"><span class="num">1.12%</span> of NAV</span>
+      </div>
+      <div class="card kpi">
+        <span class="label">Tracking error</span>
+        <span class="value num">2.3%</span>
+        <span class="delta">vs MSCI ACWI, annualised</span>
+      </div>
+      <div class="card kpi">
+        <span class="label">Beta</span>
+        <span class="value num">0.97</span>
+        <span class="delta">vs MSCI ACWI</span>
+      </div>
+    </section>
+
+    <!-- Returns vs benchmark -->
+    <section class="card returns" aria-labelledby="returns-h">
+      <div class="card-head">
+        <h2 id="returns-h">Return vs benchmark</h2>
+        <span class="sub">Portfolio · MSCI ACWI</span>
+      </div>
+      <div class="card-body">
+        <table>
+          <thead>
+            <tr><th scope="col">Period</th><th scope="col">Portfolio</th><th scope="col">Benchmark</th><th scope="col">Active</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1D</td><td class="num pos">+0.38%</td><td class="num">+0.21%</td><td class="num pos">+0.17%</td></tr>
+            <tr><td>1M</td><td class="num pos">+2.4%</td><td class="num">+1.9%</td><td class="num pos">+0.5%</td></tr>
+            <tr><td>YTD</td><td class="num pos">+11.2%</td><td class="num">+9.8%</td><td class="num pos">+1.4%</td></tr>
+          </tbody>
+        </table>
+
+        <div class="bars" role="img" aria-label="Bar chart of portfolio versus benchmark return for 1D, 1M and YTD; values are in the table above.">
+          <div class="legend" aria-hidden="true">
+            <span style="--swatch: var(--series-1)">Portfolio</span>
+            <span style="--swatch: var(--benchmark)">Benchmark</span>
+          </div>
+          <div class="bar-group" aria-hidden="true">
+            <span class="g-label">1D</span>
+            <div class="track"><span class="fill port" style="width: 3.17%"></span></div>
+            <div class="track"><span class="fill bench" style="width: 1.75%"></span></div>
+          </div>
+          <div class="bar-group" aria-hidden="true">
+            <span class="g-label">1M</span>
+            <div class="track"><span class="fill port" style="width: 20%"></span></div>
+            <div class="track"><span class="fill bench" style="width: 15.83%"></span></div>
+          </div>
+          <div class="bar-group" aria-hidden="true">
+            <span class="g-label">YTD</span>
+            <div class="track"><span class="fill port" style="width: 93.33%"></span></div>
+            <div class="track"><span class="fill bench" style="width: 81.67%"></span></div>
+          </div>
+          <div class="axis" aria-hidden="true"><span>0%</span><span>3%</span><span>6%</span><span>9%</span><span>12%</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sector exposure -->
+    <section class="card sectors" aria-labelledby="sectors-h">
+      <div class="card-head">
+        <h2 id="sectors-h">Exposure by sector</h2>
+        <span class="sub">% of NAV</span>
+      </div>
+      <div class="card-body">
+        <div class="sector-rows-wrap">
+          <table class="visually-hidden">
+            <caption>Sector exposure as percent of NAV</caption>
+            <thead><tr><th scope="col">Sector</th><th scope="col">Weight</th></tr></thead>
+            <tbody>
+              <tr><td>Information Technology</td><td>28.4%</td></tr>
+              <tr><td>Financials</td><td>15.1%</td></tr>
+              <tr><td>Health Care</td><td>12.6%</td></tr>
+              <tr><td>Consumer Discretionary</td><td>11.0%</td></tr>
+              <tr><td>Industrials</td><td>10.2%</td></tr>
+              <tr><td>Communication</td><td>7.9%</td></tr>
+              <tr><td>Energy</td><td>4.8%</td></tr>
+              <tr><td>Staples</td><td>4.5%</td></tr>
+              <tr><td>Other</td><td>5.5%</td></tr>
+            </tbody>
+          </table>
+          <div class="sector-rows" aria-hidden="true" style="margin-top: 18px">
+            <!-- scale: 0–32% ; limit line at 30% -> 93.75% -->
+            <div class="sector-row">
+              <span class="s-label">Information Technology</span>
+              <div class="sector-track"><span class="fill" style="width: 88.75%"></span><span class="limit-line" style="left: 93.75%"></span><span class="sector-limit" style="left: 93.75%; padding-right: 6px">30% limit</span></div>
+              <span class="s-value num">28.4%</span>
+            </div>
+            <div class="sector-row"><span class="s-label">Financials</span><div class="sector-track"><span class="fill" style="width: 47.19%"></span><span class="limit-line" style="left: 93.75%"></span></div><span class="s-value num">15.1%</span></div>
+            <div class="sector-row"><span class="s-label">Health Care</span><div class="sector-track"><span class="fill" style="width: 39.38%"></span><span class="limit-line" style="left: 93.75%"></span></div><span class="s-value num">12.6%</span></div>
+            <div class="sector-row"><span class="s-label">Consumer Discretionary</span><div class="sector-track"><span class="fill" style="width: 34.38%"></span><span class="limit-line" style="left: 93.75%"></span></div><span class="s-value num">11.0%</span></div>
+            <div class="sector-row"><span class="s-label">Industrials</span><div class="sector-track"><span class="fill" style="width: 31.88%"></span><span class="limit-line" style="left: 93.75%"></span></div><span class="s-value num">10.2%</span></div>
+            <div class="sector-row"><span class="s-label">Communication</span><div class="sector-track"><span class="fill" style="width: 24.69%"></span><span class="limit-line" style="left: 93.75%"></span></div><span class="s-value num">7.9%</span></div>
+            <div class="sector-row"><span class="s-label">Energy</span><div class="sector-track"><span class="fill" style="width: 15%"></span><span class="limit-line" style="left: 93.75%"></span></div><span class="s-value num">4.8%</span></div>
+            <div class="sector-row"><span class="s-label">Staples</span><div class="sector-track"><span class="fill" style="width: 14.06%"></span><span class="limit-line" style="left: 93.75%"></span></div><span class="s-value num">4.5%</span></div>
+            <div class="sector-row"><span class="s-label">Other</span><div class="sector-track"><span class="fill other" style="width: 17.19%"></span><span class="limit-line" style="left: 93.75%"></span></div><span class="s-value num">5.5%</span></div>
+          </div>
+          <div class="sector-axis" aria-hidden="true"><div><span>0%</span><span>8%</span><span>16%</span><span>24%</span><span>32%</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Alerts -->
+    <section class="card alerts" aria-labelledby="alerts-h">
+      <div class="card-head">
+        <h2 id="alerts-h">Active alerts</h2>
+        <span class="alert-count"><span class="pill crit">1 breach</span><span class="pill warn">2 warnings</span></span>
+      </div>
+      <ul class="alert-list">
+        <li class="alert breach">
+          <svg class="alert-icon" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="#d03b3b"/><path d="M9 4.5v5.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="13" r="1.2" fill="#fff"/></svg>
+          <div class="alert-msg">NVDA weight 5.1% exceeds 5.0% single-name limit</div>
+          <time class="alert-time" datetime="2026-10-21T09:31-04:00">09:31</time>
+          <div class="alert-meta"><span class="alert-kind">Breach</span><button type="button" class="ack">Acknowledge</button></div>
+        </li>
+        <li class="alert warning">
+          <svg class="alert-icon" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 1.5 17 16H1z" fill="#fab219"/><path d="M9 6.5v4.5" stroke="#13161c" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="13.6" r="1.1" fill="#13161c"/></svg>
+          <div class="alert-msg">Sector IT 28.4% approaching 30% limit</div>
+          <span class="alert-time"></span>
+          <div class="alert-meta"><span class="alert-kind">Warning</span><button type="button" class="ack">Acknowledge</button></div>
+        </li>
+        <li class="alert warning">
+          <svg class="alert-icon" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 1.5 17 16H1z" fill="#fab219"/><path d="M9 6.5v4.5" stroke="#13161c" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="13.6" r="1.1" fill="#13161c"/></svg>
+          <div class="alert-msg">FX hedge ratio EUR 93% below 95% target</div>
+          <span class="alert-time"></span>
+          <div class="alert-meta"><span class="alert-kind">Warning</span><button type="button" class="ack">Acknowledge</button></div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Holdings -->
+    <section class="card holdings" aria-labelledby="holdings-h">
+      <div class="card-head">
+        <h2 id="holdings-h">Holdings</h2>
+        <span class="sub">Top 12 positions · click a column to sort</span>
+      </div>
+      <div class="table-wrap">
+        <table class="holdings-table" id="holdings-table">
+          <thead>
+            <tr>
+              <th scope="col" data-key="name" data-type="text"><button type="button">Name <span class="arrow" aria-hidden="true"></span></button></th>
+              <th scope="col" data-key="ticker" data-type="text"><button type="button">Ticker <span class="arrow" aria-hidden="true"></span></button></th>
+              <th scope="col" data-key="weight" data-type="num" aria-sort="descending"><button type="button">Weight <span class="arrow" aria-hidden="true">▼</span></button></th>
+              <th scope="col" data-key="d1" data-type="num"><button type="button">1D <span class="arrow" aria-hidden="true"></span></button></th>
+              <th scope="col" data-key="m1" data-type="num"><button type="button">1M <span class="arrow" aria-hidden="true"></span></button></th>
+              <th scope="col" data-key="risk" data-type="num"><button type="button">Contrib. to risk <span class="arrow" aria-hidden="true"></span></button></th>
+              <th scope="col" data-key="var" data-type="num"><button type="button">VaR 95% <span class="arrow" aria-hidden="true"></span></button></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-name="Microsoft" data-ticker="MSFT" data-weight="6.8" data-d1="0.9" data-m1="3.1" data-risk="7.4" data-var="0.71">
+              <td class="name">Microsoft</td><td class="ticker">MSFT</td><td class="num">6.8%</td><td class="num pos">+0.9%</td><td class="num pos">+3.1%</td>
+              <td><span class="risk-cell"><span class="risk-meter" aria-hidden="true"><span style="width:74%"></span></span><span class="num">7.4%</span></span></td><td class="num">$0.71M</td>
+            </tr>
+            <tr data-name="Apple" data-ticker="AAPL" data-weight="5.9" data-d1="0.4" data-m1="1.2" data-risk="6.0" data-var="0.58">
+              <td class="name">Apple</td><td class="ticker">AAPL</td><td class="num">5.9%</td><td class="num pos">+0.4%</td><td class="num pos">+1.2%</td>
+              <td><span class="risk-cell"><span class="risk-meter" aria-hidden="true"><span style="width:60%"></span></span><span class="num">6.0%</span></span></td><td class="num">$0.58M</td>
+            </tr>
+            <tr data-name="Nvidia" data-ticker="NVDA" data-weight="5.1" data-d1="2.3" data-m1="8.7" data-risk="9.8" data-var="0.94">
+              <td class="name">Nvidia<span class="flag" title="Single-name limit breach"></span><span class="visually-hidden"> (single-name limit breach)</span></td><td class="ticker">NVDA</td><td class="num">5.1%</td><td class="num pos">+2.3%</td><td class="num pos">+8.7%</td>
+              <td><span class="risk-cell"><span class="risk-meter" aria-hidden="true"><span style="width:98%"></span></span><span class="num">9.8%</span></span></td><td class="num">$0.94M</td>
+            </tr>
+            <tr data-name="Amazon" data-ticker="AMZN" data-weight="4.2" data-d1="0.6" data-m1="2.0" data-risk="4.9" data-var="0.47">
+              <td class="name">Amazon</td><td class="ticker">AMZN</td><td class="num">4.2%</td><td class="num pos">+0.6%</td><td class="num pos">+2.0%</td>
+              <td><span class="risk-cell"><span class="risk-meter" aria-hidden="true"><span style="width:49%"></span></span><span class="num">4.9%</span></span></td><td class="num">$0.47M</td>
+            </tr>
+            <tr data-name="ASML" data-ticker="ASML" data-weight="3.1" data-d1="-1.1" data-m1="-0.8" data-risk="4.1" data-var="0.40">
+              <td class="name">ASML</td><td class="ticker">ASML</td><td class="num">3.1%</td><td class="num neg">−1.1%</td><td class="num neg">−0.8%</td>
+              <td><span class="risk-cell"><span class="risk-meter" aria-hidden="true"><span style="width:41%"></span></span><span class="num">4.1%</span></span></td><td class="num">$0.40M</td>
+            </tr>
+            <tr data-name="Novo Nordisk" data-ticker="NOVO B" data-weight="2.9" data-d1="-2.4" data-m1="-6.1" data-risk="3.8" data-var="0.37">
+              <td class="name">Novo Nordisk</td><td class="ticker">NOVO B</td><td class="num">2.9%</td><td class="num neg">−2.4%</td><td class="num neg">−6.1%</td>
+              <td><span class="risk-cell"><span class="risk-meter" aria-hidden="true"><span style="width:38%"></span></span><span class="num">3.8%</span></span></td><td class="num">$0.37M</td>
+            </tr>
+            <tr data-name="TSMC" data-ticker="2330" data-weight="2.7" data-d1="1.5" data-m1="4.4" data-risk="3.9" data-var="0.38">
+              <td class="name">TSMC</td><td class="ticker">2330</td><td class="num">2.7%</td><td class="num pos">+1.5%</td><td class="num pos">+4.4%</td>
+              <td><span class="risk-cell"><span class="risk-meter" aria-hidden="true"><span style="width:39%"></span></span><span class="num">3.9%</span></span></td><td class="num">$0.38M</td>
+            </tr>
+            <tr data-name="JPMorgan" data-ticker="JPM" data-weight="2.5" data-d1="0.2" data-m1="1.1" data-risk="2.2" data-var="0.21">
+              <td class="name">JPMorgan</td><td class="ticker">JPM</td><td class="num">2.5%</td><td class="num pos">+0.2%</td><td class="num pos">+1.1%</td>
+              <td><span class="risk-cell"><span class="risk-meter" aria-hidden="true"><span style="width:22%"></span></span><span class="num">2.2%</span></span></td><td class="num">$0.21M</td>
+            </tr>
+            <tr data-name="Nestlé" data-ticker="NESN" data-weight="2.2" data-d1="-0.3" data-m1="0.4" data-risk="1.4" data-var="0.14">
+              <td class="name">Nestlé</td><td class="ticker">NESN</td><td class="num">2.2%</td><td class="num neg">−0.3%</td><td class="num pos">+0.4%</td>
+              <td><span class="risk-cell"><span class="risk-meter" aria-hidden="true"><span style="width:14%"></span></span><span class="num">1.4%</span></span></td><td class="num">$0.14M</td>
+            </tr>
+            <tr data-name="Toyota" data-ticker="7203" data-weight="2.0" data-d1="0.8" data-m1="2.6" data-risk="1.9" data-var="0.18">
+              <td class="name">Toyota</td><td class="ticker">7203</td><td class="num">2.0%</td><td class="num pos">+0.8%</td><td class="num pos">+2.6%</td>
+              <td><span class="risk-cell"><span class="risk-meter" aria-hidden="true"><span style="width:19%"></span></span><span class="num">1.9%</span></span></td><td class="num">$0.18M</td>
+            </tr>
+            <tr data-name="LVMH" data-ticker="MC" data-weight="1.8" data-d1="-1.6" data-m1="-3.3" data-risk="2.3" data-var="0.22">
+              <td class="name">LVMH</td><td class="ticker">MC</td><td class="num">1.8%</td><td class="num neg">−1.6%</td><td class="num neg">−3.3%</td>
+              <td><span class="risk-cell"><span class="risk-meter" aria-hidden="true"><span style="width:23%"></span></span><span class="num">2.3%</span></span></td><td class="num">$0.22M</td>
+            </tr>
+            <tr data-name="Shell" data-ticker="SHEL" data-weight="1.7" data-d1="1.1" data-m1="3.9" data-risk="1.6" data-var="0.15">
+              <td class="name">Shell</td><td class="ticker">SHEL</td><td class="num">1.7%</td><td class="num pos">+1.1%</td><td class="num pos">+3.9%</td>
+              <td><span class="risk-cell"><span class="risk-meter" aria-hidden="true"><span style="width:16%"></span></span><span class="num">1.6%</span></span></td><td class="num">$0.15M</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>Top 12 total</td><td></td><td class="num">40.9%</td><td></td><td></td><td class="num">49.3%</td><td class="num">$4.75M</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="table-note">
+        <span>Weight and contribution to risk are % of NAV and % of total portfolio risk respectively.</span>
+        <span>VaR is 95% 1-day, USD.</span>
+        <span><span class="flag" aria-hidden="true" style="margin: 0 4px 0 0"></span>Limit breach</span>
+      </div>
+    </section>
+  </div>
+
+  <footer class="page-foot">
+    <span>Global Equity Core · NAV $842.6M · As of Oct 21, 2026, 15:42 ET</span>
+    <span>Figures are indicative intraday values.</span>
+  </footer>
+</main>
+
+<script>
+  (function () {
+    // Sortable holdings table
+    var table = document.getElementById('holdings-table');
+    if (!table) return;
+    var tbody = table.tBodies[0];
+    var headers = table.querySelectorAll('thead th[data-key]');
+    var current = { key: 'weight', dir: 'descending' };
+
+    function sortBy(key, type, dir) {
+      var rows = Array.prototype.slice.call(tbody.rows);
+      rows.sort(function (a, b) {
+        var av = a.dataset[key], bv = b.dataset[key];
+        var cmp;
+        if (type === 'num') cmp = parseFloat(av) - parseFloat(bv);
+        else cmp = av.localeCompare(bv, undefined, { sensitivity: 'base' });
+        return dir === 'ascending' ? cmp : -cmp;
+      });
+      rows.forEach(function (r) { tbody.appendChild(r); });
+    }
+
+    headers.forEach(function (th) {
+      var btn = th.querySelector('button');
+      btn.addEventListener('click', function () {
+        var key = th.dataset.key, type = th.dataset.type;
+        var dir;
+        if (current.key === key) {
+          dir = current.dir === 'descending' ? 'ascending' : 'descending';
+        } else {
+          dir = type === 'num' ? 'descending' : 'ascending';
+        }
+        current = { key: key, dir: dir };
+        headers.forEach(function (h) {
+          h.removeAttribute('aria-sort');
+          h.querySelector('.arrow').textContent = '';
+        });
+        th.setAttribute('aria-sort', dir);
+        th.querySelector('.arrow').textContent = dir === 'descending' ? '▼' : '▲';
+        sortBy(key, type, dir);
+      });
+    });
+
+    // Alert acknowledgement (visual state only; no persistence)
+    document.querySelectorAll('.alert .ack').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var li = btn.closest('.alert');
+        li.classList.add('acked');
+        var kind = li.querySelector('.alert-kind');
+        kind.textContent = kind.textContent + ' · acknowledged';
+      });
+    });
+  })();
+</script>
+</body>
+</html>

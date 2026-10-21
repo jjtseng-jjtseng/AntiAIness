@@ -1,0 +1,895 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sumwise – Math practice for ages 7–9</title>
+<meta name="description" content="Sumwise is a friendly addition and subtraction practice game for children aged 7 to 9. Numbers up to 100.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFF7E8;
+    --bg-dots: #FFE9BF;
+    --card: #FFFFFF;
+    --ink: #2A2D4A;
+    --ink-soft: #5B5F7E;
+    --line: #EADFC9;
+    --coral: #F25F5C;
+    --coral-deep: #C8342F;
+    --sun: #FFCF56;
+    --sun-deep: #A86B00;
+    --teal: #1FB4A0;
+    --teal-deep: #0E7F6E;
+    --sky: #4EA8F5;
+    --sky-deep: #1C5FA8;
+    --grape: #6B4FBB;
+    --grape-deep: #4D3590;
+    --ok: #1E8E5A;
+    --ok-bg: #E2F7EA;
+    --warn: #B35A00;
+    --warn-bg: #FFF0DB;
+    --focus: #1C5FA8;
+    --radius: 24px;
+    --shadow: 0 8px 0 0 rgba(42, 45, 74, 0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    font-family: "Nunito", "Segoe UI", system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 1.45;
+    color: var(--ink);
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(circle at 18% 12%, rgba(255, 207, 86, 0.35) 0, rgba(255, 207, 86, 0) 28vw),
+      radial-gradient(circle at 85% 90%, rgba(78, 168, 245, 0.22) 0, rgba(78, 168, 245, 0) 30vw),
+      radial-gradient(var(--bg-dots) 1.5px, transparent 1.6px);
+    background-size: auto, auto, 28px 28px;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, .display {
+    font-family: "Fredoka", "Nunito", system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    margin: 0;
+  }
+
+  p { margin: 0; }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+
+  :focus-visible {
+    outline: 4px solid var(--focus);
+    outline-offset: 4px;
+    border-radius: 12px;
+  }
+
+  .skip-link {
+    position: absolute; left: 16px; top: -60px;
+    background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 12px;
+    z-index: 10; text-decoration: none;
+  }
+  .skip-link:focus { top: 12px; }
+
+  .page {
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px 16px 48px;
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .brand {
+    display: inline-flex; align-items: center; gap: 10px;
+    text-decoration: none; color: var(--ink);
+    font-family: "Fredoka", sans-serif; font-weight: 700; font-size: 24px;
+  }
+  .brand svg { width: 36px; height: 36px; }
+
+  .player-pill {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--card);
+    border: 3px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 16px 6px 8px;
+    font-size: 17px;
+  }
+  .player-pill .avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--sky);
+    display: grid; place-items: center;
+    color: #fff; font-family: "Fredoka", sans-serif; font-size: 16px;
+  }
+  .player-pill .dot { color: var(--ink-soft); }
+  .star-icon { width: 20px; height: 20px; vertical-align: -3px; }
+
+  /* ---------- Screens ---------- */
+  .screen { margin-bottom: 40px; }
+  /* Without JavaScript all screens show stacked as a static design; with it they toggle. */
+  html:not(.js) .screen[hidden] { display: block; }
+  .js .screen[hidden] { display: none; }
+
+  .card {
+    background: var(--card);
+    border: 3px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+  }
+
+  /* ---------- Home ---------- */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: clamp(52px, 11vw, 96px);
+    line-height: 1;
+    color: var(--grape);
+    text-shadow: 4px 4px 0 var(--sun);
+  }
+  .hero .tagline {
+    font-size: 20px;
+    color: var(--ink-soft);
+    max-width: 38ch;
+    margin: 10px auto 0;
+  }
+  .mascot { width: min(60vw, 220px); height: auto; margin: 0 auto; }
+
+  .home-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  fieldset {
+    border: 0; padding: 0; margin: 0; min-width: 0;
+  }
+  legend, .card h2 {
+    font-size: 24px;
+    margin-bottom: 14px;
+    color: var(--ink);
+  }
+
+  .mode-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .mode {
+    position: relative;
+  }
+  .mode input {
+    position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer;
+  }
+  .mode label {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    min-height: 112px;
+    padding: 14px 8px;
+    border-radius: 20px;
+    border: 3px solid var(--line);
+    background: #fff;
+    cursor: pointer;
+    transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+  }
+  .mode label .sym {
+    font-family: "Fredoka", sans-serif; font-size: 36px; line-height: 1;
+    width: 56px; height: 56px; border-radius: 16px;
+    display: grid; place-items: center;
+    color: #fff;
+  }
+  .mode-add .sym { background: var(--coral); }
+  .mode-sub .sym { background: var(--sky); }
+  .mode-mix .sym { background: var(--teal); }
+  .mode label .name { font-size: 18px; }
+  .mode input:checked + label {
+    border-color: var(--grape);
+    background: #F4F0FF;
+    box-shadow: 0 0 0 3px #DCD2FF inset;
+  }
+  .mode input:focus-visible + label {
+    outline: 4px solid var(--focus); outline-offset: 4px;
+  }
+  .mode label:hover { transform: translateY(-2px); }
+
+  .name-row {
+    display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+  }
+  .name-row label { font-size: 18px; }
+  .text-input {
+    font: inherit; font-size: 20px; color: var(--ink);
+    padding: 12px 16px;
+    border: 3px solid var(--line); border-radius: 16px;
+    background: #FFFDF8;
+    min-width: 0; flex: 1 1 160px;
+  }
+  .text-input:focus-visible { border-color: var(--focus); outline-offset: 2px; }
+  .star-count {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #FFF4CF; border: 3px solid #FFE08A;
+    border-radius: 999px; padding: 10px 16px;
+    font-size: 18px; white-space: nowrap;
+  }
+
+  .play-wrap { text-align: center; margin-top: 28px; }
+
+  .btn {
+    font-family: "Fredoka", sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 0.02em;
+    border: 0;
+    border-radius: 999px;
+    padding: 16px 32px;
+    min-height: 60px;
+    cursor: pointer;
+    color: #fff;
+    background: var(--grape);
+    box-shadow: 0 6px 0 0 var(--grape-deep);
+    transition: transform 100ms ease, box-shadow 100ms ease;
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    text-decoration: none;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 0 var(--grape-deep); }
+  .btn-play { font-size: 30px; padding: 20px 56px; min-height: 76px; }
+  .btn-play svg { width: 28px; height: 28px; }
+  .btn-secondary {
+    background: #fff; color: var(--ink);
+    border: 3px solid var(--line);
+    box-shadow: 0 5px 0 0 var(--line);
+    font-size: 19px; padding: 12px 22px; min-height: 52px;
+  }
+  .btn-secondary:active { box-shadow: 0 1px 0 0 var(--line); }
+  .btn-next { background: var(--ok); box-shadow: 0 6px 0 0 #146641; }
+  .btn-next:active { box-shadow: 0 2px 0 0 #146641; }
+  .btn[disabled] { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .trust-note {
+    margin-top: 20px;
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 16px;
+  }
+
+  /* ---------- Problem screen ---------- */
+  .quiz-head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .progress {
+    flex: 1 1 240px;
+  }
+  .progress-label {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 17px; margin-bottom: 6px;
+  }
+  .progress-label .mode-tag {
+    font-size: 15px; color: var(--ink-soft);
+    background: #fff; border: 2px solid var(--line); border-radius: 999px; padding: 2px 10px;
+  }
+  .progress-track {
+    height: 16px; border-radius: 999px;
+    background: #fff; border: 3px solid var(--line);
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; width: 30%;
+    background: linear-gradient(90deg, var(--teal), var(--sky));
+    border-radius: 999px;
+    transition: width 300ms ease;
+  }
+
+  .problem-card {
+    text-align: center;
+    padding: 28px 20px 24px;
+  }
+  .equation {
+    font-family: "Fredoka", sans-serif;
+    font-weight: 700;
+    font-size: clamp(48px, 12vw, 88px);
+    line-height: 1.1;
+    display: flex; justify-content: center; align-items: center; gap: 0.3em;
+    flex-wrap: wrap;
+  }
+  .equation .op { color: var(--coral); }
+  .equation .unknown {
+    display: inline-grid; place-items: center;
+    min-width: 1.4em; height: 1.3em;
+    border: 4px dashed var(--sky);
+    border-radius: 0.3em;
+    color: var(--sky-deep);
+    background: #EEF6FF;
+  }
+  .equation .unknown.filled {
+    border-style: solid; border-color: var(--ok); color: var(--ok); background: var(--ok-bg);
+  }
+
+  .choices {
+    list-style: none; padding: 0;
+    margin: 24px 0 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .choice {
+    width: 100%;
+    font-family: "Fredoka", sans-serif;
+    font-weight: 700;
+    font-size: clamp(32px, 8vw, 44px);
+    min-height: 88px;
+    padding: 10px;
+    border-radius: 22px;
+    border: 4px solid var(--line);
+    background: #fff;
+    color: var(--ink);
+    cursor: pointer;
+    box-shadow: 0 6px 0 0 var(--line);
+    transition: transform 100ms ease, box-shadow 100ms ease, background 150ms ease, border-color 150ms ease;
+  }
+  .choice:hover { transform: translateY(-2px); border-color: var(--sky); }
+  .choice:active { transform: translateY(4px); box-shadow: 0 2px 0 0 var(--line); }
+  .choice.is-correct {
+    background: var(--ok); border-color: var(--ok); color: #fff;
+    box-shadow: 0 6px 0 0 #146641;
+  }
+  .choice.is-wrong {
+    background: var(--warn-bg); border-color: #F0B470; color: var(--warn);
+    box-shadow: 0 6px 0 0 #F0B470;
+    text-decoration: line-through;
+    text-decoration-thickness: 4px;
+  }
+  .choice[disabled] { cursor: default; }
+  .choice[disabled]:not(.is-correct):not(.is-wrong) { opacity: 0.55; box-shadow: none; transform: none; }
+
+  .quiz-tools {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    margin-top: 22px;
+  }
+  .btn-hint svg { width: 22px; height: 22px; }
+  .btn-hint[aria-expanded="true"] { background: #FFF4CF; border-color: #FFE08A; box-shadow: 0 5px 0 0 #FFE08A; }
+
+  .hint-panel {
+    margin-top: 16px;
+    background: #FFF4CF;
+    border: 3px solid #FFE08A;
+    border-radius: 18px;
+    padding: 14px 18px;
+    text-align: left;
+    font-size: 18px;
+  }
+  .hint-panel strong { font-family: "Fredoka", sans-serif; font-size: 20px; }
+  .hint-panel .steps { margin: 6px 0 0; padding-left: 22px; }
+  .hint-panel .steps li { margin: 4px 0; }
+
+  .feedback {
+    margin-top: 16px;
+    border-radius: 18px;
+    padding: 14px 18px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 20px;
+    text-align: left;
+  }
+  .feedback:empty { display: none; }
+  .feedback svg { width: 36px; height: 36px; flex: 0 0 auto; }
+  .feedback.ok { background: var(--ok-bg); color: var(--ok); border: 3px solid #A9E3C2; }
+  .feedback.oops { background: var(--warn-bg); color: var(--warn); border: 3px solid #F6C890; }
+  .feedback .msg { flex: 1 1 auto; }
+  .feedback .star-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #fff; border-radius: 999px; padding: 4px 12px;
+    color: var(--sun-deep); font-size: 17px; white-space: nowrap;
+  }
+  .feedback.ok { animation: pop 320ms cubic-bezier(.2,1.6,.4,1); }
+  .feedback.oops { animation: wiggle 360ms ease; }
+  @keyframes pop { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  @keyframes wiggle {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  .next-row { margin-top: 18px; display: none; }
+  .next-row.show { display: block; }
+
+  /* ---------- Done screen ---------- */
+  .done-card { text-align: center; padding: 36px 24px; }
+  .done-card h2 { font-size: 40px; color: var(--grape); margin-bottom: 8px; }
+  .done-card .score {
+    font-family: "Fredoka", sans-serif; font-size: 64px; line-height: 1; color: var(--teal-deep);
+    margin: 12px 0;
+  }
+  .done-card .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+
+  /* ---------- Design-preview labels (visible only without JS) ---------- */
+  .preview-label {
+    display: inline-block;
+    font-size: 14px; color: var(--ink-soft);
+    background: #fff; border: 2px dashed var(--line); border-radius: 999px;
+    padding: 4px 12px; margin-bottom: 12px;
+  }
+  .js .preview-label { display: none; }
+
+  footer {
+    text-align: center; color: var(--ink-soft); font-size: 15px;
+    margin-top: 12px;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (min-width: 700px) {
+    .page { padding: 28px 24px 56px; }
+    .hero {
+      grid-template-columns: 1fr auto;
+      text-align: left;
+    }
+    .hero .tagline { margin-left: 0; }
+    .mascot { margin: 0; }
+    .home-grid { grid-template-columns: 3fr 2fr; }
+    .card { padding: 28px; }
+    .problem-card { padding: 36px 32px 28px; }
+    .choices { grid-template-columns: repeat(4, 1fr); }
+  }
+  @media (max-width: 420px) {
+    .mode-list { grid-template-columns: 1fr; }
+    .mode label { flex-direction: row; justify-content: flex-start; min-height: 72px; padding-left: 14px; }
+    .mode label .sym { width: 48px; height: 48px; font-size: 30px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="page">
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="Sumwise home">
+      <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+        <rect x="4" y="4" width="40" height="40" rx="12" fill="#6B4FBB"/>
+        <path d="M24 12v24M12 24h24" stroke="#FFCF56" stroke-width="7" stroke-linecap="round"/>
+      </svg>
+      Sumwise
+    </a>
+    <div class="player-pill" id="playerPill">
+      <span class="avatar" id="avatarLetter" aria-hidden="true">M</span>
+      <span id="pillName">Maya</span>
+      <span class="dot" aria-hidden="true">·</span>
+      <span><svg class="star-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6.2 6.8.8-5 4.7 1.3 6.8L12 17.6 5.9 21l1.3-6.8-5-4.7 6.8-.8z" fill="#FFCF56" stroke="#A86B00" stroke-width="1.5" stroke-linejoin="round"/></svg> <span id="pillStars">12</span> stars</span>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ================= HOME ================= -->
+    <section class="screen" id="home" aria-labelledby="homeTitle">
+      <span class="preview-label">Screen 1 · Home</span>
+      <div class="hero">
+        <div>
+          <h1 id="homeTitle">Sumwise</h1>
+          <p class="tagline">Friendly adding and taking-away practice with numbers up to 100. Made for ages 7 to 9.</p>
+        </div>
+        <svg class="mascot" viewBox="0 0 200 200" role="img" aria-label="A smiling yellow star mascot">
+          <defs>
+            <linearGradient id="starGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#FFE08A"/>
+              <stop offset="1" stop-color="#FFC53D"/>
+            </linearGradient>
+          </defs>
+          <circle cx="100" cy="100" r="92" fill="#FFF0C8"/>
+          <path d="M100 18l24.5 52.1 57.2 6.9-42.2 39.3 11 56.4L100 145.3l-50.5 27.4 11-56.4L18.3 77l57.2-6.9z"
+                fill="url(#starGrad)" stroke="#D99A00" stroke-width="5" stroke-linejoin="round"/>
+          <circle cx="82" cy="92" r="6.5" fill="#2A2D4A"/>
+          <circle cx="118" cy="92" r="6.5" fill="#2A2D4A"/>
+          <circle cx="84.5" cy="89.5" r="2" fill="#fff"/>
+          <circle cx="120.5" cy="89.5" r="2" fill="#fff"/>
+          <path d="M80 112c8 12 32 12 40 0" stroke="#2A2D4A" stroke-width="5" stroke-linecap="round" fill="none"/>
+          <circle cx="66" cy="110" r="7" fill="#FF9F9C" opacity=".8"/>
+          <circle cx="134" cy="110" r="7" fill="#FF9F9C" opacity=".8"/>
+        </svg>
+      </div>
+
+      <form class="home-grid" id="setupForm" novalidate>
+        <div class="card">
+          <fieldset>
+            <legend>What do you want to practise?</legend>
+            <div class="mode-list">
+              <div class="mode mode-add">
+                <input type="radio" name="mode" id="modeAdd" value="add">
+                <label for="modeAdd"><span class="sym" aria-hidden="true">+</span><span class="name">Addition</span></label>
+              </div>
+              <div class="mode mode-sub">
+                <input type="radio" name="mode" id="modeSub" value="sub">
+                <label for="modeSub"><span class="sym" aria-hidden="true">−</span><span class="name">Subtraction</span></label>
+              </div>
+              <div class="mode mode-mix">
+                <input type="radio" name="mode" id="modeMix" value="mix" checked>
+                <label for="modeMix"><span class="sym" aria-hidden="true">±</span><span class="name">Mixed</span></label>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="card">
+          <h2 id="whoTitle">Who's playing?</h2>
+          <div class="name-row">
+            <label for="playerName" class="sr-only">Your name</label>
+            <input class="text-input" id="playerName" type="text" value="Maya" maxlength="20" autocomplete="off" placeholder="Your name" aria-describedby="starCountLabel">
+            <span class="star-count" id="starCountLabel">
+              <svg class="star-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6.2 6.8.8-5 4.7 1.3 6.8L12 17.6 5.9 21l1.3-6.8-5-4.7 6.8-.8z" fill="#FFCF56" stroke="#A86B00" stroke-width="1.5" stroke-linejoin="round"/></svg>
+              <span id="homeStars">12</span> stars
+            </span>
+          </div>
+        </div>
+
+        <div class="play-wrap" style="grid-column: 1 / -1;">
+          <button class="btn btn-play" type="submit" id="playBtn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z" fill="currentColor"/></svg>
+            Play
+          </button>
+          <p class="trust-note">10 problems per round. Earn a star for every answer you get right on the first try.</p>
+        </div>
+      </form>
+    </section>
+
+    <!-- ================= PROBLEM ================= -->
+    <section class="screen" id="play" aria-labelledby="quizTitle" hidden>
+      <span class="preview-label">Screen 2 · Problem</span>
+      <h2 class="sr-only" id="quizTitle">Problem screen</h2>
+      <div class="quiz-head">
+        <button class="btn btn-secondary" type="button" id="backBtn">← Home</button>
+        <div class="progress">
+          <div class="progress-label">
+            <span id="progressText">Problem <strong>3</strong> of 10</span>
+            <span class="mode-tag" id="modeTag">Mixed</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-labelledby="progressText" aria-valuemin="0" aria-valuemax="10" aria-valuenow="3" id="progressBar">
+            <div class="progress-fill" id="progressFill" style="width: 30%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card problem-card">
+        <p class="equation" id="equation" aria-live="polite">
+          <span id="opA">47</span>
+          <span class="op" id="opSym" aria-label="plus">+</span>
+          <span id="opB">28</span>
+          <span aria-hidden="true">=</span>
+          <span class="unknown" id="unknown" aria-label="unknown answer">?</span>
+        </p>
+
+        <ul class="choices" id="choices" aria-label="Answer choices">
+          <li><button class="choice" type="button" data-value="75">75</button></li>
+          <li><button class="choice" type="button" data-value="65">65</button></li>
+          <li><button class="choice" type="button" data-value="85">85</button></li>
+          <li><button class="choice" type="button" data-value="74">74</button></li>
+        </ul>
+
+        <div class="quiz-tools">
+          <button class="btn btn-secondary btn-hint" type="button" id="hintBtn" aria-expanded="false" aria-controls="hintPanel">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5a6.5 6.5 0 0 0-3.8 11.8c.5.4.8.9.8 1.5V17h6v-1.2c0-.6.3-1.1.8-1.5A6.5 6.5 0 0 0 12 2.5zM9 19h6v1.5a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 20.5z" fill="#FFCF56" stroke="#A86B00" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            Hint
+          </button>
+        </div>
+
+        <div class="hint-panel" id="hintPanel" hidden>
+          <strong>Try it in two steps:</strong>
+          <ol class="steps" id="hintSteps">
+            <li>47 + 20 = 67</li>
+            <li>Then 67 + 8 = ?</li>
+          </ol>
+        </div>
+
+        <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+
+        <div class="next-row" id="nextRow">
+          <button class="btn btn-next" type="button" id="nextBtn">Next problem →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= DONE ================= -->
+    <section class="screen" id="done" aria-labelledby="doneTitle" hidden>
+      <div class="card done-card">
+        <h2 id="doneTitle">Round complete!</h2>
+        <p id="doneName">Nice work, Maya.</p>
+        <p class="score"><span id="doneScore">0</span> / 10</p>
+        <p id="doneStars">You earned 0 new stars this round.</p>
+        <div class="actions">
+          <button class="btn" type="button" id="againBtn">Play again</button>
+          <button class="btn btn-secondary" type="button" id="doneHomeBtn">Back to home</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Sumwise · Addition and subtraction up to 100 · For children aged 7 to 9</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  document.documentElement.classList.add('js');
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  var TOTAL = 10;
+  var state = {
+    mode: 'mix',
+    index: 0,          // 0-based index into problems
+    problems: [],
+    correctCount: 0,
+    roundStars: 0,
+    attemptsThisProblem: 0,
+    solved: false,
+    name: 'Maya',
+    stars: 12
+  };
+
+  /* ---------- persistence (per-device convenience only) ---------- */
+  function load() {
+    try {
+      var raw = localStorage.getItem('sumwise');
+      if (raw) {
+        var saved = JSON.parse(raw);
+        if (typeof saved.name === 'string' && saved.name.trim()) state.name = saved.name.slice(0, 20);
+        if (typeof saved.stars === 'number' && saved.stars >= 0) state.stars = Math.floor(saved.stars);
+        if (saved.mode === 'add' || saved.mode === 'sub' || saved.mode === 'mix') state.mode = saved.mode;
+      }
+    } catch (e) { /* storage unavailable; defaults stay */ }
+  }
+  function save() {
+    try {
+      localStorage.setItem('sumwise', JSON.stringify({ name: state.name, stars: state.stars, mode: state.mode }));
+    } catch (e) { /* ignore */ }
+  }
+
+  /* ---------- helpers ---------- */
+  function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+  function modeName(m) { return m === 'add' ? 'Addition' : m === 'sub' ? 'Subtraction' : 'Mixed'; }
+
+  function makeProblem(mode) {
+    var op = mode === 'mix' ? (Math.random() < 0.5 ? 'add' : 'sub') : mode;
+    var a, b, answer;
+    if (op === 'add') {
+      a = rand(11, 89);
+      b = rand(2, 100 - a);
+      answer = a + b;
+    } else {
+      a = rand(20, 100);
+      b = rand(2, a - 1);
+      answer = a - b;
+    }
+    var pool = [answer + 10, answer - 10, answer + 1, answer - 1, answer + 2, answer - 2,
+                op === 'add' ? Math.abs(a - b) : a + b, answer + 9, answer - 9];
+    var seen = {}; seen[answer] = true;
+    var distractors = [];
+    shuffle(pool).forEach(function (v) {
+      if (v >= 0 && v <= 100 && !seen[v] && distractors.length < 3) { seen[v] = true; distractors.push(v); }
+    });
+    var choices = shuffle([answer].concat(distractors));
+    return { op: op, a: a, b: b, answer: answer, choices: choices };
+  }
+
+  function hintFor(p) {
+    var tens = Math.floor(p.b / 10) * 10;
+    var ones = p.b % 10;
+    var sym = p.op === 'add' ? '+' : '−';
+    if (tens === 0) {
+      return ['Count on ' + (p.op === 'add' ? 'up' : 'back') + ' by ' + ones + ' from ' + p.a + '.', p.a + ' ' + sym + ' ' + ones + ' = ?'];
+    }
+    var mid = p.op === 'add' ? p.a + tens : p.a - tens;
+    if (ones === 0) return [p.a + ' ' + sym + ' ' + tens + ' = ?'];
+    return [p.a + ' ' + sym + ' ' + tens + ' = ' + mid, 'Then ' + mid + ' ' + sym + ' ' + ones + ' = ?'];
+  }
+
+  /* ---------- rendering ---------- */
+  function showScreen(id) {
+    ['home', 'play', 'done'].forEach(function (s) { $(s).hidden = (s !== id); });
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  function renderPlayer() {
+    $('pillName').textContent = state.name;
+    $('avatarLetter').textContent = state.name.charAt(0).toUpperCase() || '?';
+    $('pillStars').textContent = state.stars;
+    $('homeStars').textContent = state.stars;
+    $('playerName').value = state.name;
+  }
+
+  function renderProblem() {
+    var p = state.problems[state.index];
+    state.attemptsThisProblem = 0;
+    state.solved = false;
+
+    $('progressText').innerHTML = 'Problem <strong>' + (state.index + 1) + '</strong> of ' + TOTAL;
+    $('progressBar').setAttribute('aria-valuenow', state.index + 1);
+    $('progressFill').style.width = ((state.index + 1) / TOTAL * 100) + '%';
+    $('modeTag').textContent = modeName(state.mode);
+
+    $('opA').textContent = p.a;
+    $('opB').textContent = p.b;
+    $('opSym').textContent = p.op === 'add' ? '+' : '−';
+    $('opSym').setAttribute('aria-label', p.op === 'add' ? 'plus' : 'minus');
+    var unk = $('unknown');
+    unk.textContent = '?';
+    unk.className = 'unknown';
+    unk.setAttribute('aria-label', 'unknown answer');
+
+    var list = $('choices');
+    list.innerHTML = '';
+    p.choices.forEach(function (v) {
+      var li = document.createElement('li');
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'choice';
+      btn.dataset.value = v;
+      btn.textContent = v;
+      li.appendChild(btn);
+      list.appendChild(li);
+    });
+
+    var steps = $('hintSteps');
+    steps.innerHTML = '';
+    hintFor(p).forEach(function (s) {
+      var li = document.createElement('li');
+      li.textContent = s;
+      steps.appendChild(li);
+    });
+    $('hintPanel').hidden = true;
+    $('hintBtn').setAttribute('aria-expanded', 'false');
+
+    $('feedback').className = 'feedback';
+    $('feedback').innerHTML = '';
+    $('nextRow').classList.remove('show');
+
+    var first = list.querySelector('.choice');
+    if (first) first.focus();
+  }
+
+  var ICON_OK = '<svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="16" fill="#1E8E5A"/><path d="M10 18.5l5.5 5.5L26 13" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>';
+  var ICON_OOPS = '<svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="16" fill="#F4A261"/><circle cx="13" cy="15" r="2.2" fill="#2A2D4A"/><circle cx="23" cy="15" r="2.2" fill="#2A2D4A"/><path d="M12.5 25c3-3.5 8-3.5 11 0" stroke="#2A2D4A" stroke-width="3" stroke-linecap="round" fill="none"/></svg>';
+
+  function onChoice(btn) {
+    if (state.solved) return;
+    var p = state.problems[state.index];
+    var value = Number(btn.dataset.value);
+    var fb = $('feedback');
+    state.attemptsThisProblem++;
+
+    if (value === p.answer) {
+      state.solved = true;
+      state.correctCount++;
+      btn.classList.add('is-correct');
+      var all = $('choices').querySelectorAll('.choice');
+      for (var i = 0; i < all.length; i++) all[i].disabled = true;
+      var unk = $('unknown');
+      unk.textContent = p.answer;
+      unk.className = 'unknown filled';
+      unk.setAttribute('aria-label', 'answer ' + p.answer);
+
+      var earned = state.attemptsThisProblem === 1;
+      if (earned) { state.stars++; state.roundStars++; save(); renderPlayer(); }
+      var sym = p.op === 'add' ? '+' : '−';
+      fb.className = 'feedback ok';
+      fb.innerHTML = ICON_OK +
+        '<span class="msg">That\'s right! ' + p.a + ' ' + sym + ' ' + p.b + ' = ' + p.answer + '</span>' +
+        (earned ? '<span class="star-chip">+1 <svg class="star-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6.2 6.8.8-5 4.7 1.3 6.8L12 17.6 5.9 21l1.3-6.8-5-4.7 6.8-.8z" fill="#FFCF56" stroke="#A86B00" stroke-width="1.5" stroke-linejoin="round"/></svg> star</span>' : '');
+      $('nextRow').classList.add('show');
+      $('nextBtn').textContent = state.index + 1 < TOTAL ? 'Next problem →' : 'See my score →';
+      $('nextBtn').focus();
+    } else {
+      btn.classList.add('is-wrong');
+      btn.disabled = true;
+      fb.className = 'feedback oops';
+      var tip = state.attemptsThisProblem >= 2 ? ' Try the hint.' : ' Have another go.';
+      fb.innerHTML = ICON_OOPS + '<span class="msg">Not quite — ' + value + ' isn\'t the answer.' + tip + '</span>';
+    }
+  }
+
+  function startRound() {
+    state.index = 0;
+    state.correctCount = 0;
+    state.roundStars = 0;
+    state.problems = [];
+    for (var i = 0; i < TOTAL; i++) state.problems.push(makeProblem(state.mode));
+    showScreen('play');
+    renderProblem();
+  }
+
+  function finishRound() {
+    $('doneName').textContent = (state.correctCount === TOTAL ? 'Perfect round, ' : 'Nice work, ') + state.name + '.';
+    $('doneScore').textContent = state.correctCount;
+    $('doneStars').textContent = 'You earned ' + state.roundStars + ' new ' + (state.roundStars === 1 ? 'star' : 'stars') + ' this round. Total: ' + state.stars + '.';
+    showScreen('done');
+    $('againBtn').focus();
+  }
+
+  /* ---------- wiring ---------- */
+  load();
+  renderPlayer();
+  var modeInput = document.querySelector('input[name="mode"][value="' + state.mode + '"]');
+  if (modeInput) modeInput.checked = true;
+
+  $('playerName').addEventListener('input', function (e) {
+    var v = e.target.value.trim();
+    state.name = v ? v.slice(0, 20) : 'Player';
+    save();
+    $('pillName').textContent = state.name;
+    $('avatarLetter').textContent = state.name.charAt(0).toUpperCase();
+  });
+
+  var radios = document.querySelectorAll('input[name="mode"]');
+  for (var r = 0; r < radios.length; r++) {
+    radios[r].addEventListener('change', function (e) { state.mode = e.target.value; save(); });
+  }
+
+  $('setupForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    startRound();
+  });
+
+  $('choices').addEventListener('click', function (e) {
+    var btn = e.target.closest('.choice');
+    if (btn && !btn.disabled) onChoice(btn);
+  });
+
+  $('hintBtn').addEventListener('click', function () {
+    var panel = $('hintPanel');
+    var open = panel.hidden;
+    panel.hidden = !open;
+    this.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  $('nextBtn').addEventListener('click', function () {
+    if (state.index + 1 < TOTAL) { state.index++; renderProblem(); }
+    else finishRound();
+  });
+
+  $('backBtn').addEventListener('click', function () { showScreen('home'); $('playBtn').focus(); });
+  $('doneHomeBtn').addEventListener('click', function () { showScreen('home'); $('playBtn').focus(); });
+  $('againBtn').addEventListener('click', startRound);
+
+  document.querySelector('.brand').addEventListener('click', function (e) {
+    e.preventDefault();
+    showScreen('home');
+  });
+})();
+</script>
+</body>
+</html>
