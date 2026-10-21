@@ -1,84 +1,85 @@
 {
-  "A-baseline": {
+  "D-baseline": {
     "errors": [],
     "audit": {
-      "textEls": 165,
-      "tiny": 0,
-      "under12": 19,
-      "distinctSizes": 14,
+      "textEls": 49,
+      "tiny": 21,
+      "under12": 21,
+      "distinctSizes": 11,
       "sizes": [
-        "15px×41",
-        "13px×28",
-        "12px×22",
-        "14px×22",
-        "11px×19",
-        "17px×8"
+        "10px×19",
+        "18px×6",
+        "20px×5",
+        "16px×4",
+        "22px×4",
+        "14px×3"
       ],
       "families": [
-        "Inter×99",
-        "JetBrains Mono×66"
+        "Press Start 2P×29",
+        "VT323×20"
       ],
       "h1": {
-        "text": "Know every endpoint's p99 before your users do.",
-        "size": "64px",
-        "family": "Inter"
+        "text": "Hollow Vale",
+        "size": "72px",
+        "family": "\"Press Start 2P\""
       },
-      "glyphTotal": 15,
-      "eyebrows": 7,
-      "accentWords": "1/7",
-      "cardGrids": 4,
-      "grads": 13,
-      "glows": 5,
-      "blurs": 1,
-      "distinctRadii": 10,
+      "glyphTotal": 9,
+      "eyebrows": 0,
+      "accentWords": "2/3",
+      "cardGrids": 0,
+      "grads": 2,
+      "glows": 18,
+      "blurs": 0,
+      "distinctRadii": 0,
       "overflowX": false,
-      "height": 5448,
+      "height": 2373,
       "notes": [
-        "14 distinct font sizes. A scale of 5–7 reads as designed.",
-        "15 ornament glyphs in visible text (·11 →4). Arrows-after-links and ✳/✦ ornaments are a known tell.",
-        "7 tracked-uppercase eyebrows directly above headings. Keep only where the label carries a real category.",
-        "4 grids of 3–8 identical styled cards. Check each: would a list, table, paragraph or single image serve better?",
-        "13 gradient backgrounds. Gradients should have ≤ 2 named jobs.",
-        "5 glow-style shadows (0 0 Npx). Only things that emit light should glow.",
-        "Some paragraphs run ~159 characters per line. Keep running text at 45–90."
+        "43% of text elements render under 11px (real sites: 0–5%). Raise label and body sizes; aim for ≤ 7 sizes.",
+        "11 distinct font sizes. A scale of 5–7 reads as designed.",
+        "h1 is 72px while most text is small: poster-scale contrast. Bring display and body closer.",
+        "9 ornament glyphs in visible text (·5 ↑2 ↓2). Arrows-after-links and ✳/✦ ornaments are a known tell.",
+        "2/3 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all.",
+        "18 glow-style shadows (0 0 Npx). Only things that emit light should glow.",
+        "24 uppercase text elements. Tracked-caps micro-labels as the universal label style is a tell."
       ]
     }
   },
-  "A-skilled": {
+  "D-skilled": {
     "errors": [],
     "audit": {
-      "textEls": 182,
+      "textEls": 53,
       "tiny": 0,
       "under12": 0,
-      "distinctSizes": 6,
+      "distinctSizes": 4,
       "sizes": [
-        "14px×78",
-        "16px×51",
-        "13px×29",
-        "19px×13",
-        "30px×10",
-        "44px×1"
+        "20px×37",
+        "30px×14",
+        "48px×1",
+        "72px×1"
       ],
       "families": [
-        "IBM Plex Sans×101",
-        "IBM Plex Mono×81"
+        "Jersey 10×51",
+        "Jacquard 12×2"
       ],
       "h1": {
-        "text": "Per-endpoint latency, error rate and throughput, lined up against your deploys.",
-        "size": "44px",
-        "family": "\"IBM Plex Sans\""
+        "text": "Hollow Vale",
+        "size": "72px",
+        "family": "\"Jacquard 12\""
       },
-      "glyphTotal": 0,
+      "glyphTotal": 5,
       "eyebrows": 0,
-      "accentWords": "0/6",
-      "cardGrids": 2,
-      "grads": 0,
-      "glows": 0,
+      "accentWords": "3/4",
+      "cardGrids": 0,
+      "grads": 1,
+      "glows": 15,
       "blurs": 0,
-      "distinctRadii": 5,
+      "distinctRadii": 0,
       "overflowX": false,
-      "height": 4024,
-      "notes": []
+      "height": 2211,
+      "notes": [
+        "3/4 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all.",
+        "15 glow-style shadows (0 0 Npx). Only things that emit light should glow."
+      ]
     }
   }
 }
