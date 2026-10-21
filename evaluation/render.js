@@ -28,6 +28,13 @@ const only = process.argv.slice(2);
         page.on('pageerror', e => errors.push(String(e)));
         await page.goto('file://' + file, { waitUntil: 'load' });
         await page.waitForTimeout(1200);
+        // Trigger scroll-reveal animations so full-page screenshots show all content
+        await page.evaluate(async () => {
+          const h = document.documentElement.scrollHeight;
+          for (let y = 0; y < h; y += 500) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 60)); }
+          window.scrollTo(0, 0);
+        });
+        await page.waitForTimeout(900);
         await page.screenshot({ path: path.join(OUT, `${id}-${vp}-fold.png`) });
         await page.screenshot({ path: path.join(OUT, `${id}-${vp}-full.png`), fullPage: true });
         // Scenario-specific extra states (so toggled screens are also captured)

@@ -1,4 +1,448 @@
 {
+  "A-baseline": {
+    "errors": [],
+    "audit": {
+      "textEls": 165,
+      "tiny": 0,
+      "under12": 19,
+      "distinctSizes": 14,
+      "sizes": [
+        "15px×41",
+        "13px×28",
+        "12px×22",
+        "14px×22",
+        "11px×19",
+        "17px×8"
+      ],
+      "families": [
+        "Inter×99",
+        "JetBrains Mono×66"
+      ],
+      "h1": {
+        "text": "Know every endpoint's p99 before your users do.",
+        "size": "64px",
+        "family": "Inter"
+      },
+      "glyphTotal": 15,
+      "eyebrows": 7,
+      "accentWords": "1/7",
+      "cardGrids": 4,
+      "grads": 13,
+      "glows": 5,
+      "blurs": 1,
+      "distinctRadii": 10,
+      "overflowX": false,
+      "height": 5448,
+      "notes": [
+        "14 distinct font sizes. A scale of 5–7 reads as designed.",
+        "15 ornament glyphs in visible text (·11 →4). Arrows-after-links and ✳/✦ ornaments are a known tell.",
+        "7 tracked-uppercase eyebrows directly above headings. Keep only where the label carries a real category.",
+        "4 grids of 3–8 identical styled cards. Check each: would a list, table, paragraph or single image serve better?",
+        "13 gradient backgrounds. Gradients should have ≤ 2 named jobs.",
+        "5 glow-style shadows (0 0 Npx). Only things that emit light should glow.",
+        "Some paragraphs run ~159 characters per line. Keep running text at 45–90."
+      ]
+    }
+  },
+  "A-skilled": {
+    "errors": [],
+    "audit": {
+      "textEls": 182,
+      "tiny": 0,
+      "under12": 0,
+      "distinctSizes": 6,
+      "sizes": [
+        "14px×78",
+        "16px×51",
+        "13px×29",
+        "19px×13",
+        "30px×10",
+        "44px×1"
+      ],
+      "families": [
+        "IBM Plex Sans×101",
+        "IBM Plex Mono×81"
+      ],
+      "h1": {
+        "text": "Per-endpoint latency, error rate and throughput, lined up against your deploys.",
+        "size": "44px",
+        "family": "\"IBM Plex Sans\""
+      },
+      "glyphTotal": 0,
+      "eyebrows": 0,
+      "accentWords": "0/6",
+      "cardGrids": 2,
+      "grads": 0,
+      "glows": 0,
+      "blurs": 0,
+      "distinctRadii": 5,
+      "overflowX": false,
+      "height": 4024,
+      "notes": []
+    }
+  },
+  "B-baseline": {
+    "errors": [],
+    "audit": {
+      "textEls": 225,
+      "tiny": 0,
+      "under12": 16,
+      "distinctSizes": 7,
+      "sizes": [
+        "14px×140",
+        "12px×32",
+        "13px×32",
+        "11px×16",
+        "24px×3",
+        "20px×1"
+      ],
+      "families": [
+        "IBM Plex Sans×225"
+      ],
+      "h1": {
+        "text": "Global Equity Core",
+        "size": "20px",
+        "family": "\"IBM Plex Sans\""
+      },
+      "glyphTotal": 6,
+      "eyebrows": 0,
+      "accentWords": "0/5",
+      "cardGrids": 1,
+      "grads": 0,
+      "glows": 14,
+      "blurs": 0,
+      "distinctRadii": 4,
+      "overflowX": false,
+      "height": 1187,
+      "notes": [
+        "6 ornament glyphs in visible text (·6). Arrows-after-links and ✳/✦ ornaments are a known tell.",
+        "14 glow-style shadows (0 0 Npx). Only things that emit light should glow."
+      ]
+    }
+  },
+  "B-skilled": {
+    "errors": [],
+    "audit": {
+      "textEls": 175,
+      "tiny": 0,
+      "under12": 0,
+      "distinctSizes": 6,
+      "sizes": [
+        "13px×141",
+        "12px×25",
+        "15px×4",
+        "18px×3",
+        "20px×1",
+        "30px×1"
+      ],
+      "families": [
+        "IBM Plex Sans×175"
+      ],
+      "h1": {
+        "text": "Global Equity Core",
+        "size": "20px",
+        "family": "\"IBM Plex Sans\""
+      },
+      "glyphTotal": 0,
+      "eyebrows": 0,
+      "accentWords": "0/7",
+      "cardGrids": 0,
+      "grads": 0,
+      "glows": 0,
+      "blurs": 0,
+      "distinctRadii": 2,
+      "overflowX": false,
+      "height": 1041,
+      "notes": []
+    }
+  },
+  "C-baseline": {
+    "errors": [],
+    "audit": {
+      "textEls": 18,
+      "tiny": 0,
+      "under12": 0,
+      "distinctSizes": 8,
+      "sizes": [
+        "18px×7",
+        "17px×3",
+        "24px×3",
+        "15px×1",
+        "16px×1",
+        "20px×1"
+      ],
+      "families": [
+        "Nunito×14",
+        "Fredoka×4"
+      ],
+      "h1": {
+        "text": "Sumwise",
+        "size": "96px",
+        "family": "Fredoka"
+      },
+      "glyphTotal": 3,
+      "eyebrows": 0,
+      "accentWords": "0/4",
+      "cardGrids": 0,
+      "grads": 0,
+      "glows": 1,
+      "blurs": 0,
+      "distinctRadii": 6,
+      "overflowX": false,
+      "height": 900,
+      "notes": [
+        "Some paragraphs run ~114 characters per line. Keep running text at 45–90."
+      ]
+    }
+  },
+  "C-skilled": {
+    "errors": [],
+    "audit": {
+      "textEls": 35,
+      "tiny": 0,
+      "under12": 0,
+      "distinctSizes": 8,
+      "sizes": [
+        "15px×8",
+        "22px×8",
+        "18px×7",
+        "40px×6",
+        "72px×2",
+        "84px×2"
+      ],
+      "families": [
+        "Fredoka×23",
+        "Nunito×12"
+      ],
+      "h1": {
+        "text": "Sumwise",
+        "size": "72px",
+        "family": "Fredoka"
+      },
+      "glyphTotal": 0,
+      "eyebrows": 0,
+      "accentWords": "1/3",
+      "cardGrids": 1,
+      "grads": 0,
+      "glows": 0,
+      "blurs": 0,
+      "distinctRadii": 7,
+      "overflowX": false,
+      "height": 1672,
+      "notes": []
+    }
+  },
+  "D-baseline": {
+    "errors": [],
+    "audit": {
+      "textEls": 49,
+      "tiny": 21,
+      "under12": 21,
+      "distinctSizes": 11,
+      "sizes": [
+        "10px×19",
+        "18px×6",
+        "20px×5",
+        "16px×4",
+        "22px×4",
+        "14px×3"
+      ],
+      "families": [
+        "Press Start 2P×29",
+        "VT323×20"
+      ],
+      "h1": {
+        "text": "Hollow Vale",
+        "size": "72px",
+        "family": "\"Press Start 2P\""
+      },
+      "glyphTotal": 9,
+      "eyebrows": 0,
+      "accentWords": "2/3",
+      "cardGrids": 0,
+      "grads": 2,
+      "glows": 18,
+      "blurs": 0,
+      "distinctRadii": 0,
+      "overflowX": false,
+      "height": 2373,
+      "notes": [
+        "43% of text elements render under 11px (real sites: 0–5%). Raise label and body sizes; aim for ≤ 7 sizes.",
+        "11 distinct font sizes. A scale of 5–7 reads as designed.",
+        "h1 is 72px while most text is small: poster-scale contrast. Bring display and body closer.",
+        "9 ornament glyphs in visible text (·5 ↑2 ↓2). Arrows-after-links and ✳/✦ ornaments are a known tell.",
+        "2/3 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all.",
+        "18 glow-style shadows (0 0 Npx). Only things that emit light should glow.",
+        "24 uppercase text elements. Tracked-caps micro-labels as the universal label style is a tell."
+      ]
+    }
+  },
+  "D-skilled": {
+    "errors": [],
+    "audit": {
+      "textEls": 53,
+      "tiny": 0,
+      "under12": 0,
+      "distinctSizes": 4,
+      "sizes": [
+        "20px×37",
+        "30px×14",
+        "48px×1",
+        "72px×1"
+      ],
+      "families": [
+        "Jersey 10×51",
+        "Jacquard 12×2"
+      ],
+      "h1": {
+        "text": "Hollow Vale",
+        "size": "72px",
+        "family": "\"Jacquard 12\""
+      },
+      "glyphTotal": 5,
+      "eyebrows": 0,
+      "accentWords": "3/4",
+      "cardGrids": 0,
+      "grads": 1,
+      "glows": 15,
+      "blurs": 0,
+      "distinctRadii": 0,
+      "overflowX": false,
+      "height": 2211,
+      "notes": [
+        "3/4 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all.",
+        "15 glow-style shadows (0 0 Npx). Only things that emit light should glow."
+      ]
+    }
+  },
+  "E-baseline": {
+    "errors": [],
+    "audit": {
+      "textEls": 173,
+      "tiny": 14,
+      "under12": 22,
+      "distinctSizes": 21,
+      "sizes": [
+        "15px×36",
+        "14px×30",
+        "12px×20",
+        "13px×19",
+        "9px×11",
+        "16px×10"
+      ],
+      "families": [
+        "Work Sans×99",
+        "Fraunces×39",
+        "ui-monospace×35"
+      ],
+      "h1": {
+        "text": "A proper website for your business — built by hand, explained in plain English.",
+        "size": "74px",
+        "family": "Fraunces"
+      },
+      "glyphTotal": 10,
+      "eyebrows": 9,
+      "accentWords": "7/8",
+      "cardGrids": 4,
+      "grads": 0,
+      "glows": 0,
+      "blurs": 0,
+      "distinctRadii": 7,
+      "overflowX": false,
+      "height": 6220,
+      "notes": [
+        "21 distinct font sizes. A scale of 5–7 reads as designed.",
+        "10 ornament glyphs in visible text (↗6 ·3 ↑1). Arrows-after-links and ✳/✦ ornaments are a known tell.",
+        "9 tracked-uppercase eyebrows directly above headings. Keep only where the label carries a real category.",
+        "7/8 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all.",
+        "4 grids of 3–8 identical styled cards. Check each: would a list, table, paragraph or single image serve better?",
+        "18 uppercase text elements. Tracked-caps micro-labels as the universal label style is a tell."
+      ]
+    }
+  },
+  "E-original": {
+    "errors": [],
+    "audit": {
+      "textEls": 124,
+      "tiny": 44,
+      "under12": 71,
+      "distinctSizes": 19,
+      "sizes": [
+        "11px×27",
+        "9px×20",
+        "10px×17",
+        "12px×13",
+        "13px×7",
+        "53px×7"
+      ],
+      "families": [
+        "Avenir Next×107",
+        "Georgia×12",
+        "Consolas×5"
+      ],
+      "h1": {
+        "text": "Your work is one of a kind.Your website should be, too.",
+        "size": "76px",
+        "family": "\"Avenir Next\""
+      },
+      "glyphTotal": 26,
+      "eyebrows": 10,
+      "accentWords": "6/8",
+      "cardGrids": 2,
+      "grads": 0,
+      "glows": 0,
+      "blurs": 2,
+      "distinctRadii": 15,
+      "overflowX": false,
+      "height": 4192,
+      "notes": [
+        "35% of text elements render under 11px (real sites: 0–5%). Raise label and body sizes; aim for ≤ 7 sizes.",
+        "19 distinct font sizes. A scale of 5–7 reads as designed.",
+        "h1 is 76px while most text is small: poster-scale contrast. Bring display and body closer.",
+        "26 ornament glyphs in visible text (↗12 ↓1 ✳4 ✦2 ·3 ↘3 ↑1). Arrows-after-links and ✳/✦ ornaments are a known tell.",
+        "10 tracked-uppercase eyebrows directly above headings. Keep only where the label carries a real category.",
+        "6/8 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all.",
+        "2 backdrop-blur elements. Glass needs a reason in the direction card.",
+        "17 uppercase text elements. Tracked-caps micro-labels as the universal label style is a tell."
+      ]
+    }
+  },
+  "E-skilled": {
+    "errors": [],
+    "audit": {
+      "textEls": 105,
+      "tiny": 0,
+      "under12": 0,
+      "distinctSizes": 7,
+      "sizes": [
+        "15px×31",
+        "17px×25",
+        "20px×21",
+        "13px×19",
+        "40px×5",
+        "16px×3"
+      ],
+      "families": [
+        "Libre Franklin×105"
+      ],
+      "h1": {
+        "text": "Websites for small businesses, makers and community projects.",
+        "size": "52px",
+        "family": "\"Libre Franklin\""
+      },
+      "glyphTotal": 0,
+      "eyebrows": 2,
+      "accentWords": "0/6",
+      "cardGrids": 2,
+      "grads": 0,
+      "glows": 0,
+      "blurs": 0,
+      "distinctRadii": 2,
+      "overflowX": false,
+      "height": 4847,
+      "notes": []
+    }
+  },
   "F-baseline": {
     "errors": [],
     "audit": {
@@ -39,6 +483,43 @@
         "5 tracked-uppercase eyebrows directly above headings. Keep only where the label carries a real category.",
         "5/6 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all."
       ]
+    }
+  },
+  "G-baseline": {
+    "errors": [],
+    "audit": {
+      "textEls": 29,
+      "tiny": 1,
+      "under12": 1,
+      "distinctSizes": 9,
+      "sizes": [
+        "14px×15",
+        "12px×3",
+        "13px×3",
+        "15px×2",
+        "16px×2",
+        "11px×1"
+      ],
+      "families": [
+        "Inter×27",
+        "Fraunces×2"
+      ],
+      "h1": {
+        "text": "Garden Snake",
+        "size": "41.6px",
+        "family": "Fraunces"
+      },
+      "glyphTotal": 0,
+      "eyebrows": 0,
+      "accentWords": "0/6",
+      "cardGrids": 0,
+      "grads": 0,
+      "glows": 0,
+      "blurs": 1,
+      "distinctRadii": 5,
+      "overflowX": false,
+      "height": 915,
+      "notes": []
     }
   }
 }
