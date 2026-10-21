@@ -1,0 +1,900 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sumwise</title>
+<meta name="description" content="Sumwise: addition and subtraction practice up to 100 for children aged 7 to 9. Home screen and a problem screen.">
+<meta name="theme-color" content="#2458D3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<!--
+BRIEF
+- Sumwise: a browser game where children aged 7–9 practise addition and subtraction up to 100, ten problems a round.
+- Used on school or home tablets, short sessions, often with a grown-up nearby. Mood: keen, sometimes unsure about maths.
+- Requested character (user's words): "colorful, playful, friendly, kid-appropriate; parents and teachers should find it trustworthy; must be usable on a tablet."
+- Focal point: the problem (47 + 28 = ?) and its four answers. On Home: the Play button.
+- Real content: Maya, 12 stars, Addition / Subtraction / Mixed, problem 3 of 10, 47 + 28, answers 75 65 85 74. Nothing else is claimed (no stats, quotes, logos, curricula).
+
+DIRECTION CARD
+Direction: "Tens and ones". Sumwise is drawn from the base-ten blocks children already handle in class: rods are tens, cubes are ones, and every pressable thing is a chunky plastic block.
+Requested character -> how it shows:
+  colorful -> a full blue field on Home and under the answer tray; place-value colours (tens blue, ones green, the Montessori convention) on every digit and block; yellow for Play, choices and stars; a butter-yellow board around the screens. Primary toy colours, not one accent on white.
+  playful -> heavy rounded Baloo 2 numerals at up to 104px; pressables are blocks with a thick bottom edge that sinks when tapped; a ones-cube with a face that talks.
+  friendly -> Maya's name, short sentences, wrong answers explained with the actual numbers, never "Wrong!".
+  kid-appropriate -> Andika for words (single-storey a and g, drawn for beginning readers), 18px+ text, 92px answer targets, nothing timed.
+  trustworthy -> hints teach regrouping with rods and cubes the way it is modelled in class; no hype, no fake proof, one focal point, calm layout.
+  tablet -> touch-first sizes, 2x2 or 4-up tray by container width, copy says "pick", never "click" or "press".
+The memorable thing: the ten-rod. Progress is a rod of 10 cubes that fills as Maya goes (a finished round "builds a ten"); hints draw 47 and 28 as rods and cubes.
+Type: Baloo 2 800 for the wordmark and all numbers; Andika 400/700 for words. Sizes 15 / 18 / 21 / 28 / 44 / display clamp(56-104).
+Color: ink #18213D; tens #2458D3 (Home field, tray, progress, ~40% of the screens); ones #138A4C/#22A35C; star #FFC23A (Play, selected, right answer, stars); coral #E4553F only for "not this one"; sky #EEF4FF stage.
+Shape & surface: pressable = block (18px radius + 6px darker bottom edge); information = flat pills and panels; screens 32px; cubes in drawings 3px.
+Density: sparse. One problem per screen.
+Imagery: CSS/SVG base-ten blocks and one cube character with rules (always the green ones-cube, always left of its speech bubble, one face per state).
+Motion: blocks sink on tap; right answer = star count pops and the progress cube fills; wrong = short shake. All off under reduced motion.
+Voice: sentences a 7-year-old can read, numbers in every explanation, at most one exclamation mark per message.
+Conventions kept: Home top-left, progress top-centre, score top-right, four big answer buttons, radio choice of mode, one big Play button.
+-->
+<style>
+:root{
+  color-scheme: light;
+  --ink:#18213D;
+  --ink-2:#4A5373;
+  --board:#FFEFC2;
+  --board-ink:#5B4A12;
+  --sky:#EEF4FF;
+  --line:#CFDBF3;
+  --tens:#2458D3;
+  --tens-mid:#3A6BE0;
+  --tens-edge:#163C9A;
+  --tens-deep:#1A47B3;
+  --tens-pale:#DCE6FB;
+  --ones:#22A35C;
+  --ones-text:#137A42;
+  --ones-edge:#0E5E33;
+  --star:#FFC23A;
+  --star-edge:#C98C00;
+  --coral:#E4553F;
+  --coral-text:#A8301D;
+  --coral-soft:#FFE4DE;
+  --coral-edge:#E6A193;
+  --white-edge:#BCCBEB;
+  --f-word:"Andika", "Trebuchet MS", system-ui, sans-serif;
+  --f-num:"Baloo 2", "Arial Rounded MT Bold", system-ui, sans-serif;
+  --r-block:18px;
+  --r-screen:32px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--board);
+  color:var(--ink);
+  font-family:var(--f-word);
+  font-size:18px;
+  line-height:1.45;
+}
+button{font:inherit;color:inherit}
+p,h1,h2,h3,h4,figure{margin:0}
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+[hidden]{display:none!important}
+
+/* ---------- board (the page around the screens) ---------- */
+.board{max-width:1340px;margin:0 auto;padding:32px 24px 64px}
+.row{display:grid;gap:36px;grid-template-columns:minmax(0,1fr);align-items:stretch}
+.shot{display:flex;flex-direction:column;gap:12px;width:100%;max-width:800px;margin-inline:auto;min-width:0}
+.cap{font:700 15px/1.3 var(--f-word);color:var(--board-ink);padding-left:10px}
+.cap span{font-weight:400}
+.after{margin-top:56px}
+.after > .cap{margin:0 auto 14px;max-width:800px}
+.row2{display:grid;gap:28px;grid-template-columns:minmax(0,1fr)}
+.row2 figure{max-width:800px;margin-inline:auto;width:100%}
+.row2 figcaption{font:700 15px/1.3 var(--f-word);color:var(--board-ink);padding:0 0 10px 10px}
+@media (min-width:1180px){
+  .row{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+  .shot{max-width:none}
+  .after > .cap{max-width:none}
+  .row2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .row2 figure{max-width:none}
+}
+@media (max-width:520px){
+  .board{padding:18px 14px 48px}
+  .row{gap:30px}
+}
+
+/* ---------- screens ---------- */
+.screen{
+  container-type:inline-size;
+  border-radius:var(--r-screen);
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  flex:1;
+  box-shadow:0 0 0 3px rgba(91,74,18,.12);
+}
+@media (max-width:520px){ .screen{--r-screen:26px} }
+
+/* ---------- blocks: anything pressable ---------- */
+.block{
+  --face:#fff; --edge:var(--white-edge);
+  appearance:none;border:0;margin:0 0 6px;
+  background:var(--face);
+  border-radius:var(--r-block);
+  box-shadow:0 6px 0 var(--edge);
+  cursor:pointer;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+  position:relative;
+  transition:transform .08s ease-out, box-shadow .08s ease-out, background-color .15s, opacity .2s;
+}
+.block:active:not([aria-disabled="true"]){transform:translateY(4px);box-shadow:0 2px 0 var(--edge)}
+@media (hover:hover){ .block:not([aria-disabled="true"]):hover{filter:brightness(1.04)} }
+.block:focus{outline:none}
+.block:focus-visible{outline:4px solid var(--focus,var(--ink));outline-offset:4px}
+.block[aria-disabled="true"]{cursor:default}
+
+/* ---------- shared bits ---------- */
+.ico{width:1em;height:1em;flex:none;vertical-align:-.12em}
+.pill{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:6px 16px 6px 8px;font-weight:700;white-space:nowrap}
+
+/* ---------- HOME ---------- */
+.home{background:var(--tens);color:#fff;--focus:#fff}
+.home-in{
+  flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:28px;
+  padding:clamp(18px,5cqw,40px);
+}
+.home-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.home .pill{background:var(--tens-deep);font-size:18px}
+.avatar{
+  width:36px;height:36px;border-radius:50%;
+  display:grid;place-items:center;
+  background:var(--star);color:var(--ink);
+  font:800 20px/1 var(--f-num);padding-top:2px;
+}
+.home .stars-pill{padding:6px 16px 6px 12px}
+.home .stars-pill .ico{width:26px;height:26px}
+.home-mid{display:flex;flex-direction:column;gap:22px}
+.brand{display:flex;align-items:center;gap:clamp(10px,3cqw,18px)}
+.brand .buddy{width:clamp(64px,15cqw,92px);height:auto;flex:none}
+.wordmark{font:800 clamp(52px,13cqw,84px)/.9 var(--f-num);letter-spacing:-.01em;padding-top:.08em}
+.tagline{font-size:21px;color:#E3EBFC;max-width:30ch;margin-top:-8px}
+.modes{border:0;margin:0;padding:0;min-width:0}
+.modes legend{font-size:21px;font-weight:700;padding:0;margin-bottom:12px}
+.mode-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.mode{position:relative;display:block}
+.mode input{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.mode .face{
+  --face:var(--tens-mid); --edge:var(--tens-edge);
+  display:grid;grid-template-columns:52px minmax(0,1fr) 34px;align-items:center;column-gap:12px;
+  min-height:72px;padding:10px 14px 10px 10px;color:#fff;
+}
+.sign{
+  width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:2px;
+  background:rgba(255,255,255,.16);
+}
+.sign .ico{width:30px;height:30px}
+.sign.two .ico{width:22px;height:22px}
+.mname{font-size:21px;font-weight:700;line-height:1.15;display:block}
+.mex{font-size:15px;line-height:1.25;font-weight:700;opacity:.92;display:block}
+.tick{
+  width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  border:3px solid rgba(255,255,255,.5);
+}
+.tick .ico{width:22px;height:22px;opacity:0}
+.mode input:checked + .face{--face:#fff;--edge:var(--white-edge);color:var(--ink)}
+.mode input:checked + .face .sign{background:var(--tens-pale);color:var(--tens)}
+.mode input:checked + .face .tick{background:var(--star);border-color:var(--star-edge);color:var(--ink)}
+.mode input:checked + .face .tick .ico{opacity:1}
+.mode input:focus-visible + .face{outline:4px solid #fff;outline-offset:4px}
+.mode input:active + .face{transform:translateY(4px);box-shadow:0 2px 0 var(--edge)}
+
+.play{
+  --face:var(--star); --edge:var(--star-edge);
+  width:100%;min-height:96px;margin-top:6px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;
+  color:var(--ink);
+}
+.play-word{font:800 48px/1 var(--f-num);padding-top:6px}
+.play-sub{font-size:15px;font-weight:700;color:#5A4300}
+.home-foot{font-size:15px;color:#E3EBFC}
+
+@container (min-width:500px){
+  .mode-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+  .mode .face{grid-template-columns:1fr;justify-items:center;text-align:center;row-gap:4px;padding:16px 10px 14px;min-height:150px}
+  .mode .face .tick{position:absolute;top:10px;right:10px;width:30px;height:30px}
+  .mode .face .tick .ico{width:18px;height:18px}
+  .sign{width:56px;height:56px;margin-bottom:4px}
+  .sign .ico{width:32px;height:32px}
+}
+
+/* ---------- PLAY ---------- */
+.play-screen{background:var(--sky);color:var(--ink)}
+.bar{
+  display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;
+  padding:clamp(14px,3.4cqw,24px) clamp(14px,3.4cqw,28px) 0;
+}
+.home-btn{
+  --edge:var(--white-edge);
+  display:inline-flex;align-items:center;gap:8px;min-height:52px;min-width:52px;padding:0 16px;
+  font-weight:700;font-size:18px;justify-content:center;
+}
+.home-btn .ico{width:24px;height:24px}
+.progress{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.prog-label{font-size:18px;font-weight:700;white-space:nowrap}
+.prog-label b{font-family:var(--f-num);font-size:21px}
+.track{
+  display:grid;grid-template-columns:repeat(10,1fr);
+  width:min(100%,240px);height:24px;
+  border-radius:5px;overflow:hidden;
+  background:var(--tens-edge);gap:2px;padding:2px;
+}
+.track span{background:#fff;border-radius:2px;transition:background-color .25s}
+.track span.is-done{background:var(--tens)}
+.track span.is-now{background:var(--star)}
+.play-screen .pill{background:#fff;font:800 24px/1 var(--f-num);padding:8px 14px 6px 10px;box-shadow:inset 0 0 0 2px var(--line)}
+.play-screen .pill .ico{width:26px;height:26px;margin-top:-4px}
+
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;gap:18px;padding:clamp(18px,4cqw,32px) clamp(14px,4cqw,32px) clamp(22px,4cqw,32px)}
+.mode-chip{font-size:15px;font-weight:700;color:var(--tens);background:var(--tens-pale);border-radius:999px;padding:3px 14px}
+.problem{
+  font:800 clamp(52px,13.5cqw,104px)/1 var(--f-num);
+  display:flex;align-items:center;justify-content:center;gap:.16em;
+  white-space:nowrap;outline:none;
+  border-radius:16px;padding:.06em .1em;
+}
+.problem:focus-visible{outline:4px solid var(--ink);outline-offset:6px}
+.pvis{display:flex;align-items:center;gap:.16em}
+.num{display:inline-flex;padding-top:.08em}
+.num .t{color:var(--tens)}
+.num .o{color:var(--ones-text)}
+.op,.eq{color:var(--ink);padding-top:.06em}
+/* Baloo's U+2212 is narrower than its plus; draw the minus as a bar with the plus's weight */
+.op-minus{display:inline-flex;align-items:center;height:1em;padding-top:0}
+.op-minus::before{content:"";width:.52em;height:.135em;border-radius:.07em;background:currentColor;margin-top:.04em}
+.slot{
+  display:inline-grid;place-items:center;
+  min-width:1.6em;height:1.18em;padding:.1em .12em 0;
+  border-radius:.2em;
+  border:.055em dashed #8BA3D9;background:#fff;color:#7D8BB0;
+}
+.slot.is-filled{border-style:solid;border-color:var(--star-edge);background:var(--star);color:var(--ink)}
+
+.buddy-row{display:flex;align-items:flex-start;gap:12px;width:100%;max-width:620px}
+.buddy{width:64px;height:64px;flex:none}
+.bubble{
+  position:relative;flex:1;min-width:0;
+  background:#fff;border-radius:20px;padding:14px 18px 16px;
+  box-shadow:inset 0 0 0 2px var(--line);
+}
+.bubble::before{
+  content:"";position:absolute;left:-9px;top:22px;width:18px;height:18px;
+  background:#fff;transform:rotate(45deg);
+  box-shadow:inset 2px -2px 0 var(--line);
+  border-radius:0 0 0 4px;
+}
+.say-title{font-size:21px;font-weight:700;line-height:1.25}
+.say-body{font-size:18px;color:var(--ink-2);margin-top:4px}
+.bubble.is-right{box-shadow:inset 0 0 0 3px var(--star-edge)}
+.bubble.is-right::before{box-shadow:inset 3px -3px 0 var(--star-edge)}
+.bubble.is-wrong{box-shadow:inset 0 0 0 3px var(--coral-edge)}
+.bubble.is-wrong::before{box-shadow:inset 3px -3px 0 var(--coral-edge)}
+.bubble.is-wrong .say-title{color:var(--coral-text)}
+.say-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}
+.say-actions:empty{display:none}
+.hint-btn{
+  display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 18px 0 14px;
+  font-weight:700;font-size:18px;
+  --face:#F3F7FF; --edge:var(--white-edge);
+  box-shadow:0 6px 0 var(--edge), inset 0 0 0 2px var(--line);
+}
+.hint-btn:active:not([aria-disabled="true"]){box-shadow:0 2px 0 var(--edge), inset 0 0 0 2px var(--line)}
+.hint-btn .mini-cube{width:20px;height:20px;border-radius:4px;background:var(--ones);box-shadow:inset 0 0 0 2px var(--ones-edge)}
+.hint-btn[aria-disabled="true"]{opacity:.55}
+.next-btn{
+  --face:var(--star); --edge:var(--star-edge);
+  min-height:56px;padding:4px 26px 0;
+  font:800 24px/1 var(--f-num);color:var(--ink);
+}
+
+/* hint panel */
+.hint{
+  container-type:inline-size;
+  width:100%;max-width:620px;
+  background:#fff;border-radius:20px;padding:16px 18px 18px;
+  box-shadow:inset 0 0 0 2px var(--line);
+}
+.hint-title{font-size:18px;font-weight:700;color:var(--ones-text)}
+.hint-text{font-size:18px;margin-top:2px}
+.piles{--u:14px;display:flex;align-items:flex-end;justify-content:center;gap:clamp(12px,4cqw,28px);margin-top:14px;flex-wrap:wrap}
+.pile{display:flex;flex-direction:column;align-items:center;gap:8px}
+.pile-blocks{display:flex;align-items:flex-end;gap:calc(var(--u) * .7)}
+.rods{display:flex;gap:4px;align-items:flex-end}
+.rod{
+  width:var(--u);height:calc(var(--u) * 10);border-radius:3px;
+  background:repeating-linear-gradient(to bottom, var(--tens-mid) 0 calc(var(--u) - 2px), var(--tens-edge) calc(var(--u) - 2px) var(--u));
+  box-shadow:inset 0 0 0 2px var(--tens-edge);
+}
+.cubes{display:grid;grid-template-columns:repeat(5,var(--u));gap:2px;align-content:end}
+.cube{width:var(--u);height:var(--u);border-radius:3px;background:var(--ones);box-shadow:inset 0 0 0 2px var(--ones-edge)}
+.rod.is-new,.cubes.is-new-group{outline:3px solid var(--star);outline-offset:2px;border-radius:4px}
+.rod.is-gone,.cube.is-gone{background:transparent;box-shadow:inset 0 0 0 2px #A9B6D3;outline:0}
+.rod.is-gone{background:repeating-linear-gradient(to bottom, transparent 0 calc(var(--u) - 2px), #D3DBEC calc(var(--u) - 2px) var(--u))}
+.pile-label{font:800 24px/1 var(--f-num);padding-top:4px}
+.pile-label .t{color:var(--tens)} .pile-label .o{color:var(--ones-text)}
+.pile-op{font:800 24px/1 var(--f-num);align-self:center;padding-bottom:30px}
+.key{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:12px;font-size:15px;color:var(--ink-2)}
+.key span{display:inline-flex;align-items:center;gap:6px}
+.key .rod{--u:10px;height:30px;background:var(--tens-mid)}
+.key .cube{--u:12px}
+@container (max-width:380px){ .piles{--u:11px} .rods{gap:3px} }
+
+/* tray + answers */
+.tray{background:var(--tens);padding:clamp(18px,4cqw,28px) clamp(14px,4cqw,28px) clamp(18px,4cqw,28px);--focus:#fff}
+.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 14px;max-width:760px;margin:0 auto}
+.answer{
+  min-height:92px;
+  font:800 48px/1 var(--f-num);color:var(--ink);
+  display:flex;align-items:center;justify-content:center;padding-top:6px;
+}
+.answer .badge{
+  position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:50%;
+  display:grid;place-items:center;
+}
+.answer .badge .ico{width:20px;height:20px}
+.answer.is-wrong{--face:var(--coral-soft);--edge:var(--coral-edge);color:var(--coral-text)}
+.answer.is-wrong .val{text-decoration:line-through;text-decoration-thickness:.07em}
+.answer.is-wrong .badge{background:var(--coral);color:#fff}
+.answer.is-right{--face:var(--star);--edge:var(--star-edge)}
+.answer.is-right .badge{background:var(--ink);color:var(--star)}
+.answer.is-out{opacity:.5}
+@container (min-width:560px){
+  .answers{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+  .answer{min-height:104px}
+}
+
+/* round finished */
+.play-screen.is-finished .progress{visibility:hidden}
+.done{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;padding:40px 24px 48px}
+.done .track{width:min(100%,320px);height:34px}
+.done h3{font:800 clamp(34px,7cqw,48px)/1.05 var(--f-num);padding-top:.1em}
+.done p{font-size:21px;max-width:28ch}
+.done-actions{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:8px}
+.done-actions .block{min-height:60px;padding:4px 26px 0;font:800 24px/1 var(--f-num)}
+.done-actions .again{--face:var(--star);--edge:var(--star-edge)}
+
+/* static "after an answer" frames reuse the play screen at a smaller scale */
+.frag .stage{gap:16px}
+.frag .problem{font-size:clamp(44px,10cqw,76px)}
+.frag .buddy{width:56px;height:56px}
+.frag .fake{cursor:default}
+
+@container (max-width:430px){
+  .home-btn{padding:0;width:52px}
+  .home-btn .hb-label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .play-screen .pill{padding:7px 12px 5px 8px}
+  .buddy{width:52px;height:52px}
+  .buddy-row{gap:10px}
+  .bubble{padding:12px 14px 14px}
+}
+
+/* motion */
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.22)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.is-popping{animation:pop .45s ease-out}
+.answer.is-shaking{animation:shake .38s ease-in-out}
+.hint:not([hidden]){animation:rise .22s ease-out}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .block:active:not([aria-disabled="true"]){transform:none}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.8l2.85 5.8 6.4.93-4.63 4.5 1.1 6.37L12 17.4l-5.72 3 1.1-6.37-4.63-4.5 6.4-.93z" fill="#FFC23A" stroke="#B57F00" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.6l4.4 4.4L19.2 7.4" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4.5v15M4.5 12h15" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M4.5 12h15" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 11.4L12 4.2l8.5 7.2M6.2 9.6V20h4.4v-5.6h2.8V20h4.4V9.6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="cube-body" viewBox="0 0 64 64">
+    <path d="M9 19 L19 9 H56 L46 19 Z" fill="#62CC8F" stroke="#0E5E33" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M46 19 L56 9 V47 L46 57 Z" fill="#14814A" stroke="#0E5E33" stroke-width="2.2" stroke-linejoin="round"/>
+    <rect x="9" y="19" width="37" height="38" rx="3.5" fill="#22A35C" stroke="#0E5E33" stroke-width="2.2"/>
+  </symbol>
+  <symbol id="face-calm" viewBox="0 0 64 64">
+    <circle cx="21.5" cy="35" r="3" fill="#18213D"/><circle cx="33.5" cy="35" r="3" fill="#18213D"/>
+    <path d="M21.5 43 Q27.5 48.5 33.5 43" fill="none" stroke="#18213D" stroke-width="2.6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="face-think" viewBox="0 0 64 64">
+    <circle cx="23" cy="33" r="3" fill="#18213D"/><circle cx="35" cy="33" r="3" fill="#18213D"/>
+    <path d="M19 27.5 L25.5 26.5 M32 26.5 L38.5 27.5" stroke="#18213D" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M24 45 Q28.5 42.5 33 45" fill="none" stroke="#18213D" stroke-width="2.6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="face-glad" viewBox="0 0 64 64">
+    <path d="M18.5 35 Q21.5 31 24.5 35 M30.5 35 Q33.5 31 36.5 35" fill="none" stroke="#18213D" stroke-width="2.6" stroke-linecap="round"/>
+    <path d="M20 40.5 H35 Q34 49.5 27.5 49.5 Q21 49.5 20 40.5 Z" fill="#18213D"/>
+  </symbol>
+</svg>
+
+<main class="board">
+  <h1 class="vh">Sumwise: the home screen and a problem screen</h1>
+
+  <div class="row">
+    <!-- ================= HOME ================= -->
+    <section class="shot" aria-labelledby="cap-home">
+      <h2 class="cap" id="cap-home">Home screen</h2>
+      <div class="screen home" id="home">
+        <div class="home-in">
+          <div class="home-top">
+            <p class="pill"><span class="avatar" aria-hidden="true">M</span>Maya</p>
+            <p class="pill stars-pill"><svg class="ico" aria-hidden="true"><use href="#i-star"/></svg><span><span class="js-stars">12</span> stars</span></p>
+          </div>
+
+          <div class="home-mid">
+            <div>
+              <div class="brand">
+                <svg class="buddy" viewBox="0 0 64 64" aria-hidden="true"><use href="#cube-body"/><use href="#face-calm"/></svg>
+                <p class="wordmark">Sumwise</p>
+              </div>
+            </div>
+            <p class="tagline">Adding and taking away, with numbers up to 100.</p>
+
+            <fieldset class="modes">
+              <legend>What do you want to practice?</legend>
+              <div class="mode-grid">
+                <label class="mode">
+                  <input type="radio" name="mode" value="add" checked>
+                  <span class="face block">
+                    <span class="sign" aria-hidden="true"><svg class="ico"><use href="#i-plus"/></svg></span>
+                    <span><span class="mname">Addition</span><span class="mex" aria-hidden="true">36 + 25</span></span>
+                    <span class="tick" aria-hidden="true"><svg class="ico"><use href="#i-check"/></svg></span>
+                  </span>
+                </label>
+                <label class="mode">
+                  <input type="radio" name="mode" value="sub">
+                  <span class="face block">
+                    <span class="sign" aria-hidden="true"><svg class="ico"><use href="#i-minus"/></svg></span>
+                    <span><span class="mname">Subtraction</span><span class="mex" aria-hidden="true">82 &minus; 47</span></span>
+                    <span class="tick" aria-hidden="true"><svg class="ico"><use href="#i-check"/></svg></span>
+                  </span>
+                </label>
+                <label class="mode">
+                  <input type="radio" name="mode" value="mix">
+                  <span class="face block">
+                    <span class="sign two" aria-hidden="true"><svg class="ico"><use href="#i-plus"/></svg><svg class="ico"><use href="#i-minus"/></svg></span>
+                    <span><span class="mname">Mixed</span><span class="mex">Some of each</span></span>
+                    <span class="tick" aria-hidden="true"><svg class="ico"><use href="#i-check"/></svg></span>
+                  </span>
+                </label>
+              </div>
+            </fieldset>
+
+            <button class="play block" id="play-btn" type="button">
+              <span class="play-word">Play</span>
+              <span class="play-sub">10 problems</span>
+            </button>
+          </div>
+
+          <p class="home-foot">For ages 7 to 9.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PROBLEM ================= -->
+    <section class="shot" aria-labelledby="cap-play">
+      <h2 class="cap" id="cap-play">Problem screen <span>(it works: pick an answer or ask for a hint)</span></h2>
+      <div class="screen play-screen" id="play">
+        <div class="bar">
+          <button class="home-btn block" id="home-btn" type="button"><svg class="ico" aria-hidden="true"><use href="#i-home"/></svg><span class="hb-label">Home</span></button>
+          <div class="progress">
+            <p class="prog-label">Problem <b id="p-num">3</b> of 10</p>
+            <div class="track" id="track" aria-hidden="true">
+              <span class="is-done"></span><span class="is-done"></span><span class="is-now"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <p class="pill"><svg class="ico" aria-hidden="true"><use href="#i-star"/></svg><span class="js-stars" id="bar-stars">12</span><span class="vh"> stars</span></p>
+        </div>
+
+        <div class="stage" id="stage">
+          <p class="mode-chip" id="mode-chip">Addition</p>
+          <h3 class="problem" id="problem" tabindex="-1">
+            <span class="pvis" id="pvis" aria-hidden="true"><span class="num"><span class="t">4</span><span class="o">7</span></span><span class="op">+</span><span class="num"><span class="t">2</span><span class="o">8</span></span><span class="eq">=</span><span class="slot" id="slot">?</span></span>
+            <span class="vh" id="problem-sr">What is 47 plus 28?</span>
+          </h3>
+
+          <div class="buddy-row">
+            <svg class="buddy" viewBox="0 0 64 64" aria-hidden="true"><use href="#cube-body"/><use id="buddy-face" href="#face-calm"/></svg>
+            <div class="bubble" id="bubble">
+              <div id="say" aria-live="polite">
+                <p class="say-title">Pick the answer below.</p>
+                <p class="say-body">Not sure? A hint shows it with tens and ones.</p>
+              </div>
+              <div class="say-actions">
+                <button class="hint-btn block" id="hint-btn" type="button" aria-expanded="false" aria-controls="hint"><span class="mini-cube" aria-hidden="true"></span><span id="hint-label">Show a hint</span></button>
+                <button class="next-btn block" id="next-btn" type="button" hidden>Next problem</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="hint" id="hint" hidden aria-live="polite"></div>
+        </div>
+
+        <div class="tray" id="tray">
+          <div class="answers" role="group" aria-label="Answers" id="answers">
+            <button class="answer block" type="button" data-v="75"><span class="val">75</span></button>
+            <button class="answer block" type="button" data-v="65"><span class="val">65</span></button>
+            <button class="answer block" type="button" data-v="85"><span class="val">85</span></button>
+            <button class="answer block" type="button" data-v="74"><span class="val">74</span></button>
+          </div>
+        </div>
+
+        <div class="done" id="done" hidden>
+          <div class="track" aria-hidden="true"><span class="is-done"></span><span class="is-done"></span><span class="is-done"></span><span class="is-done"></span><span class="is-done"></span><span class="is-done"></span><span class="is-done"></span><span class="is-done"></span><span class="is-done"></span><span class="is-done"></span></div>
+          <h3 id="done-title" tabindex="-1">You built a ten!</h3>
+          <p>That was 10 problems. You earned <b id="earned">10</b> stars this round.</p>
+          <div class="done-actions">
+            <button class="block again" type="button" id="again-btn">Play again</button>
+            <button class="block" type="button" id="done-home">Home</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ================= FEEDBACK STATES ================= -->
+  <section class="after" aria-labelledby="cap-after">
+    <h2 class="cap" id="cap-after">What Maya sees after she answers</h2>
+    <div class="row2">
+      <figure>
+        <figcaption>If she picks 65</figcaption>
+        <div class="screen play-screen frag">
+          <div class="stage">
+            <p class="problem" aria-hidden="true"><span class="pvis"><span class="num"><span class="t">4</span><span class="o">7</span></span><span class="op">+</span><span class="num"><span class="t">2</span><span class="o">8</span></span><span class="eq">=</span><span class="slot">?</span></span></p>
+            <div class="buddy-row">
+              <svg class="buddy" viewBox="0 0 64 64" aria-hidden="true"><use href="#cube-body"/><use href="#face-think"/></svg>
+              <div class="bubble is-wrong">
+                <p class="say-title">So close!</p>
+                <p class="say-body">7 ones + 8 ones = 15 ones. That makes 1 more ten, so add it to the tens. Pick another answer.</p>
+                <div class="say-actions" aria-hidden="true"><span class="hint-btn block fake"><span class="mini-cube"></span>Show a hint</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="tray" aria-hidden="true">
+            <div class="answers">
+              <span class="answer block fake"><span class="val">75</span></span>
+              <span class="answer block fake is-wrong"><span class="val">65</span><span class="badge"><svg class="ico"><use href="#i-x"/></svg></span></span>
+              <span class="answer block fake"><span class="val">85</span></span>
+              <span class="answer block fake"><span class="val">74</span></span>
+            </div>
+          </div>
+        </div>
+      </figure>
+
+      <figure>
+        <figcaption>If she picks 75</figcaption>
+        <div class="screen play-screen frag">
+          <div class="stage">
+            <p class="problem" aria-hidden="true"><span class="pvis"><span class="num"><span class="t">4</span><span class="o">7</span></span><span class="op">+</span><span class="num"><span class="t">2</span><span class="o">8</span></span><span class="eq">=</span><span class="slot is-filled">75</span></span></p>
+            <div class="buddy-row">
+              <svg class="buddy" viewBox="0 0 64 64" aria-hidden="true"><use href="#cube-body"/><use href="#face-glad"/></svg>
+              <div class="bubble is-right">
+                <p class="say-title">Yes, 75!</p>
+                <p class="say-body">47 + 28 = 75. You earned a star.</p>
+                <div class="say-actions" aria-hidden="true"><span class="next-btn block fake">Next problem</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="tray" aria-hidden="true">
+            <div class="answers">
+              <span class="answer block fake is-right"><span class="val">75</span><span class="badge"><svg class="ico"><use href="#i-check"/></svg></span></span>
+              <span class="answer block fake is-out"><span class="val">65</span></span>
+              <span class="answer block fake is-out"><span class="val">85</span></span>
+              <span class="answer block fake is-out"><span class="val">74</span></span>
+            </div>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+  var $ = function(s){ return document.querySelector(s); };
+  var $$ = function(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); };
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var MINUS = '−';
+  var MODE_NAMES = { add:'Addition', sub:'Subtraction', mix:'Mixed' };
+
+  var ICON_X = '<svg class="ico" aria-hidden="true"><use href="#i-x"/></svg>';
+  var ICON_CHECK = '<svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>';
+
+  function rnd(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+  function shuffle(arr){ for (var i = arr.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var t = arr[i]; arr[i] = arr[j]; arr[j] = t; } return arr; }
+  function tens(n){ return Math.floor(n / 10); }
+  function ones(n){ return n % 10; }
+
+  function makeAdd(){
+    var a, b, tries = 0;
+    do { a = rnd(12, 79); b = rnd(11, 88); tries++; }
+    while ((a + b > 100 || (tries < 40 && ones(a) + ones(b) < 10)));
+    return withChoices({ a:a, b:b, op:'+', ans:a + b });
+  }
+  function makeSub(){
+    var a, b, tries = 0;
+    do { a = rnd(31, 99); b = rnd(11, a - 6); tries++; }
+    while (b < 10 || (tries < 40 && ones(a) >= ones(b)));
+    return withChoices({ a:a, b:b, op:'-', ans:a - b });
+  }
+  function withChoices(p){
+    var set = [p.ans];
+    var regroup = p.op === '+' ? ones(p.a) + ones(p.b) >= 10 : ones(p.a) < ones(p.b);
+    var cands = p.op === '+'
+      ? (regroup ? [p.ans - 10, p.ans + 10, p.ans - 1, p.ans + 1] : [p.ans + 10, p.ans - 10, p.ans + 1, p.ans - 1])
+      : (regroup ? [p.ans + 10, p.ans - 10, p.ans + 1, p.ans - 1] : [p.ans - 10, p.ans + 10, p.ans - 1, p.ans + 1]);
+    for (var i = 0; i < cands.length && set.length < 4; i++){
+      var c = cands[i];
+      if (c >= 0 && c <= 100 && set.indexOf(c) < 0) set.push(c);
+    }
+    var k = 2;
+    while (set.length < 4){ var c2 = p.ans + k; if (c2 <= 100 && set.indexOf(c2) < 0) set.push(c2); k = k > 0 ? -k : -k + 1; }
+    p.choices = shuffle(set);
+    return p;
+  }
+  function makeRound(mode){
+    var r = [];
+    for (var i = 0; i < 10; i++){
+      var op = mode === 'mix' ? (Math.random() < .5 ? '+' : '-') : (mode === 'sub' ? '-' : '+');
+      r.push(op === '+' ? makeAdd() : makeSub());
+    }
+    return r;
+  }
+
+  /* Maya's round in progress: problems 1 and 2 done, problem 3 is the one in the brief. */
+  var state = {
+    mode:'add',
+    stars:12,
+    round:makeRound('add'),
+    index:2,
+    results:[true, true],
+    solved:false,
+    hintStep:0,
+    earned:2
+  };
+  state.round[2] = { a:47, b:28, op:'+', ans:75, choices:[75, 65, 85, 74] };
+
+  var el = {
+    pnum:$('#p-num'), track:$('#track'), pvis:$('#pvis'), sr:$('#problem-sr'), problem:$('#problem'),
+    say:$('#say'), bubble:$('#bubble'), face:$('#buddy-face'), hintBtn:$('#hint-btn'), hintLabel:$('#hint-label'),
+    nextBtn:$('#next-btn'), hint:$('#hint'), answers:$$('#answers .answer'), modeChip:$('#mode-chip'),
+    stage:$('#stage'), tray:$('#tray'), done:$('#done'), earned:$('#earned'), doneTitle:$('#done-title')
+  };
+
+  function numHTML(n){ return '<span class="num"><span class="t">' + tens(n) + '</span><span class="o">' + ones(n) + '</span></span>'; }
+  function opText(p){ return p.op === '+' ? '+' : MINUS; }
+
+  function setFace(name){ el.face.setAttribute('href', '#face-' + name); }
+  function say(title, body, kind){
+    el.say.innerHTML = '<p class="say-title">' + title + '</p><p class="say-body">' + body + '</p>';
+    el.bubble.className = 'bubble' + (kind ? ' is-' + kind : '');
+  }
+  function setStars(n, animate){
+    state.stars = n;
+    $$('.js-stars').forEach(function(s){
+      s.textContent = n;
+      if (animate && !reduceMotion.matches){
+        var pill = s.closest('.pill');
+        pill.classList.remove('is-popping'); void pill.offsetWidth; pill.classList.add('is-popping');
+      }
+    });
+  }
+  function renderTrack(){
+    var cells = el.track.children;
+    for (var i = 0; i < 10; i++){
+      var c = 'is-' + (state.results[i] ? 'done' : (i === state.index ? 'now' : ''));
+      cells[i].className = c === 'is-' ? '' : c;
+    }
+    el.pnum.textContent = state.index + 1;
+  }
+
+  function renderProblem(){
+    var p = state.round[state.index];
+    state.solved = false; state.hintStep = 0;
+    var opHTML = p.op === '+' ? '<span class="op">+</span>' : '<span class="op op-minus"></span>';
+    el.pvis.innerHTML = numHTML(p.a) + opHTML + numHTML(p.b) + '<span class="eq">=</span><span class="slot" id="slot">?</span>';
+    el.sr.textContent = 'What is ' + p.a + (p.op === '+' ? ' plus ' : ' minus ') + p.b + '?';
+    el.answers.forEach(function(btn, i){
+      var v = p.choices[i];
+      btn.dataset.v = v;
+      btn.className = 'answer block';
+      btn.removeAttribute('aria-disabled');
+      btn.innerHTML = '<span class="val">' + v + '</span>';
+    });
+    setFace('calm');
+    say('Pick the answer below.', 'Not sure? A hint shows it with tens and ones.');
+    el.hintBtn.hidden = false;
+    el.hintBtn.removeAttribute('aria-disabled');
+    el.hintBtn.setAttribute('aria-expanded', 'false');
+    el.hintLabel.textContent = 'Show a hint';
+    el.nextBtn.hidden = true;
+    el.hint.hidden = true; el.hint.innerHTML = '';
+    el.modeChip.textContent = MODE_NAMES[state.mode];
+    renderTrack();
+  }
+
+  /* ---- explanations: always about this problem's own numbers ---- */
+  function explainWrong(p, v){
+    var o1 = ones(p.a), o2 = ones(p.b), t1 = tens(p.a), t2 = tens(p.b);
+    if (p.op === '+'){
+      var os = o1 + o2, carry = os >= 10;
+      if (carry && v === p.ans - 10) return ['So close!', o1 + ' ones + ' + o2 + ' ones = ' + os + ' ones. That makes 1 more ten, so add it to the tens. Pick another answer.'];
+      if (v === p.ans + 10) return ['Not quite.', 'Count the tens again: ' + t1 + ' tens + ' + t2 + ' tens' + (carry ? ', plus 1 ten made from the ones.' : '.') + ' Pick another answer.'];
+      if (ones(v) !== ones(p.ans)) return ['Not quite.', 'Check the ones: ' + o1 + ' + ' + o2 + ' = ' + os + ', so the answer ends in ' + ones(os) + '. Pick another answer.'];
+    } else {
+      var borrow = o1 < o2;
+      if (borrow && v === p.ans + 10) return ['So close!', 'You can’t take ' + o2 + ' ones from ' + o1 + ' ones. Swap 1 ten for 10 ones first, so there is 1 ten fewer. Pick another answer.'];
+      if (v === p.ans - 10 || v === p.ans + 10) return ['Not quite.', 'Count the tens again: ' + t1 + ' tens take away ' + t2 + ' tens' + (borrow ? ', and 1 ten was swapped for ones.' : '.') + ' Pick another answer.'];
+      if (ones(v) !== ones(p.ans)) return ['Not quite.', 'Check the ones: ' + (borrow ? (o1 + 10) : o1) + ' ' + MINUS + ' ' + o2 + ' = ' + ((borrow ? o1 + 10 : o1) - o2) + ', so the answer ends in ' + ones(p.ans) + '. Pick another answer.'];
+    }
+    return ['Not quite.', 'Try a hint, then pick another answer.'];
+  }
+
+  /* ---- hints drawn with rods and cubes ---- */
+  function pile(t, o, opts){
+    opts = opts || {};
+    var h = '<div class="pile"><div class="pile-blocks"><div class="rods">';
+    for (var i = 0; i < t; i++){
+      var cls = 'rod';
+      if (opts.newTen && i === t - 1) cls += ' is-new';
+      if (opts.goneT && i >= t - opts.goneT) cls += ' is-gone';
+      h += '<span class="' + cls + '"></span>';
+    }
+    var plain = o - (opts.newOnes || 0);
+    h += '</div>';
+    if (plain > 0){
+      h += '<div class="cubes">';
+      for (var j = 0; j < plain; j++){
+        h += '<span class="cube' + (opts.goneO && j >= plain - opts.goneO ? ' is-gone' : '') + '"></span>';
+      }
+      h += '</div>';
+    }
+    if (opts.newOnes){
+      h += '<div class="cubes is-new-group">';
+      for (var k = 0; k < opts.newOnes; k++) h += '<span class="cube"></span>';
+      h += '</div>';
+    }
+    h += '</div>';
+    if (opts.label !== undefined) h += '<p class="pile-label">' + opts.label + '</p>';
+    return h + '</div>';
+  }
+  function labelHTML(n){ return '<span class="t">' + tens(n) + '</span><span class="o">' + ones(n) + '</span>'; }
+  var KEY = '<div class="key" aria-hidden="true"><span><span class="rod"></span>1 ten</span><span><span class="cube"></span>1 one</span></div>';
+
+  function hintContent(p, step){
+    var o1 = ones(p.a), o2 = ones(p.b), t1 = tens(p.a), t2 = tens(p.b);
+    var title, text, art;
+    if (p.op === '+'){
+      var os = o1 + o2, carry = os >= 10;
+      if (step === 1){
+        title = 'Hint 1 of 2: ones first';
+        text = o1 + ' ones + ' + o2 + ' ones = ' + os + ' ones.' + (carry ? ' Ten of them snap together into a new ten.' : '');
+        art = pile(t1, o1, {label:labelHTML(p.a)}) + '<span class="pile-op" aria-hidden="true">+</span>' + pile(t2, o2, {label:labelHTML(p.b)});
+      } else {
+        title = 'Hint 2 of 2: now the tens';
+        text = t1 + ' tens + ' + t2 + ' tens' + (carry ? ' + the new ten' : '') + '. How many tens is that? How many ones are left?';
+        art = pile(t1 + t2 + (carry ? 1 : 0), ones(os), {newTen:carry});
+      }
+    } else {
+      var borrow = o1 < o2;
+      if (step === 1){
+        if (borrow){
+          title = 'Hint 1 of 2: swap a ten';
+          text = 'You can’t take ' + o2 + ' ones from ' + o1 + ' ones. Swap 1 ten for 10 ones: ' + p.a + ' is also ' + (t1 - 1) + ' tens and ' + (o1 + 10) + ' ones.';
+          art = pile(t1 - 1, o1 + 10, {newOnes:10, label:labelHTML(p.a)});
+        } else {
+          title = 'Hint 1 of 2: ones first';
+          text = 'Take away the ones: ' + o1 + ' ' + MINUS + ' ' + o2 + ' = ' + (o1 - o2) + '.';
+          art = pile(t1, o1, {goneO:o2, label:labelHTML(p.a)});
+        }
+      } else {
+        title = 'Hint 2 of 2: now the tens';
+        text = 'Take away ' + t2 + ' tens from ' + (borrow ? (t1 - 1) : t1) + ' tens. Count what is left.';
+        art = pile(borrow ? t1 - 1 : t1, borrow ? o1 + 10 : o1, {goneT:t2, goneO:o2});
+      }
+    }
+    return '<p class="hint-title">' + title + '</p><p class="hint-text">' + text + '</p><div class="piles" aria-hidden="true">' + art + '</div>' + KEY;
+  }
+
+  /* ---- events ---- */
+  el.answers.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if (state.solved || btn.getAttribute('aria-disabled') === 'true') return;
+      var p = state.round[state.index];
+      var v = Number(btn.dataset.v);
+      if (v === p.ans){
+        state.solved = true;
+        state.results[state.index] = true;
+        state.earned++;
+        btn.classList.add('is-right');
+        btn.insertAdjacentHTML('beforeend', '<span class="badge">' + ICON_CHECK + '</span><span class="vh">, right</span>');
+        el.answers.forEach(function(b){ if (b !== btn){ b.classList.add('is-out'); } b.setAttribute('aria-disabled', 'true'); });
+        var slot = $('#slot'); slot.textContent = v; slot.classList.add('is-filled');
+        setFace('glad');
+        say('Yes, ' + v + '!', p.a + ' ' + opText(p) + ' ' + p.b + ' = ' + v + '. You earned a star.', 'right');
+        setStars(state.stars + 1, true);
+        renderTrack();
+        el.hintBtn.hidden = true;
+        el.nextBtn.hidden = false;
+        el.nextBtn.textContent = state.index === 9 ? 'Finish the round' : 'Next problem';
+        el.nextBtn.focus({preventScroll:true});
+      } else {
+        btn.classList.add('is-wrong');
+        btn.setAttribute('aria-disabled', 'true');
+        btn.insertAdjacentHTML('beforeend', '<span class="badge">' + ICON_X + '</span><span class="vh">, not this one</span>');
+        if (!reduceMotion.matches){ btn.classList.remove('is-shaking'); void btn.offsetWidth; btn.classList.add('is-shaking'); }
+        var msg = explainWrong(p, v);
+        setFace('think');
+        say(msg[0], msg[1], 'wrong');
+      }
+    });
+  });
+
+  el.hintBtn.addEventListener('click', function(){
+    if (el.hintBtn.getAttribute('aria-disabled') === 'true') return;
+    state.hintStep = Math.min(2, state.hintStep + 1);
+    el.hint.innerHTML = hintContent(state.round[state.index], state.hintStep);
+    el.hint.hidden = false;
+    el.hintBtn.setAttribute('aria-expanded', 'true');
+    if (state.hintStep === 1){ el.hintLabel.textContent = 'One more hint'; }
+    else { el.hintLabel.textContent = 'That’s all the hints'; el.hintBtn.setAttribute('aria-disabled', 'true'); }
+  });
+
+  function scrollToEl(node){
+    node.scrollIntoView({behavior: reduceMotion.matches ? 'auto' : 'smooth', block:'start'});
+  }
+
+  el.nextBtn.addEventListener('click', function(){
+    if (state.index === 9){ finishRound(); return; }
+    state.index++;
+    renderProblem();
+    el.problem.focus({preventScroll:true});
+  });
+
+  function finishRound(){
+    el.stage.hidden = true; el.tray.hidden = true;
+    el.done.hidden = false;
+    $('#play').classList.add('is-finished');
+    el.earned.textContent = state.earned;
+    state.results = [true,true,true,true,true,true,true,true,true,true];
+    state.index = 9;
+    renderTrack();
+    el.pnum.textContent = 10;
+    el.doneTitle.focus({preventScroll:true});
+  }
+
+  function startRound(){
+    var checked = document.querySelector('input[name="mode"]:checked');
+    state.mode = checked ? checked.value : 'add';
+    state.round = makeRound(state.mode);
+    state.index = 0; state.results = []; state.earned = 0;
+    el.stage.hidden = false; el.tray.hidden = false; el.done.hidden = true;
+    $('#play').classList.remove('is-finished');
+    renderProblem();
+  }
+
+  $('#play-btn').addEventListener('click', function(){
+    startRound();
+    scrollToEl($('#cap-play'));
+    el.problem.focus({preventScroll:true});
+  });
+  $('#again-btn').addEventListener('click', function(){ startRound(); el.problem.focus({preventScroll:true}); });
+  function goHome(){ scrollToEl($('#cap-home')); $('#play-btn').focus({preventScroll:true}); }
+  $('#home-btn').addEventListener('click', goHome);
+  $('#done-home').addEventListener('click', goHome);
+})();
+</script>
+</body>
+</html>

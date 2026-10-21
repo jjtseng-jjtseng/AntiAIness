@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5f2ec">
+<meta name="description" content="CodeCraft is a small web design studio. We plan, design and build websites for local businesses, independent makers, service providers and community projects.">
+<title>CodeCraft — websites for small businesses and community projects</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%231f3459'/%3E%3Cpath d='m24 20-12 12 12 12m16-24 12 12-12 12M36 16l-8 32' fill='none' stroke='%23f6b649' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Gelasio:ital,wght@0,400..700;1,400..700&display=swap">
+<style>
+/*
+  Direction: "The brief comes first". A small studio's page that shows its real work and exactly how a
+  project starts, in the existing warm paper / navy / gold / coral voice.
+  Character -> decisions: warm = paper ground, navy + blue bands kept at their original share, serif italic
+  as the human voice; friendly = Avenir-like rounded sans, pill buttons, first-person copy; plain-spoken =
+  sentence-case labels, concrete nouns (quote, menu, opening hours), no ornaments or slogans.
+  Memorable thing: the project brief. Every call to action leads to it, the service rows pre-fill it,
+  and it fills in live as a paper sheet beside the form.
+  Type: Nunito Sans (open stand-in for the original Avenir Next) at 13/15/17/20/26/40/58.
+  Gelasio italic (Georgia's metric twin) is reserved for the visitor's voice: what visitors came to do,
+  and their own answers on the brief.
+  Color: paper ~55%, navy ~25% (banner, hero panel, services), blue ~12% (brief), sand band.
+  Gold = highlights on dark; coral = step markers, list bullets, link underlines; deep coral = focus on light.
+  Shape: pill buttons, 16-20px panels, 10px inputs; shadow only on the form and brief sheet.
+  Imagery: the two real concept-site images, large and flat. No mock windows, orbits or floating badges.
+  Motion: colour and underline feedback only; no lifts or marquee; reduced motion respected.
+  Kept on purpose: top banner, nav + button, FAQ accordion, closing form, footer.
+*/
+:root{
+  --paper:#f5f2ec;--sand:#eae5dc;--sheet:#fbf8f2;--white:#fffefa;
+  --ink:#192844;--ink-2:#3d4a5f;--muted:#5b6573;--blue:#294873;
+  --gold:#f5b84f;--gold-soft:#f5c56e;--coral:#e8795d;--coral-deep:#b04a30;
+  --on-dark:#c4ccd8;--line:rgba(25,40,68,.16);--line-dark:rgba(255,255,255,.17);
+  --sans:"Nunito Sans","Avenir Next",Avenir,"Segoe UI",sans-serif;
+  --serif:Gelasio,Georgia,"Times New Roman",serif;
+  --fs-xs:13px;--fs-sm:15px;--fs-md:17px;--fs-lg:20px;--fs-xl:26px;--fs-2xl:40px;--fs-3xl:58px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 var(--fs-md)/1.6 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:inherit}
+button,input,select,textarea{font:inherit}
+img{display:block;max-width:100%}
+::selection{background:var(--gold);color:var(--ink)}
+h1,h2,h3{margin:0;font-weight:800;text-wrap:balance}
+p{margin:0}
+.wrap{width:min(1160px,calc(100% - 48px));margin-inline:auto}
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:3px solid var(--coral-deep);outline-offset:3px;border-radius:4px}
+.topline :focus-visible,.jobs :focus-visible,.services :focus-visible,.contact-copy :focus-visible{outline-color:var(--gold)}
+.skip{position:fixed;z-index:20;top:10px;left:10px;padding:12px 18px;border-radius:999px;color:#fff;background:var(--ink);font-weight:750;transform:translateY(-160%)}
+.skip:focus{transform:none}
+
+/* Buttons and links */
+.btn{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;min-height:50px;padding:0 26px;border:0;border-radius:999px;color:#fff;background:var(--ink);font-size:var(--fs-sm);font-weight:800;text-decoration:none;cursor:pointer;transition:background-color .18s}
+.btn:hover{background:var(--blue)}
+.btn:active{transform:translateY(1px)}
+.textlink{font-weight:800;text-decoration:underline;text-decoration-color:var(--coral);text-decoration-thickness:2px;text-underline-offset:6px;transition:color .18s,text-decoration-color .18s}
+.textlink:hover{color:var(--blue);text-decoration-color:currentColor}
+
+/* Banner */
+.topline{color:#eef1f6;background:var(--ink);font-size:var(--fs-xs);line-height:1.5}
+.topline p{padding-block:11px;text-align:center}
+.topline b{color:var(--gold);font-weight:800}
+.topline a{margin-left:6px;font-weight:800;text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:3px}
+.topline a:hover{color:var(--gold)}
+
+/* Header */
+.site-head{position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:84px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.mark{display:grid;flex:0 0 auto;width:42px;height:42px;place-items:center;border-radius:13px;color:var(--gold);background:var(--ink);font-size:var(--fs-sm);font-weight:900;letter-spacing:-.08em}
+.wordmark{font-size:var(--fs-lg);font-weight:900;letter-spacing:-.04em;line-height:1}
+.wordmark small{display:block;margin-top:5px;color:var(--muted);font-size:var(--fs-xs);font-weight:600;letter-spacing:0}
+#site-nav{display:flex;align-items:center;gap:30px}
+#site-nav a{white-space:nowrap;color:var(--ink-2);font-size:var(--fs-sm);font-weight:700;text-decoration:none;text-underline-offset:6px;text-decoration-thickness:2px}
+#site-nav a:hover{color:var(--ink);text-decoration-line:underline;text-decoration-color:var(--coral)}
+#site-nav .nav-cta{display:none}
+.headbtn{min-height:44px;padding:0 20px}
+.menubtn{display:none;align-items:center;gap:10px;min-height:44px;padding:0 4px 0 12px;border:0;color:var(--ink);background:none;font-size:var(--fs-sm);font-weight:800;cursor:pointer}
+.bars,.bars:before{display:block;width:18px;height:2px;border-radius:2px;background:currentColor}
+.bars{position:relative;margin-top:-5px}
+.bars:before{position:absolute;top:7px;content:""}
+.menubtn[aria-expanded="true"] .bars{margin-top:0;transform:rotate(45deg)}
+.menubtn[aria-expanded="true"] .bars:before{top:0;transform:rotate(-90deg)}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:64px;align-items:end;padding-block:72px 88px}
+h1{max-width:13.2em;font-size:var(--fs-3xl);line-height:1.05;letter-spacing:-.028em}
+h1 em{display:block;margin-top:.14em;color:var(--blue);font-family:var(--serif);font-weight:400;letter-spacing:-.018em;line-height:1.08}
+.lede{max-width:34em;margin-top:28px;color:var(--ink-2);font-size:var(--fs-lg);line-height:1.55}
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px 28px;margin-top:32px}
+.jobs{padding:28px 28px 26px;border-radius:20px;color:#fff;background:var(--ink)}
+.jobs h2{margin-bottom:14px;font-size:var(--fs-lg);font-weight:800;line-height:1.3}
+.jobs ul{margin:0;padding:0;list-style:none}
+.jobs li{padding:13px 0;border-top:1px solid var(--line-dark)}
+.jobs li span{display:block;color:var(--on-dark);font-size:var(--fs-sm);line-height:1.4}
+.jobs li b{display:block;margin-top:2px;color:var(--gold-soft);font:italic 400 var(--fs-lg)/1.3 var(--serif)}
+.jobs p{padding-top:14px;border-top:1px solid var(--line-dark);color:var(--on-dark);font-size:var(--fs-sm);line-height:1.5}
+
+/* Section heads */
+.sec-head{max-width:740px;margin-bottom:44px}
+.sec-head h2{font-size:var(--fs-2xl);line-height:1.1;letter-spacing:-.022em}
+.sec-head p{max-width:38em;margin-top:16px;color:var(--muted)}
+
+/* Work */
+.work{padding-block:16px 104px}
+.projects{display:grid;grid-template-columns:1fr 1fr;gap:48px 32px}
+.photo{display:block;aspect-ratio:4/3;overflow:hidden;border-radius:16px;background:#d8dfdd}
+.photo img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.photo:hover img{transform:scale(1.02)}
+.photo.red img{object-position:center 43%}
+.project .meta{margin-top:22px;color:var(--muted);font-size:var(--fs-sm)}
+.project .meta b{color:var(--coral-deep);font-weight:800}
+.project h3{margin-top:6px;font-size:var(--fs-xl);line-height:1.2;letter-spacing:-.02em}
+.project .desc{max-width:30em;margin-top:8px;color:var(--muted)}
+.project .textlink{display:inline-block;margin-top:14px;font-size:var(--fs-sm)}
+.work-note{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;margin-top:56px;padding:22px 26px;border-radius:16px;background:var(--sand)}
+.work-note p{max-width:44em}
+.work-note strong{font-weight:800}
+
+/* Services */
+.services{padding-block:96px 88px;color:#fff;background:var(--ink)}
+.services .sec-head p{color:var(--on-dark)}
+.service{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.2fr) minmax(0,1.05fr);grid-template-rows:auto 1fr;gap:4px 40px;padding:34px 0 30px;border-top:1px solid var(--line-dark)}
+.service h3{grid-column:1;grid-row:1;font-size:var(--fs-xl);line-height:1.2;letter-spacing:-.02em}
+.service>.pick{grid-column:1;grid-row:2;align-self:start}
+.service>p{grid-column:2;grid-row:1/3;color:var(--on-dark)}
+.service .includes{grid-column:3;grid-row:1/3}
+.inc-label{margin-bottom:6px;color:var(--gold-soft);font-size:var(--fs-sm);font-weight:800}
+.includes ul{margin:0;padding:0;list-style:none}
+.includes li{position:relative;padding:3px 0 3px 20px;color:#e2e6ed;font-size:var(--fs-sm);line-height:1.5}
+.includes li:before{position:absolute;top:.8em;left:1px;width:8px;height:8px;border-radius:50%;background:var(--coral);content:""}
+.pick{display:inline-flex;align-items:center;min-height:44px;margin-top:8px;color:var(--gold-soft);font-size:var(--fs-sm);font-weight:800;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+.pick:hover{color:#fff}
+.service-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-top:26px;border-top:1px solid var(--line-dark);color:var(--on-dark)}
+.service-foot strong{color:#fff;font-weight:800}
+.service-foot .pick{margin-top:0}
+
+/* Process */
+.process{padding-block:104px 96px}
+.steps{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 32px;margin:0 0 48px;padding:0;list-style:none}
+.steps:before{position:absolute;top:24px;left:24px;right:0;height:2px;background:var(--line);content:""}
+.steps li{position:relative;display:grid;grid-row:span 4;grid-template-rows:subgrid;align-content:start}
+.num{position:relative;z-index:1;display:grid;width:48px;height:48px;place-items:center;border-radius:50%;color:var(--ink);background:var(--coral);box-shadow:0 0 0 8px var(--paper);font:400 24px/1 var(--serif);font-variant-numeric:lining-nums}
+.steps h3{margin-top:22px;font-size:var(--fs-lg);line-height:1.25}
+.steps p{margin-top:8px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6}
+.steps .get{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);color:var(--ink)}
+.steps .get b{display:block;color:var(--coral-deep);font-weight:800}
+
+/* Promise */
+.promise{padding-block:60px;background:var(--sand)}
+.promise-grid{display:grid;grid-template-columns:minmax(0,1fr) repeat(3,minmax(0,1fr));gap:32px}
+.promise h2{font-size:var(--fs-xl);line-height:1.2;letter-spacing:-.02em}
+.promise-item{padding-top:14px;border-top:3px solid var(--coral)}
+.promise h3{font-size:var(--fs-md);line-height:1.3}
+.promise-item p{margin-top:6px;color:var(--muted);font-size:var(--fs-sm);line-height:1.6}
+
+/* FAQ */
+.faq{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);gap:72px;padding-block:104px}
+.faq-intro h2{font-size:var(--fs-2xl);line-height:1.1;letter-spacing:-.022em}
+.faq-intro p{max-width:22em;margin-top:16px;color:var(--muted)}
+.faqs{border-top:1px solid var(--line)}
+details{border-bottom:1px solid var(--line)}
+summary{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:44px;padding:22px 0;font-size:var(--fs-lg);font-weight:800;line-height:1.35;cursor:pointer;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:after{flex:0 0 16px;height:16px;background:linear-gradient(var(--coral-deep),var(--coral-deep)) center/100% 2px no-repeat,linear-gradient(var(--coral-deep),var(--coral-deep)) center/2px 100% no-repeat;transition:transform .2s;content:""}
+details[open] summary:after{transform:rotate(45deg)}
+summary:hover{color:var(--blue)}
+details p{max-width:38em;margin:0 40px 22px 0;color:var(--muted)}
+details p+p{margin-top:-8px}
+
+/* Contact and brief */
+.contact{padding-block:96px;color:#fff;background:var(--blue)}
+.contact-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);grid-template-rows:auto 1fr;grid-template-areas:"copy form" "sheet form";gap:40px 64px;align-items:start}
+.contact-copy{grid-area:copy}
+.contact-copy h2{font-size:var(--fs-2xl);line-height:1.1;letter-spacing:-.022em}
+.contact-copy>p{max-width:30em;margin-top:16px;color:#e0e6ee}
+.points{display:grid;gap:10px;margin:24px 0 0;padding:0;list-style:none}
+.points li{display:flex;align-items:center;gap:12px}
+.points li:before{flex:0 0 24px;height:24px;border-radius:50%;background:var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m7 12.5 3.2 3.2L17 9' fill='none' stroke='%23192844' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/24px no-repeat;content:""}
+.form-card{grid-area:form;padding:32px;border-radius:20px;color:var(--ink);background:var(--white);box-shadow:0 24px 60px rgba(14,28,50,.3)}
+.form-card h3{font-size:var(--fs-xl);line-height:1.2;letter-spacing:-.02em}
+.form-card h3:focus{outline:none}
+.form-sub{margin:6px 0 24px;color:var(--muted);font-size:var(--fs-sm)}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:20px 16px}
+.field{display:grid;align-content:start;gap:6px}
+.field.full{grid-column:1/-1}
+.field label{font-size:var(--fs-sm);font-weight:800}
+.field input,.field select,.field textarea{width:100%;min-height:50px;padding:10px 14px;border:1.5px solid #8d939c;border-radius:10px;color:var(--ink);background:#fff;font-size:var(--fs-md);transition:border-color .15s}
+.field input:hover,.field select:hover,.field textarea:hover{border-color:var(--ink-2)}
+.field input:focus-visible,.field select:focus-visible,.field textarea:focus-visible{border-color:var(--ink);outline-offset:1px}
+.field input::placeholder,.field textarea::placeholder{color:#6b7480}
+.field input:user-invalid{border-color:var(--coral-deep)}
+.field textarea{min-height:120px;resize:vertical;line-height:1.5}
+.hint{min-height:0;color:var(--coral-deep);font-size:var(--fs-xs);font-weight:700}
+.hint:empty{display:none}
+.form-card .btn{width:100%;margin-top:24px}
+.form-note{margin-top:12px;color:var(--muted);font-size:var(--fs-xs);text-align:center}
+.status{display:none;margin-top:16px;padding:16px 18px;border-radius:12px;color:#244536;background:#e5f2ea;font-size:var(--fs-sm);line-height:1.5}
+.status.show{display:block}
+.status strong{display:block;font-size:var(--fs-md);font-weight:800}
+.status-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.status-actions button{min-height:42px;padding:0 18px;border:1.5px solid #244536;border-radius:999px;color:#244536;background:transparent;font-size:var(--fs-sm);font-weight:800;cursor:pointer}
+.status-actions button:first-child{color:#fff;background:#244536}
+.status-actions button:hover{background:#d3e8db}
+.status-actions button:first-child:hover{background:#1a3528}
+.sheet{grid-area:sheet;padding:26px 28px 14px;border-top:6px solid var(--gold);border-radius:6px 6px 16px 16px;color:var(--ink);background:var(--sheet);box-shadow:0 18px 44px rgba(14,28,50,.22)}
+.sheet-head{display:flex;align-items:center;gap:12px;padding-bottom:14px}
+.sheet-head .mark{width:34px;height:34px;border-radius:10px;font-size:var(--fs-xs)}
+.sheet-head h3{font-size:var(--fs-lg);line-height:1.2}
+.sheet-head p{color:var(--muted);font-size:var(--fs-xs);font-weight:700}
+.sheet.ready .sheet-head p{color:#2b6a4a}
+.sheet-head time{margin-left:auto;color:var(--muted);font-size:var(--fs-xs);text-align:right}
+.sheet dl{margin:0}
+.sheet dl div{display:grid;grid-template-columns:8.6em minmax(0,1fr);gap:4px 16px;padding:11px 0;border-top:1px solid var(--line)}
+.sheet dt{padding-top:3px;color:var(--muted);font-size:var(--fs-sm);font-weight:700}
+.sheet dd{margin:0;font:italic 400 var(--fs-lg)/1.4 var(--serif);overflow-wrap:anywhere;white-space:pre-line}
+.sheet dd.is-empty{padding-top:3px;color:var(--muted);font:400 var(--fs-sm)/1.5 var(--sans)}
+
+/* Footer */
+.site-foot{padding-block:48px 36px}
+.foot-top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px 32px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.footer-brand{font-size:var(--fs-xl);font-weight:900;letter-spacing:-.04em;text-decoration:none}
+.footer-brand span{color:var(--coral)}
+.foot-top p{color:var(--muted);font-size:var(--fs-sm)}
+.foot-nav{display:flex;flex-wrap:wrap;gap:4px 28px;padding-block:14px}
+.foot-nav a{display:inline-flex;align-items:center;min-height:40px;color:var(--ink-2);font-size:var(--fs-sm);font-weight:700;text-decoration:none}
+.foot-nav a:hover{color:var(--ink);text-decoration:underline;text-decoration-color:var(--coral);text-decoration-thickness:2px;text-underline-offset:6px}
+.foot-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 24px;color:var(--muted);font-size:var(--fs-xs)}
+
+/* Tablet */
+@media (max-width:1080px){
+  :root{--fs-3xl:52px}
+  .hero{grid-template-columns:1fr;gap:48px;align-items:start;padding-block:56px 72px}
+  .jobs{max-width:680px}
+  .jobs ul{display:grid;grid-template-columns:1fr 1fr;column-gap:28px}
+  .service{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto;gap:12px 40px}
+  .service h3{grid-column:1/-1}
+  .service>p{grid-column:1;grid-row:2}
+  .service .includes{grid-column:2;grid-row:2}
+  .service>.pick{grid-column:1/-1;grid-row:3}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px}
+  .steps li{margin-bottom:40px}
+  .steps:before{display:none}
+  .promise-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .promise h2{grid-column:1/-1}
+}
+@media (max-width:960px){
+  .menubtn{display:inline-flex}
+  .headbtn{display:none}
+  #site-nav{position:absolute;top:calc(100% + 1px);left:0;right:0;display:none;align-items:stretch;gap:0;padding:6px 0 16px;border-bottom:1px solid var(--line);background:var(--paper);box-shadow:0 16px 24px rgba(25,40,68,.08)}
+  #site-nav.open{display:grid}
+  #site-nav a{display:flex;align-items:center;min-height:52px;border-bottom:1px solid var(--line);font-size:var(--fs-md)}
+  #site-nav .nav-cta{display:flex;justify-content:center;margin-top:14px;border:0;border-radius:999px;color:#fff;background:var(--ink)}
+  #site-nav .nav-cta:hover{color:#fff;text-decoration:none}
+}
+@media (max-width:900px){
+  .faq{grid-template-columns:1fr;gap:32px}
+  .contact-grid{grid-template-columns:1fr;grid-template-rows:auto;grid-template-areas:"copy" "form" "sheet";gap:32px}
+  .form-card,.sheet{max-width:640px}
+}
+
+/* Phone */
+@media (max-width:760px){
+  :root{--fs-3xl:40px;--fs-2xl:32px;--fs-xl:24px}
+  .wrap{width:calc(100% - 32px)}
+  .topline p{padding-block:9px;text-align:left}
+  .site-head{min-height:70px}
+  .hero{gap:36px;padding-block:40px 56px}
+  h1{letter-spacing:-.022em}
+  .lede{margin-top:20px;font-size:var(--fs-md)}
+  .actions{margin-top:26px}
+  .jobs{padding:22px 20px 20px}
+  .jobs ul{display:block}
+  .work{padding-bottom:72px}
+  .sec-head{margin-bottom:32px}
+  .projects{grid-template-columns:1fr;gap:44px}
+  .photo{aspect-ratio:3/2}
+  .work-note{margin-top:44px;padding:20px}
+  .services{padding-block:72px 64px}
+  .service{grid-template-columns:1fr;gap:12px;padding:28px 0 20px}
+  .service h3,.service>p,.service .includes,.service>.pick{grid-column:1;grid-row:auto}
+  .process{padding-block:72px}
+  .steps{grid-template-columns:1fr;gap:28px;margin-bottom:40px}
+  .steps:before{display:block;top:8px;bottom:8px;left:23px;right:auto;width:2px;height:auto}
+  .steps li{display:block;grid-row:auto;margin-bottom:0;padding-left:68px}
+  .num{position:absolute;top:0;left:0}
+  .steps h3{margin-top:10px}
+  .promise{padding-block:48px}
+  .promise-grid{grid-template-columns:1fr;gap:24px}
+  .faq{padding-block:72px}
+  summary{padding:18px 0;font-size:var(--fs-md)}
+  details p{margin-right:0}
+  .contact{padding-block:72px}
+  .form-card{padding:24px 18px}
+  .sheet{padding:22px 18px 10px}
+  .sheet dl div{grid-template-columns:1fr;gap:0}
+  .sheet dt{padding-top:0;font-size:var(--fs-xs)}
+}
+@media (max-width:480px){
+  .fields{grid-template-columns:1fr}
+  .field.full{grid-column:auto}
+  .wordmark small{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="topline"><p class="wrap"><b>New project?</b> Five questions, and you get a one-page brief you can keep. <a href="#contact">Start the brief</a></p></div>
+<header class="site-head wrap">
+  <a class="brand" href="#" aria-label="CodeCraft home"><span class="mark" aria-hidden="true">&lt;/&gt;</span><span class="wordmark">codecraft<small>Web design &amp; development</small></span></a>
+  <button class="menubtn" type="button" aria-expanded="false" aria-controls="site-nav">Menu<span class="bars" aria-hidden="true"></span></button>
+  <nav id="site-nav" aria-label="Main navigation"><a href="#work">Our work</a><a href="#services">What we build</a><a href="#process">How it works</a><a href="#questions">Questions</a><a class="nav-cta" href="#contact">Start a brief</a></nav>
+  <a class="btn headbtn" href="#contact">Start a brief</a>
+</header>
+
+<main id="main">
+<section class="hero wrap" aria-labelledby="hero-title">
+  <div class="hero-copy">
+    <h1 id="hero-title">Websites for local businesses and community projects, <em>built around what visitors came to do.</em></h1>
+    <p class="lede">CodeCraft is a small web design studio. We plan, design and build each site from scratch, so the people who find you can call, book, visit or help out without hunting for the button.</p>
+    <div class="actions"><a class="btn" href="#contact">Start your project brief</a><a class="textlink" href="#work">See two sites we've made</a></div>
+  </div>
+  <aside class="jobs" aria-labelledby="jobs-title">
+    <h2 id="jobs-title">What should your site get people to do?</h2>
+    <ul>
+      <li><span>Builders, cleaners and other service providers</span><b>Ask for a quote</b></li>
+      <li><span>Cafés, shops and other small businesses</span><b>Find the menu and opening hours</b></li>
+      <li><span>Independent makers</span><b>Ask about an order</b></li>
+      <li><span>Community projects</span><b>Sign up to help, or find help</b></li>
+    </ul>
+    <p>That one job decides which pages you need, what goes at the top, and where the buttons go.</p>
+  </aside>
+</section>
+
+<section class="work wrap" id="work" aria-labelledby="work-title">
+  <div class="sec-head">
+    <h2 id="work-title">Two sites we've made</h2>
+    <p>Both are concepts we designed and built to show how we approach very different kinds of site: one for a hands-on local business, one for a cause that needs people to act. Open them, click around and look at the details up close.</p>
+  </div>
+  <div class="projects">
+    <article class="project">
+      <a class="photo" href="../../../../aj-and-j-construction/index.html" aria-label="Open the AJ and J Construction website concept"><img src="../../../../aj-and-j-construction/assets/hero.jpg" alt="Welcoming home exterior featured in the AJ and J Construction website concept" loading="lazy"></a>
+      <p class="meta"><b>Home services</b> — website concept</p>
+      <h3>AJ &amp; J Construction</h3>
+      <p class="desc">A confident first impression for a hands-on local business, built for the people behind the work.</p>
+      <a class="textlink" href="../../../../aj-and-j-construction/index.html">Open the AJ &amp; J concept<span class="visually-hidden"> website</span></a>
+    </article>
+    <article class="project">
+      <a class="photo red" href="../../../../red-cross-support/index.html" aria-label="Open the Red Cross Support website concept"><img src="../../../../red-cross-support/assets/volunteers.jpg" alt="Volunteers helping neighbors in a Red Cross Support website concept" loading="lazy"></a>
+      <p class="meta"><b>Community</b> — independent UI concept, not an official Red Cross site</p>
+      <h3>Red Cross Support</h3>
+      <p class="desc">A warm, accessible concept focused on ways to help, made to move people to action.</p>
+      <a class="textlink" href="../../../../red-cross-support/index.html">Open the Red Cross Support concept<span class="visually-hidden"> website</span></a>
+    </article>
+  </div>
+  <div class="work-note"><p><strong>Neither one looks like your business?</strong> That's how it should be. Every site starts from your brief, not from one of these.</p><a class="textlink" href="#contact">Start yours</a></div>
+</section>
+
+<section class="services" id="services" aria-labelledby="services-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="services-title">What we build</h2>
+      <p>Projects usually start in one of three ways. It's also the first question on the brief, so pick the one that fits and we'll fill it in for you.</p>
+    </div>
+    <article class="service">
+      <h3>A new website</h3>
+      <p>Custom design and development for your business, your customers, and the next step you want them to take.</p>
+      <div class="includes"><p class="inc-label">Usually includes</p><ul><li>A page plan and a design direction you approve</li><li>Design and build from scratch, no templates</li><li>Layouts checked on phones, tablets and desktops</li><li>Help getting it live</li></ul></div>
+      <a class="pick" href="#contact" data-type="A brand-new website">Start a brief for a new site</a>
+    </article>
+    <article class="service">
+      <h3>A redesign</h3>
+      <p>Bring an existing website up to date with a clearer story, a more useful layout, and a better experience on every screen.</p>
+      <div class="includes"><p class="inc-label">Usually includes</p><ul><li>A look at what's working and what isn't</li><li>A clearer page structure and wording</li><li>A new look that still feels like you</li><li>Pages that work properly on phones</li></ul></div>
+      <a class="pick" href="#contact" data-type="A redesign">Start a brief for a redesign</a>
+    </article>
+    <article class="service">
+      <h3>A specific feature</h3>
+      <p>The practical pieces that help a website do its job, designed to fit the site you already have.</p>
+      <div class="includes"><p class="inc-label">For example</p><ul><li>Contact and quote request forms</li><li>Service pages</li><li>Photo galleries</li><li>Menus and price lists</li></ul></div>
+      <a class="pick" href="#contact" data-type="A specific feature">Start a brief for a feature</a>
+    </article>
+    <div class="service-foot"><p><strong>Not sure which one you need?</strong> Choose “I'm still figuring it out” and we'll work it out together.</p><a class="pick" href="#contact" data-type="I'm still figuring it out">Start there</a></div>
+  </div>
+</section>
+
+<section class="process wrap" id="process" aria-labelledby="process-title">
+  <div class="sec-head">
+    <h2 id="process-title">A good website starts with a good conversation.</h2>
+    <p>You'll know what's happening, why it matters and what comes next. Four steps, always in this order, with something you can see at the end of each one.</p>
+  </div>
+  <ol class="steps">
+    <li><span class="num" aria-hidden="true">1</span><h3>We listen first</h3><p>Your goals, your customers, and what a great result would look like to you.</p><p class="get"><b>You get</b>Your answers back as a one-page brief, in plain words.</p></li>
+    <li><span class="num" aria-hidden="true">2</span><h3>We find the right shape</h3><p>We agree on the pages, features and direction before the build begins.</p><p class="get"><b>You get</b>A page list and a design direction to say yes or no to.</p></li>
+    <li><span class="num" aria-hidden="true">3</span><h3>We make it real</h3><p>Design and development come together, with your feedback along the way.</p><p class="get"><b>You get</b>A working site to click through and comment on.</p></li>
+    <li><span class="num" aria-hidden="true">4</span><h3>We get you ready to launch</h3><p>We go through the finished site with you and make sure you know what comes next.</p><p class="get"><b>You get</b>Your site live, and a short list of what to look after.</p></li>
+  </ol>
+  <a class="btn" href="#contact">Begin step 1 with the brief</a>
+</section>
+
+<section class="promise" aria-labelledby="promise-title">
+  <div class="promise-grid wrap">
+    <h2 id="promise-title">On every project, whatever the size</h2>
+    <div class="promise-item"><h3>Made for every screen</h3><p>Many of your customers will meet you on a phone, so each page is designed at phone size first, then for tablets and desktops.</p></div>
+    <div class="promise-item"><h3>Easy to understand</h3><p>Updates you can read without a glossary, from the first chat to the final handoff.</p></div>
+    <div class="promise-item"><h3>Nothing just for show</h3><p>Every page and feature has a job. If one doesn't help someone call, book, visit or pitch in, we'll suggest leaving it out.</p></div>
+  </div>
+</section>
+
+<section class="faq wrap" id="questions" aria-labelledby="faq-title">
+  <div class="faq-intro">
+    <h2 id="faq-title">Good to know before we start</h2>
+    <p>Every project is a little different. If yours raises a question we haven't answered here, put it in the brief below.</p>
+  </div>
+  <div class="faqs">
+    <details><summary>What kind of websites does CodeCraft build?</summary><p>Custom websites for small businesses, independent makers, service providers and community projects. Each one is built around a clear job, like getting a quote request or a volunteer sign-up. The right scope depends on what your site needs to do.</p></details>
+    <details><summary>Can you redesign a website I already have?</summary><p>Yes. We look at what's working, what isn't, and what your visitors are trying to do, then suggest a clearer structure and visual direction. The parts that already work don't have to go.</p></details>
+    <details><summary>How much does a website cost?</summary><p>It depends on the pages, features and content your project needs. We start by understanding your goals, then agree a clear scope together before anything is built.</p><p>If you're unsure what to pick for “Roughly how many pages?” on the brief: 1–3 pages is often a single page, or home, services and contact. 4–7 adds things like separate service pages, a gallery or an about page. 8 or more usually means many services, locations or products.</p></details>
+    <details><summary>Will my website work on mobile?</summary><p>Yes, and it's planned that way from the start. We design each layout at phone size first and make sure buttons, forms and menus are easy to use with one thumb.</p></details>
+  </div>
+</section>
+
+<section class="contact" id="contact" aria-labelledby="contact-title">
+  <div class="contact-grid wrap">
+    <div class="contact-copy">
+      <h2 id="contact-title">Start with a short brief</h2>
+      <p>Tell us a little about what you're building. Five questions, and we'll turn your answers into a one-page project brief so you can see the shape of the idea.</p>
+      <ul class="points"><li>No call or account needed to start</li><li>“Not sure yet” is a perfectly good answer</li><li>Copy the brief and keep it, whatever you decide</li></ul>
+    </div>
+
+    <form class="form-card" id="project-form">
+      <h3 id="form-title" tabindex="-1">Tell us about your project</h3>
+      <p class="form-sub">Just enough to get the conversation going.</p>
+      <div class="fields">
+        <div class="field"><label for="name">Your name</label><input id="name" name="name" autocomplete="name" placeholder="How should we address you?" required></div>
+        <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required></div>
+        <div class="field"><label for="project-type">What are you looking for?</label><select id="project-type" name="projectType"><option>A brand-new website</option><option>A redesign</option><option>A specific feature</option><option>I'm still figuring it out</option></select><p class="hint" id="type-hint" aria-live="polite"></p></div>
+        <div class="field"><label for="pages">Roughly how many pages?</label><select id="pages" name="pages"><option>Not sure yet</option><option>1–3 pages</option><option>4–7 pages</option><option>8 or more pages</option></select></div>
+        <div class="field full"><label for="notes">What's the big idea?</label><textarea id="notes" name="notes" placeholder="What do you do, and what should visitors be able to do on your site?"></textarea></div>
+      </div>
+      <button class="btn" type="submit">Preview my project brief</button>
+      <p class="form-note">UI demonstration only. Details stay in this page and are never sent or stored.</p>
+      <div class="status" id="status" role="status" aria-live="polite"><strong>Your project brief is ready.</strong><span id="status-copy">This is a local preview. Nothing has been sent or stored.</span><div class="status-actions"><button type="button" id="copy">Copy brief</button><button type="button" id="edit">Edit details</button></div></div>
+    </form>
+
+    <aside class="sheet" id="brief-sheet" aria-labelledby="sheet-title">
+      <div class="sheet-head"><span class="mark" aria-hidden="true">&lt;/&gt;</span><div><h3 id="sheet-title">Project brief</h3><p id="sheet-state">Fills in as you type</p></div><time id="sheet-date"></time></div>
+      <dl>
+        <div><dt>Name</dt><dd class="is-empty" data-field="name">Waiting for your name</dd></div>
+        <div><dt>Email</dt><dd class="is-empty" data-field="email">Waiting for your email</dd></div>
+        <div><dt>Looking for</dt><dd data-field="projectType">A brand-new website</dd></div>
+        <div><dt>Estimated pages</dt><dd data-field="pages">Not sure yet</dd></div>
+        <div><dt>Project idea</dt><dd class="is-empty" data-field="notes">Not provided yet</dd></div>
+      </dl>
+    </aside>
+  </div>
+</section>
+</main>
+
+<footer class="site-foot wrap">
+  <div class="foot-top"><a class="footer-brand" href="#">codecraft<span>.</span></a><p>Thoughtful websites for the people building something of their own.</p></div>
+  <nav class="foot-nav" aria-label="Footer"><a href="#work">Our work</a><a href="#services">What we build</a><a href="#process">How it works</a><a href="#questions">Questions</a><a href="#contact">Start a brief</a></nav>
+  <div class="foot-bottom"><span>© <span id="year"></span> CodeCraft. Website design and development.</span><span>Independent CodeCraft showcase concept</span></div>
+</footer>
+
+<script>
+(function(){
+  var menu=document.querySelector(".menubtn"),nav=document.getElementById("site-nav"),form=document.getElementById("project-form"),status=document.getElementById("status"),brief="",copy=document.getElementById("copy");
+  var sheet=document.getElementById("brief-sheet"),sheetState=document.getElementById("sheet-state"),typeSel=document.getElementById("project-type"),hint=document.getElementById("type-hint");
+  var reduce=window.matchMedia("(prefers-reduced-motion: reduce)");
+  var ids={name:"name",email:"email",projectType:"project-type",pages:"pages",notes:"notes"};
+  var blanks={name:"Waiting for your name",email:"Waiting for your email",notes:"Not provided yet"};
+  function val(k){return document.getElementById(ids[k]).value.trim()}
+
+  document.getElementById("year").textContent=new Date().getFullYear();
+  var today=new Date(),dateEl=document.getElementById("sheet-date");
+  dateEl.textContent=today.toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+  dateEl.setAttribute("datetime",today.toISOString().slice(0,10));
+
+  /* Navigation and mobile menu */
+  function closeMenu(){menu.setAttribute("aria-expanded","false");nav.classList.remove("open")}
+  menu.addEventListener("click",function(){var open=menu.getAttribute("aria-expanded")==="true";menu.setAttribute("aria-expanded",String(!open));nav.classList.toggle("open",!open)});
+  nav.addEventListener("click",function(e){if(e.target.closest("a"))closeMenu()});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"){var wasOpen=menu.getAttribute("aria-expanded")==="true";closeMenu();if(wasOpen)menu.focus()}});
+
+  /* Live brief sheet */
+  function renderSheet(){
+    Object.keys(ids).forEach(function(k){
+      var dd=sheet.querySelector('[data-field="'+k+'"]'),v=val(k);
+      dd.textContent=v||blanks[k]||"";dd.classList.toggle("is-empty",!v);
+    });
+  }
+  function buildBrief(){
+    var notes=val("notes");
+    return["CODECRAFT PROJECT BRIEF PREVIEW","Name: "+val("name"),"Email: "+val("email"),"Looking for: "+val("projectType"),"Estimated pages: "+val("pages"),"Project idea: "+(notes||"Not provided yet")].join("\n");
+  }
+  form.addEventListener("input",function(){renderSheet();if(status.classList.contains("show"))brief=buildBrief()});
+  form.addEventListener("change",renderSheet);
+  typeSel.addEventListener("change",function(){hint.textContent=""});
+
+  /* Service links pre-fill the first question */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-type]"),function(link){
+    link.addEventListener("click",function(e){
+      e.preventDefault();
+      typeSel.value=link.getAttribute("data-type");renderSheet();
+      hint.textContent="Filled in for you. Change it any time.";
+      document.getElementById("contact").scrollIntoView({behavior:reduce.matches?"auto":"smooth",block:"start"});
+      document.getElementById("form-title").focus({preventScroll:true});
+    });
+  });
+
+  /* Preview, copy and edit */
+  form.addEventListener("submit",function(e){
+    e.preventDefault();if(!form.reportValidity())return;
+    var name=val("name");brief=buildBrief();renderSheet();
+    document.getElementById("status-copy").textContent="This is a local preview for "+name+". Nothing has been sent or stored.";
+    status.classList.add("show");sheet.classList.add("ready");sheetState.textContent="Ready to copy";
+    status.scrollIntoView({behavior:reduce.matches?"auto":"smooth",block:"nearest"});
+  });
+  function copied(){copy.textContent="Brief copied";setTimeout(function(){copy.textContent="Copy brief"},1800)}
+  copy.addEventListener("click",function(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(brief).then(copied).catch(function(){copy.textContent="Clipboard unavailable"})}
+    else{var t=document.createElement("textarea");t.value=brief;t.readOnly=true;t.style.position="fixed";t.style.opacity="0";document.body.appendChild(t);t.select();try{document.execCommand("copy");copied()}catch(err){copy.textContent="Clipboard unavailable"}t.remove()}
+  });
+  document.getElementById("edit").addEventListener("click",function(){status.classList.remove("show");sheet.classList.remove("ready");sheetState.textContent="Fills in as you type";document.getElementById("name").focus()});
+}());
+</script>
+</body>
+</html>

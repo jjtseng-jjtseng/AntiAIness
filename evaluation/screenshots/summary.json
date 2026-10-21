@@ -163,6 +163,44 @@
       "notes": []
     }
   },
+  "A-skilled-v12-opus": {
+    "errors": [],
+    "audit": {
+      "textEls": 164,
+      "tiny": 0,
+      "under12": 0,
+      "distinctSizes": 7,
+      "sizes": [
+        "14px×53",
+        "15px×42",
+        "12px×37",
+        "17px×13",
+        "20px×10",
+        "32px×8"
+      ],
+      "families": [
+        "Archivo×103",
+        "JetBrains Mono×59",
+        "monospace×2"
+      ],
+      "h1": {
+        "text": "See which deploy moved your p95.",
+        "size": "56px",
+        "family": "Archivo"
+      },
+      "glyphTotal": 0,
+      "eyebrows": 0,
+      "accentWords": "0/6",
+      "cardGrids": 1,
+      "grads": 3,
+      "glows": 1,
+      "blurs": 0,
+      "distinctRadii": 6,
+      "overflowX": false,
+      "height": 4193,
+      "notes": []
+    }
+  },
   "B-baseline": {
     "errors": [],
     "audit": {
