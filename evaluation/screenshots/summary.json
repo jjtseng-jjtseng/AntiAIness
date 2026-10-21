@@ -28,7 +28,7 @@
       "accentWords": "1/7",
       "cardGrids": 4,
       "grads": 13,
-      "glows": 5,
+      "glows": 3,
       "blurs": 1,
       "distinctRadii": 10,
       "overflowX": false,
@@ -39,8 +39,51 @@
         "7 tracked-uppercase eyebrows directly above headings. Keep only where the label carries a real category.",
         "4 grids of 3–8 identical styled cards. Check each: would a list, table, paragraph or single image serve better?",
         "13 gradient backgrounds. Gradients should have ≤ 2 named jobs.",
-        "5 glow-style shadows (0 0 Npx). Only things that emit light should glow.",
-        "Some paragraphs run ~159 characters per line. Keep running text at 45–90."
+        "Some paragraphs run ~159 characters per line. Keep running text at 45–90.",
+        "Primary face is Inter, a frequent reflex pick for generated UIs. Fine if chosen for this product; make sure the direction card says why."
+      ]
+    }
+  },
+  "A-baseline-opus": {
+    "errors": [],
+    "audit": {
+      "textEls": 222,
+      "tiny": 0,
+      "under12": 5,
+      "distinctSizes": 16,
+      "sizes": [
+        "12px×57",
+        "13px×47",
+        "15px×42",
+        "14px×16",
+        "16px×12",
+        "17px×12"
+      ],
+      "families": [
+        "JetBrains Mono×127",
+        "Archivo×90",
+        "monospace×5"
+      ],
+      "h1": {
+        "text": "Know which endpoint got slower, and which deploy did it.",
+        "size": "73.6px",
+        "family": "Archivo"
+      },
+      "glyphTotal": 10,
+      "eyebrows": 7,
+      "accentWords": "0/8",
+      "cardGrids": 2,
+      "grads": 37,
+      "glows": 0,
+      "blurs": 1,
+      "distinctRadii": 6,
+      "overflowX": false,
+      "height": 6688,
+      "notes": [
+        "16 distinct font sizes. A scale of 5–7 reads as designed.",
+        "10 ornament glyphs in visible text (↗3 ·6 →1). Arrows-after-links and ✳/✦ ornaments are a known tell.",
+        "7 tracked-uppercase eyebrows directly above headings. Keep only where the label carries a real category.",
+        "37 gradient backgrounds. Gradients should have ≤ 2 named jobs."
       ]
     }
   },
@@ -78,6 +121,45 @@
       "distinctRadii": 5,
       "overflowX": false,
       "height": 4024,
+      "notes": [
+        "Primary face is IBM Plex Sans, a frequent reflex pick for generated UIs. Fine if chosen for this product; make sure the direction card says why."
+      ]
+    }
+  },
+  "A-skilled-v11-opus": {
+    "errors": [],
+    "audit": {
+      "textEls": 158,
+      "tiny": 0,
+      "under12": 0,
+      "distinctSizes": 7,
+      "sizes": [
+        "15px×89",
+        "12px×40",
+        "17px×14",
+        "36px×8",
+        "21px×4",
+        "28px×2"
+      ],
+      "families": [
+        "Saira×100",
+        "Martian Mono×58"
+      ],
+      "h1": {
+        "text": "When p95 jumps, the deploy is already on the chart.",
+        "size": "56px",
+        "family": "Saira"
+      },
+      "glyphTotal": 0,
+      "eyebrows": 0,
+      "accentWords": "0/6",
+      "cardGrids": 2,
+      "grads": 3,
+      "glows": 0,
+      "blurs": 0,
+      "distinctRadii": 3,
+      "overflowX": false,
+      "height": 3848,
       "notes": []
     }
   },
@@ -185,13 +267,53 @@
       "accentWords": "0/4",
       "cardGrids": 0,
       "grads": 0,
-      "glows": 1,
+      "glows": 0,
       "blurs": 0,
       "distinctRadii": 6,
       "overflowX": false,
       "height": 900,
       "notes": [
         "Some paragraphs run ~114 characters per line. Keep running text at 45–90."
+      ]
+    }
+  },
+  "C-baseline-opus": {
+    "errors": [],
+    "audit": {
+      "textEls": 62,
+      "tiny": 0,
+      "under12": 0,
+      "distinctSizes": 16,
+      "sizes": [
+        "16px×13",
+        "36px×8",
+        "22px×6",
+        "54px×5",
+        "15px×4",
+        "20px×4"
+      ],
+      "families": [
+        "Fredoka×39",
+        "Lexend×23"
+      ],
+      "h1": {
+        "text": "Sumwise: home screen and problem screen",
+        "size": "34px",
+        "family": "Lexend"
+      },
+      "glyphTotal": 1,
+      "eyebrows": 0,
+      "accentWords": "3/4",
+      "cardGrids": 1,
+      "grads": 1,
+      "glows": 0,
+      "blurs": 0,
+      "distinctRadii": 13,
+      "overflowX": false,
+      "height": 1614,
+      "notes": [
+        "16 distinct font sizes. A scale of 5–7 reads as designed.",
+        "3/4 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all."
       ]
     }
   },
@@ -230,6 +352,45 @@
       "overflowX": false,
       "height": 1672,
       "notes": []
+    }
+  },
+  "C-skilled-v11-opus": {
+    "errors": [],
+    "audit": {
+      "textEls": 59,
+      "tiny": 0,
+      "under12": 0,
+      "distinctSizes": 12,
+      "sizes": [
+        "18px×12",
+        "32px×10",
+        "16px×7",
+        "22px×6",
+        "52px×5",
+        "20px×4"
+      ],
+      "families": [
+        "Andika×46",
+        "Grandstander×13"
+      ],
+      "h1": {
+        "text": "Sumwıse",
+        "size": "104px",
+        "family": "Grandstander"
+      },
+      "glyphTotal": 0,
+      "eyebrows": 0,
+      "accentWords": "0/2",
+      "cardGrids": 2,
+      "grads": 0,
+      "glows": 0,
+      "blurs": 0,
+      "distinctRadii": 13,
+      "overflowX": false,
+      "height": 2453,
+      "notes": [
+        "12 distinct font sizes. A scale of 5–7 reads as designed."
+      ]
     }
   },
   "D-baseline": {
@@ -360,6 +521,46 @@
       ]
     }
   },
+  "E-baseline-opus": {
+    "errors": [],
+    "audit": {
+      "textEls": 150,
+      "tiny": 7,
+      "under12": 8,
+      "distinctSizes": 18,
+      "sizes": [
+        "15px×37",
+        "16px×29",
+        "17px×23",
+        "14px×11",
+        "19px×10",
+        "12px×7"
+      ],
+      "families": [
+        "Schibsted Grotesk×131",
+        "IBM Plex Mono×17",
+        "Georgia×2"
+      ],
+      "h1": {
+        "text": "Websites for small businesses and community projects.",
+        "size": "64px",
+        "family": "\"Schibsted Grotesk\""
+      },
+      "glyphTotal": 4,
+      "eyebrows": 0,
+      "accentWords": "0/7",
+      "cardGrids": 1,
+      "grads": 3,
+      "glows": 0,
+      "blurs": 0,
+      "distinctRadii": 11,
+      "overflowX": false,
+      "height": 6278,
+      "notes": [
+        "18 distinct font sizes. A scale of 5–7 reads as designed."
+      ]
+    }
+  },
   "E-original": {
     "errors": [],
     "audit": {
@@ -440,6 +641,45 @@
       "distinctRadii": 2,
       "overflowX": false,
       "height": 4847,
+      "notes": [
+        "Primary face is Libre Franklin, a frequent reflex pick for generated UIs. Fine if chosen for this product; make sure the direction card says why."
+      ]
+    }
+  },
+  "E-skilled-v11-opus": {
+    "errors": [],
+    "audit": {
+      "textEls": 148,
+      "tiny": 0,
+      "under12": 0,
+      "distinctSizes": 7,
+      "sizes": [
+        "15px×79",
+        "17px×34",
+        "19px×13",
+        "13px×8",
+        "24px×7",
+        "40px×5"
+      ],
+      "families": [
+        "Figtree×138",
+        "Gelasio×10"
+      ],
+      "h1": {
+        "text": "Websites planned with you, page by page.",
+        "size": "58px",
+        "family": "Figtree"
+      },
+      "glyphTotal": 0,
+      "eyebrows": 0,
+      "accentWords": "1/8",
+      "cardGrids": 0,
+      "grads": 0,
+      "glows": 0,
+      "blurs": 0,
+      "distinctRadii": 7,
+      "overflowX": false,
+      "height": 5282,
       "notes": []
     }
   },

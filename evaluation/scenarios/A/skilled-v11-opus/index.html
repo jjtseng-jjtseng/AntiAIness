@@ -1,0 +1,923 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pulse: API latency, errors and deploys on one timeline</title>
+<meta name="description" content="Pulse records p50, p95 and p99 latency, error rate and throughput for each API endpoint, marks deploys on the incident timeline, and alerts Slack, PagerDuty or email per endpoint.">
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@75..112.5,400..600&family=Saira:wdth,wght@100..125,400..700&display=swap" rel="stylesheet">
+<!--
+Brief
+  Pulse records per-endpoint latency (p50/p95/p99), error rate and throughput, puts deploys on the incident
+  timeline and alerts Slack/PagerDuty/email on per-endpoint thresholds. Visitors: senior engineers and their
+  leads evaluating monitoring, on desktop, skeptical. Asked for: "sleek, modern, a bit futuristic, but credible
+  to senior engineers; we like dark themes." Focal point: the product's own chart with a deploy on it.
+  Must not invent: customers, logos, testimonials, stats, team members, certification, SDK API.
+
+Direction card: "Deploy on the trace"
+  Sleek: one large flat product view; few elements around it; expanded headline, tight tracking; 200ms transitions.
+  Modern: real product UI as the hero, interactive; phone layout designed separately, not collapsed.
+  A bit futuristic: squared, expanded display face (Saira, 118% width); ice-blue light used only for the live
+    p95 trace and the primary action; the trace draws once and redraws when data changes; layered graphite surfaces.
+  Credible: units and percentiles everywhere, tabular mono numerals, METHOD /path endpoints, sample data labeled,
+    SOC 2 stated as in progress, no proof we don't have.
+  Memorable thing: the deploy marker, a white rule with a "#4821" flag standing on the latency trace. The same
+    white rule marks a user-set threshold in the alerts table: white = something your team changed or set.
+  Type: Saira (display 56/36/28/21 expanded; body 17; UI 15) + Martian Mono condensed for data (15/12).
+  Color: bg #0b0d10, surface #12151a, raised #1a1e25; text #e9edf2 / #a8b2be; accent #8ccbff (~4% of page);
+    red = incidents and 5xx, amber = latency regression, green = improvement. Never decorative.
+  Shape: 6px panels, 4px controls, 2px chips (echoes Saira's rounded-square counters); hairlines only inside data.
+  Effects: (1) bloom on the live p95 trace, (2) a faint light falloff behind the hero panel. Nothing else glows.
+  Motion: trace draw on load; redraw on endpoint switch; threshold gauges slide. Off under reduced motion.
+  Voice: terse, engineers' nouns (p95, 5xx, deploy, threshold). Conventions kept: nav + sign in, pricing table with
+    the trial plan marked, docs link, closing call to action, useful footer.
+-->
+<style>
+:root{
+  --bg:#0b0d10;
+  --surface:#12151a;
+  --raised:#1a1e25;
+  --line:#262c35;
+  --line-soft:#1d222a;
+  --text:#e9edf2;
+  --muted:#a8b2be;
+  --faint:#8d97a3;
+  --accent:#8ccbff;
+  --accent-hover:#b0dcff;
+  --accent-ink:#06121f;
+  --red:#ff7a7a;
+  --red-fill:rgba(255,122,122,.11);
+  --amber:#f2bb5c;
+  --green:#6fd8a4;
+  --display:"Saira", "Arial Narrow", system-ui, sans-serif;
+  --mono:"Martian Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --wrap:1240px;
+  --gutter:32px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--display);font-size:17px;line-height:1.55;font-weight:400;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+a{color:inherit}
+p{margin:0}
+h1,h2,h3{margin:0;font-weight:600;font-stretch:118%;letter-spacing:-.015em;line-height:1.08}
+.mono{font-family:var(--mono);font-stretch:87.5%;font-variant-numeric:tabular-nums}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gutter)}
+.vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+
+.skip{position:absolute;left:16px;top:-60px;background:var(--accent);color:var(--accent-ink);padding:10px 14px;border-radius:4px;font-weight:600;z-index:10;text-decoration:none}
+.skip:focus{top:12px}
+
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:44px;padding:0 20px;
+  border-radius:4px;border:1px solid transparent;font:600 15px/1 var(--display);font-stretch:112%;letter-spacing:.01em;
+  text-decoration:none;cursor:pointer;transition:background-color .18s ease,border-color .18s ease,color .18s ease;
+}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
+.btn-primary:hover{background:var(--accent-hover)}
+.btn-primary:active{background:#7bbcf0}
+.btn-line{border-color:#38404b;color:var(--text);background:transparent}
+.btn-line:hover{background:var(--raised);border-color:#4a5360}
+.btn-line:active{background:var(--surface)}
+.btn-sm{min-height:40px;padding:0 16px}
+.textlink{text-decoration:underline;text-decoration-color:rgba(140,203,255,.6);text-underline-offset:4px;text-decoration-thickness:1px;transition:text-decoration-color .18s}
+.textlink:hover{text-decoration-color:var(--accent)}
+
+/* Header */
+.site-head{border-bottom:1px solid var(--line-soft)}
+.site-head .wrap{display:flex;align-items:center;gap:40px;height:68px}
+.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-stretch:125%;font-size:21px;letter-spacing:.01em}
+.brand svg{display:block}
+.nav{display:flex;gap:28px;font-size:15px}
+.nav a,.head-actions a.plain{color:var(--muted);text-decoration:none;transition:color .18s;padding:10px 0}
+.nav a:hover,.head-actions a.plain:hover{color:var(--text)}
+.head-actions{margin-left:auto;display:flex;align-items:center;gap:24px;font-size:15px}
+
+/* Hero */
+.hero{position:relative;padding:80px 0 0}
+.hero-copy{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;align-items:end}
+.hero h1{grid-column:1 / span 10;max-width:1010px;font-size:56px;line-height:1.04;letter-spacing:-.02em}
+.hero-lede{grid-column:1 / span 6;margin-top:32px;color:var(--muted)}
+.hero-lede strong{color:var(--text);font-weight:500}
+.hero-act{grid-column:8 / span 5;margin-top:32px}
+.hero-act .cta-row{margin-top:0}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.hero-note{margin-top:16px;font-size:15px;color:var(--muted)}
+
+/* Instrument panel */
+.instrument{position:relative;margin-top:64px}
+.instrument::before{
+  /* effect 2 of 2: light falling from the live chart onto the page */
+  content:"";position:absolute;left:8%;right:8%;top:-140px;height:320px;pointer-events:none;z-index:-1;
+  background:radial-gradient(closest-side,rgba(140,203,255,.10),rgba(140,203,255,0));
+}
+.panel{
+  display:grid;grid-template-columns:304px minmax(0,1fr);grid-template-areas:"rail main" "sum main";
+  grid-template-rows:auto 1fr;background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;
+}
+.rail{grid-area:rail;border-right:1px solid var(--line);background:var(--surface)}
+.rail-head{display:flex;justify-content:space-between;align-items:center;height:56px;padding:0 20px;border-bottom:1px solid var(--line-soft);font-size:15px;color:var(--muted)}
+.rail-head .cols{font-size:12px;color:var(--faint)}
+.tabs{display:flex;flex-direction:column}
+.tab{
+  display:grid;grid-template-columns:1fr auto;row-gap:6px;column-gap:12px;align-items:baseline;width:100%;text-align:left;
+  padding:16px 20px 16px 18px;background:transparent;color:var(--text);border:0;border-left:2px solid transparent;
+  border-bottom:1px solid var(--line-soft);cursor:pointer;font:inherit;transition:background-color .18s ease,border-color .18s ease;
+}
+.tab:hover{background:#161a20}
+.tab[aria-selected="true"]{background:var(--raised);border-left-color:var(--accent)}
+.tab:focus-visible{outline-offset:-3px;border-radius:0}
+.ep{font-family:var(--mono);font-stretch:87.5%;font-size:15px;color:var(--text);white-space:nowrap}
+.tab .ep{grid-column:1 / -1}
+.method{color:var(--muted);margin-right:.35em}
+.tab .p95{font-family:var(--mono);font-stretch:87.5%;font-size:15px;font-variant-numeric:tabular-nums}
+.tab .p95 small{font-size:12px;color:var(--muted);margin-left:2px}
+.delta{font-family:var(--mono);font-stretch:87.5%;font-size:12px;font-variant-numeric:tabular-nums;justify-self:end}
+.delta.up{color:var(--amber)}
+.delta.down{color:var(--green)}
+.delta.flat{color:var(--muted)}
+
+.summary{grid-area:sum;border-right:1px solid var(--line);padding:24px 20px;display:grid;gap:20px;align-content:end}
+.summary h3{font-size:15px;font-weight:500;font-stretch:100%;letter-spacing:0;color:var(--muted)}
+.readout{display:flex;flex-direction:column;gap:2px}
+.readout .label{font-size:12px;color:var(--faint)}
+.readout .value{font-size:28px;font-weight:500;font-stretch:112%;letter-spacing:-.01em;line-height:1.15;font-variant-numeric:tabular-nums}
+.readout .value small{font-size:15px;color:var(--muted);font-weight:400;margin-left:4px;letter-spacing:0}
+
+.main{grid-area:main;display:flex;flex-direction:column;min-width:0}
+.main-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px;min-height:56px;padding:12px 24px;border-bottom:1px solid var(--line-soft)}
+.main-head .title{font-family:var(--mono);font-stretch:87.5%;font-size:15px}
+.main-head .window{font-size:15px;color:var(--muted)}
+.legend{display:flex;gap:16px;margin-left:auto;font-size:12px;color:var(--muted);align-items:center}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:18px;height:0;border-top:2px solid var(--accent)}
+.legend .l50 i{border-top-color:rgba(140,203,255,.5);border-top-width:1.5px}
+.legend .l99 i{border-top:1.5px dashed rgba(233,237,242,.55)}
+.legend .sample{color:var(--faint);padding-left:16px;border-left:1px solid var(--line)}
+.chart{position:relative;padding:8px 16px 0 8px;flex:1}
+.chart svg{display:block;width:100%;overflow:visible;touch-action:pan-y}
+.chart text{font-family:var(--mono);font-stretch:87.5%;font-size:12px;fill:var(--faint)}
+.trace{fill:none;stroke-linejoin:round;stroke-linecap:round}
+.fade{transition:opacity .4s ease}
+
+.incident{display:flex;gap:14px;align-items:flex-start;padding:16px 24px;border-top:1px solid var(--line-soft);min-height:76px;font-size:15px}
+.incident .sev{flex:none;width:10px;height:10px;margin-top:7px;border-radius:2px;background:var(--red)}
+.incident.calm .sev{background:transparent;border:1.5px solid var(--faint)}
+.incident strong{font-weight:500;display:block}
+.incident .meta{color:var(--muted)}
+.incident .meta .mono{font-size:15px;color:var(--text)}
+
+/* Sections */
+.section{padding:128px 0 0}
+.section-head{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;align-items:end;margin-bottom:48px}
+.section-head h2{grid-column:1 / span 6;font-size:36px}
+.section-head p{grid-column:8 / span 5;color:var(--muted)}
+h2{font-size:36px}
+
+/* Alerts table */
+.rules-wrap{border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table.rules{width:100%;border-collapse:collapse;font-size:15px}
+.rules th,.rules td{padding:16px 20px;text-align:left;vertical-align:middle;border-bottom:1px solid var(--line-soft)}
+.rules thead th{font-size:12px;font-weight:400;color:var(--faint);padding-top:14px;padding-bottom:14px}
+.rules tbody tr:last-child th,.rules tbody tr:last-child td{border-bottom:0}
+.rules tbody th{font-weight:400}
+.rules .p95cell{font-family:var(--mono);font-stretch:87.5%;font-variant-numeric:tabular-nums}
+.field{display:inline-flex;align-items:center;gap:8px;color:var(--muted)}
+.field input,.field select{
+  font:inherit;font-family:var(--mono);font-stretch:87.5%;font-size:15px;color:var(--text);background:var(--bg);
+  border:1px solid #38404b;border-radius:4px;height:40px;padding:0 10px;transition:border-color .18s;
+}
+.field input{width:96px;font-variant-numeric:tabular-nums;text-align:right}
+.field select{font-family:var(--display);font-stretch:100%;padding-right:30px;appearance:none;-webkit-appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+  background-position:right 14px top 17px,right 9px top 17px;background-size:5px 5px,5px 5px;background-repeat:no-repeat;min-width:140px}
+.field input:hover,.field select:hover{border-color:#4f5966}
+.field input:focus-visible,.field select:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.field input[aria-invalid="true"]{border-color:var(--red)}
+.gauge{position:relative;height:6px;width:100%;min-width:140px;background:var(--raised);border-radius:2px;margin:6px 0 10px}
+.gauge .fill,.gauge .over{position:absolute;top:0;bottom:0;left:0;border-radius:2px;transition:width .22s ease,left .22s ease}
+.gauge .fill{background:var(--accent)}
+.gauge .over{background:var(--red)}
+.gauge .tick{position:absolute;top:-6px;width:2px;height:18px;background:var(--text);transition:left .22s ease;margin-left:-1px}
+.status{font-size:15px;color:var(--muted);white-space:nowrap}
+.status.firing{color:var(--red)}
+.rules-note{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;margin-top:16px;font-size:15px;color:var(--muted)}
+
+/* Install */
+.band{margin-top:128px;background:var(--surface);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
+.install{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;padding:96px 0;align-items:center}
+.install-copy{grid-column:1 / span 5}
+.install-copy p{margin-top:20px;color:var(--muted)}
+.langs{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:28px 0 0}
+.langs li{font-family:var(--mono);font-stretch:87.5%;font-size:15px;padding:8px 12px;border:1px solid var(--line);border-radius:2px;background:var(--bg)}
+.code{grid-column:7 / span 6;margin:0;background:var(--bg);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.code-head{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 20px;border-bottom:1px solid var(--line-soft);font-size:15px;color:var(--muted)}
+.code-head .tag{font-size:12px;color:var(--amber);border:1px solid rgba(242,187,92,.4);border-radius:2px;padding:2px 8px}
+.code pre{margin:0;padding:24px 20px;font-family:var(--mono);font-stretch:87.5%;font-size:15px;line-height:2;overflow-x:auto}
+.code .ln{display:inline-block;width:2.2em;color:var(--faint);user-select:none}
+.code .ph{color:var(--muted);border-bottom:1px dashed #5b6470}
+.code-foot{padding:14px 20px;border-top:1px solid var(--line-soft);font-size:15px;color:var(--muted)}
+
+/* Pricing */
+.pricing-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 28px;margin-bottom:32px}
+.pricing-head p{color:var(--muted)}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.plan{display:flex;flex-direction:column;padding:32px 28px 28px;border-left:1px solid var(--line)}
+.plan:first-child{border-left:0}
+.plan.featured{background:var(--surface);box-shadow:inset 0 2px 0 var(--accent)}
+.plan-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.plan h3{font-size:21px;letter-spacing:0}
+.plan .flag{font-size:12px;color:var(--accent);white-space:nowrap}
+.price{margin-top:20px;display:flex;align-items:baseline;gap:6px}
+.price b{font-size:36px;font-weight:600;font-stretch:118%;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1}
+.price span{color:var(--muted);font-size:15px}
+.plan .for{margin-top:12px;color:var(--muted);font-size:15px;min-height:3.1em}
+.plan dl{margin:24px 0 32px;font-size:15px}
+.plan dl div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-top:1px solid var(--line-soft)}
+.plan dt{color:var(--muted)}
+.plan dd{margin:0;font-family:var(--mono);font-stretch:87.5%;font-variant-numeric:tabular-nums}
+.plan .btn{margin-top:auto;width:100%}
+
+/* Company facts */
+.facts{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px}
+.facts-head{grid-column:1 / span 4}
+.facts-head p{margin-top:20px;color:var(--muted)}
+.facts dl{grid-column:6 / span 7;margin:0}
+.facts dl div{display:grid;grid-template-columns:180px 1fr;gap:24px;padding:20px 0;border-top:1px solid var(--line-soft)}
+.facts dl div:last-child{border-bottom:1px solid var(--line-soft)}
+.facts dt{color:var(--muted);font-size:15px;padding-top:2px}
+.facts dd{margin:0}
+.pill-progress{display:inline-block;font-size:12px;color:var(--amber);border:1px solid rgba(242,187,92,.4);border-radius:2px;padding:1px 8px;margin-left:8px;vertical-align:2px}
+
+/* Closing */
+.closing{padding:144px 0 120px}
+.closing-inner{display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;align-items:end;padding-top:56px;border-top:1px solid var(--line)}
+.closing h2{grid-column:1 / span 7;font-size:36px}
+.closing .side{grid-column:9 / span 4}
+.closing .side p{color:var(--muted)}
+
+/* Footer */
+.site-foot{border-top:1px solid var(--line-soft);padding:40px 0 48px;font-size:15px;color:var(--muted)}
+.site-foot .wrap{display:flex;flex-wrap:wrap;gap:24px 48px;align-items:flex-start;justify-content:space-between}
+.site-foot nav{display:flex;flex-wrap:wrap;gap:8px 28px}
+.site-foot nav a{text-decoration:none;color:var(--muted);padding:8px 0}
+.site-foot nav a:hover{color:var(--text)}
+.site-foot .brand{font-size:17px;color:var(--text)}
+.site-foot .about{display:flex;flex-direction:column;gap:8px}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1080px){
+  .hero h1{grid-column:1 / -1;font-size:52px}
+  .hero-lede{grid-column:1 / span 9}
+  .hero-act{grid-column:1 / -1;margin-top:28px}
+  .section-head h2{grid-column:1 / span 8}
+  .section-head p{grid-column:1 / span 8;margin-top:16px}
+  .install-copy{grid-column:1 / -1}
+  .code{grid-column:1 / -1;margin-top:40px}
+  .facts-head{grid-column:1 / -1}
+  .facts dl{grid-column:1 / -1;margin-top:40px}
+  .closing h2{grid-column:1 / -1}
+  .closing .side{grid-column:1 / span 8;margin-top:24px}
+  .panel{grid-template-columns:268px minmax(0,1fr)}
+  .nav{gap:20px}
+}
+
+/* ---------- Phone ---------- */
+@media (max-width: 760px){
+  :root{--gutter:16px}
+  body{font-size:17px}
+  .site-head .wrap{height:60px;gap:16px}
+  .nav{display:none}
+  .head-actions{gap:16px}
+  .hero{padding-top:44px}
+  .hero h1{font-size:36px;line-height:1.08}
+  .hero-lede{grid-column:1 / -1;margin-top:20px}
+  .hero-act{margin-top:24px}
+  .cta-row .btn{flex:1 1 100%}
+  .instrument{margin-top:40px;margin-left:-6px;margin-right:-6px}
+  .panel{grid-template-columns:1fr;grid-template-areas:"rail" "main" "sum";grid-template-rows:auto}
+  .rail{border-right:0;border-bottom:1px solid var(--line)}
+  .rail-head{height:48px;padding:0 16px}
+  .tab{grid-template-columns:1fr auto auto;padding:12px 16px 12px 14px;align-items:baseline}
+  .tab .ep{grid-column:auto;font-size:14px}
+  .tab .p95{font-size:14px}
+  .tab:last-child{border-bottom:0}
+  .main-head{padding:12px 16px}
+  .legend{margin-left:0;width:100%;gap:14px;flex-wrap:wrap}
+  .legend .sample{margin-left:auto}
+  .chart{padding:4px 8px 0 4px}
+  .incident{padding:14px 16px}
+  .summary{border-right:0;border-top:1px solid var(--line);grid-template-columns:1fr 1fr;padding:18px 16px;gap:12px}
+  .summary h3{grid-column:1 / -1}
+  .readout .value{font-size:21px}
+  .readout .value small{font-size:12px}
+  .section{padding-top:88px}
+  .section-head{margin-bottom:28px}
+  h2,.section-head h2,.closing h2{font-size:28px}
+  .section-head h2,.section-head p{grid-column:1 / -1}
+
+  table.rules,table.rules tbody,table.rules tr,table.rules th,table.rules td{display:block}
+  table.rules thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  table.rules tr{display:grid;grid-template-columns:1fr auto;gap:12px 12px;padding:18px 16px;border-bottom:1px solid var(--line-soft)}
+  table.rules tbody tr:last-child{border-bottom:0}
+  .rules th,.rules td{padding:0;border:0}
+  .rules td.c-p95{text-align:right}
+  .rules td.c-thr,.rules td.c-dest{grid-column:1 / -1}
+  .rules td.c-thr .field,.rules td.c-dest .field{display:flex;justify-content:space-between;width:100%}
+  .rules td.c-thr .field::before{content:"Alert when p95 is above";color:var(--muted)}
+  .rules td.c-dest .field::before{content:"Send to";color:var(--muted)}
+  .rules td.c-p95::before{content:"p95 ";color:var(--muted);font-family:var(--display);font-stretch:100%}
+  .rules td.c-status{grid-column:1 / -1}
+  .gauge{min-width:0}
+
+  .band{margin-top:88px}
+  .install{padding:64px 0}
+  .code pre{font-size:14px;padding:20px 16px}
+  .code-head,.code-foot{padding:12px 16px}
+  .plans{grid-template-columns:1fr}
+  .plan{border-left:0;border-top:1px solid var(--line);padding:28px 20px 24px}
+  .plan:first-child{border-top:0}
+  .plan .for{min-height:0}
+  .facts dl div{grid-template-columns:1fr;gap:6px;padding:16px 0}
+  .closing{padding:96px 0 88px}
+  .closing-inner{padding-top:40px}
+  .closing .side{grid-column:1 / -1}
+  .site-foot .wrap{flex-direction:column}
+}
+@media (max-width: 380px){
+  .head-actions a.plain{display:none}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition-duration:0s!important;animation-duration:0s!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Pulse home">
+      <svg width="16" height="22" viewBox="0 0 16 22" aria-hidden="true"><rect x="1" y="1" width="2" height="20" rx="1" fill="#8ccbff"/><rect x="3" y="1" width="11" height="8" rx="1.5" fill="#8ccbff"/></svg>
+      Pulse
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#product">Product</a>
+      <a href="#alerts">Alerts</a>
+      <a href="#install">Install</a>
+      <a href="#pricing">Pricing</a>
+      <a href="https://docs.pulse.dev">Docs</a>
+    </nav>
+    <div class="head-actions">
+      <!-- Sign-in and sign-up URLs were not provided; placeholders. -->
+      <a class="plain" href="#sign-in">Sign in</a>
+      <a class="btn btn-primary btn-sm" href="#start-trial">Start trial</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div class="hero-copy">
+        <h1 id="hero-title">When p95 jumps, the deploy is already on the chart.</h1>
+        <p class="hero-lede"><strong>Pulse is API monitoring for engineering teams.</strong> It records p50, p95 and p99 latency, error rate and throughput for every endpoint, puts your deploys on the incident timeline, and alerts Slack, PagerDuty or email when an endpoint crosses its own threshold.</p>
+        <div class="hero-act">
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#start-trial">Start 14-day Business trial</a>
+            <a class="btn btn-line" href="https://docs.pulse.dev">Read the docs</a>
+          </div>
+          <p class="hero-note">Or stay on Free: 3 endpoints, 7-day retention.</p>
+        </div>
+      </div>
+
+      <div class="instrument" id="product">
+        <div class="panel">
+          <div class="rail">
+            <div class="rail-head"><span id="ep-label">Endpoints</span><span class="cols">p95, change vs 7d</span></div>
+            <div class="tabs" role="tablist" aria-labelledby="ep-label">
+              <button class="tab" role="tab" id="tab-orders" aria-controls="chart-panel" aria-selected="false" tabindex="-1" data-ep="orders">
+                <span class="ep"><span class="method">GET</span>/v1/orders</span>
+                <span class="p95">412<small>ms</small></span>
+                <span class="delta up"><span class="vh">p95 change versus 7 days: </span>+18%</span>
+              </button>
+              <button class="tab" role="tab" id="tab-checkout" aria-controls="chart-panel" aria-selected="true" tabindex="0" data-ep="checkout">
+                <span class="ep"><span class="method">POST</span>/v1/checkout</span>
+                <span class="p95">1,204<small>ms</small></span>
+                <span class="delta down"><span class="vh">p95 change versus 7 days: </span>&minus;3%</span>
+              </button>
+              <button class="tab" role="tab" id="tab-search" aria-controls="chart-panel" aria-selected="false" tabindex="-1" data-ep="search">
+                <span class="ep"><span class="method">GET</span>/v1/search</span>
+                <span class="p95">236<small>ms</small></span>
+                <span class="delta flat"><span class="vh">p95 change versus 7 days: </span>+1%</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="summary">
+            <h3>All endpoints</h3>
+            <div class="readout"><span class="label">Error rate</span><span class="value">0.42%</span></div>
+            <div class="readout"><span class="label">Throughput</span><span class="value">2,310<small>req/min</small></span></div>
+          </div>
+
+          <div class="main" id="chart-panel" role="tabpanel" aria-labelledby="tab-checkout">
+            <div class="main-head">
+              <span class="title" id="chart-title"><span class="method">POST</span>/v1/checkout</span>
+              <span class="window">Oct 14, 07:40&ndash;09:20</span>
+              <div class="legend" aria-hidden="true">
+                <span class="l50"><i></i>p50</span>
+                <span class="l95"><i></i>p95</span>
+                <span class="l99"><i></i>p99</span>
+                <span class="sample">Sample data</span>
+              </div>
+            </div>
+            <div class="chart" id="chart">
+              <svg id="chart-svg" role="img" aria-labelledby="chart-desc" height="360">
+                <title id="chart-desc">Latency and 5xx rate for POST /v1/checkout on Oct 14, 07:40 to 09:20.</title>
+              </svg>
+            </div>
+            <div class="incident" id="incident" aria-live="polite">
+              <span class="sev" aria-hidden="true"></span>
+              <div>
+                <strong>Elevated 5xx on /v1/checkout</strong>
+                <span class="meta">Oct 14, 08:12&ndash;08:47, 35 min. Caused by <span class="mono">deploy #4821</span>.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="alerts" aria-labelledby="alerts-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="alerts-title">Each endpoint gets its own alert threshold</h2>
+        <p>One latency alert for a whole API is too noisy for slow endpoints and too quiet for fast ones. Set a threshold per endpoint and send it where the right people will see it: Slack, PagerDuty or email.</p>
+      </div>
+
+      <div class="rules-wrap">
+        <table class="rules">
+          <caption class="vh">Example alert thresholds per endpoint. Editing a threshold updates the status against the sample p95 values.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Endpoint</th>
+              <th scope="col">p95 (sample)</th>
+              <th scope="col">Alert when p95 is above</th>
+              <th scope="col">Send to</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-p95="412">
+              <th scope="row" class="ep"><span class="method">GET</span>/v1/orders</th>
+              <td class="c-p95 p95cell">412 ms</td>
+              <td class="c-thr"><span class="field"><input type="number" inputmode="numeric" min="1" step="10" value="500" aria-label="Threshold for GET /v1/orders, in milliseconds"> ms</span></td>
+              <td class="c-dest"><span class="field"><select aria-label="Alert destination for GET /v1/orders"><option selected>Slack</option><option>PagerDuty</option><option>Email</option></select></span></td>
+              <td class="c-status"><div class="gauge" aria-hidden="true"><span class="fill"></span><span class="over"></span><span class="tick"></span></div><span class="status" aria-live="polite"></span></td>
+            </tr>
+            <tr data-p95="1204">
+              <th scope="row" class="ep"><span class="method">POST</span>/v1/checkout</th>
+              <td class="c-p95 p95cell">1,204 ms</td>
+              <td class="c-thr"><span class="field"><input type="number" inputmode="numeric" min="1" step="10" value="1000" aria-label="Threshold for POST /v1/checkout, in milliseconds"> ms</span></td>
+              <td class="c-dest"><span class="field"><select aria-label="Alert destination for POST /v1/checkout"><option>Slack</option><option selected>PagerDuty</option><option>Email</option></select></span></td>
+              <td class="c-status"><div class="gauge" aria-hidden="true"><span class="fill"></span><span class="over"></span><span class="tick"></span></div><span class="status" aria-live="polite"></span></td>
+            </tr>
+            <tr data-p95="236">
+              <th scope="row" class="ep"><span class="method">GET</span>/v1/search</th>
+              <td class="c-p95 p95cell">236 ms</td>
+              <td class="c-thr"><span class="field"><input type="number" inputmode="numeric" min="1" step="10" value="300" aria-label="Threshold for GET /v1/search, in milliseconds"> ms</span></td>
+              <td class="c-dest"><span class="field"><select aria-label="Alert destination for GET /v1/search"><option>Slack</option><option>PagerDuty</option><option selected>Email</option></select></span></td>
+              <td class="c-status"><div class="gauge" aria-hidden="true"><span class="fill"></span><span class="over"></span><span class="tick"></span></div><span class="status" aria-live="polite"></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="rules-note">
+        <span>Edit a threshold to see which endpoints would alert. Thresholds shown are examples.</span>
+        <span>p95 values match the sample endpoints above.</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="band" id="install">
+    <div class="wrap">
+      <div class="install">
+        <div class="install-copy">
+          <h2>Two lines of SDK in each service</h2>
+          <p>Add the SDK to a service, deploy it, and Pulse records p50, p95 and p99 latency, error rate and throughput for each of its endpoints.</p>
+          <ul class="langs" aria-label="Supported languages">
+            <li>Node</li><li>Python</li><li>Go</li><li>Java</li>
+          </ul>
+        </div>
+        <figure class="code" aria-labelledby="code-cap">
+          <div class="code-head"><span>Setup, any supported language</span><span class="tag">Placeholder</span></div>
+          <pre aria-label="Placeholder for the two-line setup snippet"><span class="ln">1</span><span class="ph">‹import the Pulse SDK›</span>
+<span class="ln">2</span><span class="ph">‹start Pulse›</span></pre>
+          <figcaption class="code-foot" id="code-cap">The exact two lines for Node, Python, Go and Java are in the docs at <a class="textlink" href="https://docs.pulse.dev">docs.pulse.dev</a>.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+
+  <section class="section" id="pricing" aria-labelledby="pricing-title">
+    <div class="wrap">
+      <div class="pricing-head">
+        <h2 id="pricing-title">Pricing</h2>
+        <p>Start on Free with three endpoints, or try Business for 14 days before you pay.</p>
+      </div>
+      <div class="plans">
+        <article class="plan" aria-labelledby="plan-free">
+          <div class="plan-top"><h3 id="plan-free">Free</h3></div>
+          <p class="price"><b>$0</b></p>
+          <p class="for">For trying Pulse on a few endpoints.</p>
+          <dl>
+            <div><dt>Endpoints</dt><dd>3</dd></div>
+            <div><dt>Retention</dt><dd>7 days</dd></div>
+          </dl>
+          <a class="btn btn-line" href="#start-free">Start on Free</a>
+        </article>
+        <article class="plan" aria-labelledby="plan-team">
+          <div class="plan-top"><h3 id="plan-team">Team</h3></div>
+          <p class="price"><b>$49</b><span>/month</span></p>
+          <p class="for">For a team watching up to 50 endpoints.</p>
+          <dl>
+            <div><dt>Endpoints</dt><dd>50</dd></div>
+            <div><dt>Retention</dt><dd>30 days</dd></div>
+            <div><dt>Seats</dt><dd>5</dd></div>
+          </dl>
+          <a class="btn btn-line" href="#choose-team">Choose Team</a>
+        </article>
+        <article class="plan featured" aria-labelledby="plan-business">
+          <div class="plan-top"><h3 id="plan-business">Business</h3><span class="flag">14-day free trial</span></div>
+          <p class="price"><b>$199</b><span>/month</span></p>
+          <p class="for">For every endpoint, with SSO and 13 months of history.</p>
+          <dl>
+            <div><dt>Endpoints</dt><dd>Unlimited</dd></div>
+            <div><dt>Retention</dt><dd>13 months</dd></div>
+            <div><dt>SSO</dt><dd>Included</dd></div>
+          </dl>
+          <a class="btn btn-primary" href="#start-trial">Start 14-day trial</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="company" aria-labelledby="company-title">
+    <div class="wrap facts">
+      <div class="facts-head">
+        <h2 id="company-title">Where Pulse stands today</h2>
+        <p>Pulse is a young company. This is the current state of things, stated plainly.</p>
+      </div>
+      <dl>
+        <div><dt>Security</dt><dd>SOC 2 Type II audit <span class="pill-progress">In progress</span><br><span style="color:var(--muted)">Pulse is not SOC 2 certified yet.</span></dd></div>
+        <div><dt>Company</dt><dd>Founded in 2025. A team of 8 in Toronto.</dd></div>
+        <div><dt>Data retention</dt><dd>7 days on Free, 30 days on Team, 13 months on Business.</dd></div>
+        <div><dt>Documentation</dt><dd><a class="textlink" href="https://docs.pulse.dev">docs.pulse.dev</a></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="closing" aria-labelledby="closing-title">
+    <div class="wrap">
+      <div class="closing-inner">
+        <h2 id="closing-title">Put your next deploy on the chart.</h2>
+        <div class="side">
+          <p>Try Business free for 14 days: unlimited endpoints, 13-month retention and SSO.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#start-trial">Start 14-day trial</a>
+            <a class="btn btn-line" href="https://docs.pulse.dev">Read the docs</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="about">
+      <a class="brand" href="#top" aria-label="Pulse home">
+        <svg width="12" height="17" viewBox="0 0 16 22" aria-hidden="true"><rect x="1" y="1" width="2" height="20" rx="1" fill="#8ccbff"/><rect x="3" y="1" width="11" height="8" rx="1.5" fill="#8ccbff"/></svg>
+        Pulse
+      </a>
+      <span>API monitoring for engineering teams. Toronto.</span>
+    </div>
+    <nav aria-label="Footer">
+      <a href="https://docs.pulse.dev">Docs</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#company">Security</a>
+      <a href="#sign-in">Sign in</a>
+    </nav>
+    <span>&copy; 2026 Pulse</span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const reduceMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const reduce = () => reduceMQ.matches;
+
+  /* ---------- Hero chart ---------- */
+  // Window: Oct 14, 07:40-09:20, one point per minute. Incident 08:12-08:47 (deploy #4821).
+  const T0 = 7 * 60 + 40, N = 100;
+  const INC = [32, 67];
+  const DEPLOY = 32;
+  const ERR_MAX = 4.4; // 5xx lane is unlabeled; shared scale so endpoints compare honestly
+
+  const EP = {
+    orders:   { method: 'GET',  path: '/v1/orders',   seed: 11, ymax: 1000, step: 250, base: { p50: 172, p95: 408, p99: 700 }, incident: false },
+    checkout: { method: 'POST', path: '/v1/checkout', seed: 29, ymax: 2500, step: 500, base: { p50: 520, p95: 1190, p99: 1700 }, incident: true },
+    search:   { method: 'GET',  path: '/v1/search',   seed: 47, ymax: 500,  step: 100, base: { p50: 96,  p95: 233, p99: 400 }, incident: false },
+  };
+
+  function rng(seed) {
+    return () => {
+      seed = (seed + 0x6D2B79F5) | 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function noise(seed, n, win) {
+    const r = rng(seed);
+    const raw = Array.from({ length: n }, () => r() * 2 - 1);
+    const sm = raw.map((_, i) => {
+      let s = 0, c = 0;
+      for (let k = -win; k <= win; k++) { const j = i + k; if (j >= 0 && j < n) { s += raw[j]; c++; } }
+      return s / c;
+    });
+    const m = Math.max(...sm.map(Math.abs)) || 1;
+    return sm.map(v => v / m);
+  }
+  const ease = t => t * t * (3 - 2 * t);
+  function incShape(i) {
+    const [a, b] = INC;
+    if (i < a) return 0;
+    if (i < a + 4) return ease((i - a) / 4);
+    if (i <= b - 2) return 1;
+    if (i <= b + 4) return ease(Math.max(0, (b + 4 - i) / 6));
+    return 0;
+  }
+  function series(ep) {
+    const n = N + 1;
+    const shared = noise(ep.seed, n, 4), j1 = noise(ep.seed + 7, n, 1), j2 = noise(ep.seed + 13, n, 1), j3 = noise(ep.seed + 3, n, 2);
+    const out = { p50: [], p95: [], p99: [], err: [] };
+    for (let i = 0; i < n; i++) {
+      const inc = ep.incident ? incShape(i) : 0;
+      const wave = Math.sin(i / 11 + ep.seed) * 0.03;
+      out.p50.push(ep.base.p50 * (1 + 0.04 * shared[i] + 0.02 * j3[i] + wave + 0.10 * inc));
+      out.p95.push(ep.base.p95 * (1 + 0.06 * shared[i] + 0.035 * j1[i] + wave + 0.26 * inc));
+      out.p99.push(ep.base.p99 * (1 + 0.07 * shared[i] + 0.08 * j2[i] + wave + 0.36 * inc));
+      out.err.push(0.32 + 0.12 * (j1[i] + 1) + inc * (3.1 + 0.35 * j2[i]));
+    }
+    return out;
+  }
+
+  const svg = document.getElementById('chart-svg');
+  const wrap = document.getElementById('chart');
+  const NS = 'http://www.w3.org/2000/svg';
+  const fmtTime = m => { const h = Math.floor(m / 60), mm = m % 60; return String(h).padStart(2, '0') + ':' + String(mm).padStart(2, '0'); };
+  const fmtNum = v => v.toLocaleString('en-US');
+  let current = 'checkout';
+  let geom = null;
+
+  function pathFrom(arr, x, y) {
+    return arr.map((v, i) => (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(v).toFixed(1)).join('');
+  }
+
+  function render(key, animate) {
+    const ep = EP[key];
+    const s = ep.data || (ep.data = series(ep));
+    const W = Math.max(280, Math.round(wrap.clientWidth - (parseFloat(getComputedStyle(wrap).paddingLeft) + parseFloat(getComputedStyle(wrap).paddingRight))));
+    const narrow = W < 560;
+    const padL = narrow ? 46 : 58, padR = narrow ? 6 : 10, top = 34;
+    const H1 = narrow ? 190 : 248, gap = 18, H2 = narrow ? 60 : 76, axisH = 30;
+    const H = top + H1 + gap + H2 + axisH;
+    const iw = W - padL - padR;
+    const x = i => padL + iw * i / N;
+    const y1 = v => top + H1 - (Math.min(v, ep.ymax) / ep.ymax) * H1;
+    const l2 = top + H1 + gap;
+    const y2 = v => l2 + H2 - (Math.min(v, ERR_MAX) / ERR_MAX) * H2;
+    geom = { x, padL, padR, iw, W, top, l2, H2, H1, H };
+
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svg.setAttribute('height', H);
+
+    let g = '';
+    g += `<defs>
+      <filter id="bloom" filterUnits="userSpaceOnUse" x="0" y="0" width="${W}" height="${H}">
+        <feGaussianBlur stdDeviation="3.2" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <clipPath id="inc-clip"><rect x="${x(INC[0])}" y="0" width="${x(INC[1]) - x(INC[0])}" height="${H}"/></clipPath>
+    </defs>`;
+
+    // y grid + labels (latency lane)
+    for (let v = 0; v <= ep.ymax; v += ep.step) {
+      const yy = y1(v).toFixed(1);
+      g += `<line x1="${padL}" x2="${W - padR}" y1="${yy}" y2="${yy}" stroke="${v === 0 ? '#2c333d' : '#1f242c'}" stroke-width="1"/>`;
+      if (!narrow || v % (ep.step * 2) === 0) g += `<text x="${padL - 10}" y="${(+yy + 4).toFixed(1)}" text-anchor="end">${fmtNum(v)}</text>`;
+    }
+    g += `<text x="${padL - 10}" y="${top - 14}" text-anchor="end">ms</text>`;
+
+    // 5xx lane frame
+    g += `<line x1="${padL}" x2="${W - padR}" y1="${l2 + H2}" y2="${l2 + H2}" stroke="#2c333d"/>`;
+    g += `<line x1="${padL}" x2="${W - padR}" y1="${l2}" y2="${l2}" stroke="#1f242c" stroke-dasharray="2 4"/>`;
+    g += `<text x="${padL - 10}" y="${l2 + H2 / 2 + 4}" text-anchor="end">5xx</text>`;
+
+    // incident band
+    if (ep.incident) {
+      const xa = x(INC[0]), xb = x(INC[1]);
+      g += `<g class="fade" data-fade>
+        <rect x="${xa}" y="${top}" width="${xb - xa}" height="${H1}" fill="var(--red-fill)"/>
+        <rect x="${xa}" y="${l2}" width="${xb - xa}" height="${H2}" fill="var(--red-fill)"/>
+        <line x1="${xa}" x2="${xb}" y1="${top}" y2="${top}" stroke="var(--red)" stroke-width="2"/>
+        <text id="inc-label" x="${xb}" y="${top - 12}" text-anchor="end" style="fill:var(--red)">Incident 08:12–08:47</text>
+      </g>`;
+    }
+
+    // x axis
+    const ticks = narrow ? [20, 50, 80] : [5, 20, 35, 50, 65, 80, 95];
+    ticks.forEach(i => {
+      g += `<line x1="${x(i)}" x2="${x(i)}" y1="${l2 + H2}" y2="${l2 + H2 + 5}" stroke="#3a424d"/>`;
+      g += `<text x="${x(i)}" y="${l2 + H2 + 22}" text-anchor="middle">${fmtTime(T0 + i)}</text>`;
+    });
+
+    // traces
+    g += `<path class="trace fade" data-fade d="${pathFrom(s.p99, x, y1)}" stroke="rgba(233,237,242,.5)" stroke-width="1.4" stroke-dasharray="4 4"/>`;
+    g += `<path class="trace fade" data-fade d="${pathFrom(s.p50, x, y1)}" stroke="rgba(140,203,255,.5)" stroke-width="1.5"/>`;
+    g += `<path class="trace" id="p95" d="${pathFrom(s.p95, x, y1)}" stroke="var(--accent)" stroke-width="2.2" filter="url(#bloom)"/>`;
+
+    // 5xx area
+    const errLine = pathFrom(s.err, x, y2);
+    const errArea = errLine + `L${x(N).toFixed(1)} ${l2 + H2}L${x(0).toFixed(1)} ${l2 + H2}Z`;
+    g += `<g class="fade" data-fade>
+      <path d="${errArea}" fill="rgba(168,178,190,.13)"/>
+      <path class="trace" d="${errLine}" stroke="rgba(168,178,190,.75)" stroke-width="1.3"/>
+      ${ep.incident ? `<g clip-path="url(#inc-clip)"><path d="${errArea}" fill="rgba(255,122,122,.32)"/><path class="trace" d="${errLine}" stroke="var(--red)" stroke-width="1.6"/></g>` : ''}
+    </g>`;
+
+    // deploy marker: the page's signature element
+    const xd = x(DEPLOY);
+    g += `<g class="fade" data-fade id="deploy">
+      <line x1="${xd}" x2="${xd}" y1="${top - 24}" y2="${l2 + H2}" stroke="var(--text)" stroke-width="1.5"/>
+      <rect id="flag-bg" x="${xd}" y="${top - 26}" width="96" height="20" rx="2" fill="var(--text)"/>
+      <text id="flag-tx" x="${xd + 7}" y="${top - 12}" style="fill:var(--bg);font-weight:500">deploy #4821</text>
+    </g>`;
+
+    // crosshair (pointer only)
+    g += `<g id="xh" style="display:none" aria-hidden="true">
+      <line id="xh-l" y1="${top}" y2="${l2 + H2}" stroke="rgba(233,237,242,.35)" stroke-width="1"/>
+      <rect id="xh-b" y="${l2 + H2 + 8}" width="46" height="20" rx="2" fill="var(--raised)" stroke="#3a424d"/>
+      <text id="xh-t" y="${l2 + H2 + 22}" text-anchor="middle" style="fill:var(--text)"></text>
+    </g>`;
+
+    svg.innerHTML = `<title id="chart-desc"></title>` + g;
+    const flagTx = svg.querySelector('#flag-tx');
+    try {
+      const tw = flagTx.getComputedTextLength();
+      svg.querySelector('#flag-bg').setAttribute('width', (tw + 14).toFixed(1));
+      // incident label shares the flag row; shorten or drop it rather than collide with the flag
+      const il = svg.querySelector('#inc-label');
+      if (il) {
+        const room = x(INC[1]) - (xd + tw + 14) - 10;
+        if (il.getComputedTextLength() > room) il.textContent = '08:12–08:47';
+        if (il.getComputedTextLength() > room) il.remove();
+      }
+    } catch (e) {}
+
+    svg.querySelector('#chart-desc').textContent = ep.incident
+      ? `Latency and 5xx rate for ${ep.method} ${ep.path}, Oct 14, 07:40 to 09:20. Deploy #4821 is marked at 08:12. During the incident from 08:12 to 08:47, p95 and p99 latency rise and the 5xx rate climbs well above its baseline, then both return to normal.`
+      : `Latency and 5xx rate for ${ep.method} ${ep.path}, Oct 14, 07:40 to 09:20. p50, p95 and p99 stay steady through the window and the 5xx rate stays at baseline. Deploy #4821 is marked at 08:12.`;
+
+    if (animate && !reduce()) {
+      const p = svg.querySelector('#p95');
+      const len = p.getTotalLength();
+      p.style.strokeDasharray = len;
+      p.style.strokeDashoffset = len;
+      const fades = svg.querySelectorAll('[data-fade]');
+      fades.forEach(f => (f.style.opacity = 0));
+      p.getBoundingClientRect();
+      requestAnimationFrame(() => {
+        p.style.transition = `stroke-dashoffset ${animate === 'intro' ? 1300 : 700}ms cubic-bezier(.25,.7,.2,1)`;
+        p.style.strokeDashoffset = 0;
+        fades.forEach((f, k) => { f.style.transitionDelay = (animate === 'intro' ? 250 : 80) + k * 60 + 'ms'; f.style.opacity = 1; });
+      });
+    }
+  }
+
+  // crosshair
+  svg.addEventListener('pointermove', e => {
+    if (!geom || e.pointerType === 'touch') return;
+    const r = svg.getBoundingClientRect();
+    const px = (e.clientX - r.left) * (geom.W / r.width);
+    const xh = svg.querySelector('#xh');
+    if (px < geom.padL || px > geom.W - geom.padR) { xh.style.display = 'none'; return; }
+    const i = Math.round((px - geom.padL) / geom.iw * N);
+    const xx = geom.x(i);
+    xh.style.display = '';
+    const l = svg.querySelector('#xh-l'); l.setAttribute('x1', xx); l.setAttribute('x2', xx);
+    const bx = Math.min(Math.max(xx, geom.padL + 23), geom.W - geom.padR - 23);
+    svg.querySelector('#xh-b').setAttribute('x', bx - 23);
+    const t = svg.querySelector('#xh-t'); t.setAttribute('x', bx); t.textContent = fmtTime(T0 + i);
+  });
+  svg.addEventListener('pointerleave', () => { const xh = svg.querySelector('#xh'); if (xh) xh.style.display = 'none'; });
+
+  // tabs
+  const tabs = [...document.querySelectorAll('.tab')];
+  const panel = document.getElementById('chart-panel');
+  const title = document.getElementById('chart-title');
+  const incident = document.getElementById('incident');
+  function select(tab, focus) {
+    const key = tab.dataset.ep;
+    tabs.forEach(t => { const on = t === tab; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; });
+    if (focus) tab.focus();
+    if (key === current) return;
+    current = key;
+    const ep = EP[key];
+    panel.setAttribute('aria-labelledby', tab.id);
+    title.innerHTML = `<span class="method">${ep.method}</span>${ep.path}`;
+    if (ep.incident) {
+      incident.className = 'incident';
+      incident.innerHTML = `<span class="sev" aria-hidden="true"></span><div><strong>Elevated 5xx on /v1/checkout</strong><span class="meta">Oct 14, 08:12–08:47, 35 min. Caused by <span class="mono">deploy #4821</span>.</span></div>`;
+    } else {
+      incident.className = 'incident calm';
+      incident.innerHTML = `<span class="sev" aria-hidden="true"></span><div><strong>No incident on ${ep.method} ${ep.path} in this window</strong><span class="meta"><span class="mono">deploy #4821</span> is marked for reference.</span></div>`;
+    }
+    render(key, 'switch');
+  }
+  tabs.forEach((t, idx) => {
+    t.addEventListener('click', () => select(t, false));
+    t.addEventListener('keydown', e => {
+      let n = null;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') n = tabs[(idx + 1) % tabs.length];
+      if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') n = tabs[(idx - 1 + tabs.length) % tabs.length];
+      if (e.key === 'Home') n = tabs[0];
+      if (e.key === 'End') n = tabs[tabs.length - 1];
+      if (n) { e.preventDefault(); select(n, true); }
+    });
+  });
+
+  let lastW = 0;
+  const ro = new ResizeObserver(() => {
+    const w = wrap.clientWidth;
+    if (Math.abs(w - lastW) < 2) return;
+    const first = lastW === 0;
+    lastW = w;
+    render(current, first ? 'intro' : false);
+  });
+  ro.observe(wrap);
+
+  /* ---------- Alert thresholds ---------- */
+  document.querySelectorAll('table.rules tbody tr').forEach(row => {
+    const p95 = +row.dataset.p95;
+    const input = row.querySelector('input');
+    const select = row.querySelector('select');
+    const fill = row.querySelector('.fill'), over = row.querySelector('.over'), tick = row.querySelector('.tick');
+    const status = row.querySelector('.status');
+    function update() {
+      const thr = parseFloat(input.value);
+      if (!isFinite(thr) || thr <= 0) {
+        input.setAttribute('aria-invalid', 'true');
+        status.className = 'status';
+        status.textContent = 'Enter a threshold in ms';
+        return;
+      }
+      input.removeAttribute('aria-invalid');
+      const scale = Math.max(thr, p95) * 1.25;
+      const pct = v => (v / scale * 100).toFixed(2) + '%';
+      tick.style.left = pct(thr);
+      if (p95 > thr) {
+        fill.style.width = pct(thr);
+        over.style.left = pct(thr);
+        over.style.width = pct(p95 - thr);
+        status.className = 'status firing';
+        status.textContent = `Over by ${fmtNum(Math.round(p95 - thr))} ms: alerts ${select.value === 'Email' ? 'email' : select.value}`;
+      } else {
+        fill.style.width = pct(p95);
+        over.style.left = pct(thr);
+        over.style.width = '0%';
+        status.className = 'status';
+        status.textContent = `Under by ${fmtNum(Math.round(thr - p95))} ms: no alert`;
+      }
+    }
+    input.addEventListener('input', update);
+    select.addEventListener('change', update);
+    update();
+  });
+})();
+</script>
+</body>
+</html>
