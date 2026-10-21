@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notely — notes that stay findable</title>
+<meta name="description" content="Notely is a note-taking app that keeps every note as plain text, searches it as you type, and links notes to the notes they mention.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Literata:ital,opsz,wght@0,7..72,400..600;1,7..72,400..600&display=swap" rel="stylesheet">
+<style>
+/*
+  Direction: "The note is the page".
+  Modern here means the product shown flat and at reading size, set in good type,
+  with nothing decorative standing in for it.
+  Memorable thing: a real note, rendered live in the app's own chrome, as the hero.
+  Type: Instrument Sans for the site and app chrome; Literata inside the editor
+        (Notely sets notes in a reading face).
+  Color: white page, ink text, one blue accent for interaction, highlighter yellow
+        only where search matches text inside the product.
+  Shape: 1px borders, 6px controls, 10px app window, no shadows.
+  Motion: the caret blinks. Nothing else moves on its own.
+  Proof: none exists, so none is shown. Pricing is a labeled placeholder.
+*/
+:root {
+  --bg: #ffffff;
+  --surface: #f4f4f1;
+  --line: #dedfdb;
+  --line-strong: #c4c6c0;
+  --ink: #17191e;
+  --ink-2: #4f545c;
+  --ink-3: #6b7079;
+  --accent: #2446a6;
+  --accent-strong: #1b3684;
+  --accent-tint: #e9eefb;
+  --mark: #fff0a1;
+  --done: #2e7d4f;
+
+  --font-ui: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-note: "Literata", Georgia, "Times New Roman", serif;
+
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
+  --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 72px; --s-9: 112px;
+
+  /* Seven sizes for the whole page: 13, 14, 16, 18, 24, 28, h1 */
+  --t-xs: 13px;  /* code, kbd, tags */
+  --t-sm: 14px;  /* meta, captions, app chrome */
+  --t-md: 16px;  /* body and note text */
+  --t-lg: 18px;  /* lead paragraph, wordmark */
+  --t-xl: 24px;  /* note titles */
+  --t-xxl: 28px; /* section headings */
+  --t-h1: clamp(36px, 5.2vw, 52px);
+
+  --r-control: 6px;
+  --r-window: 10px;
+  --measure: 60ch;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: var(--t-md);
+  line-height: 1.55;
+  font-feature-settings: "ss01" 0;
+}
+h1, h2, h3, p, ul, ol, dl, figure { margin: 0; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--accent-strong); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+::selection { background: var(--accent-tint); }
+
+.skip {
+  position: absolute; left: var(--s-4); top: -60px;
+  background: var(--ink); color: #fff; padding: var(--s-2) var(--s-3);
+  border-radius: var(--r-control); z-index: 10;
+}
+.skip:focus { top: var(--s-3); }
+
+.wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 var(--s-5); }
+@media (max-width: 480px) { .wrap { padding: 0 var(--s-4); } }
+
+/* Buttons and controls */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 0 var(--s-5);
+  border-radius: var(--r-control); border: 1px solid transparent;
+  font: inherit; font-weight: 600; text-decoration: none; cursor: pointer;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+.btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn-primary:hover { background: var(--accent-strong); border-color: var(--accent-strong); color: #fff; }
+.btn-primary:active { background: #15296a; }
+.btn-secondary { background: transparent; color: var(--ink); border-color: var(--line-strong); }
+.btn-secondary:hover { background: var(--surface); color: var(--ink); }
+.btn-secondary:active { background: var(--line); }
+.btn.small { min-height: 36px; padding: 0 var(--s-4); font-size: var(--t-sm); }
+
+/* Header */
+.site-head { border-bottom: 1px solid var(--line); }
+.site-head .wrap {
+  display: flex; align-items: center; gap: var(--s-6); min-height: 64px;
+}
+.brand {
+  display: inline-flex; align-items: center; gap: 10px;
+  color: var(--ink); text-decoration: none; font-weight: 600; font-size: var(--t-lg); letter-spacing: -0.01em;
+}
+.brand svg { width: 22px; height: 22px; display: block; }
+.site-nav { display: flex; gap: var(--s-5); margin-left: var(--s-2); }
+.site-nav a { color: var(--ink-2); text-decoration: none; font-weight: 500; padding: var(--s-2) 0; }
+.site-nav a:hover { color: var(--ink); text-decoration: underline; }
+.site-head .btn { margin-left: auto; }
+@media (max-width: 720px) { .site-nav { display: none; } }
+
+/* Hero */
+.hero { padding: var(--s-8) 0 var(--s-7); }
+.hero h1 {
+  font-size: var(--t-h1); line-height: 1.08; letter-spacing: -0.02em; font-weight: 600;
+  max-width: 16ch;
+}
+.hero .lead { font-size: var(--t-lg); line-height: 1.5; color: var(--ink-2); max-width: 52ch; margin-top: var(--s-5); }
+.hero .actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-6); }
+.hero figure { margin-top: var(--s-7); }
+.hero figcaption { font-size: var(--t-sm); color: var(--ink-3); margin-top: var(--s-3); }
+@media (max-width: 720px) { .hero { padding-top: var(--s-7); } }
+
+/* The app window ------------------------------------------------------- */
+.app {
+  border: 1px solid var(--line-strong); border-radius: var(--r-window);
+  background: var(--bg); overflow: hidden;
+  font-size: var(--t-sm); line-height: 1.45;
+}
+.app-bar {
+  display: flex; align-items: center; gap: var(--s-4);
+  height: 48px; padding: 0 var(--s-4);
+  border-bottom: 1px solid var(--line); background: var(--surface);
+}
+.app-bar .app-title { font-weight: 600; color: var(--ink); }
+.app-search {
+  display: flex; align-items: center; gap: var(--s-2);
+  margin-left: auto; height: 32px; width: 260px; max-width: 50%;
+  padding: 0 var(--s-3); border: 1px solid var(--line-strong); border-radius: var(--r-control);
+  background: var(--bg); color: var(--ink-3); white-space: nowrap; overflow: hidden;
+}
+.app-search svg { width: 14px; height: 14px; flex: none; }
+.app-search kbd {
+  margin-left: auto; font: inherit; font-size: var(--t-xs); color: var(--ink-3);
+  border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; line-height: 18px;
+}
+@media (max-width: 480px) { .app-search { width: 150px; } .app-search kbd { display: none; } }
+.app-body { display: grid; grid-template-columns: 280px 1fr; min-height: 520px; }
+.app-side { border-right: 1px solid var(--line); background: var(--surface); }
+.app-side-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding: var(--s-4) var(--s-4) var(--s-2); color: var(--ink-3);
+}
+.app-side-head strong { color: var(--ink); font-weight: 600; }
+.note-list { list-style: none; padding: 0 var(--s-2); margin: 0; }
+.note-list li {
+  padding: 10px var(--s-3); border-radius: var(--r-control);
+}
+.note-list li[aria-current="true"] { background: var(--bg); box-shadow: inset 0 0 0 1px var(--line); }
+.note-list .nt { display: flex; justify-content: space-between; gap: var(--s-3); font-weight: 500; color: var(--ink); }
+.note-list .nt time { color: var(--ink-3); font-weight: 400; flex: none; font-variant-numeric: tabular-nums; }
+.note-list .ns {
+  color: var(--ink-3); margin-top: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.app-note { padding: var(--s-6) var(--s-7) var(--s-7); max-width: 72ch; }
+.app-note .meta { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4); color: var(--ink-3); margin-bottom: var(--s-4); }
+.tag {
+  display: inline-block; padding: 1px 8px; border-radius: 999px;
+  background: var(--accent-tint); color: var(--accent-strong); font-size: var(--t-xs); font-weight: 500;
+}
+.note { font-family: var(--font-note); font-size: var(--t-md); line-height: 1.6; color: var(--ink); }
+.note h3 { font-family: var(--font-note); font-size: var(--t-xl); line-height: 1.2; font-weight: 600; margin-bottom: var(--s-4); letter-spacing: -0.005em; }
+.note p + p, .note ul + p, .note p + ul { margin-top: var(--s-4); }
+.note .wl { color: var(--accent); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+.note em { font-style: italic; }
+.checklist { list-style: none; padding: 0; }
+.checklist li { display: flex; gap: 10px; align-items: flex-start; padding: 2px 0; }
+.checklist .box {
+  flex: none; width: 16px; height: 16px; margin-top: 5px;
+  border: 1.5px solid var(--line-strong); border-radius: 4px; background: var(--bg);
+}
+.checklist li.done .box { background: var(--done); border-color: var(--done); position: relative; }
+.checklist li.done .box::after {
+  content: ""; position: absolute; left: 4.5px; top: 1px; width: 4px; height: 8px;
+  border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg);
+}
+.checklist li.done span:last-child { color: var(--ink-3); text-decoration: line-through; text-decoration-color: var(--line-strong); }
+.caret {
+  display: inline-block; width: 2px; height: 1.1em; vertical-align: -0.2em; margin-left: 1px;
+  background: var(--accent); animation: blink 1.1s steps(2, start) infinite;
+}
+@keyframes blink { to { visibility: hidden; } }
+
+@media (max-width: 860px) {
+  .app-body { grid-template-columns: 1fr; min-height: 0; }
+  .app-side { display: none; }
+  .app-note { padding: var(--s-5) var(--s-5) var(--s-6); }
+}
+
+/* Sections ---------------------------------------------------------------- */
+section { padding: var(--s-8) 0; }
+section + section { border-top: 1px solid var(--line); }
+h2 { font-size: var(--t-xxl); line-height: 1.2; letter-spacing: -0.015em; font-weight: 600; max-width: 24ch; }
+.prose { max-width: var(--measure); color: var(--ink-2); }
+.prose p + p { margin-top: var(--s-4); }
+.prose strong { color: var(--ink); font-weight: 600; }
+.split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--s-7); align-items: start; }
+.split > .text h2 { margin-bottom: var(--s-4); }
+.split.flip > .text { order: 2; }
+@media (max-width: 860px) {
+  section { padding: var(--s-7) 0; }
+  .split { grid-template-columns: 1fr; gap: var(--s-6); }
+  .split.flip > .text { order: 0; }
+}
+
+/* Shortcuts table */
+.shortcuts { width: 100%; border-collapse: collapse; font-size: var(--t-sm); }
+.shortcuts caption { text-align: left; color: var(--ink-3); padding-bottom: var(--s-2); }
+.shortcuts th, .shortcuts td { text-align: left; padding: 10px var(--s-3); border-top: 1px solid var(--line); vertical-align: middle; }
+.shortcuts th { font-weight: 500; color: var(--ink); width: 50%; }
+.shortcuts tr:last-child td, .shortcuts tr:last-child th { border-bottom: 1px solid var(--line); }
+.shortcuts td { color: var(--ink-2); }
+.shortcuts code, .shortcuts kbd {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 13px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px;
+  white-space: nowrap;
+}
+.shortcuts kbd + kbd { margin-left: 3px; }
+
+/* Search band */
+.band { background: var(--surface); }
+.panel {
+  border: 1px solid var(--line-strong); border-radius: var(--r-window); background: var(--bg);
+  font-size: var(--t-sm); overflow: hidden;
+}
+.search-field {
+  display: flex; align-items: center; gap: var(--s-3);
+  padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--line);
+}
+.search-field svg { width: 16px; height: 16px; color: var(--ink-3); flex: none; }
+.search-field .q { font-size: var(--t-md); color: var(--ink); }
+.search-field .count { margin-left: auto; color: var(--ink-3); }
+.results { list-style: none; padding: var(--s-2); margin: 0; }
+.results li { padding: 10px var(--s-3); border-radius: var(--r-control); }
+.results li[aria-current="true"] { background: var(--surface); }
+.results .rt { display: flex; justify-content: space-between; gap: var(--s-3); font-weight: 500; }
+.results .rt time { color: var(--ink-3); font-weight: 400; font-variant-numeric: tabular-nums; }
+.results .rs { font-family: var(--font-note); font-size: 15px; color: var(--ink-2); margin-top: 2px; }
+mark { background: var(--mark); color: var(--ink); padding: 0 1px; border-radius: 2px; }
+
+/* Backlinks panel */
+.backlinks { padding: var(--s-4); }
+.backlinks h3 { font-size: var(--t-sm); font-weight: 600; color: var(--ink); margin-bottom: var(--s-2); }
+.backlinks ul { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--s-2); }
+.backlinks li { padding: var(--s-3); border: 1px solid var(--line); border-radius: var(--r-control); }
+.backlinks .bt { font-weight: 500; }
+.backlinks .bs { font-family: var(--font-note); font-size: 15px; color: var(--ink-2); margin-top: 2px; }
+.backlinks .bs .wl { color: var(--accent); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+.panel .note-head { padding: var(--s-4) var(--s-4) 0; }
+.panel .note-head h3 { font-family: var(--font-note); font-size: 20px; font-weight: 600; line-height: 1.2; }
+.panel .note-head p { font-family: var(--font-note); font-size: 15px; color: var(--ink-2); margin-top: var(--s-2); }
+.panel .divider { height: 1px; background: var(--line); margin: var(--s-4) 0 0; }
+
+/* Plain-text principles as a list */
+.principles { list-style: none; padding: 0; margin: var(--s-6) 0 0; max-width: 72ch; }
+.principles > div { display: grid; grid-template-columns: 180px 1fr; gap: var(--s-4); padding: var(--s-4) 0; border-top: 1px solid var(--line); }
+.principles > div:last-child { border-bottom: 1px solid var(--line); }
+.principles dt { font-weight: 600; }
+.principles dd { margin: 0; color: var(--ink-2); }
+.principles code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px; }
+@media (max-width: 600px) { .principles > div { grid-template-columns: 1fr; gap: var(--s-1); } }
+
+/* Pricing placeholder */
+.placeholder {
+  border: 1px dashed var(--line-strong); border-radius: var(--r-control);
+  padding: var(--s-4) var(--s-5); max-width: 60ch; color: var(--ink-2);
+}
+.placeholder .label {
+  display: inline-block; font-size: 13px; font-weight: 600; color: var(--ink-3);
+  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--s-1);
+}
+
+/* Close */
+.close { padding: var(--s-9) 0; }
+.close h2 { max-width: 20ch; }
+.close .actions { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-6); }
+.close p { color: var(--ink-2); max-width: 52ch; margin-top: var(--s-4); }
+@media (max-width: 860px) { .close { padding: var(--s-8) 0; } }
+
+/* Footer */
+.site-foot { border-top: 1px solid var(--line); padding: var(--s-6) 0; font-size: var(--t-sm); color: var(--ink-3); }
+.site-foot .wrap { display: flex; flex-wrap: wrap; gap: var(--s-4) var(--s-6); align-items: center; }
+.site-foot ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--s-4) var(--s-5); }
+.site-foot a { color: var(--ink-2); text-decoration: none; }
+.site-foot a:hover { color: var(--ink); text-decoration: underline; }
+.site-foot .brand { font-size: var(--t-md); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .caret { visibility: visible; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="Notely home">
+      <svg viewBox="0 0 22 22" aria-hidden="true" focusable="false">
+        <rect x="2.5" y="2.5" width="17" height="17" rx="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+        <path d="M7 8h8M7 11.5h8M7 15h4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      Notely
+    </a>
+    <nav class="site-nav" aria-label="Sections">
+      <a href="#writing">Writing</a>
+      <a href="#search">Search</a>
+      <a href="#links">Links</a>
+      <a href="#files">Your files</a>
+      <a href="#pricing">Pricing</a>
+    </nav>
+    <a class="btn btn-primary small" href="#start">Start writing</a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="wrap">
+      <h1 id="hero-h">Notes that stay findable.</h1>
+      <p class="lead">Notely is a note-taking app for people who write a lot and look things up more. Every note is plain text, indexed as you type, and linked to the notes it mentions.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#start">Start writing</a>
+        <a class="btn btn-secondary" href="#search">See how search works</a>
+      </div>
+
+      <figure class="app-figure">
+        <div class="app" role="img" aria-label="The Notely window: a list of notes on the left and an open note titled Sourdough, attempt 4, with a checklist and a link to the previous attempt.">
+          <div class="app-bar" aria-hidden="true">
+            <span class="app-title">Notely</span>
+            <div class="app-search">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5 14 14" stroke-linecap="round"/></svg>
+              <span>Search notes</span>
+              <kbd>⌘K</kbd>
+            </div>
+          </div>
+          <div class="app-body" aria-hidden="true">
+            <div class="app-side">
+              <div class="app-side-head"><strong>All notes</strong><span>Newest first</span></div>
+              <ul class="note-list">
+                <li aria-current="true">
+                  <div class="nt"><span>Sourdough — attempt 4</span><time>7:52</time></div>
+                  <div class="ns">Fed the starter at 7:40 at 1:5:5, same as attempt 3.</div>
+                </li>
+                <li>
+                  <div class="nt"><span>Call with the landlord</span><time>Yesterday</time></div>
+                  <div class="ns">Bedroom radiator still cold at the bottom. He will send</div>
+                </li>
+                <li>
+                  <div class="nt"><span>Books to read</span><time>18 Oct</time></div>
+                  <div class="ns">Finished the Le Guin. Next: the one Priya lent me.</div>
+                </li>
+                <li>
+                  <div class="nt"><span>Weekly review</span><time>13 Oct</time></div>
+                  <div class="ns">Went well: got the bike fixed, finally. Didn't go well:</div>
+                </li>
+                <li>
+                  <div class="nt"><span>Sourdough — attempt 3</span><time>12 Oct</time></div>
+                  <div class="ns">Went to 80% hydration and it spread in the oven.</div>
+                </li>
+                <li>
+                  <div class="nt"><span>Lisbon, April</span><time>9 Oct</time></div>
+                  <div class="ns">Flights are cheapest Tuesday to Tuesday. Ask Tom</div>
+                </li>
+                <li>
+                  <div class="nt"><span>Sourdough — attempt 1</span><time>28 Sep</time></div>
+                  <div class="ns">Recipe said 70% hydration for a first loaf.</div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="app-note">
+              <div class="meta">
+                <span>Edited today at 7:52</span>
+                <span class="tag">baking</span>
+              </div>
+              <div class="note">
+                <h3>Sourdough — attempt 4</h3>
+                <p>Fed the starter at 7:40 at 1:5:5, same as <span class="wl">Sourdough — attempt 3</span>. It doubled in about four hours this time, faster than last week; the kitchen was 24 °C.</p>
+                <p>Dough: 500 g flour (400 bread, 100 whole wheat), 375 g water, 100 g starter, 10 g salt. 75% hydration.</p>
+                <ul class="checklist">
+                  <li class="done"><span class="box"></span><span>Autolyse, 45 min</span></li>
+                  <li class="done"><span class="box"></span><span>Four sets of stretch and folds, 30 min apart</span></li>
+                  <li><span class="box"></span><span>Shape at 14:00, into the fridge overnight</span></li>
+                  <li><span class="box"></span><span>Bake tomorrow at 240 °C, lid on for the first 20 min</span></li>
+                </ul>
+                <p><em>Next time:</em> hold back 25 g of water until after the first fold. The last loaf spread too much<span class="caret"></span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <figcaption>The editor, with example notes. Notes are set in a reading typeface; the sidebar and search use the app's interface face.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="writing" aria-labelledby="writing-h">
+    <div class="wrap split">
+      <div class="text">
+        <h2 id="writing-h">Write without leaving the keyboard</h2>
+        <div class="prose">
+          <p>A note starts with a title and a blank line. Headings, lists and checklists come from the same punctuation you would type in a text file, and Notely formats them as you go, so there is no toolbar to reach for and nothing to undo later.</p>
+          <p>Type two square brackets and the name of another note to link to it. If that note does not exist yet, Notely creates it the first time you follow the link.</p>
+        </div>
+      </div>
+      <table class="shortcuts">
+        <caption>What you type, and what it becomes</caption>
+        <tbody>
+          <tr><th scope="row"><code># </code> at the start of a line</th><td>A heading</td></tr>
+          <tr><th scope="row"><code>- </code> or <code>1. </code></th><td>A bulleted or numbered list</td></tr>
+          <tr><th scope="row"><code>- [ ] </code></th><td>A checklist item</td></tr>
+          <tr><th scope="row"><code>[[Note title]]</code></th><td>A link to another note</td></tr>
+          <tr><th scope="row"><code>#baking</code> anywhere in the note</th><td>A tag</td></tr>
+          <tr><th scope="row"><kbd>⌘</kbd><kbd>N</kbd></th><td>New note</td></tr>
+          <tr><th scope="row"><kbd>⌘</kbd><kbd>K</kbd></th><td>Search, or jump to a note by title</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="search" class="band" aria-labelledby="search-h">
+    <div class="wrap split flip">
+      <div class="text">
+        <h2 id="search-h">Search every word of every note, as you type</h2>
+        <div class="prose">
+          <p>Notely indexes a note while you are still writing it. Searching for a word shows the notes that contain it with the matching line underneath, so you can usually find what you meant without opening anything.</p>
+          <p>Narrow by tag with <strong>#baking</strong>, or by date with <strong>before:october</strong>. Results are sorted by how recently you edited the note, because the note you want is almost always the one you touched last.</p>
+        </div>
+      </div>
+      <div class="panel" role="img" aria-label="Search results for the word hydration: three notes, each showing the sentence where the word appears, with the word highlighted.">
+        <div class="search-field" aria-hidden="true">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5 14 14" stroke-linecap="round"/></svg>
+          <span class="q">hydration</span>
+          <span class="count">3 notes</span>
+        </div>
+        <ul class="results" aria-hidden="true">
+          <li aria-current="true">
+            <div class="rt"><span>Sourdough — attempt 4</span><time>Today</time></div>
+            <div class="rs">…100 g starter, 10 g salt. 75% <mark>hydration</mark>.</div>
+          </li>
+          <li>
+            <div class="rt"><span>Sourdough — attempt 3</span><time>12 Oct</time></div>
+            <div class="rs">Went to 80% <mark>hydration</mark> and it spread in the oven.</div>
+          </li>
+          <li>
+            <div class="rt"><span>Sourdough — attempt 1</span><time>28 Sep</time></div>
+            <div class="rs">Recipe said 70% <mark>hydration</mark> for a first loaf.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="links" aria-labelledby="links-h">
+    <div class="wrap split">
+      <div class="text">
+        <h2 id="links-h">Every note knows which notes mention it</h2>
+        <div class="prose">
+          <p>When you link to a note, the link shows up at the bottom of the note you linked to. Open last month's attempt and you can see this week's, without having remembered to link back.</p>
+          <p>That is the whole system. There are no folders to maintain and no hierarchy to decide on; notes connect because you referred to one while writing another.</p>
+        </div>
+      </div>
+      <div class="panel" role="img" aria-label="The bottom of the note Sourdough, attempt 3, listing two notes that link to it: Sourdough, attempt 4 and Weekly review.">
+        <div class="note-head" aria-hidden="true">
+          <h3>Sourdough — attempt 3</h3>
+          <p>Went to 80% hydration and it spread in the oven. Crumb was open but the loaf was flat. Back to 75% next time.</p>
+        </div>
+        <div class="divider" aria-hidden="true"></div>
+        <div class="backlinks" aria-hidden="true">
+          <h3>Linked from 2 notes</h3>
+          <ul>
+            <li>
+              <div class="bt">Sourdough — attempt 4</div>
+              <div class="bs">Fed the starter at 7:40 at 1:5:5, same as <span class="wl">Sourdough — attempt 3</span>.</div>
+            </li>
+            <li>
+              <div class="bt">Weekly review</div>
+              <div class="bs">Didn't go well: <span class="wl">Sourdough — attempt 3</span>. Try a lower hydration before changing anything else.</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="files" aria-labelledby="files-h">
+    <div class="wrap">
+      <h2 id="files-h">Your notes are files you own</h2>
+      <div class="prose" style="margin-top: var(--s-4);">
+        <p>Notely keeps each note as a plain text file in a folder you choose. You can open the folder in any editor, back it up however you back up everything else, and leave Notely at any time with nothing to export.</p>
+      </div>
+      <dl class="principles">
+        <div>
+          <dt>Plain text</dt>
+          <dd>One <code>.md</code> file per note. Headings, lists and links are ordinary Markdown.</dd>
+        </div>
+        <div>
+          <dt>Works offline</dt>
+          <dd>Writing and search run on your device. No account is needed to use the app.</dd>
+        </div>
+        <div>
+          <dt>Nothing locked in</dt>
+          <dd>Links between notes are written into the files as <code>[[Note title]]</code>, which other Markdown tools also understand.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="pricing" aria-labelledby="pricing-h">
+    <div class="wrap">
+      <h2 id="pricing-h">Pricing</h2>
+      <div class="placeholder" style="margin-top: var(--s-4);">
+        <span class="label">Placeholder</span>
+        <p>Plans and prices have not been decided yet. This section will list them once they are.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="start" class="close" aria-labelledby="start-h">
+    <div class="wrap">
+      <h2 id="start-h">Open a note and start typing.</h2>
+      <p>The first note is a blank page with a cursor in it. Everything above is there when you need it.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#" aria-describedby="start-note">Start writing</a>
+      </div>
+      <p id="start-note" style="font-size: var(--t-sm); color: var(--ink-3);">Placeholder link: download and platform details to be added.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="Notely home">
+      <svg viewBox="0 0 22 22" aria-hidden="true" focusable="false">
+        <rect x="2.5" y="2.5" width="17" height="17" rx="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+        <path d="M7 8h8M7 11.5h8M7 15h4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      Notely
+    </a>
+    <ul aria-label="Footer">
+      <li><a href="#">Help</a></li>
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+</body>
+</html>
