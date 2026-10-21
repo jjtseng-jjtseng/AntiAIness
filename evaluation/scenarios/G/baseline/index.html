@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Garden Snake</title>
+<meta name="description" content="A small browser Snake game. Arrow keys, WASD, swipe or the on-screen pad to steer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f3efe6;
+    --bg-2: #e9e3d5;
+    --panel: #fffdf8;
+    --ink: #1f2420;
+    --ink-2: #5c6359;
+    --line: #d9d2c2;
+    --accent: #2f7d4f;
+    --accent-ink: #ffffff;
+    --accent-soft: #d5ead9;
+    --fruit: #d8552f;
+    --board-a: #dfe8d3;
+    --board-b: #d3dfc6;
+    --board-edge: #b9c7a9;
+    --snake-head: #245f3d;
+    --snake-body: #3a8a58;
+    --snake-tail: #6fb286;
+    --focus: #1d4ed8;
+    --shadow: 0 10px 30px rgba(31, 36, 32, 0.10);
+    --radius: 18px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141815;
+      --bg-2: #0f120f;
+      --panel: #1c211d;
+      --ink: #eef2ea;
+      --ink-2: #a3ac9f;
+      --line: #2f372f;
+      --accent: #63c17f;
+      --accent-ink: #0f1a12;
+      --accent-soft: #244531;
+      --fruit: #f0734b;
+      --board-a: #1f2a21;
+      --board-b: #1a2420;
+      --board-edge: #33423a;
+      --snake-head: #9fe3b5;
+      --snake-body: #63c17f;
+      --snake-tail: #3f8c58;
+      --focus: #8ab4ff;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #141815;
+    --bg-2: #0f120f;
+    --panel: #1c211d;
+    --ink: #eef2ea;
+    --ink-2: #a3ac9f;
+    --line: #2f372f;
+    --accent: #63c17f;
+    --accent-ink: #0f1a12;
+    --accent-soft: #244531;
+    --fruit: #f0734b;
+    --board-a: #1f2a21;
+    --board-b: #1a2420;
+    --board-edge: #33423a;
+    --snake-head: #9fe3b5;
+    --snake-body: #63c17f;
+    --snake-tail: #3f8c58;
+    --focus: #8ab4ff;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  }
+
+  * { box-sizing: border-box; }
+  html { color-scheme: light dark; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, var(--bg-2), transparent 60%),
+      var(--bg);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  .skip {
+    position: absolute; left: 16px; top: -48px;
+    background: var(--panel); color: var(--ink); padding: 8px 12px;
+    border: 1px solid var(--line); border-radius: 8px; z-index: 10;
+  }
+  .skip:focus { top: 12px; }
+
+  .wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 16px 40px;
+  }
+
+  header.top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(1.75rem, 2.5vw + 1rem, 2.6rem);
+    letter-spacing: -0.01em;
+    margin: 0;
+    line-height: 1.1;
+  }
+  h1 .leaf {
+    display: inline-block; width: 0.6em; height: 0.6em; vertical-align: 0.05em;
+    margin-right: 0.3em; border-radius: 0 60% 0 60%; background: var(--accent);
+    transform: rotate(-10deg);
+  }
+  .tagline { margin: 4px 0 0; color: var(--ink-2); font-size: 0.95rem; }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  @media (min-width: 860px) {
+    .layout { grid-template-columns: minmax(0, 1fr) 300px; align-items: start; }
+  }
+
+  .board-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 14px;
+  }
+  .stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-height: calc(100vh - 220px);
+    margin: 0 auto;
+  }
+  @media (min-width: 860px) {
+    .stage { max-width: min(100%, calc(100vh - 160px)); }
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: var(--board-a);
+    touch-action: none;
+    border: 1px solid var(--board-edge);
+  }
+
+  .overlay {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--panel) 82%, transparent);
+    backdrop-filter: blur(3px);
+    text-align: center;
+    padding: 20px;
+  }
+  .overlay[hidden] { display: none; }
+  .overlay h2 {
+    font-family: "Fraunces", Georgia, serif;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    margin: 0 0 6px;
+    font-weight: 700;
+  }
+  .overlay p { margin: 0 0 16px; color: var(--ink-2); max-width: 34ch; }
+  .overlay .kbd-row { margin-top: 14px; color: var(--ink-2); font-size: 0.85rem; }
+
+  kbd {
+    font: 600 0.8em/1 "Inter", system-ui, sans-serif;
+    border: 1px solid var(--line);
+    border-bottom-width: 2px;
+    border-radius: 6px;
+    padding: 3px 7px;
+    background: var(--panel);
+    color: var(--ink);
+    display: inline-block;
+    min-width: 1.8em;
+    text-align: center;
+  }
+
+  .btn {
+    appearance: none;
+    font: 600 0.95rem "Inter", system-ui, sans-serif;
+    padding: 12px 20px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--ink);
+    cursor: pointer;
+    transition: transform 120ms ease, background 120ms ease;
+  }
+  .btn:hover { background: var(--bg-2); }
+  .btn:active { transform: translateY(1px); }
+  .btn.primary {
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-color: transparent;
+  }
+  .btn.primary:hover { filter: brightness(1.05); }
+  .btn.small { padding: 8px 14px; font-size: 0.85rem; }
+
+  .side { display: grid; gap: 16px; }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+  }
+  .card h2 {
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    margin: 0 0 10px;
+    font-weight: 600;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 0;
+  }
+  .stat { margin: 0; }
+  .stat dt { font-size: 0.75rem; color: var(--ink-2); }
+  .stat dd {
+    margin: 0;
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 1.7rem;
+    font-weight: 600;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  fieldset {
+    border: 0; padding: 0; margin: 0 0 12px;
+  }
+  fieldset legend {
+    font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; padding: 0;
+  }
+  .seg {
+    display: inline-flex;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 3px;
+    gap: 2px;
+    background: var(--bg-2);
+  }
+  .seg label {
+    position: relative;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    color: var(--ink-2);
+  }
+  .seg input {
+    position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer;
+  }
+  .seg label:has(input:checked) { background: var(--panel); color: var(--ink); font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+  .seg label:has(input:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+  .toggle {
+    display: flex; align-items: center; gap: 10px; font-size: 0.9rem; cursor: pointer;
+    padding: 4px 0;
+  }
+  .toggle input { width: 18px; height: 18px; accent-color: var(--accent); margin: 0; }
+
+  .help { font-size: 0.9rem; color: var(--ink-2); margin: 0; }
+  .help ul { padding-left: 18px; margin: 6px 0 0; }
+  .help li { margin: 2px 0; }
+
+  /* Touch pad */
+  .pad {
+    display: grid;
+    grid-template-columns: repeat(3, 56px);
+    grid-template-rows: repeat(3, 56px);
+    gap: 6px;
+    justify-content: center;
+    margin: 14px auto 0;
+  }
+  .pad button {
+    appearance: none;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--ink);
+    border-radius: 14px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: grid; place-items: center;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .pad button:active { background: var(--accent-soft); }
+  .pad .u { grid-column: 2; grid-row: 1; }
+  .pad .l { grid-column: 1; grid-row: 2; }
+  .pad .r { grid-column: 3; grid-row: 2; }
+  .pad .d { grid-column: 2; grid-row: 3; }
+  .pad .c {
+    grid-column: 2; grid-row: 2;
+    border-radius: 50%; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em;
+  }
+  @media (min-width: 860px) and (hover: hover) and (pointer: fine) {
+    .pad { display: none; }
+  }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+
+  footer {
+    margin-top: 28px;
+    color: var(--ink-2);
+    font-size: 0.85rem;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+  footer button.link {
+    appearance: none; border: 0; background: none; color: var(--ink-2);
+    text-decoration: underline; cursor: pointer; font: inherit; padding: 0;
+  }
+
+  @keyframes pop { from { transform: scale(0.96); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .overlay > div { animation: pop 220ms ease-out; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .overlay { backdrop-filter: none; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#board">Skip to game</a>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1><span class="leaf" aria-hidden="true"></span>Garden Snake</h1>
+      <p class="tagline">Eat the fruit, grow long, don't bite yourself.</p>
+    </div>
+    <div class="controls">
+      <button class="btn small" id="pauseBtn" type="button" aria-pressed="false">Pause</button>
+      <button class="btn small" id="restartBtn" type="button">Restart</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="board-card" aria-labelledby="boardLabel">
+      <h2 id="boardLabel" class="sr-only">Game board</h2>
+      <div class="stage">
+        <canvas id="board" width="600" height="600" tabindex="0"
+                role="img" aria-label="Snake game board. Use arrow keys or W A S D to steer."></canvas>
+        <div class="overlay" id="overlay">
+          <div>
+            <h2 id="overlayTitle">Ready?</h2>
+            <p id="overlayText">Steer with the arrow keys, WASD, swipe, or the pad below.</p>
+            <button class="btn primary" id="startBtn" type="button">Start game</button>
+            <div class="kbd-row" aria-hidden="true">
+              <kbd>Space</kbd> pause &nbsp; <kbd>R</kbd> restart
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pad" aria-label="Direction pad">
+        <button class="u" type="button" data-dir="up" aria-label="Up">&#9650;</button>
+        <button class="l" type="button" data-dir="left" aria-label="Left">&#9664;</button>
+        <button class="c" type="button" id="padCenter" aria-label="Pause or resume">II</button>
+        <button class="r" type="button" data-dir="right" aria-label="Right">&#9654;</button>
+        <button class="d" type="button" data-dir="down" aria-label="Down">&#9660;</button>
+      </div>
+    </section>
+
+    <aside class="side">
+      <section class="card" aria-labelledby="statsLabel">
+        <h2 id="statsLabel">Score</h2>
+        <dl class="stats">
+          <div class="stat"><dt>Current</dt><dd id="score">0</dd></div>
+          <div class="stat"><dt>Best</dt><dd id="best">0</dd></div>
+          <div class="stat"><dt>Length</dt><dd id="len">3</dd></div>
+        </dl>
+      </section>
+
+      <section class="card" aria-labelledby="settingsLabel">
+        <h2 id="settingsLabel">Settings</h2>
+        <fieldset>
+          <legend>Speed</legend>
+          <div class="seg" role="radiogroup" aria-label="Speed">
+            <label><input type="radio" name="speed" value="slow">Slow</label>
+            <label><input type="radio" name="speed" value="normal" checked>Normal</label>
+            <label><input type="radio" name="speed" value="fast">Fast</label>
+          </div>
+        </fieldset>
+        <label class="toggle"><input type="checkbox" id="wrapToggle">Walls wrap around</label>
+        <label class="toggle"><input type="checkbox" id="soundToggle">Sound effects</label>
+      </section>
+
+      <section class="card" aria-labelledby="howLabel">
+        <h2 id="howLabel">How to play</h2>
+        <div class="help">
+          <ul>
+            <li>Arrow keys or WASD change direction.</li>
+            <li>Space pauses, R restarts.</li>
+            <li>Swipe on the board on touch screens.</li>
+            <li>Each fruit is worth 10 points and one segment.</li>
+          </ul>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <footer>
+    <span>Best score is saved in this browser only.</span>
+    <button class="link" id="clearBest" type="button">Clear best score</button>
+  </footer>
+</div>
+
+<p class="sr-only" id="live" aria-live="polite"></p>
+
+<script>
+(() => {
+  'use strict';
+
+  const GRID = 20;
+  const SPEEDS = { slow: 180, normal: 120, fast: 80 };
+
+  const canvas = document.getElementById('board');
+  const ctx = canvas.getContext('2d');
+  const overlay = document.getElementById('overlay');
+  const overlayTitle = document.getElementById('overlayTitle');
+  const overlayText = document.getElementById('overlayText');
+  const startBtn = document.getElementById('startBtn');
+  const pauseBtn = document.getElementById('pauseBtn');
+  const restartBtn = document.getElementById('restartBtn');
+  const padCenter = document.getElementById('padCenter');
+  const scoreEl = document.getElementById('score');
+  const bestEl = document.getElementById('best');
+  const lenEl = document.getElementById('len');
+  const live = document.getElementById('live');
+  const wrapToggle = document.getElementById('wrapToggle');
+  const soundToggle = document.getElementById('soundToggle');
+  const clearBest = document.getElementById('clearBest');
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  // ---- persistence (per-browser convenience only) ----
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* ignore */ } },
+    del(k) { try { localStorage.removeItem(k); } catch { /* ignore */ } }
+  };
+
+  // ---- state ----
+  let snake, dir, nextDir, queue, fruit, score, best, state, tickMs, lastTick, raf, flash;
+  best = store.get('snake.best', 0);
+  bestEl.textContent = best;
+
+  const savedSpeed = store.get('snake.speed', 'normal');
+  const speedInput = document.querySelector(`input[name="speed"][value="${savedSpeed}"]`);
+  if (speedInput) speedInput.checked = true;
+  wrapToggle.checked = !!store.get('snake.wrap', false);
+  soundToggle.checked = !!store.get('snake.sound', false);
+
+  function currentSpeed() {
+    const v = document.querySelector('input[name="speed"]:checked')?.value || 'normal';
+    return SPEEDS[v] ?? SPEEDS.normal;
+  }
+
+  function reset() {
+    const c = Math.floor(GRID / 2);
+    snake = [{ x: c, y: c }, { x: c - 1, y: c }, { x: c - 2, y: c }];
+    dir = { x: 1, y: 0 };
+    nextDir = dir;
+    queue = [];
+    score = 0;
+    flash = 0;
+    placeFruit();
+    updateStats();
+    state = 'idle';
+    draw();
+  }
+
+  function placeFruit() {
+    const free = [];
+    for (let y = 0; y < GRID; y++) for (let x = 0; x < GRID; x++) {
+      if (!snake.some(s => s.x === x && s.y === y)) free.push({ x, y });
+    }
+    fruit = free.length ? free[Math.floor(Math.random() * free.length)] : null;
+  }
+
+  function updateStats() {
+    scoreEl.textContent = score;
+    lenEl.textContent = snake.length;
+    if (score > best) { best = score; store.set('snake.best', best); }
+    bestEl.textContent = best;
+  }
+
+  // ---- sound (tiny synthesized blips, off by default) ----
+  let audio = null;
+  function blip(freq, dur, type) {
+    if (!soundToggle.checked) return;
+    try {
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+      const o = audio.createOscillator();
+      const g = audio.createGain();
+      o.type = type || 'triangle';
+      o.frequency.value = freq;
+      g.gain.setValueAtTime(0.0001, audio.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.15, audio.currentTime + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + dur);
+      o.connect(g).connect(audio.destination);
+      o.start();
+      o.stop(audio.currentTime + dur);
+    } catch { /* audio unavailable */ }
+  }
+
+  // ---- game loop ----
+  function start() {
+    if (state === 'running') return;
+    if (state === 'over') reset();
+    tickMs = currentSpeed();
+    state = 'running';
+    overlay.hidden = true;
+    pauseBtn.textContent = 'Pause';
+    pauseBtn.setAttribute('aria-pressed', 'false');
+    padCenter.textContent = 'II';
+    lastTick = performance.now();
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(loop);
+    canvas.focus({ preventScroll: true });
+    announce('Game started.');
+  }
+
+  function pause() {
+    if (state !== 'running') return;
+    state = 'paused';
+    cancelAnimationFrame(raf);
+    showOverlay('Paused', 'Take a breath. Press Space or the button to continue.', 'Resume');
+    pauseBtn.textContent = 'Resume';
+    pauseBtn.setAttribute('aria-pressed', 'true');
+    padCenter.textContent = 'GO';
+    announce('Paused.');
+  }
+
+  function togglePause() {
+    if (state === 'running') pause();
+    else if (state === 'paused' || state === 'idle' || state === 'over') start();
+  }
+
+  function gameOver() {
+    state = 'over';
+    cancelAnimationFrame(raf);
+    blip(160, 0.35, 'sawtooth');
+    draw();
+    const isBest = score > 0 && score >= best;
+    showOverlay(
+      'Game over',
+      isBest ? `You scored ${score}. That ties or beats your best in this browser.` : `You scored ${score}. Best so far: ${best}.`,
+      'Play again'
+    );
+    pauseBtn.textContent = 'Pause';
+    pauseBtn.setAttribute('aria-pressed', 'false');
+    padCenter.textContent = 'GO';
+    announce(`Game over. Score ${score}.`);
+  }
+
+  function loop(now) {
+    if (state !== 'running') return;
+    if (now - lastTick >= tickMs) {
+      lastTick = now;
+      step();
+    }
+    if (flash > 0) flash -= 1;
+    draw();
+    raf = requestAnimationFrame(loop);
+  }
+
+  function step() {
+    if (queue.length) {
+      const d = queue.shift();
+      if (!(d.x === -dir.x && d.y === -dir.y)) dir = d;
+    }
+    const head = snake[0];
+    let nx = head.x + dir.x, ny = head.y + dir.y;
+    if (wrapToggle.checked) {
+      nx = (nx + GRID) % GRID; ny = (ny + GRID) % GRID;
+    } else if (nx < 0 || ny < 0 || nx >= GRID || ny >= GRID) {
+      return gameOver();
+    }
+    const ate = fruit && nx === fruit.x && ny === fruit.y;
+    const body = ate ? snake : snake.slice(0, -1);
+    if (body.some(s => s.x === nx && s.y === ny)) return gameOver();
+
+    snake.unshift({ x: nx, y: ny });
+    if (ate) {
+      score += 10;
+      flash = reduceMotion.matches ? 0 : 6;
+      blip(660 + Math.min(score, 400), 0.09);
+      placeFruit();
+      updateStats();
+      if (!fruit) { state = 'over'; showOverlay('You win', 'The board is full. Remarkable.', 'Play again'); }
+    } else {
+      snake.pop();
+    }
+  }
+
+  // ---- input ----
+  const DIRS = { up: { x: 0, y: -1 }, down: { x: 0, y: 1 }, left: { x: -1, y: 0 }, right: { x: 1, y: 0 } };
+  function pushDir(name) {
+    const d = DIRS[name];
+    if (!d) return;
+    const last = queue.length ? queue[queue.length - 1] : dir;
+    if (d.x === last.x && d.y === last.y) return;
+    if (d.x === -last.x && d.y === -last.y) return;
+    if (queue.length < 2) queue.push(d);
+    if (state === 'idle') start();
+  }
+
+  const KEYS = {
+    ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right',
+    w: 'up', s: 'down', a: 'left', d: 'right', W: 'up', S: 'down', A: 'left', D: 'right'
+  };
+  document.addEventListener('keydown', (e) => {
+    const t = e.target;
+    const typing = t && (t.tagName === 'INPUT' && t.type !== 'checkbox' && t.type !== 'radio');
+    if (typing) return;
+    if (KEYS[e.key]) {
+      if (state === 'paused' || state === 'over') return;
+      e.preventDefault();
+      pushDir(KEYS[e.key]);
+    } else if (e.key === ' ' || e.key === 'Spacebar') {
+      if (t && t.tagName === 'BUTTON') return; // let buttons activate normally
+      if (t && (t.tagName === 'INPUT')) return;
+      e.preventDefault();
+      togglePause();
+    } else if (e.key === 'r' || e.key === 'R') {
+      restart();
+    }
+  });
+
+  document.querySelectorAll('.pad [data-dir]').forEach(b => {
+    b.addEventListener('pointerdown', (e) => { e.preventDefault(); pushDir(b.dataset.dir); });
+    b.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pushDir(b.dataset.dir); } });
+  });
+  padCenter.addEventListener('click', togglePause);
+
+  // swipe
+  let swipeStart = null;
+  canvas.addEventListener('pointerdown', (e) => { swipeStart = { x: e.clientX, y: e.clientY, t: Date.now() }; });
+  canvas.addEventListener('pointerup', (e) => {
+    if (!swipeStart) return;
+    const dx = e.clientX - swipeStart.x, dy = e.clientY - swipeStart.y;
+    swipeStart = null;
+    const adx = Math.abs(dx), ady = Math.abs(dy);
+    if (Math.max(adx, ady) < 18) {
+      if (state === 'idle' || state === 'over' || state === 'paused') start();
+      return;
+    }
+    if (adx > ady) pushDir(dx > 0 ? 'right' : 'left');
+    else pushDir(dy > 0 ? 'down' : 'up');
+  });
+
+  startBtn.addEventListener('click', start);
+  pauseBtn.addEventListener('click', () => { state === 'running' ? pause() : start(); });
+  function restart() { reset(); start(); }
+  restartBtn.addEventListener('click', restart);
+
+  document.querySelectorAll('input[name="speed"]').forEach(r => r.addEventListener('change', () => {
+    store.set('snake.speed', r.value);
+    tickMs = currentSpeed();
+  }));
+  wrapToggle.addEventListener('change', () => store.set('snake.wrap', wrapToggle.checked));
+  soundToggle.addEventListener('change', () => store.set('snake.sound', soundToggle.checked));
+  clearBest.addEventListener('click', () => {
+    best = 0; store.del('snake.best'); bestEl.textContent = '0'; announce('Best score cleared.');
+  });
+
+  document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); });
+
+  function showOverlay(title, text, btn) {
+    overlayTitle.textContent = title;
+    overlayText.textContent = text;
+    startBtn.textContent = btn;
+    overlay.hidden = false;
+    startBtn.focus({ preventScroll: true });
+  }
+  let liveTimer;
+  function announce(msg) {
+    clearTimeout(liveTimer);
+    live.textContent = '';
+    liveTimer = setTimeout(() => { live.textContent = msg; }, 50);
+  }
+
+  // ---- rendering ----
+  function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+  let colors = {};
+  function refreshColors() {
+    colors = {
+      a: css('--board-a'), b: css('--board-b'),
+      head: css('--snake-head'), body: css('--snake-body'), tail: css('--snake-tail'),
+      fruit: css('--fruit'), leaf: css('--accent'), flash: css('--accent-soft')
+    };
+  }
+  refreshColors();
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { refreshColors(); draw(); });
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
+    const size = Math.max(1, Math.round(rect.width * dpr));
+    if (canvas.width !== size) { canvas.width = size; canvas.height = size; }
+    draw();
+  }
+  new ResizeObserver(resize).observe(canvas);
+
+  function mix(c1, c2, t) {
+    // hex -> rgb mix; falls back to c1 for non-hex values
+    const p = (c) => { const m = /^#([0-9a-f]{6})$/i.exec(c); return m ? [0, 2, 4].map(i => parseInt(m[1].slice(i, i + 2), 16)) : null; };
+    const a = p(c1), b = p(c2);
+    if (!a || !b) return c1;
+    return `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(',')})`;
+  }
+
+  function roundRect(x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  function draw() {
+    const W = canvas.width;
+    const cell = W / GRID;
+    ctx.clearRect(0, 0, W, W);
+
+    // checkerboard
+    for (let y = 0; y < GRID; y++) for (let x = 0; x < GRID; x++) {
+      ctx.fillStyle = (x + y) % 2 ? colors.b : colors.a;
+      ctx.fillRect(x * cell, y * cell, cell + 0.5, cell + 0.5);
+    }
+    if (flash > 0) {
+      ctx.fillStyle = colors.flash;
+      ctx.globalAlpha = flash / 12;
+      ctx.fillRect(0, 0, W, W);
+      ctx.globalAlpha = 1;
+    }
+
+    // fruit: a round berry with a leaf
+    if (fruit) {
+      const cx = (fruit.x + 0.5) * cell, cy = (fruit.y + 0.55) * cell;
+      const r = cell * 0.32;
+      ctx.fillStyle = colors.fruit;
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,0.35)';
+      ctx.beginPath(); ctx.arc(cx - r * 0.35, cy - r * 0.35, r * 0.28, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = colors.leaf;
+      ctx.beginPath();
+      ctx.ellipse(cx + r * 0.25, cy - r * 1.05, r * 0.42, r * 0.2, -0.6, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // snake: rounded segments, head to tail gradient
+    const n = snake.length;
+    const pad = cell * 0.08;
+    for (let i = n - 1; i >= 0; i--) {
+      const s = snake[i];
+      const t = n > 1 ? i / (n - 1) : 0;
+      ctx.fillStyle = i === 0 ? colors.head : mix(colors.body, colors.tail, t);
+      const x = s.x * cell + pad, y = s.y * cell + pad, w = cell - pad * 2;
+      roundRect(x, y, w, w, cell * 0.3);
+      ctx.fill();
+    }
+    // eyes
+    const h = snake[0];
+    const ex = (h.x + 0.5) * cell, ey = (h.y + 0.5) * cell;
+    const side = { x: -dir.y, y: dir.x };
+    const fwd = cell * 0.18, off = cell * 0.17, er = cell * 0.075;
+    ctx.fillStyle = colors.a;
+    for (const sgn of [-1, 1]) {
+      ctx.beginPath();
+      ctx.arc(ex + dir.x * fwd + side.x * off * sgn, ey + dir.y * fwd + side.y * off * sgn, er, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  reset();
+  resize();
+})();
+</script>
+</body>
+</html>
