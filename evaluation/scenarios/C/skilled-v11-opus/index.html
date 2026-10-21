@@ -106,7 +106,7 @@
     box-shadow: inset 0 0 0 2px var(--sun-edge), 0 4px 0 var(--sun-edge);
     font-family: var(--display); font-weight: 900; font-size: 28px; line-height: 1;
   }
-  .avatar.sm { width: 34px; height: 34px; border-radius: 7px; font-size: 19px; box-shadow: inset 0 0 0 2px var(--sun-edge), 0 3px 0 var(--sun-edge); }
+  .avatar.sm { width: 34px; height: 34px; border-radius: 7px; font-size: 18px; box-shadow: inset 0 0 0 2px var(--sun-edge), 0 3px 0 var(--sun-edge); }
   .star { width: 30px; height: 30px; flex: none; }
 
   /* ================= HOME SCREEN (cobalt field) ================= */
@@ -130,7 +130,7 @@
     background: var(--sun-cube); border-radius: 0.04em;
     box-shadow: inset 0 0 0 0.02em var(--sun-edge), 0 0.035em 0 var(--sun-edge);
   }
-  .tagline { margin-top: 14px; font-size: clamp(20px, 2.4vw, 24px); color: #E6EEFF; }
+  .tagline { margin-top: 14px; font-size: 22px; color: #E6EEFF; }
 
   .setup { margin-top: clamp(28px, 4vw, 44px); }
 
@@ -146,7 +146,7 @@
   .player label { font-size: 16px; color: var(--ink-2); }
   .player input {
     width: 100%; min-height: 48px;
-    font-weight: 700; font-size: 24px; line-height: 1.2;
+    font-weight: 700; font-size: 22px; line-height: 1.2;
     background: var(--cobalt-tint); border: 2px solid var(--cobalt-line); border-radius: 10px;
     padding: 6px 12px;
   }
@@ -154,14 +154,14 @@
   .player .stars {
     display: flex; align-items: center; gap: 8px;
     padding: 8px 14px; border-radius: 999px; background: #FFF6D8;
-    font-size: 20px; white-space: nowrap;
+    font-size: 18px; white-space: nowrap;
   }
-  .player .stars strong { font-size: 24px; }
+  .player .stars strong { font-size: 22px; }
 
   .modes { border: 0; padding: 0; margin: clamp(28px, 4vw, 40px) 0 0; min-width: 0; }
   .modes legend {
     padding: 0; margin: 0 auto 16px; text-align: center; width: 100%;
-    font-family: var(--display); font-weight: 800; font-size: 32px; line-height: 1.15;
+    font-family: var(--display); font-weight: 800; font-size: 28px; line-height: 1.15;
   }
   .mode-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
   .mode {
@@ -215,7 +215,7 @@
   .home-btn { min-height: 56px; padding: 0 18px 0 14px; font-size: 22px; --under: var(--ink); }
   .home-btn svg { width: 26px; height: 26px; }
   .progress { justify-self: center; display: grid; justify-items: center; gap: 8px; }
-  .progress-label { font-weight: 700; font-size: 20px; line-height: 1.2; }
+  .progress-label { font-weight: 700; font-size: 18px; line-height: 1.2; }
   .rod {
     display: flex; list-style: none; padding: 0;
     border: 3px solid var(--ink); border-radius: 8px; overflow: hidden; background: #fff;
@@ -230,7 +230,7 @@
     display: flex; align-items: center; gap: 10px;
     background: var(--mat); border-radius: 999px; padding: 8px 16px 8px 8px;
     box-shadow: 0 4px 0 var(--sun-under);
-    font-size: 20px; line-height: 1; white-space: nowrap;
+    font-size: 18px; line-height: 1; white-space: nowrap;
   }
   .chip .pname { font-weight: 700; max-width: 9em; overflow: hidden; text-overflow: ellipsis; }
   .chip .star { width: 26px; height: 26px; margin-left: 4px; }
@@ -286,7 +286,7 @@
   .answer:disabled { transform: none; }
 
   .helper { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 18px; margin-top: 30px; }
-  .hint-btn { min-height: 60px; padding: 0 22px 0 16px; font-size: 24px; }
+  .hint-btn { min-height: 60px; padding: 0 22px 0 16px; font-size: 22px; }
   .hint-btn svg { width: 28px; height: 28px; }
   .hint-btn[aria-expanded="true"] { --face: var(--cobalt-tint); }
   .helper-note { color: var(--ink-2); font-size: 18px; }
@@ -295,7 +295,7 @@
     margin-top: 20px; background: var(--cobalt-tint); border-radius: 20px;
     padding: clamp(16px, 3vw, 24px);
   }
-  .hint-title { font-family: var(--display); font-weight: 800; font-size: 24px; line-height: 1.2; }
+  .hint-title { font-family: var(--display); font-weight: 800; font-size: 22px; line-height: 1.2; }
   .hint-blocks { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px 28px; margin-top: 14px; }
   .num-group { display: grid; justify-items: start; align-content: end; gap: 8px; }
   .num-group .blocks { display: flex; align-items: flex-end; min-height: 0; }
@@ -304,7 +304,7 @@
   .t { color: var(--cobalt-deep); font-weight: 700; }
   .o { color: #8A5A00; font-weight: 700; }
   .sign { align-self: center; font-weight: 700; font-size: 40px; color: var(--cobalt); padding-bottom: 28px; }
-  .steps { margin-top: 16px; padding-left: 1.4em; display: grid; gap: 6px; font-size: 19px; }
+  .steps { margin-top: 16px; padding-left: 1.4em; display: grid; gap: 6px; font-size: 18px; }
   .steps li::marker { font-weight: 700; color: var(--cobalt-deep); }
 
   /* Feedback sheet */
@@ -322,17 +322,17 @@
   .sheet-icon svg { width: 30px; height: 30px; }
   .sheet.right .sheet-icon { background: var(--green); }
   .sheet.wrong .sheet-icon { background: var(--berry); }
-  .sheet-title { font-family: var(--display); font-weight: 800; font-size: 26px; line-height: 1.2; }
+  .sheet-title { font-family: var(--display); font-weight: 800; font-size: 28px; line-height: 1.2; }
   .sheet.right .sheet-title { color: var(--green-ink); }
   .sheet.wrong .sheet-title { color: var(--berry-ink); }
-  .sheet-body { margin-top: 4px; font-size: 19px; line-height: 1.4; }
+  .sheet-body { margin-top: 4px; font-size: 18px; line-height: 1.4; }
   .earned {
     display: inline-flex; align-items: center; gap: 6px; margin-top: 8px;
     background: #fff; border-radius: 999px; padding: 4px 12px 4px 6px; font-weight: 700; font-size: 18px;
   }
   .earned .star { width: 24px; height: 24px; }
   .sheet-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; }
-  .sheet-actions .block { min-height: 60px; padding: 0 24px; font-size: 24px; white-space: nowrap; }
+  .sheet-actions .block { min-height: 60px; padding: 0 24px; font-size: 22px; white-space: nowrap; }
   .sheet-actions .block svg { width: 24px; height: 24px; }
   .regroup { grid-column: 2 / -1; display: flex; flex-wrap: nowrap; align-items: flex-end; gap: 12px; }
   .regroup .num-cap { font-size: 16px; white-space: nowrap; }
@@ -340,23 +340,23 @@
 
   /* Round finished */
   .done-card { text-align: center; display: grid; justify-items: center; gap: 14px; }
-  .done-card h3 { font-family: var(--display); font-weight: 900; font-size: clamp(36px, 5vw, 52px); line-height: 1.1; }
-  .done-card p { font-size: 20px; max-width: 34ch; }
+  .done-card h3 { font-family: var(--display); font-weight: 900; font-size: 40px; line-height: 1.1; }
+  .done-card p { font-size: 22px; max-width: 34ch; }
   .done-card .rod li { width: 34px; height: 34px; }
   .done-actions { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: 8px; }
-  .done-actions .block { min-height: 64px; padding: 0 28px; font-size: 26px; }
+  .done-actions .block { min-height: 64px; padding: 0 28px; font-size: 28px; }
 
   /* "After an answer": the same board, frozen in its two feedback states */
   .after { margin-top: clamp(40px, 6vw, 64px); }
-  .after-title { font-family: var(--display); font-weight: 800; font-size: 32px; line-height: 1.15; text-align: center; }
+  .after-title { font-family: var(--display); font-weight: 800; font-size: 28px; line-height: 1.15; text-align: center; }
   .after-intro { text-align: center; margin-top: 6px; color: #3B3418; }
   .after-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 22px; align-items: start; }
   .state figcaption { font-weight: 700; font-size: 18px; margin-bottom: 10px; padding-left: 6px; }
   .board.mini { padding: 22px; margin-top: 0; }
-  .board.mini .problem { font-size: clamp(40px, 5vw, 52px); }
+  .board.mini .problem { font-size: 40px; }
   .board.mini .answers { gap: 10px; margin-top: 18px; }
   .board.mini .answer {
-    min-height: 68px; font-size: 32px; border-radius: 12px; box-shadow: 0 5px 0 var(--under); margin-bottom: 5px;
+    min-height: 68px; font-size: 28px; border-radius: 12px; box-shadow: 0 5px 0 var(--under); margin-bottom: 5px;
     display: flex; align-items: center; justify-content: center; background: var(--face); color: var(--label);
   }
   .board.mini .answer .mark { width: 22px; height: 22px; top: 5px; right: 5px; }
@@ -398,7 +398,7 @@
     .answers { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
     .answer { min-height: 96px; }
     .board.mini .answers { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
-    .board.mini .answer { font-size: 26px; min-height: 60px; }
+    .board.mini .answer { font-size: 22px; min-height: 60px; }
     .play { width: 100%; min-width: 0; }
     .rod li { width: 26px; height: 26px; }
     .hint-blocks .sign { padding-bottom: 30px; }
@@ -406,19 +406,19 @@
     .sheet, .board.mini .sheet { grid-template-columns: 40px 1fr; align-items: start; padding: 16px; gap: 12px; }
     .sheet-icon, .board.mini .sheet-icon { width: 40px; height: 40px; }
     .sheet-icon svg, .board.mini .sheet-icon svg { width: 24px; height: 24px; }
-    .sheet-title { font-size: 23px; }
+    .sheet-title { font-size: 22px; }
   }
   @media (max-width: 400px) {
     .mode { grid-template-columns: 76px minmax(0, 1fr); column-gap: 12px; padding: 12px 46px 12px 12px; }
     .mode-art { height: 64px; }
-    .mode-name { font-size: 25px; }
+    .mode-name { font-size: 22px; }
     .mode-tick { right: 12px; width: 28px; height: 28px; }
     .home-btn .label-word { display: none; }
     .home-btn { padding: 0 14px; }
     .rod li { width: 24px; height: 24px; }
     .player { padding: 14px; }
     .board.mini { padding: 16px; }
-    .board.mini .answer { font-size: 24px; }
+    .board.mini .answer { font-size: 22px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
