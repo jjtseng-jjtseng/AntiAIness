@@ -431,6 +431,45 @@
       "notes": []
     }
   },
+  "C-skilled-v12-opus": {
+    "errors": [],
+    "audit": {
+      "textEls": 50,
+      "tiny": 0,
+      "under12": 0,
+      "distinctSizes": 9,
+      "sizes": [
+        "48px×13",
+        "15px×12",
+        "18px×10",
+        "21px×8",
+        "24px×3",
+        "36px×1"
+      ],
+      "families": [
+        "Andika×31",
+        "Baloo 2×19"
+      ],
+      "h1": {
+        "text": "Sumwise: the home screen and a problem screen",
+        "size": "36px",
+        "family": "Andika"
+      },
+      "glyphTotal": 0,
+      "eyebrows": 0,
+      "accentWords": "0/4",
+      "cardGrids": 3,
+      "grads": 0,
+      "glows": 0,
+      "blurs": 0,
+      "distinctRadii": 12,
+      "overflowX": false,
+      "height": 1422,
+      "notes": [
+        "3 grids of 3–8 identical styled cards. Check each: would a list, table, paragraph or single image serve better?"
+      ]
+    }
+  },
   "D-baseline": {
     "errors": [],
     "audit": {
