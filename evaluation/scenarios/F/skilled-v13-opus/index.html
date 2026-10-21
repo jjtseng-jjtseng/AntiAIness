@@ -1,0 +1,1235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notely: notes for the details you'll need later</title>
+<meta name="description" content="Notely is a notes app for the small, exact things you need later. Formatting as you type, search that marks every match, tags and links when a note needs them.">
+<meta name="color-scheme" content="light dark">
+<!--
+  BRIEF
+  - Notely is a note-taking app. On this page a first-time visitor decides whether to try it.
+  - Visitors: people with lots of small things to keep (codes, times, lists, half-ideas), on phones and laptops,
+    probably comparing it with the notes app they already have.
+  - Requested character: "modern". Paired with two adjectives taken from the product: quick (capture) and exact (details).
+  - Focal point: a working Notely in the hero, filled with sample notes, that the visitor can type into and search.
+  - Real content supplied: the name and the category only. Not invented here: prices, platforms, user counts,
+    testimonials, logos, press, team. The feature set shown (typing shortcuts, search with highlights, tags,
+    links with "Linked from") is an assumption to confirm with the product team.
+
+  DIRECTION CARD
+  Direction: "Use it before you sign up". The page leads with the working product; every later section explains something you can try in it.
+  Requested character -> how it shows: modern -> a live product UI, flat and large, instead of a picture; a contemporary
+    grotesk at confident sizes with tight display tracking; light and dark follow the system; crisp 150ms state changes;
+    the narrow layout becomes a phone-style list -> note flow. Quick -> formatting happens from the keyboard, search
+    narrows on every keystroke, Cmd/Ctrl K works on the page. Exact -> a typeface where 0/O and I/l/1 cannot be confused.
+  The memorable thing: the highlighter. Search matches are marked in yellow in the list and inside the open note as you type;
+    yellow means "found" everywhere on the page (text selection included) and nothing else.
+  Type: Atkinson Hyperlegible Next for everything (chosen because notes are full of codes and numbers that must be read
+    exactly); Atkinson Hyperlegible Mono only for the syntax you type. Sizes 13 / 15 / 17 / 20 / 26 / 36 / 60, plus one specimen.
+  Color: white paper (~80%), ink #16181d for text, ballpoint blue #1f45d6 for actions and links (~5%), highlighter yellow
+    #ffe14d only behind found text (~2%), cool greys for app chrome. Pen and highlighter: the two tools of note-taking.
+  Shape & surface: the app window is the only elevated object (14px radius, one shadow); controls 8px; tags are pills; flat elsewhere.
+  Density: open marketing type around a dense, working app.
+  Imagery: the product itself, plus one diagram of two linked notes drawn from the same components. No illustration, no photos.
+  Motion: state feedback only (check, highlight, pane switch). Nothing on scroll. Reduced motion removes transitions.
+  Voice: plain and concrete, everyday examples. Never "second brain", "seamless", "capture every idea".
+  Conventions kept: nav with sign-in and a primary action, product in the hero, closing call to action, footer with legal links.
+
+  PLACEHOLDERS: every "Create an account", "Sign in", Privacy, Terms and Contact link points to "#" or an on-page anchor
+  until real URLs exist. Pricing and supported platforms were not supplied, so they are left out.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400..600&family=Atkinson+Hyperlegible+Next:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #ffffff;
+  --surface: #f4f5f7;
+  --surface-2: #e8eaee;
+  --line: #e0e3e9;
+  --line-strong: #c3c8d2;
+  --ink: #16181d;
+  --ink-2: #4e5460;
+  --ink-3: #686e7b;
+  --pen: #1f45d6;
+  --pen-strong: #1636ab;
+  --on-pen: #ffffff;
+  --pen-soft: #eaeefc;
+  --marker: #ffe14d;
+  --on-marker: #16181d;
+  --shadow: 0 1px 2px rgb(22 24 29 / .06), 0 32px 64px -32px rgb(20 32 72 / .30);
+  --font: 'Atkinson Hyperlegible Next', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Atkinson Hyperlegible Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --r-win: 14px;
+  --r-ctl: 8px;
+  --gutter: 16px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #111215;
+    --surface: #18191d;
+    --surface-2: #23252b;
+    --line: #2a2d34;
+    --line-strong: #444955;
+    --ink: #eceef1;
+    --ink-2: #a5abb6;
+    --ink-3: #8d93a0;
+    --pen: #8ea6ff;
+    --pen-strong: #b0c1ff;
+    --on-pen: #0c1430;
+    --pen-soft: #1d2542;
+    --marker: #f3d53e;
+    --on-marker: #16181d;
+    --shadow: 0 1px 2px rgb(0 0 0 / .4), 0 32px 64px -32px rgb(0 0 0 / .7);
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 17px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--marker); color: var(--on-marker); }
+::highlight(found) { background-color: var(--marker); color: var(--on-marker); }
+img, svg { display: block; }
+a { color: var(--pen); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { color: var(--pen-strong); }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--pen); outline-offset: 2px; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.skip {
+  position: absolute; left: 16px; top: -60px; z-index: 10;
+  background: var(--pen); color: var(--on-pen); padding: 10px 14px; border-radius: var(--r-ctl);
+}
+.skip:focus { top: 12px; color: var(--on-pen); }
+
+.wrap { width: 100%; max-width: 1264px; margin-inline: auto; padding-inline: var(--gutter); }
+@media (min-width: 640px) { :root { --gutter: 32px; } }
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 0 22px;
+  border: 1px solid transparent; border-radius: var(--r-ctl);
+  font-weight: 650; font-size: 17px; line-height: 1.2; text-decoration: none;
+  cursor: pointer;
+}
+.btn-primary { background: var(--pen); color: var(--on-pen); }
+.btn-primary:hover { background: var(--pen-strong); color: var(--on-pen); }
+.btn-secondary { background: var(--paper); color: var(--ink); border-color: var(--line-strong); }
+.btn-secondary:hover { background: var(--surface); color: var(--ink); }
+.btn:active { transform: translateY(1px); }
+.btn-sm { min-height: 40px; padding: 0 16px; font-size: 15px; }
+.btn-primary:focus-visible { outline-offset: 3px; }
+.text-btn {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 0;
+  background: none; border: 0; color: var(--pen); font-weight: 650; cursor: pointer;
+  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px;
+}
+.text-btn:hover { color: var(--pen-strong); }
+
+/* ---------- header ---------- */
+.site-head { display: flex; align-items: center; gap: 24px; min-height: 72px; }
+.brand {
+  display: inline-flex; align-items: center; gap: 9px;
+  color: var(--ink); text-decoration: none; font-weight: 750; font-size: 20px; letter-spacing: -0.01em;
+  min-height: 40px;
+}
+.brand:hover { color: var(--ink); }
+.main-nav { margin-right: auto; }
+.main-nav ul { display: flex; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.main-nav a {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 0 12px;
+  color: var(--ink-2); text-decoration: none; font-size: 15px; border-radius: var(--r-ctl);
+}
+.main-nav a:hover { color: var(--ink); background: var(--surface); }
+.head-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.signin {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 0 12px;
+  color: var(--ink); text-decoration: none; font-size: 15px; border-radius: var(--r-ctl);
+}
+.signin:hover { color: var(--ink); background: var(--surface); }
+@media (max-width: 859px) { .main-nav { display: none; } }
+
+/* ---------- hero ---------- */
+.hero { padding-top: 56px; padding-bottom: 40px; }
+.hero h1 {
+  max-width: 980px;
+  font-size: clamp(36px, 1.2rem + 3.4vw, 60px);
+  line-height: 1.04; font-weight: 760; letter-spacing: -0.028em;
+}
+.lede { max-width: 40em; margin-top: 24px; font-size: 20px; line-height: 1.5; color: var(--ink-2); }
+.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; margin-top: 32px; }
+.try { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
+.try-label { color: var(--ink-2); font-size: 15px; margin-right: 4px; }
+.q {
+  min-height: 40px; padding: 0 8px;
+  background: linear-gradient(transparent 58%, var(--marker) 58%, var(--marker) 88%, transparent 88%);
+  border: 0; border-radius: 4px; cursor: pointer;
+  font-family: var(--mono); font-size: 15px; color: var(--ink);
+}
+.q:hover, .q[aria-pressed="true"] { background: var(--marker); color: var(--on-marker); }
+
+/* ---------- demo app ---------- */
+.demo { padding-bottom: 8px; }
+.app {
+  display: grid;
+  grid-template-columns: 212px 320px minmax(0, 1fr);
+  grid-template-areas: "side list ed";
+  height: 600px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-win);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  font-size: 15px;
+  line-height: 1.45;
+}
+.side {
+  grid-area: side;
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 14px 10px; background: var(--surface); border-right: 1px solid var(--line);
+  overflow: auto;
+}
+.flt {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  width: 100%; min-height: 40px; padding: 0 10px;
+  background: none; border: 0; border-radius: 7px; cursor: pointer; text-align: left;
+}
+.flt:hover { background: var(--surface-2); }
+.flt[aria-pressed="true"] { background: var(--paper); box-shadow: inset 0 0 0 1px var(--line); font-weight: 650; }
+.flt .ct { color: var(--ink-2); font-size: 13px; font-variant-numeric: tabular-nums; font-weight: 400; }
+.side-h { margin: 18px 10px 4px; font-size: 13px; color: var(--ink-2); }
+
+.pane-list { grid-area: list; display: flex; flex-direction: column; min-width: 0; min-height: 0; border-right: 1px solid var(--line); }
+.list-head { display: flex; gap: 8px; padding: 12px; border-bottom: 1px solid var(--line); }
+.search {
+  flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px;
+  height: 40px; padding: 0 8px 0 10px;
+  background: var(--paper); border: 1px solid var(--line-strong); border-radius: var(--r-ctl);
+  color: var(--ink-2);
+}
+.search:focus-within { border-color: var(--pen); outline: 2px solid var(--pen); outline-offset: 0; }
+.search input {
+  flex: 1; min-width: 0; height: 100%; padding: 0;
+  background: none; border: 0; outline: 0; color: var(--ink); font: inherit;
+}
+.search input::placeholder { color: var(--ink-3); }
+.search input::-webkit-search-cancel-button { cursor: pointer; }
+kbd {
+  display: inline-flex; align-items: center; justify-content: center; gap: 2px;
+  min-width: 24px; height: 24px; padding: 0 6px;
+  font-family: var(--mono); font-size: 13px; color: var(--ink-2);
+  background: var(--paper); border: 1px solid var(--line-strong); border-bottom-width: 2px; border-radius: 6px;
+}
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 40px; height: 40px; padding: 0;
+  background: var(--paper); border: 1px solid var(--line-strong); border-radius: var(--r-ctl);
+  color: var(--ink); cursor: pointer;
+}
+.icon-btn:hover { background: var(--surface); }
+.list-status { padding: 10px 18px 0; font-size: 13px; color: var(--ink-2); }
+.list { flex: 1; min-height: 0; margin: 0; padding: 6px 8px 12px; list-style: none; overflow: auto; }
+.row {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px;
+  width: 100%; padding: 10px 12px; margin-bottom: 2px;
+  background: none; border: 0; border-radius: var(--r-ctl); cursor: pointer; text-align: left;
+}
+.row:hover { background: var(--surface); }
+.row[aria-current="true"] { background: var(--pen-soft); }
+.row-t { font-weight: 650; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.row-d { font-size: 13px; color: var(--ink-2); padding-top: 1px; }
+.row-s {
+  grid-column: 1 / -1; color: var(--ink-2);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.row-s em { font-style: italic; }
+mark { background: var(--marker); color: var(--on-marker); border-radius: 2px; padding: 0 1px; }
+.empty { padding: 20px 14px; color: var(--ink-2); }
+.empty p { margin-bottom: 8px; }
+.empty .text-btn { font-size: 15px; }
+
+.pane-ed { grid-area: ed; display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.pane-ed:focus { outline: none; }
+.ed-head {
+  display: flex; align-items: center; gap: 12px;
+  height: 65px; flex: none; padding: 0 32px; border-bottom: 1px solid var(--line);
+}
+.back {
+  display: none; align-items: center; gap: 4px; min-height: 40px; padding: 0 10px 0 4px; margin-left: -6px;
+  background: none; border: 0; border-radius: var(--r-ctl); color: var(--pen); font-weight: 650; cursor: pointer;
+}
+.ed-meta { margin-left: auto; font-size: 13px; color: var(--ink-2); }
+.ed-scroll { flex: 1; min-height: 0; overflow: auto; padding: 28px 40px 40px; }
+.ed-col { max-width: 640px; }
+.title {
+  font-size: 26px; line-height: 1.2; font-weight: 750; letter-spacing: -0.012em;
+  margin-bottom: 14px; outline: none; white-space: pre-wrap; overflow-wrap: anywhere;
+}
+.title:empty::before { content: "Untitled"; color: var(--ink-3); }
+.body {
+  font-size: 17px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere;
+  outline: none; min-height: 160px; padding-bottom: 8px;
+}
+.pane-ed:focus-within .ed-scroll { box-shadow: inset 0 0 0 2px var(--pen); }
+.pane-ed:focus-within .ed-scroll:has(.back:focus) { box-shadow: none; }
+.body > div { position: relative; margin: 0 0 6px; }
+.body > [data-t="h"] { font-size: 20px; font-weight: 700; line-height: 1.3; margin: 20px 0 6px; }
+.body > [data-t="h"]:first-child { margin-top: 0; }
+.body > [data-t="bullet"] { padding-left: 26px; margin-bottom: 2px; }
+.body > [data-t="bullet"]::before {
+  content: ""; position: absolute; left: 9px; top: 0.72em;
+  width: 6px; height: 6px; border-radius: 50%; background: var(--ink);
+}
+.body > [data-t="todo"] { padding-left: 34px; margin-bottom: 4px; }
+.body > [data-t="todo"]::before {
+  content: ""; position: absolute; left: 2px; top: 0.22em;
+  width: 20px; height: 20px; border-radius: 6px;
+  border: 1.5px solid var(--ink-3); background: var(--paper); cursor: pointer;
+}
+.body > [data-t="todo"]:hover::before { border-color: var(--pen); }
+.body > [data-t="todo"][data-done] { color: var(--ink-2); }
+.body > [data-t="todo"][data-done]::before { background: var(--pen); border-color: var(--pen); }
+.body > [data-t="todo"][data-done]::after {
+  content: ""; position: absolute; left: 9px; top: 0.36em;
+  width: 6px; height: 11px; border: solid var(--on-pen); border-width: 0 2px 2px 0;
+  transform: rotate(45deg); pointer-events: none;
+}
+.body.is-empty > div:first-child::after {
+  content: "Start typing. Begin a line with # for a heading, - for a list or [ ] for a to-do.";
+  position: absolute; left: 0; top: 0; right: 0; color: var(--ink-3); pointer-events: none;
+}
+.tag {
+  display: inline-block; padding: 0 8px; border-radius: 999px;
+  background: var(--surface-2); color: var(--ink-2); font-size: 15px; line-height: 1.55;
+}
+.link {
+  color: var(--pen); cursor: pointer;
+  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px;
+}
+.link.missing { text-decoration-style: dashed; }
+.ed-foot { margin-top: 28px; padding-top: 14px; border-top: 1px solid var(--line); display: grid; gap: 6px; }
+.ed-foot[hidden] { display: none; }
+.foot-row { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 15px; }
+.foot-l { color: var(--ink-2); font-size: 13px; min-width: 84px; }
+.chip-link {
+  min-height: 32px; padding: 0 10px; border-radius: 999px; cursor: pointer;
+  background: var(--pen-soft); border: 0; color: var(--pen); font-weight: 650;
+}
+.chip-link:hover { color: var(--pen-strong); }
+.demo-note { margin-top: 14px; font-size: 13px; color: var(--ink-2); }
+
+@media (max-width: 1079px) {
+  .app {
+    grid-template-columns: 300px minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-areas: "side side" "list ed";
+    height: 580px;
+  }
+  .side {
+    flex-direction: row; align-items: center; gap: 6px;
+    padding: 10px 12px; border-right: 0; border-bottom: 1px solid var(--line);
+    overflow-x: auto; overflow-y: hidden; scrollbar-width: thin;
+  }
+  .side-h { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); margin: 0; }
+  .flt { width: auto; flex: none; gap: 8px; padding: 0 12px; white-space: nowrap; }
+  .ed-head { padding: 0 24px; }
+  .ed-scroll { padding: 24px 28px 36px; }
+}
+@media (max-width: 759px) {
+  .app {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-areas: "side" "list";
+    height: 620px;
+    border-radius: 12px;
+  }
+  .app[data-view="note"] { grid-template-rows: minmax(0, 1fr); grid-template-areas: "ed"; }
+  .app[data-view="note"] .side, .app[data-view="note"] .pane-list { display: none; }
+  .app[data-view="list"] .pane-ed { display: none; }
+  .pane-list { border-right: 0; }
+  .back { display: inline-flex; }
+  .ed-head { height: 56px; padding: 0 16px; }
+  .ed-scroll { padding: 20px 18px 32px; }
+  .search kbd { display: none; }
+}
+@media (pointer: coarse) { .search kbd { display: none; } }
+
+/* ---------- writing ---------- */
+.section { padding-block: 112px; }
+.section h2 { font-size: 36px; line-height: 1.1; font-weight: 750; letter-spacing: -0.02em; }
+.section-text p { margin-top: 18px; max-width: 34em; color: var(--ink-2); }
+.section-text .text-btn { margin-top: 18px; }
+.writing { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 72px; align-items: start; }
+.shortcuts { width: 100%; border-collapse: collapse; }
+.shortcuts thead th {
+  text-align: left; font-weight: 400; font-size: 13px; color: var(--ink-2);
+  padding: 0 0 10px; border-bottom: 1px solid var(--line-strong);
+}
+.shortcuts tbody th {
+  text-align: left; font-weight: 650; font-size: 15px; color: var(--ink);
+  padding: 28px 0 8px;
+}
+.shortcuts tbody:first-of-type th { padding-top: 18px; }
+.shortcuts td { padding: 12px 0; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.shortcuts td:first-child { width: 38%; padding-right: 20px; }
+code {
+  font-family: var(--mono); font-size: 15px; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px;
+  overflow-wrap: anywhere;
+}
+.keys { display: inline-flex; gap: 4px; }
+.r { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
+.r-note { color: var(--ink-2); }
+.r-h { font-size: 20px; font-weight: 700; }
+.r-bullet, .r-todo { position: relative; }
+.r-bullet { padding-left: 22px; }
+.r-bullet::before { content: ""; position: absolute; left: 7px; top: 0.66em; width: 6px; height: 6px; border-radius: 50%; background: var(--ink); }
+.r-todo { padding-left: 30px; }
+.r-todo::before { content: ""; position: absolute; left: 0; top: 0.16em; width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--ink-3); }
+
+/* ---------- finding ---------- */
+.finding { background: var(--surface); border-block: 1px solid var(--line); }
+.finding h2 { max-width: 15em; }
+.finding-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 980px; margin-top: 24px; }
+.finding-cols p { color: var(--ink-2); }
+.specimen { margin: 56px 0 0; }
+.spec-row {
+  display: grid; grid-template-columns: 220px minmax(0, 1fr); align-items: baseline; gap: 8px 24px;
+  padding: 20px 0; border-top: 1px solid var(--line-strong);
+}
+.spec-label { font-size: 15px; color: var(--ink-2); }
+.spec-label strong { display: block; color: var(--ink); font-weight: 650; }
+.spec-text { font-size: clamp(44px, 2rem + 5vw, 104px); line-height: 1.05; letter-spacing: 0.02em; white-space: nowrap; }
+.spec-other .spec-text { font-family: Arial, 'Liberation Sans', Helvetica, sans-serif; color: var(--ink-2); letter-spacing: 0.01em; }
+.specimen figcaption { padding-top: 16px; border-top: 1px solid var(--line-strong); font-size: 15px; color: var(--ink-2); }
+
+/* ---------- organizing ---------- */
+.organize { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 72px; align-items: center; }
+.org-figure { margin: 0; }
+.minis { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+.mini {
+  position: relative; z-index: 1;
+  padding: 20px 22px 18px; background: var(--paper);
+  border: 1px solid var(--line-strong); border-radius: 12px; font-size: 15px; line-height: 1.5;
+}
+.mini h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+.mini p { margin-bottom: 6px; }
+.mini .todo-static { position: relative; padding-left: 28px; margin-bottom: 6px; }
+.mini .todo-static::before { content: ""; position: absolute; left: 0; top: 0.12em; width: 18px; height: 18px; border-radius: 5px; border: 1.5px solid var(--ink-3); }
+.mini .tag { font-size: 13px; }
+.mini-foot { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-2); }
+.mini-foot .chip-link { min-height: 28px; font-size: 13px; cursor: default; display: inline-flex; align-items: center; margin-left: 6px; }
+.minis:nth-child(1) .mini:nth-child(2) { margin-top: 72px; }
+.connector { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: visible; }
+.connector path { fill: none; stroke: var(--pen); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.connector circle { fill: var(--pen); }
+.org-figure figcaption { margin-top: 18px; font-size: 15px; color: var(--ink-2); }
+
+/* ---------- closing ---------- */
+.closing { padding-block: 120px 128px; text-align: center; border-top: 1px solid var(--line); }
+.closing h2 { max-width: 18em; margin-inline: auto; }
+.closing .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 32px; }
+
+/* ---------- footer ---------- */
+.site-foot { border-top: 1px solid var(--line); }
+.site-foot .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; padding-block: 28px; }
+.site-foot .brand { font-size: 17px; }
+.foot-links { display: flex; flex-wrap: wrap; gap: 4px 8px; margin: 0; padding: 0; list-style: none; }
+.foot-links a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 8px; color: var(--ink-2); text-decoration: none; font-size: 15px; }
+.foot-links a:hover { color: var(--ink); text-decoration: underline; }
+.copy { font-size: 13px; color: var(--ink-2); }
+
+/* ---------- narrow layouts ---------- */
+@media (max-width: 959px) {
+  .writing, .organize { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  .organize .section-text { order: -1; }
+  .finding-cols { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+}
+@media (max-width: 639px) {
+  .hero { padding-top: 32px; padding-bottom: 32px; }
+  .lede { font-size: 18px; margin-top: 18px; }
+  .hero-actions { margin-top: 24px; }
+  .hero-actions .btn { width: 100%; }
+  .try-label { flex-basis: 100%; }
+  .section { padding-block: 72px; }
+  .section h2 { font-size: 30px; }
+  .spec-row { grid-template-columns: minmax(0, 1fr); padding: 16px 0; }
+  .minis { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .minis:nth-child(1) .mini:nth-child(2) { margin-top: 0; }
+  .shortcuts td:first-child { width: 44%; padding-right: 12px; }
+  .closing { padding-block: 80px 88px; }
+  .head-actions .signin { padding: 0 8px; }
+}
+
+/* ---------- motion ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+  .btn, .flt, .row, .q, .icon-btn, .chip-link, .main-nav a, .signin { transition: background-color .15s ease, color .15s ease, box-shadow .15s ease; }
+  .body > [data-t="todo"]::before { transition: background-color .15s ease, border-color .15s ease; }
+  mark { animation: mark-in .18s ease-out; }
+  @keyframes mark-in { from { background-color: transparent; } }
+  @media (max-width: 759px) {
+    .app[data-view="note"] .pane-ed { animation: slide-in .2s ease-out; }
+    .app[data-view="list"] .pane-list { animation: fade-in .16s ease-out; }
+  }
+  @keyframes slide-in { from { transform: translateX(24px); opacity: 0; } }
+  @keyframes fade-in { from { opacity: 0; } }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="wrap site-head">
+  <a class="brand" href="#top" aria-label="Notely, home">
+    <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="6" y="10" width="12.5" height="5.5" rx="1" fill="#ffe14d"/>
+      <rect x="3.5" y="2.5" width="17" height="19" rx="3.5" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M7.5 7.5h9M7.5 12.75h9M7.5 18h5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>
+    Notely
+  </a>
+  <nav class="main-nav" aria-label="Main">
+    <ul>
+      <li><a href="#writing">Writing</a></li>
+      <li><a href="#search">Search</a></li>
+      <li><a href="#organize">Tags and links</a></li>
+    </ul>
+  </nav>
+  <div class="head-actions">
+    <a class="signin" href="#">Sign in</a>
+    <a class="btn btn-primary btn-sm" href="#start">Create account</a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="wrap hero" id="top" aria-labelledby="hero-h">
+    <h1 id="hero-h">The gate code, the flight time, the book someone recommended.</h1>
+    <p class="lede">Notely is a notes app for the small, exact things you’ll need later. Write them down in a few keystrokes, then find any note again by a word or number you remember.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#start">Create an account</a>
+      <div class="try" role="group" aria-label="Try a search on the sample notes">
+        <span class="try-label">Or search the sample notes below for</span>
+        <button class="q" type="button" data-q="gate code" aria-pressed="false">gate code</button>
+        <button class="q" type="button" data-q="07:55" aria-pressed="false">07:55</button>
+        <button class="q" type="button" data-q="octopus" aria-pressed="false">octopus</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap demo" aria-label="Working Notely demo with sample notes">
+    <div class="app" id="app" data-view="list">
+      <nav class="side" id="side" aria-label="Filter notes"></nav>
+      <div class="pane-list">
+        <div class="list-head">
+          <label class="search">
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="sr-only">Search notes</span>
+            <input id="q" type="search" placeholder="Search notes" autocomplete="off" spellcheck="false">
+            <kbd aria-hidden="true"><span data-mod>⌘</span>K</kbd>
+          </label>
+          <button class="icon-btn" id="new" type="button" aria-label="New note" title="New note">
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <p class="list-status" id="status" hidden></p>
+        <ul class="list" id="list" aria-label="Notes"></ul>
+      </div>
+      <article class="pane-ed" id="pane-ed" tabindex="-1" aria-label="Open note">
+        <div class="ed-head">
+          <button class="back" id="back" type="button">
+            <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Notes
+          </button>
+          <span class="ed-meta" id="meta"></span>
+        </div>
+        <div class="ed-scroll">
+          <div class="ed-col">
+            <div class="title" id="title" contenteditable="true" role="textbox" aria-label="Note title" spellcheck="false"></div>
+            <div class="body" id="body" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Note text" spellcheck="false"></div>
+            <div class="ed-foot" id="foot" hidden></div>
+          </div>
+        </div>
+      </article>
+    </div>
+    <noscript><p class="demo-note">The working demo needs JavaScript.</p></noscript>
+    <p class="demo-note">These are sample notes. Your changes stay in this tab and are gone when you close it.</p>
+    <p class="sr-only" id="live" aria-live="polite"></p>
+  </section>
+
+  <section class="wrap section writing" id="writing" aria-labelledby="writing-h">
+    <div class="section-text">
+      <h2 id="writing-h">Formatting happens as you type</h2>
+      <p>There’s no toolbar to hunt through. Start a line with a symbol and it becomes a heading, a list or a to-do. Put # in front of a word to tag the note, or a note’s title in double brackets to link to it.</p>
+      <button class="text-btn" id="try-new" type="button">Try them in a new note</button>
+    </div>
+    <table class="shortcuts">
+      <caption class="sr-only">Typing shortcuts in Notely</caption>
+      <thead><tr><th scope="col">You type</th><th scope="col">You get</th></tr></thead>
+      <tbody>
+        <tr><th scope="rowgroup" colspan="2">At the start of a line, then a space</th></tr>
+        <tr><td><code>#</code></td><td><span class="r-h">A heading</span></td></tr>
+        <tr><td><code>-</code></td><td><span class="r-bullet">A bulleted list</span></td></tr>
+        <tr><td><code>[ ]</code></td><td><span class="r-todo">A to-do you can check off</span></td></tr>
+      </tbody>
+      <tbody>
+        <tr><th scope="rowgroup" colspan="2">Anywhere in a note</th></tr>
+        <tr><td><code>#errands</code></td><td><span class="r"><span class="tag">#errands</span><span class="r-note">A tag, collected in the sidebar</span></span></td></tr>
+        <tr><td><code>[[Kitchen quote]]</code></td><td><span class="r"><span class="link">Kitchen quote</span><span class="r-note">A link to that note</span></span></td></tr>
+      </tbody>
+      <tbody>
+        <tr><th scope="rowgroup" colspan="2">With a keyboard</th></tr>
+        <tr><td><span class="keys"><kbd data-mod>⌘</kbd><kbd>K</kbd></span></td><td>Search every note</td></tr>
+        <tr><td><span class="keys"><kbd data-mod>⌘</kbd><kbd>Enter</kbd></span></td><td>Check off the to-do you’re on</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section finding" id="search" aria-labelledby="search-h">
+    <div class="wrap">
+      <h2 id="search-h">Find a note by the one detail you remember</h2>
+      <div class="finding-cols">
+        <p>Search looks through every title, line and to-do, checked or not, and marks each match in yellow, in the list and inside the note, so you can see why a note turned up before you open it.</p>
+        <p>When what you find is a code, you can read it off correctly. Notes are set in Atkinson Hyperlegible Next, a typeface the Braille Institute designed for readers with low vision, in which letters that look alike in most fonts are drawn to be told apart.</p>
+      </div>
+      <figure class="specimen" role="img" aria-label="The Wi-Fi password 0lIve-Tr33-81 set in Arial and in Atkinson Hyperlegible Next. In Arial, zero looks like a capital O, and lowercase l and capital I are identical. In Atkinson Hyperlegible Next, zero has a slash, l has a tail and I has serifs.">
+        <div class="spec-row spec-other" aria-hidden="true">
+          <span class="spec-label"><strong>Arial</strong>A common interface font</span>
+          <span class="spec-text">0lIve-Tr33-81</span>
+        </div>
+        <div class="spec-row" aria-hidden="true">
+          <span class="spec-label"><strong>Notely</strong>Atkinson Hyperlegible Next</span>
+          <span class="spec-text">0lIve-Tr33-81</span>
+        </div>
+        <figcaption aria-hidden="true">The same Wi-Fi password twice. It starts with a zero, a lowercase l and a capital I.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="wrap section organize" id="organize" aria-labelledby="org-h">
+    <figure class="org-figure">
+      <div class="minis" id="minis">
+        <div class="mini">
+          <h3>Plumber, Thursday</h3>
+          <p>Gate code 4417, then buzz flat 3B.</p>
+          <p class="todo-static">Ask about the valve that drips</p>
+          <p>Prices for the new tap: <span class="link" id="mini-link">Kitchen quote</span></p>
+          <p><span class="tag">#home</span></p>
+        </div>
+        <div class="mini">
+          <h3>Kitchen quote</h3>
+          <p>Option A: €3,450 including fitting</p>
+          <p>Option B: €2,980, fitting extra</p>
+          <p><span class="tag">#home</span></p>
+          <div class="mini-foot">Linked from <span class="chip-link" id="mini-back">Plumber, Thursday</span></div>
+        </div>
+        <svg class="connector" id="connector" aria-hidden="true"></svg>
+      </div>
+      <figcaption>One link, seen from both ends: written in the plumber note, listed at the foot of the quote.</figcaption>
+    </figure>
+    <div class="section-text">
+      <h2 id="org-h">Tags and links, only when a note needs them</h2>
+      <p>Tag a note and everything with the same tag is one click away in the sidebar. Link one note from another and the link works in both directions, so the kitchen quote knows the plumber note mentions it.</p>
+      <p>Neither is required. A note with no tags still turns up in search.</p>
+      <button class="text-btn" id="open-linked" type="button">Open these two notes in the demo</button>
+    </div>
+  </section>
+
+  <section class="wrap closing" id="start" aria-labelledby="start-h">
+    <h2 id="start-h">Start with the next thing you need to remember</h2>
+    <div class="actions">
+      <a class="btn btn-primary" href="#">Create an account</a>
+      <a class="btn btn-secondary" href="#">Sign in</a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Notely, back to the top of the page">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="6" y="10" width="12.5" height="5.5" rx="1" fill="#ffe14d"/>
+        <rect x="3.5" y="2.5" width="17" height="19" rx="3.5" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M7.5 7.5h9M7.5 12.75h9M7.5 18h5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      Notely
+    </a>
+    <ul class="foot-links">
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Terms</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <p class="copy">© 2026 Notely</p>
+  </div>
+</footer>
+
+<script>
+(() => {
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const narrow = matchMedia('(max-width: 759px)');
+
+  /* ---------- sample notes (all fictional) ---------- */
+  const B = (t, html, done) => `<div data-t="${t}"${done ? ' data-done=""' : ''}>${html}</div>`;
+  const tag = t => `<span class="tag">#${t}</span>`;
+  const link = t => `<a class="link" href="#" contenteditable="false" data-to="${esc(t)}">${esc(t)}</a>`;
+
+  const notes = [
+    { id: 'plumber', title: 'Plumber, Thursday', when: 'Today', whenLong: 'today', body:
+      B('p', 'Arriving between 8 and 10. Gate code 4417, then buzz flat 3B.') +
+      B('todo', 'Find the boiler manual', true) +
+      B('todo', 'Clear the cupboard under the kitchen sink') +
+      B('todo', 'Ask about the valve that drips') +
+      B('p', `Prices for the new tap: ${link('Kitchen quote')}`) +
+      B('p', tag('home')) },
+    { id: 'lisbon', title: 'Lisbon, 14–18 May', when: 'Yesterday', whenLong: 'yesterday', body:
+      B('h', 'Getting there') +
+      B('p', 'Flight out Thursday at 07:55. Bag drop closes at 07:10.') +
+      B('p', 'Booking ref Q0LK7I') +
+      B('h', 'Before we go') +
+      B('todo', 'Order euros') +
+      B('todo', 'Download the offline map', true) +
+      B('todo', 'Ask Jo to water the plants') +
+      B('p', tag('travel')) },
+    { id: 'books', title: 'Books people recommended', when: 'Mon', whenLong: 'on Monday', body:
+      B('bullet', 'Sam: The Left Hand of Darkness') +
+      B('bullet', 'Priya: Middlemarch, and don’t skip the first chapter') +
+      B('bullet', 'The octopus book from that podcast. Title had “minds” in it?') +
+      B('p', tag('reading')) },
+    { id: 'kitchen', title: 'Kitchen quote', when: 'Sun', whenLong: 'on Sunday', body:
+      B('p', 'Two quotes so far for the tap and the cabinet doors.') +
+      B('bullet', 'Option A: €3,450 including fitting') +
+      B('bullet', 'Option B: €2,980, fitting extra') +
+      B('p', 'Decide by Friday 22 May.') +
+      B('p', tag('home')) },
+    { id: 'wifi', title: 'Wi-Fi at Dad’s', when: '12 May', whenLong: 'on 12 May', body:
+      B('p', 'Network: Kestrel-5G') +
+      B('p', 'Password: 0lIve-Tr33-81') +
+      B('p', 'Router is behind the TV if it needs a restart. ' + tag('home')) },
+    { id: 'standup', title: 'Standup, Tuesday', when: '6 May', whenLong: 'on 6 May', body:
+      B('bullet', 'Export fix goes out before Friday') +
+      B('bullet', 'Ask Maria for the staging keys') +
+      B('todo', 'Write up the retry bug') +
+      B('p', tag('work')) },
+    { id: 'dinner', title: 'Birthday dinner ideas', when: '2 May', whenLong: 'on 2 May', body:
+      B('p', 'Saturday the 30th? Check with Jo first.') +
+      B('bullet', 'Somewhere with a garden') +
+      B('bullet', 'Not the place with the loud music') }
+  ];
+
+  let currentId = 'plumber';
+  let filter = 'all';
+  let query = '';
+  const touched = new Set();
+
+  const app = $('#app'), side = $('#side'), list = $('#list'), status = $('#status');
+  const qInput = $('#q'), title = $('#title'), body = $('#body'), foot = $('#foot'), meta = $('#meta');
+  const paneEd = $('#pane-ed'), live = $('#live');
+
+  /* ---------- note helpers ---------- */
+  const tpl = document.createElement('template');
+  function frag(html) { tpl.innerHTML = html; return tpl.content; }
+  function textOf(n) { return [...frag(n.body).children].map(d => d.textContent).join('\n'); }
+  function tagsOf(n) {
+    const set = new Set(); const re = /(^|\s)#([A-Za-z][\w-]*)/g; let m;
+    const t = textOf(n); while ((m = re.exec(t))) set.add(m[2].toLowerCase());
+    return set;
+  }
+  function hasOpenTodo(n) { return !!frag(n.body).querySelector('[data-t="todo"]:not([data-done])'); }
+  function linksOf(n) { return [...frag(n.body).querySelectorAll('.link')].map(a => a.dataset.to); }
+  const byId = id => notes.find(n => n.id === id);
+  const byTitle = t => notes.find(n => n.title.trim().toLowerCase() === String(t).trim().toLowerCase());
+  const cur = () => byId(currentId);
+
+  function announce(msg) {
+    live.textContent = '';
+    setTimeout(() => { live.textContent = msg; }, 30);
+  }
+
+  /* ---------- rendering ---------- */
+  function hl(s) {
+    s = String(s);
+    if (!query) return esc(s);
+    const lo = s.toLowerCase(); let i = 0, j, out = '';
+    while ((j = lo.indexOf(query, i)) !== -1) {
+      out += esc(s.slice(i, j)) + '<mark>' + esc(s.slice(j, j + query.length)) + '</mark>';
+      i = j + query.length;
+    }
+    return out + esc(s.slice(i));
+  }
+  function snippet(n) {
+    const t = [...frag(n.body).children].map(d => d.textContent.replace(/\s+/g, ' ').trim()).filter(Boolean)
+      .map(x => /[.!?:,;…”)]$/.test(x) || /^#\S+$/.test(x) ? x : x + '.').join(' ');
+    if (!t) return '<em>No text yet</em>';
+    if (query) {
+      const j = t.toLowerCase().indexOf(query);
+      if (j > 36) return '…' + hl(t.slice(j - 28, j + 110));
+    }
+    return hl(t.slice(0, 140));
+  }
+  function visible() {
+    let arr = notes;
+    if (filter === 'todo') arr = arr.filter(hasOpenTodo);
+    else if (filter.startsWith('tag:')) arr = arr.filter(n => tagsOf(n).has(filter.slice(4)));
+    if (query) arr = arr.filter(n => (n.title + '\n' + textOf(n)).toLowerCase().includes(query));
+    return arr;
+  }
+
+  function renderSidebar() {
+    const focusF = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.f : null;
+    const counts = {};
+    notes.forEach(n => tagsOf(n).forEach(t => { counts[t] = (counts[t] || 0) + 1; }));
+    const btn = (f, label, count) =>
+      `<button class="flt" type="button" data-f="${esc(f)}" aria-pressed="${filter === f}">${esc(label)}<span class="ct">${count}</span></button>`;
+    side.innerHTML =
+      btn('all', 'All notes', notes.length) +
+      btn('todo', 'Open to-dos', notes.filter(hasOpenTodo).length) +
+      '<p class="side-h">Tags</p>' +
+      Object.keys(counts).sort().map(t => btn('tag:' + t, '#' + t, counts[t])).join('');
+    if (focusF) { const b = side.querySelector(`[data-f="${CSS.escape(focusF)}"]`); if (b) b.focus(); }
+  }
+
+  function renderList() {
+    const focusId = document.activeElement && document.activeElement.classList.contains('row') ? document.activeElement.dataset.id : null;
+    const arr = visible();
+    if (!arr.length) {
+      let msg, action = '';
+      if (query) {
+        msg = `No notes contain “${esc(query)}”${filter !== 'all' ? ' with this filter' : ''}.`;
+        action = `<button class="text-btn" type="button" data-create="${esc(qInput.value.trim())}">Create a note called “${esc(qInput.value.trim())}”</button>`;
+      } else if (filter === 'todo') {
+        msg = 'Every to-do is checked off.';
+        action = '<button class="text-btn" type="button" data-all>Show all notes</button>';
+      } else {
+        msg = `No notes are tagged #${esc(filter.slice(4))} any more.`;
+        action = '<button class="text-btn" type="button" data-all>Show all notes</button>';
+      }
+      list.innerHTML = `<li class="empty"><p>${msg}</p>${action}</li>`;
+    } else {
+      list.innerHTML = arr.map(n =>
+        `<li><button class="row" type="button" data-id="${n.id}"${n.id === currentId ? ' aria-current="true"' : ''}>` +
+        `<span class="row-t">${n.title.trim() ? hl(n.title) : '<em>Untitled</em>'}</span>` +
+        `<span class="row-d">${esc(n.when)}</span>` +
+        `<span class="row-s">${snippet(n)}</span></button></li>`).join('');
+    }
+    if (query) {
+      status.hidden = false;
+      status.textContent = `${arr.length} ${arr.length === 1 ? 'note matches' : 'notes match'}`;
+    } else {
+      status.hidden = true;
+    }
+    if (focusId) { const r = list.querySelector(`[data-id="${focusId}"]`); if (r) r.focus(); }
+  }
+
+  function renderFoot() {
+    const n = cur();
+    const out = [...new Set(linksOf(n).map(t => t.trim()))];
+    const inc = notes.filter(m => m !== n && n.title.trim() &&
+      linksOf(m).some(t => t.trim().toLowerCase() === n.title.trim().toLowerCase()));
+    let html = '';
+    if (out.length) html += `<div class="foot-row"><span class="foot-l">Links to</span>${out.map(t =>
+      `<button class="chip-link" type="button" data-to="${esc(t)}">${esc(t)}</button>`).join('')}</div>`;
+    if (inc.length) html += `<div class="foot-row"><span class="foot-l">Linked from</span>${inc.map(m =>
+      `<button class="chip-link" type="button" data-id="${m.id}">${esc(m.title)}</button>`).join('')}</div>`;
+    foot.innerHTML = html;
+    foot.hidden = !html;
+  }
+
+  function refreshLinkState() {
+    body.querySelectorAll('.link').forEach(a => a.classList.toggle('missing', !byTitle(a.dataset.to)));
+  }
+  function updateEmpty() {
+    const first = body.firstElementChild;
+    body.classList.toggle('is-empty', body.children.length <= 1 && !body.textContent.trim() &&
+      (!first || first.dataset.t === 'p'));
+  }
+
+  const canHighlight = !!(window.CSS && CSS.highlights && window.Highlight);
+  function updateHighlights() {
+    if (!canHighlight) return;
+    CSS.highlights.delete('found');
+    if (!query) return;
+    const ranges = [];
+    [title, body].forEach(root => {
+      const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      let t;
+      while ((t = w.nextNode())) {
+        const lo = t.data.toLowerCase(); let i = 0, j;
+        while ((j = lo.indexOf(query, i)) !== -1) {
+          const r = new Range(); r.setStart(t, j); r.setEnd(t, j + query.length); ranges.push(r);
+          i = j + query.length;
+        }
+      }
+    });
+    if (ranges.length) CSS.highlights.set('found', new Highlight(...ranges));
+  }
+
+  function open(id, opts = {}) {
+    const n = byId(id); if (!n) return;
+    currentId = id;
+    title.textContent = n.title;
+    body.innerHTML = n.body;
+    meta.textContent = `Edited ${n.whenLong}`;
+    refreshLinkState(); updateEmpty(); renderList(); renderFoot(); updateHighlights();
+    paneEd.querySelector('.ed-scroll').scrollTop = 0;
+    if (opts.view) {
+      app.dataset.view = 'note';
+      if (narrow.matches && !opts.focus) $('#back').focus({ preventScroll: true });
+    }
+    if (opts.focus === 'title') { title.focus(); placeCaret(title, true); }
+    if (opts.focus === 'body') { body.focus(); placeCaret(body.lastElementChild || body, true); }
+  }
+
+  function save() {
+    const n = cur();
+    n.title = title.textContent;
+    n.body = body.innerHTML;
+    n.when = 'Now'; n.whenLong = 'just now';
+    if (!touched.has(n.id)) {
+      touched.add(n.id);
+      notes.splice(notes.indexOf(n), 1); notes.unshift(n);
+    }
+    meta.textContent = 'Edited just now';
+    refreshLinkState(); updateEmpty(); renderSidebar(); renderList(); renderFoot(); updateHighlights();
+  }
+
+  function newNote(t = '', focus = 'title') {
+    const n = { id: 'n' + Date.now(), title: t, when: 'Now', whenLong: 'just now', body: B('p', '<br>') };
+    notes.unshift(n); touched.add(n.id);
+    filter = 'all'; setQuery('');
+    renderSidebar();
+    open(n.id, { view: true, focus });
+  }
+  function openByTitle(t) {
+    const n = byTitle(t);
+    if (n) open(n.id, { view: true });
+    else newNote(t.trim(), 'body');
+  }
+
+  /* ---------- search ---------- */
+  function setQuery(v, { follow = true } = {}) {
+    if (qInput.value !== v) qInput.value = v;
+    query = v.trim().toLowerCase();
+    document.querySelectorAll('.q').forEach(b => b.setAttribute('aria-pressed', String(!!query && b.dataset.q === query)));
+    renderList();
+    if (follow && query) {
+      const arr = visible();
+      if (arr.length && !arr.includes(cur())) open(arr[0].id);
+    }
+    updateHighlights();
+  }
+  let announceTimer;
+  qInput.addEventListener('input', () => {
+    setQuery(qInput.value);
+    clearTimeout(announceTimer);
+    announceTimer = setTimeout(() => { if (query) announce(status.textContent); }, 500);
+  });
+  qInput.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && qInput.value) { e.preventDefault(); setQuery(''); }
+    if (e.key === 'ArrowDown') { const r = list.querySelector('.row'); if (r) { e.preventDefault(); r.focus(); } }
+  });
+
+  /* ---------- caret helpers ---------- */
+  const editableText = root => document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: n => n.parentElement.closest('[contenteditable="false"]') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT
+  });
+  function placeCaret(node, atEnd) {
+    const r = document.createRange();
+    const w = editableText(node);
+    let t = w.nextNode(), last = null;
+    if (!atEnd) { if (t) r.setStart(t, 0); else r.setStart(node, 0); }
+    else {
+      while (t) { last = t; t = w.nextNode(); }
+      if (last) r.setStart(last, last.length);
+      else r.setStart(node, node.lastChild && node.lastChild.nodeName === 'BR' ? node.childNodes.length - 1 : node.childNodes.length);
+    }
+    r.collapse(true);
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+  function caret() {
+    const s = getSelection();
+    if (!s.rangeCount) return null;
+    const r = s.getRangeAt(0);
+    return body.contains(r.startContainer) ? r : null;
+  }
+  function blockOf(node) {
+    while (node && node.parentNode !== body) node = node.parentNode;
+    return node && node.nodeType === 1 ? node : null;
+  }
+  function textBeforeCaret(b, r) {
+    const pre = document.createRange(); pre.setStart(b, 0); pre.setEnd(r.startContainer, r.startOffset);
+    return pre;
+  }
+  function ensureFilled(el) {
+    el.querySelectorAll('.tag, .link').forEach(x => { if (!x.textContent) x.remove(); });
+    if (!el.textContent && !el.querySelector('br')) el.appendChild(document.createElement('br'));
+  }
+  function keepCaret(fn) {
+    const s = getSelection();
+    const a = s.rangeCount ? [s.anchorNode, s.anchorOffset] : null;
+    fn();
+    if (a && a[0] && a[0].isConnected) { try { s.collapse(a[0], a[0].nodeType === 3 ? Math.min(a[1], a[0].length) : a[1]); } catch (_) {} }
+  }
+
+  /* ---------- editor behaviour ---------- */
+  function normalize() {
+    keepCaret(() => {
+      let group = null;
+      [...body.childNodes].forEach(n => {
+        if (n.nodeType === 1 && n.tagName === 'DIV') { group = null; if (!n.dataset.t) n.dataset.t = 'p'; return; }
+        if (n.nodeType === 3 && !n.data.length) return;
+        if (!group) { group = document.createElement('div'); group.dataset.t = 'p'; body.insertBefore(group, n); }
+        group.appendChild(n);
+      });
+      if (!body.firstElementChild) {
+        const d = document.createElement('div'); d.dataset.t = 'p'; d.appendChild(document.createElement('br'));
+        body.appendChild(d); placeCaret(d, false);
+      }
+      body.querySelectorAll('span.tag').forEach(sp => {
+        if (!/^#[A-Za-z][\w-]*$/.test(sp.textContent)) { while (sp.firstChild) sp.before(sp.firstChild); sp.remove(); }
+      });
+    });
+  }
+
+  const blockRules = { '# ': 'h', '- ': 'bullet', '* ': 'bullet', '[] ': 'todo', '[ ] ': 'todo' };
+  function applyBlockRule() {
+    const r = caret(); if (!r || !r.collapsed) return false;
+    const b = blockOf(r.startContainer); if (!b || !(b.dataset.t === 'p' || b.dataset.t === 'bullet')) return false;
+    const pre = textBeforeCaret(b, r);
+    const type = blockRules[pre.toString().replace(/ /g, ' ')];
+    if (!type || (b.dataset.t === 'bullet' && type !== 'todo')) return false;
+    pre.deleteContents();
+    b.dataset.t = type; b.removeAttribute('data-done');
+    ensureFilled(b); placeCaret(b, false);
+    return true;
+  }
+  function applyTagRule() {
+    const r = caret(); if (!r || !r.collapsed) return false;
+    const n = r.startContainer; if (n.nodeType !== 3 || n.parentElement.closest('.tag, .link')) return false;
+    const m = /(^|[\s ])(#[A-Za-z][\w-]{0,40})[\s ]$/.exec(n.data.slice(0, r.startOffset));
+    if (!m) return false;
+    const start = m.index + m[1].length;
+    const rr = document.createRange(); rr.setStart(n, start); rr.setEnd(n, start + m[2].length);
+    const span = document.createElement('span'); span.className = 'tag';
+    rr.surroundContents(span);
+    const next = span.nextSibling;
+    if (next && next.nodeType === 3) getSelection().collapse(next, 1);
+    return true;
+  }
+  function applyLinkRule() {
+    const r = caret(); if (!r || !r.collapsed) return false;
+    const n = r.startContainer; if (n.nodeType !== 3 || n.parentElement.closest('.tag, .link')) return false;
+    const m = /\[\[([^\[\]]{1,60})\]\]$/.exec(n.data.slice(0, r.startOffset));
+    if (!m || !m[1].trim()) return false;
+    const rr = document.createRange(); rr.setStart(n, m.index); rr.setEnd(n, r.startOffset);
+    rr.deleteContents();
+    const tmp = frag(link(m[1].trim())).firstChild;
+    rr.insertNode(tmp);
+    const sp = document.createTextNode(' ');
+    tmp.after(sp);
+    getSelection().collapse(sp, 1);
+    return true;
+  }
+
+  function splitBlock() {
+    const s = getSelection(); if (!s.rangeCount) return;
+    let r = s.getRangeAt(0);
+    if (!r.collapsed) { r.deleteContents(); r = s.getRangeAt(0); }
+    let b = blockOf(r.startContainer);
+    if (!b) { normalize(); r = s.getRangeAt(0); b = blockOf(r.startContainer); if (!b) return; }
+    const t = b.dataset.t, listy = t === 'bullet' || t === 'todo';
+    if (listy && !b.textContent.trim()) { b.dataset.t = 'p'; b.removeAttribute('data-done'); return; }
+    const tail = document.createRange();
+    tail.setStart(r.startContainer, r.startOffset);
+    tail.setEnd(b, b.childNodes.length);
+    const rest = tail.extractContents();
+    const nb = document.createElement('div');
+    nb.dataset.t = listy ? t : 'p';
+    nb.appendChild(rest);
+    ensureFilled(b); ensureFilled(nb);
+    b.after(nb);
+    placeCaret(nb, false);
+    const sc = paneEd.querySelector('.ed-scroll');
+    const nr = nb.getBoundingClientRect(), sr = sc.getBoundingClientRect();
+    if (nr.bottom > sr.bottom - 16) sc.scrollTop += nr.bottom - sr.bottom + 40;
+  }
+  function atBlockStart() {
+    const r = caret(); if (!r || !r.collapsed) return null;
+    const b = blockOf(r.startContainer); if (!b) return null;
+    const pre = textBeforeCaret(b, r);
+    return pre.toString() === '' && !pre.cloneContents().querySelector('.tag, .link') ? b : null;
+  }
+  function toggleTodo(b) {
+    if (b.hasAttribute('data-done')) b.removeAttribute('data-done'); else b.setAttribute('data-done', '');
+    const done = b.hasAttribute('data-done');
+    save();
+    announce(`${done ? 'Checked' : 'Unchecked'}: ${b.textContent.trim() || 'to-do'}`);
+  }
+
+  body.addEventListener('beforeinput', e => {
+    if (e.inputType === 'insertParagraph') { e.preventDefault(); splitBlock(); save(); }
+  });
+  body.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      const r = caret(); const b = r && blockOf(r.startContainer);
+      if (b && b.dataset.t === 'todo') toggleTodo(b);
+      return;
+    }
+    if (e.key === 'Backspace') {
+      const b = atBlockStart();
+      if (b && b.dataset.t !== 'p') { e.preventDefault(); b.dataset.t = 'p'; b.removeAttribute('data-done'); save(); }
+    }
+  });
+  body.addEventListener('input', () => {
+    normalize();
+    const r = caret();
+    if (r && r.collapsed && r.startContainer.nodeType === 3 && r.startOffset > 0) {
+      const ch = r.startContainer.data[r.startOffset - 1];
+      if (ch === ' ' || ch === ' ') { applyBlockRule() || applyTagRule(); }
+      else if (ch === ']') applyLinkRule();
+    }
+    save();
+  });
+  // to-do boxes: a click in the box area toggles without moving the caret
+  const inBox = (e) => {
+    const b = e.target.closest && e.target.closest('[data-t="todo"]');
+    if (!b || b.parentNode !== body) return null;
+    const rect = b.getBoundingClientRect();
+    return (e.clientX - rect.left < 30 && e.clientY - rect.top < 30) ? b : null;
+  };
+  body.addEventListener('mousedown', e => { if (inBox(e)) e.preventDefault(); });
+  body.addEventListener('click', e => {
+    const a = e.target.closest('.link');
+    if (a) { e.preventDefault(); openByTitle(a.dataset.to); return; }
+    const b = inBox(e);
+    if (b) toggleTodo(b);
+  });
+  body.addEventListener('mousemove', e => { body.style.cursor = inBox(e) ? 'pointer' : ''; });
+
+  title.addEventListener('beforeinput', e => {
+    if (e.inputType === 'insertParagraph' || e.inputType === 'insertLineBreak') {
+      e.preventDefault(); body.focus(); placeCaret(body.firstElementChild || body, false);
+    }
+  });
+  title.addEventListener('input', () => { if (!title.textContent) title.innerHTML = ''; save(); });
+
+  [title, body].forEach(el => {
+    el.addEventListener('paste', e => {
+      e.preventDefault();
+      let t = (e.clipboardData || window.clipboardData).getData('text/plain') || '';
+      if (el === title) t = t.replace(/\s+/g, ' ');
+      document.execCommand('insertText', false, t);
+    });
+    el.addEventListener('drop', e => e.preventDefault());
+  });
+
+  /* ---------- app chrome events ---------- */
+  side.addEventListener('click', e => {
+    const b = e.target.closest('.flt'); if (!b) return;
+    filter = b.dataset.f;
+    renderSidebar(); renderList();
+    const arr = visible();
+    if (arr.length && !arr.includes(cur()) && !narrow.matches) open(arr[0].id);
+  });
+  list.addEventListener('click', e => {
+    const row = e.target.closest('.row');
+    if (row) { open(row.dataset.id, { view: true }); return; }
+    const c = e.target.closest('[data-create]');
+    if (c) { newNote(c.dataset.create, 'body'); return; }
+    if (e.target.closest('[data-all]')) { filter = 'all'; renderSidebar(); renderList(); }
+  });
+  list.addEventListener('keydown', e => {
+    const row = e.target.closest('.row'); if (!row) return;
+    const rows = [...list.querySelectorAll('.row')]; const i = rows.indexOf(row);
+    if (e.key === 'ArrowDown' && rows[i + 1]) { e.preventDefault(); rows[i + 1].focus(); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); (rows[i - 1] || qInput).focus(); }
+  });
+  foot.addEventListener('click', e => {
+    const b = e.target.closest('.chip-link'); if (!b) return;
+    if (b.dataset.id) open(b.dataset.id, { view: true }); else openByTitle(b.dataset.to);
+  });
+  $('#new').addEventListener('click', () => newNote(''));
+  $('#back').addEventListener('click', () => {
+    app.dataset.view = 'list';
+    const r = list.querySelector(`[data-id="${currentId}"]`);
+    if (r) r.focus(); else qInput.focus();
+  });
+
+  function showApp() {
+    const r = app.getBoundingClientRect();
+    if (r.top < 0 || r.bottom > innerHeight) {
+      app.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: r.height + 48 < innerHeight ? 'center' : 'start' });
+    }
+  }
+  document.querySelectorAll('.q').forEach(b => b.addEventListener('click', () => {
+    filter = 'all'; renderSidebar();
+    if (narrow.matches) app.dataset.view = 'list';
+    setQuery(b.dataset.q);
+    showApp();
+  }));
+  $('#try-new').addEventListener('click', () => { newNote('Trying shortcuts', 'body'); showApp(); });
+  $('#open-linked').addEventListener('click', () => {
+    filter = 'all'; setQuery(''); renderSidebar();
+    open('plumber', { view: true });
+    showApp();
+  });
+
+  document.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && !e.altKey && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      if (narrow.matches) app.dataset.view = 'list';
+      qInput.focus(); qInput.select();
+      showApp();
+    }
+  });
+
+  /* ---------- platform labels ---------- */
+  const isMac = /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent);
+  document.querySelectorAll('[data-mod]').forEach(el => { el.textContent = isMac ? '⌘' : 'Ctrl'; });
+
+  /* ---------- link diagram ---------- */
+  const minis = $('#minis'), svg = $('#connector');
+  function drawConnector() {
+    const a = $('#mini-link'), b = $('#mini-back');
+    const cols = getComputedStyle(minis).gridTemplateColumns.split(' ').length;
+    if (cols < 2) { svg.innerHTML = ''; return; }
+    const o = minis.getBoundingClientRect(), ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+    const x1 = ra.right - o.left + 6, y1 = ra.top + ra.height / 2 - o.top;
+    const card = b.closest('.mini').getBoundingClientRect();
+    const x2 = card.left - o.left, y2 = rb.top + rb.height / 2 - o.top;
+    const dx = Math.max(40, (x2 - x1) * 0.5);
+    svg.setAttribute('viewBox', `0 0 ${o.width} ${o.height}`);
+    svg.setAttribute('width', o.width); svg.setAttribute('height', o.height);
+    svg.innerHTML = `<path d="M${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}"/>` +
+      `<circle cx="${x1}" cy="${y1}" r="3.5"/><circle cx="${x2}" cy="${y2}" r="3.5"/>`;
+  }
+  if ('ResizeObserver' in window) new ResizeObserver(drawConnector).observe(minis);
+  document.fonts && document.fonts.ready.then(drawConnector);
+  addEventListener('resize', drawConnector);
+
+  /* ---------- start ---------- */
+  renderSidebar();
+  open('plumber');
+  app.dataset.view = 'list';
+  drawConnector();
+})();
+</script>
+</body>
+</html>
