@@ -403,8 +403,16 @@
     .rod li { width: 26px; height: 26px; }
     .hint-blocks .sign { padding-bottom: 30px; }
     .regroup { gap: 8px; }
+    .sheet, .board.mini .sheet { grid-template-columns: 40px 1fr; align-items: start; padding: 16px; gap: 12px; }
+    .sheet-icon, .board.mini .sheet-icon { width: 40px; height: 40px; }
+    .sheet-icon svg, .board.mini .sheet-icon svg { width: 24px; height: 24px; }
+    .sheet-title { font-size: 23px; }
   }
   @media (max-width: 400px) {
+    .mode { grid-template-columns: 76px minmax(0, 1fr); column-gap: 12px; padding: 12px 46px 12px 12px; }
+    .mode-art { height: 64px; }
+    .mode-name { font-size: 25px; }
+    .mode-tick { right: 12px; width: 28px; height: 28px; }
     .home-btn .label-word { display: none; }
     .home-btn { padding: 0 14px; }
     .rod li { width: 24px; height: 24px; }
@@ -863,11 +871,21 @@
     state.tries = 0; state.solved = false;
   }
 
-  function showSheet(kind, title, body, extra, actions) {
+  function regroupHTML(ao, bo) {
+    var sum = ao + bo;
+    function g(n, cap) { return '<div class="num-group"><span class="blocks">' + blocksSVG(n, 0.6) + '</span><span class="num-cap">' + cap + "</span></div>"; }
+    return '<div class="regroup" aria-hidden="true">' +
+      g(ao, '<span class="o">' + ao + (ao === 1 ? " one" : " ones") + "</span>") + '<span class="sign">+</span>' +
+      g(bo, '<span class="o">' + bo + (bo === 1 ? " one" : " ones") + "</span>") + '<span class="sign">=</span>' +
+      g(sum, '<span class="t">1 ten</span> <span class="o">' + (sum - 10) + (sum - 10 === 1 ? " one" : " ones") + "</span>") + "</div>";
+  }
+
+  function showSheet(kind, title, body, extra, actions, below) {
     sheetEl.className = "sheet " + kind + (reduceMotion ? "" : " enter");
     sheetEl.innerHTML =
       '<span class="sheet-icon" aria-hidden="true"><svg><use href="#' + (kind === "right" ? "i-check" : "i-retry") + '"/></svg></span>' +
       '<div><p class="sheet-title">' + title + '</p><p class="sheet-body">' + body + "</p>" + (extra || "") + "</div>" +
+      (below || "") +
       '<div class="sheet-actions">' + actions + "</div>";
     var primary = sheetEl.querySelector("[data-primary]");
     if (primary) primary.focus({ preventScroll: true });
@@ -907,8 +925,12 @@
       btn.querySelector(".mark").innerHTML = '<svg><use href="#i-cross"/></svg>';
       btn.setAttribute("aria-label", v + ", not right");
       var hintAction = hintEl.hidden ? '<button class="block block-plain label-word" type="button" data-act="hint"><svg aria-hidden="true"><use href="#i-blocks"/></svg> Show blocks</button>' : "";
+      var ao = p.a % 10, bo = p.b % 10, d = v - p.answer;
+      var showRegroup = p.op === "+" && ao + bo >= 10 && (d === -10 || Math.abs(d) === 1);
+      helperEl.hidden = true;
       showSheet("wrong", "Not yet. Try again!", explainWrong(p, v), "",
-        hintAction + '<button class="block block-go label-word" type="button" data-primary data-act="retry"><svg aria-hidden="true"><use href="#i-retry"/></svg> Try again</button>');
+        hintAction + '<button class="block block-go label-word" type="button" data-primary data-act="retry"><svg aria-hidden="true"><use href="#i-retry"/></svg> Try again</button>',
+        showRegroup ? regroupHTML(ao, bo) : "");
     }
   }
 
@@ -918,6 +940,7 @@
     var act = b.getAttribute("data-act");
     if (act === "retry" || act === "hint") {
       sheetEl.className = "sheet"; sheetEl.innerHTML = "";
+      helperEl.hidden = false;
       if (act === "hint") { setHint(true); hintEl.scrollIntoView({ block: "nearest", behavior: reduceMotion ? "auto" : "smooth" }); }
       var first = answersEl.querySelector(".answer:not(:disabled)");
       if (first) first.focus({ preventScroll: act === "hint" });

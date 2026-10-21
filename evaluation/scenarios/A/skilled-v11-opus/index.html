@@ -67,7 +67,7 @@ body{
 }
 a{color:inherit}
 p{margin:0}
-h1,h2,h3{margin:0;font-weight:600;font-stretch:118%;letter-spacing:-.015em;line-height:1.08}
+h1,h2,h3{margin:0;font-weight:600;font-stretch:118%;letter-spacing:-.015em;line-height:1.08;text-wrap:balance}
 .mono{font-family:var(--mono);font-stretch:87.5%;font-variant-numeric:tabular-nums}
 .num{font-variant-numeric:tabular-nums}
 .wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gutter)}
@@ -86,8 +86,8 @@ h1,h2,h3{margin:0;font-weight:600;font-stretch:118%;letter-spacing:-.015em;line-
 .btn-primary{background:var(--accent);color:var(--accent-ink)}
 .btn-primary:hover{background:var(--accent-hover)}
 .btn-primary:active{background:#7bbcf0}
-.btn-line{border-color:#38404b;color:var(--text);background:transparent}
-.btn-line:hover{background:var(--raised);border-color:#4a5360}
+.btn-line{border-color:#4d5663;color:var(--text);background:transparent}
+.btn-line:hover{background:var(--raised);border-color:#67717d}
 .btn-line:active{background:var(--surface)}
 .btn-sm{min-height:40px;padding:0 16px}
 .textlink{text-decoration:underline;text-decoration-color:rgba(140,203,255,.6);text-underline-offset:4px;text-decoration-thickness:1px;transition:text-decoration-color .18s}
@@ -195,13 +195,13 @@ table.rules{width:100%;border-collapse:collapse;font-size:15px}
 .field{display:inline-flex;align-items:center;gap:8px;color:var(--muted)}
 .field input,.field select{
   font:inherit;font-family:var(--mono);font-stretch:87.5%;font-size:15px;color:var(--text);background:var(--bg);
-  border:1px solid #38404b;border-radius:4px;height:40px;padding:0 10px;transition:border-color .18s;
+  border:1px solid #67717d;border-radius:4px;height:40px;padding:0 10px;transition:border-color .18s;
 }
 .field input{width:96px;font-variant-numeric:tabular-nums;text-align:right}
 .field select{font-family:var(--display);font-stretch:100%;padding-right:30px;appearance:none;-webkit-appearance:none;
   background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
   background-position:right 14px top 17px,right 9px top 17px;background-size:5px 5px,5px 5px;background-repeat:no-repeat;min-width:140px}
-.field input:hover,.field select:hover{border-color:#4f5966}
+.field input:hover,.field select:hover{border-color:#8d97a3}
 .field input:focus-visible,.field select:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
 .field input[aria-invalid="true"]{border-color:var(--red)}
 .gauge{position:relative;height:6px;width:100%;min-width:140px;background:var(--raised);border-radius:2px;margin:6px 0 10px}
@@ -292,6 +292,22 @@ table.rules{width:100%;border-collapse:collapse;font-size:15px}
   .nav{gap:20px}
 }
 
+/* ---------- Alert rules restack (tablet and phone) ---------- */
+@media (max-width: 960px){
+  table.rules,table.rules tbody,table.rules tr,table.rules th,table.rules td{display:block}
+  table.rules thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  table.rules tr{display:grid;grid-template-columns:1fr 1fr;gap:14px 32px;padding:20px 24px;border-bottom:1px solid var(--line-soft)}
+  table.rules tbody tr:last-child{border-bottom:0}
+  .rules th,.rules td{padding:0;border:0}
+  .rules td.c-p95{text-align:right}
+  .rules td.c-thr .field,.rules td.c-dest .field{display:flex;justify-content:space-between;width:100%}
+  .rules td.c-thr .field::before{content:"Alert when p95 is above";color:var(--muted);margin-right:auto}
+  .rules td.c-dest .field::before{content:"Send to";color:var(--muted);margin-right:auto}
+  .rules td.c-p95::before{content:"p95 ";color:var(--muted);font-family:var(--display);font-stretch:100%}
+  .rules td.c-status{grid-column:1 / -1}
+  .gauge{min-width:0}
+}
+
 /* ---------- Phone ---------- */
 @media (max-width: 760px){
   :root{--gutter:16px}
@@ -325,20 +341,8 @@ table.rules{width:100%;border-collapse:collapse;font-size:15px}
   .section-head{margin-bottom:28px}
   h2,.section-head h2,.closing h2{font-size:28px}
   .section-head h2,.section-head p{grid-column:1 / -1}
-
-  table.rules,table.rules tbody,table.rules tr,table.rules th,table.rules td{display:block}
-  table.rules thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-  table.rules tr{display:grid;grid-template-columns:1fr auto;gap:12px 12px;padding:18px 16px;border-bottom:1px solid var(--line-soft)}
-  table.rules tbody tr:last-child{border-bottom:0}
-  .rules th,.rules td{padding:0;border:0}
-  .rules td.c-p95{text-align:right}
   .rules td.c-thr,.rules td.c-dest{grid-column:1 / -1}
-  .rules td.c-thr .field,.rules td.c-dest .field{display:flex;justify-content:space-between;width:100%}
-  .rules td.c-thr .field::before{content:"Alert when p95 is above";color:var(--muted)}
-  .rules td.c-dest .field::before{content:"Send to";color:var(--muted)}
-  .rules td.c-p95::before{content:"p95 ";color:var(--muted);font-family:var(--display);font-stretch:100%}
-  .rules td.c-status{grid-column:1 / -1}
-  .gauge{min-width:0}
+  table.rules tr{padding:18px 16px}
 
   .band{margin-top:88px}
   .install{padding:64px 0}
@@ -693,6 +697,23 @@ table.rules{width:100%;border-collapse:collapse;font-size:15px}
   let current = 'checkout';
   let geom = null;
 
+  // Size the deploy flag to its text; the incident label shares the flag row,
+  // so shorten or hide it rather than let it collide with the flag.
+  function fitLabels() {
+    if (!geom) return;
+    try {
+      const tw = svg.querySelector('#flag-tx').getComputedTextLength();
+      svg.querySelector('#flag-bg').setAttribute('width', (tw + 14).toFixed(1));
+      const il = svg.querySelector('#inc-label');
+      if (!il) return;
+      const room = geom.x(INC[1]) - (geom.x(DEPLOY) + tw + 14) - 10;
+      il.style.display = '';
+      il.textContent = 'Incident 08:12–08:47';
+      if (il.getComputedTextLength() > room) il.textContent = '08:12–08:47';
+      if (il.getComputedTextLength() > room) il.style.display = 'none';
+    } catch (e) {}
+  }
+
   function pathFrom(arr, x, y) {
     return arr.map((v, i) => (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(v).toFixed(1)).join('');
   }
@@ -785,18 +806,7 @@ table.rules{width:100%;border-collapse:collapse;font-size:15px}
     </g>`;
 
     svg.innerHTML = `<title id="chart-desc"></title>` + g;
-    const flagTx = svg.querySelector('#flag-tx');
-    try {
-      const tw = flagTx.getComputedTextLength();
-      svg.querySelector('#flag-bg').setAttribute('width', (tw + 14).toFixed(1));
-      // incident label shares the flag row; shorten or drop it rather than collide with the flag
-      const il = svg.querySelector('#inc-label');
-      if (il) {
-        const room = x(INC[1]) - (xd + tw + 14) - 10;
-        if (il.getComputedTextLength() > room) il.textContent = '08:12–08:47';
-        if (il.getComputedTextLength() > room) il.remove();
-      }
-    } catch (e) {}
+    fitLabels();
 
     svg.querySelector('#chart-desc').textContent = ep.incident
       ? `Latency and 5xx rate for ${ep.method} ${ep.path}, Oct 14, 07:40 to 09:20. Deploy #4821 is marked at 08:12. During the incident from 08:12 to 08:47, p95 and p99 latency rise and the 5xx rate climbs well above its baseline, then both return to normal.`
@@ -854,7 +864,7 @@ table.rules{width:100%;border-collapse:collapse;font-size:15px}
       incident.innerHTML = `<span class="sev" aria-hidden="true"></span><div><strong>Elevated 5xx on /v1/checkout</strong><span class="meta">Oct 14, 08:12–08:47, 35 min. Caused by <span class="mono">deploy #4821</span>.</span></div>`;
     } else {
       incident.className = 'incident calm';
-      incident.innerHTML = `<span class="sev" aria-hidden="true"></span><div><strong>No incident on ${ep.method} ${ep.path} in this window</strong><span class="meta"><span class="mono">deploy #4821</span> is marked for reference.</span></div>`;
+      incident.innerHTML = `<span class="sev" aria-hidden="true"></span><div><strong>No incident on ${ep.method} ${ep.path} in this window</strong><span class="meta">Marked for reference: <span class="mono">deploy #4821</span>.</span></div>`;
     }
     render(key, 'switch');
   }
@@ -878,7 +888,13 @@ table.rules{width:100%;border-collapse:collapse;font-size:15px}
     lastW = w;
     render(current, first ? 'intro' : false);
   });
-  ro.observe(wrap);
+  // First draw waits for the fonts (labels are measured), but never longer than 1.5 s.
+  let started = false;
+  const start = () => { if (!started) { started = true; ro.observe(wrap); } };
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => { if (started) fitLabels(); else start(); });
+  }
+  setTimeout(start, 1500);
 
   /* ---------- Alert thresholds ---------- */
   document.querySelectorAll('table.rules tbody tr').forEach(row => {
