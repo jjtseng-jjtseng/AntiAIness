@@ -360,14 +360,14 @@
       "textEls": 59,
       "tiny": 0,
       "under12": 0,
-      "distinctSizes": 12,
+      "distinctSizes": 8,
       "sizes": [
-        "18px×12",
-        "32px×10",
+        "18px×16",
+        "28px×13",
+        "22px×9",
         "16px×7",
-        "22px×6",
-        "52px×5",
-        "20px×4"
+        "40px×6",
+        "56px×4"
       ],
       "families": [
         "Andika×46",
@@ -387,10 +387,8 @@
       "blurs": 0,
       "distinctRadii": 13,
       "overflowX": false,
-      "height": 2453,
-      "notes": [
-        "12 distinct font sizes. A scale of 5–7 reads as designed."
-      ]
+      "height": 2424,
+      "notes": []
     }
   },
   "D-baseline": {
