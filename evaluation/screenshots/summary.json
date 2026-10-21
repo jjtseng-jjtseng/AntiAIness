@@ -758,6 +758,45 @@
       "notes": []
     }
   },
+  "E-skilled-v12-opus": {
+    "errors": [],
+    "audit": {
+      "textEls": 148,
+      "tiny": 0,
+      "under12": 0,
+      "distinctSizes": 7,
+      "sizes": [
+        "15px×76",
+        "17px×28",
+        "20px×18",
+        "13px×11",
+        "26px×8",
+        "40px×5"
+      ],
+      "families": [
+        "Nunito Sans×141",
+        "Gelasio×7"
+      ],
+      "h1": {
+        "text": "Websites for local businesses and community projects, built around what visitors",
+        "size": "58px",
+        "family": "\"Nunito Sans\""
+      },
+      "glyphTotal": 0,
+      "eyebrows": 0,
+      "accentWords": "1/8",
+      "cardGrids": 0,
+      "grads": 0,
+      "glows": 0,
+      "blurs": 0,
+      "distinctRadii": 7,
+      "overflowX": false,
+      "height": 5538,
+      "notes": [
+        "Some paragraphs run ~178 characters per line. Keep running text at 45–90."
+      ]
+    }
+  },
   "F-baseline": {
     "errors": [],
     "audit": {
