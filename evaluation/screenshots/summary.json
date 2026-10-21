@@ -191,14 +191,14 @@
       "accentWords": "0/5",
       "cardGrids": 1,
       "grads": 0,
-      "glows": 14,
+      "glows": 0,
       "blurs": 0,
       "distinctRadii": 4,
       "overflowX": false,
       "height": 1187,
       "notes": [
         "6 ornament glyphs in visible text (·6). Arrows-after-links and ✳/✦ ornaments are a known tell.",
-        "14 glow-style shadows (0 0 Npx). Only things that emit light should glow."
+        "Primary face is IBM Plex Sans, a frequent reflex pick for generated UIs. Fine if chosen for this product; make sure the direction card says why."
       ]
     }
   },
@@ -235,7 +235,9 @@
       "distinctRadii": 2,
       "overflowX": false,
       "height": 1041,
-      "notes": []
+      "notes": [
+        "Primary face is IBM Plex Sans, a frequent reflex pick for generated UIs. Fine if chosen for this product; make sure the direction card says why."
+      ]
     }
   },
   "C-baseline": {
@@ -420,7 +422,7 @@
       "accentWords": "2/3",
       "cardGrids": 0,
       "grads": 2,
-      "glows": 18,
+      "glows": 0,
       "blurs": 0,
       "distinctRadii": 0,
       "overflowX": false,
@@ -431,7 +433,6 @@
         "h1 is 72px while most text is small: poster-scale contrast. Bring display and body closer.",
         "9 ornament glyphs in visible text (·5 ↑2 ↓2). Arrows-after-links and ✳/✦ ornaments are a known tell.",
         "2/3 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all.",
-        "18 glow-style shadows (0 0 Npx). Only things that emit light should glow.",
         "24 uppercase text elements. Tracked-caps micro-labels as the universal label style is a tell."
       ]
     }
@@ -463,14 +464,13 @@
       "accentWords": "3/4",
       "cardGrids": 0,
       "grads": 1,
-      "glows": 15,
+      "glows": 0,
       "blurs": 0,
       "distinctRadii": 0,
       "overflowX": false,
       "height": 2211,
       "notes": [
-        "3/4 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all.",
-        "15 glow-style shadows (0 0 Npx). Only things that emit light should glow."
+        "3/4 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all."
       ]
     }
   },
@@ -711,7 +711,7 @@
       "accentWords": "5/6",
       "cardGrids": 1,
       "grads": 0,
-      "glows": 1,
+      "glows": 0,
       "blurs": 1,
       "distinctRadii": 12,
       "overflowX": false,
@@ -719,7 +719,8 @@
       "notes": [
         "15 distinct font sizes. A scale of 5–7 reads as designed.",
         "5 tracked-uppercase eyebrows directly above headings. Keep only where the label carries a real category.",
-        "5/6 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all."
+        "5/6 h1/h2 use an accent-colored or italic word. Once, for a reason, or not at all.",
+        "Primary face is Manrope, a frequent reflex pick for generated UIs. Fine if chosen for this product; make sure the direction card says why."
       ]
     }
   },
@@ -753,7 +754,7 @@
       "accentWords": "0/7",
       "cardGrids": 0,
       "grads": 0,
-      "glows": 1,
+      "glows": 0,
       "blurs": 0,
       "distinctRadii": 5,
       "overflowX": false,
@@ -795,7 +796,9 @@
       "distinctRadii": 5,
       "overflowX": false,
       "height": 915,
-      "notes": []
+      "notes": [
+        "Primary face is Inter, a frequent reflex pick for generated UIs. Fine if chosen for this product; make sure the direction card says why."
+      ]
     }
   },
   "G-skilled": {
