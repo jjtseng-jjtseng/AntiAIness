@@ -522,5 +522,78 @@
       "height": 3849,
       "notes": []
     }
+  },
+  "G-baseline": {
+    "errors": [],
+    "audit": {
+      "textEls": 29,
+      "tiny": 1,
+      "under12": 1,
+      "distinctSizes": 9,
+      "sizes": [
+        "14px×15",
+        "12px×3",
+        "13px×3",
+        "15px×2",
+        "16px×2",
+        "11px×1"
+      ],
+      "families": [
+        "Inter×27",
+        "Fraunces×2"
+      ],
+      "h1": {
+        "text": "Garden Snake",
+        "size": "41.6px",
+        "family": "Fraunces"
+      },
+      "glyphTotal": 0,
+      "eyebrows": 0,
+      "accentWords": "0/6",
+      "cardGrids": 0,
+      "grads": 0,
+      "glows": 0,
+      "blurs": 1,
+      "distinctRadii": 5,
+      "overflowX": false,
+      "height": 915,
+      "notes": []
+    }
+  },
+  "G-skilled": {
+    "errors": [],
+    "audit": {
+      "textEls": 14,
+      "tiny": 0,
+      "under12": 0,
+      "distinctSizes": 5,
+      "sizes": [
+        "13px×5",
+        "15px×5",
+        "16px×2",
+        "22px×1",
+        "28px×1"
+      ],
+      "families": [
+        "Rubik×13",
+        "Alfa Slab One×1"
+      ],
+      "h1": {
+        "text": "Snake",
+        "size": "28px",
+        "family": "\"Alfa Slab One\""
+      },
+      "glyphTotal": 0,
+      "eyebrows": 0,
+      "accentWords": "0/4",
+      "cardGrids": 0,
+      "grads": 0,
+      "glows": 0,
+      "blurs": 0,
+      "distinctRadii": 4,
+      "overflowX": false,
+      "height": 900,
+      "notes": []
+    }
   }
 }
