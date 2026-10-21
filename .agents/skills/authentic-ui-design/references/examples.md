@@ -1,59 +1,63 @@
 # Worked examples
 
-Direction cards for contrasting briefs, a before/after diagnosis of a real AI-generated page, and what the validation runs taught.
+Three direction cards for contrasting briefs, a before/after diagnosis of a real AI-generated page, and what validation taught.
 
-**These cards illustrate reasoning. Do not reuse their typefaces, colors or layouts.** In validation, an agent given an earlier version of card A copied its font pairing for an unrelated product. The next product should get different answers because it has a different world.
+**These cards illustrate reasoning, not answers.** Do not reuse their type, colors, layouts or memorable things for another product. In validation, agents given cards for products similar to theirs copied the card's choices instead of deciding; the cards below were deliberately chosen from categories you are unlikely to be building, so that only the reasoning transfers. Type is described by its qualities on purpose: pick a face that has those qualities *for your product*.
 
 ## Direction cards
 
-### A. "A sleek, modern, slightly futuristic site for a developer-facing API monitoring tool"
+### 1. "A sleek, slightly futuristic companion app for an electric motorcycle" (mobile)
 
-Brief inferred: engineers, daily, long sessions, desktop, often dark rooms, stress when things are red. Requested: sleek, modern, a bit futuristic, credible. Content: real latency/error series, endpoint names, incident timeline.
-
-```
-Direction: "Live instrument". Credible because it shows real signal; futuristic because the signal is alive.
-Requested character → how it shows: sleek → one large flat product view, few elements, tight display tracking; modern → current type and real UI, no decoration; futuristic → a squared technical display face, a single luminous accent used only on live values, the chart redraws as data arrives, depth from stacked dark surfaces; credible → real units, honest labels, no glow on anything that is not data.
-The memorable thing: the incident chart with the deploy marker standing on the line, large in the hero, its live trace in the accent color.
-Type: a squared or wide technical display face for headings (chosen for its engineered feel), a plain readable sans for body, a monospace with tabular figures only for endpoints and numbers. Sizes 14/16/20/32/52.
-Color: layered blue-black surfaces (three steps), text near-white, one luminous accent for live data and the primary action only (~5% of the page), semantic red for incidents.
-Shape & surface: 4px controls, 8px panels; surfaces separated by tone, borders only inside data views; a soft light falloff behind the live chart is allowed because it is the one thing that "emits".
-Density: marketing-sparse around a working-dense product view.
-Imagery: the product's own views, flat and large.
-Motion: the chart trace draws on load (once) and ticks on update; nothing else moves.
-Voice: terse, specific ("p95 412 ms, +18% vs 7d").
-Conventions kept: pricing table with the recommended plan marked, a closing call to action, sign-in top right.
-```
-
-### B. "A playful, colorful math game for 8-year-olds"
+Brief inferred: owners, a few times a week, outdoors and in garages, phone in one hand, often with gloves; cares about range, charge state, ride history, security. Requested: sleek, slightly futuristic, premium. Content: real battery percentage, estimated range, charging curve, lock state, recent rides.
 
 ```
-Direction: "Paper counting toys". Playful means a consistent toy-box world, not confetti.
-Requested character → how it shows: colorful → five tile colors covering most of the play area; playful → tiles that press and bounce, a mascot with three states; friendly → rounded heavy type, kind copy; trustworthy → a plain note for adults, no ads, no streak pressure.
-The memorable thing: numbers and operators as chunky tactile tiles with a drop shadow that *press* when tapped; every screen is built from the same tiles.
-Type: Fredoka (heavy, rounded, open counters) for everything, 20px minimum, 40–64px for the sum being solved.
-Color: cream board (#fff6e5), five tile colors with roles (ones = yellow, tens = orange, operators = blue, answers = green, mistakes = soft red), ink #2a2440. Chosen for a toy-material feel and clear semantics for a child.
-Shape & surface: 14px radius tiles with a 4px hard shadow; flat board; no gradients.
-Density: one problem per screen; big targets (64px); progress as a row of stars at top.
-Imagery: tile illustrations only; a single friendly mascot that reacts in three states (idle, cheer, hint) with rules.
-Motion: tiles press (80ms), correct answers bounce once, wrong answers wobble once; nothing ambient.
-Voice: short, kind, specific ("Try 7 + 5 again"), never sarcastic.
-Conventions kept: big "Next" button bottom-right, a visible home button, sound toggle.
+Direction: "Instrument cluster in your pocket". The phone continues the bike's dashboard.
+Requested character → how it shows: sleek → one number per screen at large size, generous space, no chrome around it; slightly futuristic → a wide, squared display face for numerals echoing the bike's cluster, a single electric accent reserved for live charge flow, the range arc redraws as charge rises; premium → photography of the actual bike in the owner's color, restrained motion, no badges.
+The memorable thing: the range arc that fills as the bike charges, the same arc the bike's own dashboard shows.
+Type: a wide squared display face for numerals only; a calm humanist sans for everything else; numerals tabular. Body 17px, large numerals 64–96px.
+Color: near-black surfaces in two steps (it is often used in garages at night), the bike's paint color as the secondary accent, one electric accent only on charge flow and the primary action, red only for security alerts.
+Shape & surface: large radii echoing the bike's tank lines on the hero card only; controls simple and flat.
+Density: sparse; one task per screen.
+Imagery: the owner's bike, rendered in its actual color; no lifestyle stock.
+Motion: the arc fills while charging; lock/unlock has a short confirming animation; nothing ambient.
+Voice: short, factual ("142 km left · full by 06:40").
+Conventions kept: tab bar with four items, platform sheets for settings, Face ID for unlock.
 ```
 
-### C. "A serious financial analytics dashboard for portfolio managers"
+### 2. "A warm, quietly luxurious booking site for a 12-room hotel in a converted grain mill"
+
+Brief inferred: couples and small groups planning a weekend, on phones and laptops, comparing a few places; they need to feel the building and see real availability. Requested: warm, luxurious, calm. Content: real room photos, the building's history, a room-by-room price list, an availability calendar.
 
 ```
-Direction: "Ledger". Credibility comes from numbers set correctly.
-Requested character → how it shows: serious → neutral palette, no decoration; information-dense → 32px rows, everything above the fold; credible → limits drawn where they are breached, benchmark beside every return.
-The memorable thing: a dense holdings table with exposure bars inline, sorted by risk contribution, with the day's P&L as the only large number on the screen.
-Type: a sans with true tabular numerals and a slightly condensed width for dense columns (12/13/14/18/28); no mono (a ledger, not a terminal).
-Color: white surfaces, hairline #d9dde3 borders, text #1b1f24; accent navy #1f3a5f for selection and links only; semantic green/red for up/down with ▲▼ glyphs as the second cue; amber for breaches. Light theme because this is daytime desk work on bright monitors.
-Shape & surface: 2px radius; borders only; no shadows; no cards, panels are regions of one grid.
-Density: analysis-tool dense: 32px rows, 13px numbers, 12px column headers.
-Imagery: none; charts are small multiples with baselines and the comparison (benchmark) drawn in.
-Motion: none beyond hover and sort.
-Voice: nouns the desk uses (NAV, exposure, tracking error); no "insights".
-Conventions kept: red/green, right-aligned numbers, frozen header, export to CSV.
+Direction: "The mill, room by room". Luxury here is the building and the attention, not gold.
+Requested character → how it shows: warm → color sampled from the mill's timber, brick and river light in visible proportion; luxurious → very large photography, a refined high-contrast serif used at a few large sizes, slow page rhythm; calm → no carousels, no countdowns, one action per section.
+The memorable thing: each of the twelve rooms has its own page section with its real photo, its floor-plan sketch, and its own name; booking starts from the room, not from a generic form.
+Type: a high-contrast serif for room names and headlines only (chosen because the mill's original signage is lettered); a quiet sans for prices, dates and forms. Body 18px.
+Color: timber brown as text, brick as the accent for actions, river grey for surfaces; white space is warm, not cream-by-reflex (sampled from the plaster).
+Shape & surface: square photo edges; thin rules; no cards.
+Density: sparse but full: every section has a real room, a real price, a real date.
+Imagery: the actual rooms at the actual time of day; no stock people.
+Motion: photos fade in once; no parallax.
+Voice: second person, specific ("The Hopper Room faces the weir; you'll hear it at night").
+Conventions kept: a sticky "Check availability" action, a standard date picker, prices with tax shown before checkout.
+```
+
+### 3. "A work-order app for maintenance technicians on a factory floor" (rugged tablet, often with gloves)
+
+Brief inferred: technicians on 12-hour shifts, standing, in noise and variable light; they need the next job, the machine's history, the parts, and a fast way to close the order. Requested: utilitarian, industrial, fast. Content: real machine IDs, fault codes, parts numbers, shift handover notes.
+
+```
+Direction: "Clipboard you can wear gloves with". Industrial means legible at arm's length and impossible to mis-tap.
+Requested character → how it shows: utilitarian → no decoration, every pixel a field or an action; industrial → a condensed grotesk with very clear numerals, hazard-style amber only for safety lockouts, visible grid and labels like the plant's own signage; fast → the next job is the first screen, closing an order is two taps.
+The memorable thing: the machine's own asset tag reproduced at the top of each order (ID, line, last service), matching the physical tag on the machine.
+Type: a condensed grotesk with distinct 0/O and 1/l; 20px body, 28px for IDs, never under 16px.
+Color: high-contrast light theme for bright halls with a dark option for night shift; amber only for lockout/tagout, red only for stopped lines, the rest neutral.
+Shape & surface: 64px minimum targets, 8px radius, thick 2px borders that survive glare.
+Density: one order per screen, all its facts visible without scrolling.
+Imagery: the machine's schematic for the fault location; no illustrations.
+Motion: none, except a clear confirmation when an order closes.
+Voice: the plant's own vocabulary and codes; imperative ("Isolate line 3 before opening guard B").
+Conventions kept: the plant's existing fault-code numbering, a barcode-scan button for parts, offline mode.
 ```
 
 ## Before/after diagnosis: a real example
@@ -72,24 +76,13 @@ The repository's `raspberry-pi-showcase` is a well-made AI-generated landing pag
 5. Measured: 106 of 183 text elements under 11px; dominant sizes 7–9px; h1 91px. Fix: body 16px, labels 12–13px, h1 56px; reduce to 6 sizes.
 6. `↗`/`✳` glyphs 30 times; eyebrows with lines on every section; one accent word per heading. Fix: remove the glyph system; kickers only where they carry a category.
 
-What to keep: the pink/lime/paper palette (it is Raspberry Pi-adjacent and lively), Space Grotesk as the display face, the memory-option selector (a real product interaction), the FAQ content (it is real and useful), the responsive behavior.
+What to keep: the pink/lime/paper palette (it is Raspberry Pi-adjacent and lively), the display face, the memory-option selector (a real product interaction), the FAQ content (it is real and useful), the responsive behavior.
 
-## What the validation runs taught (v1.0 → v1.1)
+## What validation taught
 
-Seven scenarios were built twice by fresh agents, with and without this skill, and reviewed blind (`evaluation/` in the repository). With v1.0:
+Briefs were built by fresh agents with and without this skill and reviewed blind (`evaluation/` in the source repository). In summary:
 
-- **What worked**: every skill-guided output removed the measurable tells (tiny text, ornaments, eyebrows, accent words, glows); heroes showed the product's own material (a deploy-marker chart, an editor full of real-looking notes, base-ten blocks, a page plan); dashboards and games gained clearer focal points and states. A blind reviewer preferred the skill-guided version in four of five paired scenarios.
-- **What failed**: the outputs were consistently *quieter than asked*. "A bit futuristic" became calm documentation; "colorful and playful" became tasteful; "warm" lost its serif and most of its color in an improvement task, which the reviewer ranked below the unguided rewrite. Three of six outputs chose the same "serious" typeface, and hairline label/value rows appeared in most pages. Finish slipped: half-empty sections, a missing closing call to action, misaligned pricing buttons, a "states" panel that made a game read like a spec.
-- **What changed in v1.1**: the "requested character" line in the direction card and the translation table in `framework.md`; the fidelity-and-finish checklist group; "fix carriers, don't delete them" in improve mode; the over-correction table in `diagnostics.md`; cards here that no longer name fonts to copy.
-
-## Evaluation scenarios
-
-Used to validate the skill (see `evaluation/` in the repository). Each has a fixed brief; outputs are rendered and compared with and without the skill.
-
-- **A. Sleek modern technology product**: a landing page for an API monitoring tool; must stay sleek and modern.
-- **B. Serious information-dense dashboard**: a portfolio risk dashboard with provided sample data.
-- **C. Playful or creative interface**: a math practice game for children.
-- **D. Game interface**: a title screen + HUD for a browser arcade game in a specific genre and world.
-- **E. Existing design improvement**: improve one of the repository's AI-generated examples while preserving its stated aesthetic and features.
-
-Rubric (qualitative, not a score): visual quality; fidelity to requested style; coherence; product specificity; distinctiveness; presence of default tells by layer; usability; accessibility floor; responsive behavior.
+- **Removing tells is reliable; delivering character is not automatic.** Early versions removed every measurable tell but produced pages quieter than the brief asked for, and in improve mode deleted the elements that carried the brand's warmth. The direction card's "requested character" line and the "fix carriers, don't delete them" rule fixed this in re-tests.
+- **Agents copy worked examples.** When an example was close to the task, agents adopted its typeface, palette and memorable thing. Hence the rule at the top of this file.
+- **Over-correction becomes a house style.** Neutral grotesk, one muted accent, hairline label/value rows everywhere, and visible "sample data / placeholder" chips on every panel recurred across unrelated products.
+- **Test every input modality.** A game that read arrow keys rendered an invisible touch D-pad; nobody saw it until the page was rendered with touch emulation.

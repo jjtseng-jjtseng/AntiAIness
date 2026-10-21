@@ -25,7 +25,7 @@ The user wants *their* design better, not a different design.
 6. **Preserve**: the palette family and its proportions, the typefaces if they fit (or close relatives if they are pure defaults), every section and functional requirement, all working behavior.
 7. Implement, render, and compare before/after **side by side at thumbnail size**: it should read as the same brand, clearly improved. Then at full size: more specific, more readable, no tells, and at least as warm / sleek / playful as before.
 
-Improvement by subtraction alone fails this mode. In the validation runs, an agent that removed every tell but also removed the serif, most of the gold and coral and the banner produced a cleaner page that a blind reviewer ranked *below* a less disciplined rewrite that kept the warmth and added specific evidence of how the studio works.
+Improvement by subtraction alone fails this mode. In the validation runs, an agent that removed every tell but also removed the brand's display face, most of its accent colors and a page banner produced a cleaner page that a blind reviewer ranked *below* a less disciplined rewrite that kept the warmth and added specific evidence of how the business works.
 
 Do not: switch light to dark "for impact", replace a serif with a mono "to be distinctive", swap the brand's typeface for a neutral grotesk, add animation, add sections, invent proof.
 

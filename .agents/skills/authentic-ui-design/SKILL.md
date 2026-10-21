@@ -3,7 +3,7 @@ name: authentic-ui-design
 description: Design and build websites, web apps, dashboards, game UIs, landing pages and mobile screens with deliberate, product-specific art direction instead of the recognizable AI-default look. Use whenever creating or redesigning any user interface, picking fonts, colors, layout or components, reviewing why a UI "looks AI-generated", improving a design that is polished but generic, or working from user-supplied screenshots, sites or design systems. Preserves the user's requested style (sleek, minimal, playful, retro, luxurious, utilitarian, editorial) rather than imposing a house look.
 license: MIT
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   source: https://github.com/jjtseng-jjtseng/AntiAIness
 ---
 
@@ -71,7 +71,7 @@ Conventions kept on purpose: <the familiar patterns this product needs>
 Guidance:
 
 - **Requested character** is the line most often skipped. Translate every adjective into something a stranger would notice in the first screenful (`framework.md` §2 has a table). "Futuristic" is not delivered by deleting glow; it is delivered by, say, a technical display face, a luminous accent reserved for live data, and data that animates when it changes. "Colorful" means color covers visible area, not one accent.
-- **Memorable thing** comes from the domain: a chart as the hero of an analytics product; the game's world drawn into its menus; a catalog's real taxonomy; a children's maths manipulative. Not an orbit ring, not a glow, not a tilted mock.
+- **Memorable thing** comes from the domain: a chart as the hero of an analytics product; the game's world drawn into its menus; a catalog's real taxonomy; a restaurant's actual menu set in good type. Not an orbit ring, not a glow, not a tilted mock.
 - **Type**: choose for the product's voice. One or two families. Faces that read as "nothing was decided" when used by reflex: Inter, DM Sans, Manrope, Space Grotesk, Plus Jakarta, Outfit, Sora, Poppins, and also the "safe serious" picks (IBM Plex, Source Sans, Libre Franklin) when reached for every time. Any face is fine when chosen for a reason you can state.
 - **Color**: start from something true (brand, material, data conventions, the game's palette). Decide roles, then values, then proportions.
 - **Conventions kept**: list them explicitly so you don't "innovate" on the checkout button, and so you don't delete a closing call to action, a recommended-plan marker or a banner the brand uses.
@@ -95,6 +95,7 @@ Guidance:
 - **Shape**: one radius policy from the product's materials. One boundary technique per element class.
 - **Effects** (gradient, blur, glow, grain, glass): only if the direction card names them, with a job, in ≤ 2 places. When the brief asks for them, do them well rather than not at all.
 - **Components**: hover, focus-visible, active, disabled, loading, empty, error. Visible focus rings. Touch targets ≥ 40px.
+- **Every input modality**: anything driven by keys (games, editors, shortcuts) needs a visible equivalent on touch devices, and copy that matches the device ("tap" vs "press"). Render with touch emulation to check.
 - **Responsive**: design the narrow layout as its own layout. No horizontal overflow at 320/390/768/1024/1440.
 - **Motion**: respond to user actions and data changes; one orchestrated moment at most; respect `prefers-reduced-motion`.
 - **Copy**: sentence case, concrete nouns and verbs, says something only this product could say. No fragment pairs ("A little X. A lot of Y."), no "Your X. Your Y.", no accent-word reflex, no `↗` after every link, no `✳` ornaments, no "Supercharge / Unleash / Elevate / Seamless".
@@ -132,7 +133,7 @@ Ask these of the rendered result. A "yes" in the first four groups must be justi
 - In improve mode: does it still read as the same brand at thumbnail size, with its colors in visible proportion?
 - Exactly one focal point, and is the rest quieter but complete (no half-empty sections, aligned parallel items, a closing next step on marketing pages)?
 - Required states shown the way the product would show them?
-- Readable sizes, contrast, focus, reduced motion, no overflow at 390px?
+- Readable sizes, contrast, focus, reduced motion, no overflow at 390px, and visible controls for touch as well as keyboard?
 
 ## Guardrails
 
@@ -141,7 +142,7 @@ Ask these of the rendered result. A "yes" in the first four groups must be justi
 - **Originality ≠ randomness.** No deliberate misalignment, random rotations or noise to look human.
 - **Conventions are tools.** Keep a centered hero, a sidebar, a closing call to action, a highlighted recommended plan, a conventional HUD when users expect them.
 - **Quality floor is not optional.** A distinctive design that fails readability, contrast, focus or responsiveness is a failure.
-- **Never fabricate proof or content.** Use real content, clearly labeled placeholders kept out of the visual focus, or leave the section out.
+- **Never fabricate proof or content.** Use real content, or clearly labeled placeholders, or leave the section out. Keep honesty quiet: one plain note per page for sample data, not "PLACEHOLDER" chips on every panel; notes for developers ("links are placeholders in this build") go in HTML comments, not on the page.
 - **Respect the user.** If they asked for gradients, glass, Inter, neon or a bento grid, give them an excellent version of that, chosen on purpose and executed with the rules above.
 
 ## Quick category notes (details in `references/contexts.md`)

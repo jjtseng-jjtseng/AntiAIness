@@ -67,7 +67,7 @@ When agents are told what not to do, they converge on a new default. Watch for i
 | Every section is a hairline label-left / content-right list or table | Cards were removed and replaced with the next safest container | Choose containers by content; vary rhythm |
 | Less playful / sleek / warm / futuristic than asked | Removing tells is easier than delivering mood | Translate each adjective into a visible decision; volume check the first screenful |
 | Half-empty sections, missing closing call to action, misaligned parallel actions | Sections were cut or simplified without re-composing | Finish pass |
-| "Placeholder" and "sample data" notes inside the visual focus; states shown in a detached review panel | Honesty applied without design | Keep labels truthful but quiet; show states in the product's own frame |
+| "Placeholder" and "sample data" chips on every panel, build notes visible to visitors, states shown in a detached review panel | Honesty applied without design | One quiet note per page; developer notes in HTML comments; show states in the product's own frame |
 | In an improvement, the brand's typeface, color proportions or page furniture disappear | Carriers of the aesthetic mistaken for tells | Fix how carriers are used; don't delete them |
 
 ## Measurable signals (signals, not verdicts)
