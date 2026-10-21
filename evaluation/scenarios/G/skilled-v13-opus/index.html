@@ -25,7 +25,8 @@
     is swappable (navy, red, yellow, graphite). Keys pale rubber. Page cool grey / deep blue-black in
     dark mode. The lit-LCD green marks selected settings on the page.
   Shape & surface: large moulded radii on the shell; oval keys; 10px radius on page controls; no cards.
-    Gradients only on the shell (plastic) and the LCD (backlight).
+    Gradients have two jobs only: material shading (the plastic shell, the rubber keys, and the
+    kbd chips in the instructions that copy those keys) and the LCD backlight.
   Motion: the snake; keys press 2px; snake blinks on death; title snake circles the screen.
     Reduced motion: no blink, no idle snake, no smear, no key travel.
   Voice: plain instructions, true numbers (food = level points; the critter's number = its value).
@@ -96,40 +97,54 @@
     grid-template-columns: minmax(0, 480px);
     justify-content: center;
     align-content: start;
-    row-gap: 20px;
-    padding: 20px 16px 48px;
+    row-gap: 16px;
+    padding: 14px 16px 48px;
   }
-  .intro, .guide { width: 100%; }
   .intro h1 {
     margin: 0;
     font-weight: 800;
-    font-size: 36px;
+    font-size: 30px;
     line-height: 1.1;
     letter-spacing: -0.01em;
   }
-  .intro p { margin: 6px 0 0; }
-  .intro .lede { max-width: 38ch; }
-  .best { color: var(--muted); font-size: 14px; }
+  .lede { margin: 0; max-width: 40ch; }
+  .best { margin: 0; color: var(--muted); font-size: 14px; }
   .best b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
 
-  .guide { display: grid; gap: 28px; margin-top: 8px; }
-  .guide h2 { margin: 0 0 10px; font-size: 17px; font-weight: 700; }
+  /* narrow: title, best, then the whole phone, then the explanation */
+  .intro { display: contents; }
+  .intro h1 { order: 0; }
+  .intro .best { order: 1; margin-top: -12px; }
+  .handset { order: 2; }
+  .intro .lede { order: 3; margin-top: 8px; }
+  .guide { order: 4; }
+
+  .guide { display: grid; gap: 26px; width: 100%; }
+  .guide h2 { margin: 0 0 8px; font-size: 17px; font-weight: 600; }
   .guide p { margin: 0; }
-  .note { color: var(--muted); font-size: 14px; margin-top: 10px !important; }
+  .guide p + p { margin-top: 10px; }
+  .keys-line { line-height: 1.95; }
+  .note { color: var(--muted); font-size: 14px; }
 
   @media (min-width: 880px) {
     main {
-      grid-template-columns: auto minmax(0, 380px);
+      grid-template-columns: auto minmax(0, 400px);
       grid-template-areas: "phone intro" "phone guide";
       grid-template-rows: auto auto;
       column-gap: clamp(56px, 7vw, 112px);
-      row-gap: 28px;
+      row-gap: 24px;
       align-content: center;
-      padding: 24px 32px;
+      padding: 20px 32px;
     }
-    .handset { grid-area: phone; align-self: center; }
-    .intro { grid-area: intro; align-self: end; }
-    .guide { grid-area: guide; align-self: start; margin-top: 0; }
+    .intro { display: block; grid-area: intro; align-self: end; }
+    .intro .best { margin-top: 6px; }
+    .intro .lede { margin-top: 10px; }
+    /* the phone stays whole in view and centred while the text column scrolls past */
+    .handset {
+      grid-area: phone; align-self: start;
+      position: sticky; top: max(16px, calc((100vh - var(--hs-h, 760px)) / 2));
+    }
+    .guide { grid-area: guide; align-self: start; }
     .intro h1 { font-size: 48px; }
   }
 
@@ -142,10 +157,10 @@
     --shell-lo: #111b31;
     position: relative;
     justify-self: center;
-    width: calc(var(--lcd-w, 297px) + 2 * var(--body-pad) + 2 * var(--lens-pad));
+    width: calc(var(--lcd-w, 304px) + 2 * var(--body-pad) + 2 * var(--lens-pad));
     max-width: 100%;
-    padding: 16px var(--body-pad) 26px;
-    border-radius: 48px 48px 64px 64px / 40px 40px 80px 80px;
+    padding: 14px var(--body-pad) 22px;
+    border-radius: 44px 44px 60px 60px / 36px 36px 76px 76px;
     background-color: var(--shell);
     background-image:
       radial-gradient(130% 70% at 22% 0%, var(--shell-hi) 0%, transparent 60%),
@@ -160,19 +175,15 @@
   .handset[data-cover="yellow"]   { --shell: #e2b32c; --shell-hi: #f7d86c; --shell-lo: #9c730c; }
   .handset[data-cover="graphite"] { --shell: #383d46; --shell-hi: #5f6672; --shell-lo: #1b1e23; }
 
-  @media (min-width: 880px) {
-    .handset { --body-pad: 22px; --lens-pad: 14px; padding: 20px var(--body-pad) 34px; }
-  }
-
   .earpiece {
-    width: 64px; height: 7px; margin: 0 auto 12px;
+    width: 64px; height: 7px; margin: 0 auto 10px;
     border-radius: 7px;
     background: linear-gradient(#070b14, #1d2535);
     box-shadow: 0 1px 0 rgba(255, 255, 255, .22);
   }
   .lens {
     padding: var(--lens-pad);
-    border-radius: 20px 20px 24px 24px;
+    border-radius: 18px 18px 22px 22px;
     background: linear-gradient(#1a2130, #121823);
     box-shadow: inset 0 2px 6px rgba(0, 0, 0, .65), 0 1px 0 rgba(255, 255, 255, .14);
   }
@@ -199,6 +210,7 @@
     -webkit-tap-highlight-color: transparent;
     appearance: none;
     margin: 0;
+    position: relative;
     display: inline-flex; align-items: center; justify-content: center; gap: 6px;
     color: var(--key-ink);
     font: 600 22px/1 "Fira Sans", system-ui, sans-serif;
@@ -238,10 +250,10 @@
     grid-template-columns: 1fr 1.9fr 1fr;
     align-items: center;
     gap: 12px;
-    margin: 16px 4px 14px;
+    margin: 12px 4px 12px;
   }
-  .key--small { width: 58px; height: 44px; font-size: 18px; justify-self: center; }
-  .key--navi { height: 50px; width: 100%; border-radius: 50% / 50%; }
+  .key--small { width: 56px; height: 42px; font-size: 18px; justify-self: center; }
+  .key--navi { height: 46px; width: 100%; border-radius: 50% / 50%; }
   .key--navi .ridge {
     width: 38%; height: 3px; border-radius: 3px;
     background: rgba(8, 12, 22, .22);
@@ -254,31 +266,30 @@
   .keypad {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px 14px;
+    gap: 8px 12px;
     margin: 0 4px;
   }
-  .keypad .key { height: 48px; }
+  .keypad .key { height: 44px; }
   .key .nub {
-    position: absolute; bottom: 8px; left: 50%;
+    position: absolute; bottom: 7px; left: 50%;
     width: 8px; height: 2px; margin-left: -4px; border-radius: 2px;
     background: currentColor; opacity: .55;
   }
-  .keypad .key { position: relative; }
-  .arrow-up    svg { transform: rotate(0deg); }
   .arrow-right svg { transform: rotate(90deg); }
   .arrow-down  svg { transform: rotate(180deg); }
   .arrow-left  svg { transform: rotate(270deg); }
 
   @media (min-width: 880px) {
-    .keypad .key { height: 52px; }
+    .handset { --body-pad: 22px; --lens-pad: 14px; padding: 20px var(--body-pad) 32px; border-radius: 52px 52px 70px 70px / 42px 42px 88px 88px; }
+    .earpiece { margin-bottom: 14px; }
     .navrow { margin: 20px 8px 18px; }
+    .key--small { width: 58px; height: 44px; }
+    .key--navi { height: 50px; }
     .keypad { gap: 12px 18px; margin: 0 8px; }
+    .keypad .key { height: 52px; }
   }
 
-  /* ---------- controls list ---------- */
-  .controls { display: grid; grid-template-columns: max-content 1fr; gap: 8px 18px; margin: 0; }
-  .controls dt { color: var(--muted); font-size: 16px; padding-top: 2px; }
-  .controls dd { margin: 0; line-height: 1.9; }
+  /* ---------- keyboard hints ---------- */
   kbd {
     display: inline-block;
     min-width: 28px;
@@ -292,19 +303,16 @@
     font: 600 14px/1.45 "Fira Sans", system-ui, sans-serif;
     text-align: center;
   }
-  .or { color: var(--muted); font-size: 14px; margin: 0 4px 0 2px; }
+  .nowrap { white-space: nowrap; }
   .on-touch { display: none; }
-  @media (hover: none) and (pointer: coarse) {
-    .on-touch { display: revert; }
-    .on-keys { display: none; }
-  }
+  html.touch .on-touch { display: block; }
+  html.touch .on-keys { display: none; }
 
   /* ---------- settings ---------- */
-  fieldset { border: 0; margin: 0 0 18px; padding: 0; min-width: 0; }
-  fieldset:last-of-type { margin-bottom: 0; }
+  fieldset { border: 0; margin: 0 0 16px; padding: 0; min-width: 0; }
   legend { padding: 0; margin-bottom: 8px; font-size: 16px; color: var(--muted); }
   legend b { color: var(--ink); font-weight: 600; }
-  .seg { display: flex; gap: 6px; flex-wrap: nowrap; }
+  .seg { display: flex; gap: 6px; }
   .seg label { position: relative; flex: 1 1 0; min-width: 0; }
   .seg input {
     position: absolute; inset: 0; width: 100%; height: 100%;
@@ -330,6 +338,7 @@
   }
   .seg input:focus-visible + span { outline: 3px solid var(--ring); outline-offset: 2px; }
   .seg--level span { padding: 0; }
+  .hint { margin: 6px 0 0 !important; color: var(--muted); font-size: 14px; }
 
   .swatches { display: flex; gap: 12px; }
   .swatches label { position: relative; width: 44px; height: 44px; }
@@ -361,7 +370,7 @@
     <div class="earpiece" aria-hidden="true"></div>
     <div class="lens">
       <div class="lcd" id="lcd-wrap">
-        <canvas id="lcd" width="297" height="225" role="img" aria-label="Snake title screen"></canvas>
+        <canvas id="lcd" width="249" height="189" role="img" aria-label="Snake title screen"></canvas>
       </div>
     </div>
 
@@ -391,7 +400,7 @@
       <span class="key is-inert" aria-hidden="true">7<small>PQRS</small></span>
       <button type="button" class="key arrow-down" data-dir="down" aria-label="Down, key 8">8<svg width="10" height="8" viewBox="0 0 10 8" aria-hidden="true"><path d="M5 0l5 8H0z"/></svg></button>
       <span class="key is-inert" aria-hidden="true">9<small>WXYZ</small></span>
-      <span class="key is-inert" aria-hidden="true">*<small>+</small></span>
+      <span class="key is-inert" aria-hidden="true">*</span>
       <span class="key is-inert" aria-hidden="true">0</span>
       <span class="key is-inert" aria-hidden="true">#</span>
     </div>
@@ -399,11 +408,18 @@
   </section>
 
   <div class="guide" id="guide">
+    <section aria-labelledby="play-h">
+      <h2 id="play-h">How to play</h2>
+      <p class="keys-line on-keys">Steer with the arrow keys, <span class="nowrap"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span> or <span class="nowrap"><kbd>2</kbd><kbd>4</kbd><kbd>6</kbd><kbd>8</kbd>.</span> <span class="nowrap"><kbd>Space</kbd> or <kbd>5</kbd></span> starts and pauses, <kbd>C</kbd> quits, <kbd>M</kbd> mutes the beeps.</p>
+      <p class="on-touch">Swipe on the screen, or press 2, 4, 6 and 8 on the keypad. The wide key under the screen starts and pauses; C pauses, then quits.</p>
+      <p>Higher levels are faster, and food is worth as many points as the level: <span id="lv-b">5</span> on level <span id="lv-a">5</span>. After every fifth bite a critter turns up for a short while. The number beside it at the top of the screen is what it is worth, and it drops with every move.</p>
+    </section>
+
     <section aria-labelledby="settings-h">
       <h2 id="settings-h">Settings</h2>
       <form id="settings" onsubmit="return false">
         <fieldset>
-          <legend>Level <b id="level-name">5</b>: higher is faster, and every bite is worth more</legend>
+          <legend>Level <b id="level-name">5</b></legend>
           <div class="seg seg--level" id="level-seg"></div>
         </fieldset>
         <fieldset>
@@ -422,35 +438,8 @@
             <label><input type="radio" name="cover" value="graphite"><span style="--c:#383d46"></span><b class="vh">Graphite</b></label>
           </div>
         </fieldset>
-        <p class="note">Level and edges apply from the next game. With wrap around, the screen border turns dotted and the snake comes back on the opposite side.</p>
+        <p class="note">Level and edges apply from the next game. With wrap around, the screen border is dotted and the snake comes back on the other side.</p>
       </form>
-    </section>
-
-    <section aria-labelledby="controls-h">
-      <h2 id="controls-h">Controls</h2>
-      <dl class="controls on-keys">
-        <dt>Steer</dt>
-        <dd><kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd><span class="or">or</span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span class="or">or</span><kbd>2</kbd><kbd>4</kbd><kbd>6</kbd><kbd>8</kbd></dd>
-        <dt>Start, pause</dt>
-        <dd><kbd>Space</kbd><span class="or">or</span><kbd>5</kbd><span class="or">or</span><kbd>Esc</kbd></dd>
-        <dt>End game</dt>
-        <dd><kbd>C</kbd> <span class="or">pauses first, press again to quit</span></dd>
-        <dt>Beeps</dt>
-        <dd><kbd>M</kbd></dd>
-      </dl>
-      <dl class="controls on-touch">
-        <dt>Steer</dt>
-        <dd>Swipe on the screen, or press 2, 4, 6 and 8 on the keypad</dd>
-        <dt>Start, pause</dt>
-        <dd>The wide key under the screen, or 5</dd>
-        <dt>End game</dt>
-        <dd>C pauses first; press it again to quit</dd>
-      </dl>
-    </section>
-
-    <section aria-labelledby="scoring-h">
-      <h2 id="scoring-h">Scoring</h2>
-      <p>On level <span id="lv-a">5</span>, each piece of food is worth <span id="lv-b">5</span> points. After every fifth piece a critter turns up for a short while. The number next to it at the top of the screen is what it is worth right now, and it drops with every move.</p>
     </section>
   </div>
 </main>
@@ -461,15 +450,27 @@
   'use strict';
 
   /* ---------- constants ---------- */
-  const W = 99, H = 75;              // LCD pixels
-  const COLS = 24, ROWS = 14;        // playfield cells (4x4 LCD px each, 3x3 lit)
+  const COLS = 20, ROWS = 11;        // playfield cells (4x4 LCD px each, 3x3 lit)
+  const W = 4 * COLS + 3;            // 83 LCD px: frame, gap, cells, gap, frame
   const OX = 2, OY = 10;             // first cell's top-left LCD pixel
-  const FRAME_TOP = 8, FRAME_BOTTOM = 66;
+  const FRAME_TOP = 8, FRAME_BOTTOM = OY + 4 * ROWS;   // 54
+  const LABEL_Y = FRAME_BOTTOM + 3;  // 57
+  const H = LABEL_Y + 6;             // 63
   const DIRS = {
-    up: { x: 0, y: -1, name: 'up' }, down: { x: 0, y: 1, name: 'down' },
-    left: { x: -1, y: 0, name: 'left' }, right: { x: 1, y: 0, name: 'right' }
+    up: { x: 0, y: -1 }, down: { x: 0, y: 1 },
+    left: { x: -1, y: 0 }, right: { x: 1, y: 0 }
   };
   const INK = '#222c16';
+
+  /* ---------- input type: copy says "tap/swipe" on touch devices ---------- */
+  const root = document.documentElement;
+  const coarse = window.matchMedia('(pointer: coarse)').matches ||
+    (navigator.maxTouchPoints > 0 && !window.matchMedia('(hover: hover)').matches);
+  root.classList.toggle('touch', coarse);
+  window.addEventListener('pointerdown', (e) => {
+    if (e.pointerType === 'touch') root.classList.add('touch');
+    else if (e.pointerType === 'mouse') root.classList.remove('touch');
+  }, { capture: true, passive: true });
 
   /* ---------- storage (best effort) ---------- */
   const store = {
@@ -477,16 +478,17 @@
     set(k, v) { try { localStorage.setItem('snake-handset:' + k, JSON.stringify(v)); } catch (e) { /* storage unavailable */ } }
   };
   const lvlStored = parseInt(store.get('level', 5), 10);
+  const coverStored = store.get('cover', 'navy');
   const settings = {
     level: lvlStored >= 1 && lvlStored <= 9 ? lvlStored : 5,
     edges: store.get('edges', 'solid') === 'wrap' ? 'wrap' : 'solid',
-    cover: ['navy', 'red', 'yellow', 'graphite'].includes(store.get('cover', 'navy')) ? store.get('cover', 'navy') : 'navy',
+    cover: ['navy', 'red', 'yellow', 'graphite'].includes(coverStored) ? coverStored : 'navy',
     sound: store.get('sound', true) !== false
   };
   let best = store.get('best', null);
   if (!best || typeof best.score !== 'number') best = null;
 
-  /* ---------- 3x5 bitmap font ---------- */
+  /* ---------- bitmap font: 3x5, with wider M, N, W ---------- */
   const GLYPHS = {
     '0': '### #.# #.# #.# ###', '1': '.#. ##. .#. .#. ###', '2': '### ..# ### #.. ###',
     '3': '### ..# .## ..# ###', '4': '#.# #.# ### ..# ..#', '5': '### #.. ### ..# ###',
@@ -496,13 +498,12 @@
     'D': '##. #.# #.# #.# ##.', 'E': '### #.. ##. #.. ###', 'F': '### #.. ##. #.. #..',
     'G': '.## #.. #.# #.# .##', 'H': '#.# #.# ### #.# #.#', 'I': '### .#. .#. .#. ###',
     'J': '..# ..# ..# #.# .#.', 'K': '#.# #.# ##. #.# #.#', 'L': '#.. #.. #.. #.. ###',
-    'M': '#.# ### ### #.# #.#', 'N': '##. #.# #.# #.# #.#', 'O': '.#. #.# #.# #.# .#.',
-    'P': '##. #.# ##. #.. #..', 'Q': '.#. #.# #.# ##. .##', 'R': '##. #.# ##. #.# #.#',
-    'S': '.## #.. .#. ..# ##.', 'T': '### .#. .#. .#. .#.', 'U': '#.# #.# #.# #.# ###',
-    'V': '#.# #.# #.# #.# .#.', 'W': '#.# #.# ### ### #.#', 'X': '#.# #.# .#. #.# #.#',
-    'Y': '#.# #.# .#. .#. .#.', 'Z': '### ..# .#. #.. ###',
-    ' ': '... ... ... ... ...', '!': '.#. .#. .#. ... .#.', ':': '... .#. ... .#. ...',
-    '-': '... ... ### ... ...', '.': '... ... ... ... .#.'
+    'M': '#...# ##.## #.#.# #...# #...#', 'N': '#..# ##.# #.## #..# #..#',
+    'O': '.#. #.# #.# #.# .#.', 'P': '##. #.# ##. #.. #..', 'Q': '.#. #.# #.# ##. .##',
+    'R': '##. #.# ##. #.# #.#', 'S': '.## #.. .#. ..# ##.', 'T': '### .#. .#. .#. .#.',
+    'U': '#.# #.# #.# #.# ###', 'V': '#.# #.# #.# #.# .#.', 'W': '#...# #...# #.#.# ##.## #...#',
+    'X': '#.# #.# .#. #.# #.#', 'Y': '#.# #.# .#. .#. .#.', 'Z': '### ..# .#. #.. ###',
+    ' ': '... ... ... ... ...', '!': '# # # . #', ':': '. # . # .', '-': '... ... ### ... ...'
   };
   for (const k in GLYPHS) GLYPHS[k] = GLYPHS[k].split(' ');
 
@@ -515,7 +516,7 @@
   const CRITTERS = [
     ['#.#.#.#', '.#####.', '#.#.#.#'],   // beetle
     ['.###..#', '#.####.', '.###..#'],   // fish
-    ['..##.#.', '######.', '.#.#..#']    // mouse
+    ['.#..##.', '######.', '..#.#.#']    // mouse
   ];
 
   /* ---------- DOM ---------- */
@@ -535,25 +536,32 @@
   const reducedMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
   let reduced = reducedMQ.matches;
   const onReduced = () => { reduced = reducedMQ.matches; };
-  if (reducedMQ.addEventListener) reducedMQ.addEventListener('change', onReduced); else if (reducedMQ.addListener) reducedMQ.addListener(onReduced);
+  if (reducedMQ.addEventListener) reducedMQ.addEventListener('change', onReduced);
+  else if (reducedMQ.addListener) reducedMQ.addListener(onReduced);
 
   /* ---------- LCD buffer ---------- */
   const target = new Uint8Array(W * H);
   const glow = new Float32Array(W * H);
   let S = 3, gap = 0;
-  let bg = document.createElement('canvas');
+  const bg = document.createElement('canvas');
 
   function px(x, y) { if (x >= 0 && x < W && y >= 0 && y < H) target[y * W + x] = 1; }
   function fill(x, y, w, h, v = 1) {
     for (let j = y; j < y + h; j++) for (let i = x; i < x + w; i++) if (i >= 0 && i < W && j >= 0 && j < H) target[j * W + i] = v;
   }
-  function tw(s, sc = 1) { return s.length * 4 * sc - sc; }
+  function glyph(ch) { return GLYPHS[ch] || GLYPHS[' ']; }
+  function tw(s, sc = 1) {
+    s = String(s).toUpperCase();
+    let w = 0;
+    for (const ch of s) w += glyph(ch)[0].length + 1;
+    return (w - 1) * sc;
+  }
   function text(s, x, y, sc = 1) {
     s = String(s).toUpperCase();
     for (const ch of s) {
-      const g = GLYPHS[ch] || GLYPHS[' '];
-      for (let r = 0; r < 5; r++) for (let c = 0; c < 3; c++) if (g[r][c] === '#') fill(x + c * sc, y + r * sc, sc, sc);
-      x += 4 * sc;
+      const g = glyph(ch), gw = g[0].length;
+      for (let r = 0; r < 5; r++) for (let c = 0; c < gw; c++) if (g[r][c] === '#') fill(x + c * sc, y + r * sc, sc, sc);
+      x += (gw + 1) * sc;
     }
   }
   function textC(s, y, sc = 1) { text(s, Math.floor((W - tw(s, sc)) / 2), y, sc); }
@@ -572,7 +580,7 @@
     }
   }
   function adjacent(a, b) { return Math.abs(a.x - b.x) + Math.abs(a.y - b.y) === 1; }
-  // connector between two adjacent cells: the 3px gap strip, centre pixel left dark (chain look)
+  // connector across the 1px gap between two adjacent cells; centre pixel stays dark (chain look)
   function bridge(a, b) {
     const [ax, ay] = cellXY(a.x, a.y);
     if (b.x === a.x + 1) { px(ax + 3, ay); px(ax + 3, ay + 2); }
@@ -581,12 +589,13 @@
     else if (b.y === a.y - 1) { px(ax, ay - 1); px(ax + 2, ay - 1); }
   }
   function dirBetween(from, to) {
-    // direction from cell `from` toward cell `to`, accounting for wrap
     let dx = to.x - from.x, dy = to.y - from.y;
     if (dx > 1) dx = -1; else if (dx < -1) dx = 1;
     if (dy > 1) dy = -1; else if (dy < -1) dy = 1;
-    if (dx === 1) return DIRS.right; if (dx === -1) return DIRS.left;
-    if (dy === 1) return DIRS.down; return DIRS.up;
+    if (dx === 1) return DIRS.right;
+    if (dx === -1) return DIRS.left;
+    if (dy === 1) return DIRS.down;
+    return DIRS.up;
   }
 
   function drawSnake(segs, dir, mouthOpen) {
@@ -601,6 +610,7 @@
       } else {
         const [x, y] = cellXY(s.x, s.y);
         fill(x, y, 3, 3);
+        // a swallowed meal shows as a bulge that the snake slides past
         if (s.meal) { px(x + 1, y - 1); px(x + 1, y + 3); px(x - 1, y + 1); px(x + 3, y + 1); }
       }
     }
@@ -624,8 +634,8 @@
   let segId = 0, acc = 0, dyingAt = 0, newBest = false, boardFull = false;
   let attractP = 0, attractAcc = 0;
 
-  const tickMs = (lv) => 250 - (lv - 1) * 22;     // level 1: 250ms ... level 9: 74ms
-  const critterLife = (lv) => 20 + 3 * lv;          // moves
+  const tickMs = (lv) => 250 - (lv - 1) * 22;     // level 1: 250ms per move ... level 9: 74ms
+  const critterLife = (lv) => 18 + 3 * lv;          // moves before it leaves
   const critterMax = (lv) => 15 + 5 * lv;           // points when it first appears
 
   function rnd(n) { return Math.floor(Math.random() * n); }
@@ -666,7 +676,7 @@
   function newGame() {
     game = { level: settings.level, edges: settings.edges, dir: DIRS.right, score: 0, since: 0 };
     snake = [];
-    for (let i = 0; i < 5; i++) snake.push({ x: 7 - i, y: 7, id: ++segId, meal: false });
+    for (let i = 0; i < 5; i++) snake.push({ x: 6 - i, y: 5, id: ++segId, meal: false });
     queue = []; critter = null; newBest = false; boardFull = false; acc = 0;
     spawnFood();
     setState('playing');
@@ -682,6 +692,7 @@
     if (game.edges === 'wrap') { nx = (nx + COLS) % COLS; ny = (ny + ROWS) % ROWS; }
     else if (nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS) return die();
 
+    // the snake grows when a swallowed meal reaches the tail
     const tail = snake[snake.length - 1];
     const growing = tail.meal;
     const checkLen = growing ? snake.length : snake.length - 1;
@@ -718,8 +729,10 @@
     else { beep(196, 0.22); beep(147, 0.35, 0.2); }
   }
   function toOver() {
-    if (!best || game.score > best.score) {
-      if (game.score > 0) { newBest = true; best = { score: game.score, level: game.level }; store.set('best', best); }
+    if (game.score > 0 && (!best || game.score > best.score)) {
+      newBest = true;
+      best = { score: game.score, level: game.level };
+      store.set('best', best);
     }
     updateBestText();
     setState('over');
@@ -731,14 +744,11 @@
 
   function setState(s) {
     state = s;
-    const labels = {
-      title: ['Start game', 'START'], playing: ['Pause', 'PAUSE'], paused: ['Resume', 'RESUME'],
-      dying: ['Game over', ''], over: ['Play again', 'AGAIN']
-    };
-    naviKey.setAttribute('aria-label', labels[s][0]);
-    key5.setAttribute('aria-label', labels[s][0] + ', key 5');
+    const labels = { title: 'Start game', playing: 'Pause', paused: 'Resume', dying: 'Game over', over: 'Play again' };
+    naviKey.setAttribute('aria-label', labels[s]);
+    key5.setAttribute('aria-label', labels[s] + ', key 5');
     keyC.disabled = (s === 'title' || s === 'dying');
-    keyC.setAttribute('aria-label', s === 'playing' ? 'Pause (C)' : 'End game (C)');
+    keyC.setAttribute('aria-label', s === 'playing' ? 'Pause, key C' : 'End game, key C');
     let desc;
     if (s === 'title') desc = 'Snake title screen. Level ' + settings.level + (best ? '. Best score ' + best.score : '') + '.';
     else if (s === 'playing') desc = 'Snake game in progress.';
@@ -761,8 +771,8 @@
   }
   function turn(name) {
     const d = DIRS[name];
-    if (state === 'title') { newGame(); }
-    else if (state === 'paused') { resume(); }
+    if (state === 'title') newGame();
+    else if (state === 'paused') resume();
     if (state !== 'playing') return;
     const last = queue.length ? queue[queue.length - 1] : game.dir;
     if ((d.x === -last.x && d.y === -last.y) || (d.x === last.x && d.y === last.y)) return;
@@ -796,6 +806,7 @@
     if (t && t.closest && t.closest('input, select, textarea')) return;
     const onButton = t && t.closest && t.closest('button');
     const code = e.code || '';
+    if (code !== 'KeyM') ensureAudio();
     const dir = KEYDIR[code];
     if (dir) {
       e.preventDefault();
@@ -805,7 +816,7 @@
       return;
     }
     if (code === 'Space' || code === 'Enter' || code === 'NumpadEnter') {
-      if (onButton) return;           // the focused button handles its own activation
+      if (onButton) return;           // a focused button handles its own activation
       e.preventDefault();
       if (e.repeat) return;
       flashKey(naviKey); navi();
@@ -826,7 +837,7 @@
     }
   });
 
-  // on-screen keys act on pointerdown (no click delay); keyboard/AT activation arrives as click
+  // on-screen keys act on pointerdown (no click delay); keyboard and assistive tech arrive as click
   function bindKey(btn, fn) {
     let viaPointer = false;
     btn.addEventListener('pointerdown', (e) => {
@@ -887,9 +898,7 @@
     } catch (e) { actx = null; }
   }
   function beep(freq, dur, delay = 0) {
-    if (!settings.sound) return;
-    ensureAudio();
-    if (!actx) return;
+    if (!settings.sound || !actx) return;
     try {
       const t = actx.currentTime + delay;
       const o = actx.createOscillator(), g = actx.createGain();
@@ -908,10 +917,11 @@
   const levelSeg = $('#level-seg');
   for (let i = 1; i <= 9; i++) {
     const l = document.createElement('label');
-    l.innerHTML = '<input type="radio" name="level" value="' + i + '"><span>' + i + '</span>';
+    l.innerHTML = '<input type="radio" name="level" value="' + i + '"><span>' + i + '</span><b class="vh"> (level ' + i + ')</b>';
     levelSeg.appendChild(l);
   }
   const form = $('#settings');
+  const COVER_NAMES = { navy: 'Navy', red: 'Red', yellow: 'Yellow', graphite: 'Graphite' };
   function syncForm() {
     form.querySelector('input[name="level"][value="' + settings.level + '"]').checked = true;
     form.querySelector('input[name="edges"][value="' + settings.edges + '"]').checked = true;
@@ -919,8 +929,7 @@
     $('#level-name').textContent = settings.level;
     $('#lv-a').textContent = settings.level;
     $('#lv-b').textContent = settings.level;
-    const names = { navy: 'Navy', red: 'Red', yellow: 'Yellow', graphite: 'Graphite' };
-    $('#cover-name').textContent = names[settings.cover];
+    $('#cover-name').textContent = COVER_NAMES[settings.cover];
     handset.dataset.cover = settings.cover;
     keySound.setAttribute('aria-pressed', String(settings.sound));
     if (state === 'title') setState('title');
@@ -945,20 +954,20 @@
   for (let x = COLS - 2; x >= 0; x--) PERIM.push({ x, y: ROWS - 1 });
   for (let y = ROWS - 2; y >= 1; y--) PERIM.push({ x: 0, y });
 
-  function composeTitle(now) {
+  function composeTitle() {
     drawFrame(settings.edges === 'wrap');
     const len = 9;
-    const p = reduced ? 13 : attractP;
+    const p = reduced ? 12 : attractP;
     const segs = [];
     for (let i = 0; i < len; i++) {
       const c = PERIM[((p - i) % PERIM.length + PERIM.length) % PERIM.length];
       segs.push({ x: c.x, y: c.y, meal: false });
     }
     drawSnake(segs, dirBetween(segs[1], segs[0]), false);
-    textC('SNAKE', 17, 3);
-    textC('LEVEL ' + settings.level, 39);
-    textC(best ? 'BEST ' + best.score : 'NO BEST YET', 47);
-    textC('START', 69);
+    textC('SNAKE', 16, 3);
+    textC('LEVEL ' + settings.level, 35);
+    textC(best ? 'BEST ' + best.score : 'NO BEST YET', 43);
+    textC('START', LABEL_Y);
   }
   function composePlay(now) {
     drawFrame(game.edges === 'wrap');
@@ -984,17 +993,17 @@
       drawSnake(snake, game.dir, open);
     }
     if (state === 'paused') {
-      box(22, 27, 55, 20);
-      textC('PAUSED', 32, 2);
-      textC('RESUME', 69);
+      box(13, 22, 57, 20);
+      textC('PAUSED', 27, 2);
+      textC('RESUME', LABEL_Y);
     } else if (state === 'over') {
-      box(9, 17, 81, 39);
-      textC(boardFull ? 'FULL!' : 'GAME OVER', 22, 2);
-      textC('SCORE ' + game.score, 37);
-      textC(newBest ? 'NEW BEST!' : (best ? 'BEST ' + best.score : ''), 46);
-      textC('AGAIN', 69);
+      box(11, 14, 61, 35);
+      textC(boardFull ? 'SCREEN FULL' : 'GAME OVER', 18);
+      textC(String(game.score), 26, 2);
+      textC(newBest ? 'NEW BEST!' : (best ? 'BEST ' + best.score : ''), 40);
+      textC('AGAIN', LABEL_Y);
     } else if (state === 'playing') {
-      textC('PAUSE', 69);
+      textC('PAUSE', LABEL_Y);
     }
   }
 
@@ -1015,8 +1024,8 @@
   let lastFrame = performance.now();
   function render(now, dt) {
     target.fill(0);
-    if (state === 'title') composeTitle(now); else composePlay(now);
-    const decay = reduced ? 1 : dt / 120;
+    if (state === 'title') composeTitle(); else composePlay(now);
+    const decay = reduced ? 1 : dt / 120;     // slow LCD pixels: a short smear behind moving things
     ctx.drawImage(bg, 0, 0);
     ctx.fillStyle = INK;
     const sz = S - gap;
@@ -1048,7 +1057,7 @@
     requestAnimationFrame(loop);
   }
 
-  /* ---------- sizing: integer device pixels per LCD pixel ---------- */
+  /* ---------- sizing: a whole number of device pixels per LCD pixel ---------- */
   function layout() {
     const dpr = window.devicePixelRatio || 1;
     const hs = getComputedStyle(handset);
@@ -1071,6 +1080,7 @@
     canvas.style.width = cssW + 'px';
     canvas.style.height = cssH + 'px';
     handset.style.setProperty('--lcd-w', cssW + 'px');
+    handset.style.setProperty('--hs-h', handset.offsetHeight + 'px');
     buildBackground();
   }
   let resizeT = 0;
@@ -1081,12 +1091,8 @@
   updateBestText();
   setState('title');
   layout();
-  // second pass once fonts and layout settle (height constraint depends on handset height)
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
   requestAnimationFrame((t) => { lastFrame = t; layout(); requestAnimationFrame(loop); });
-
-  // test hook for automated screenshots (no effect on play)
-  window.__snake = { get state() { return state; }, newGame, step: () => step(), pause, setScore: (n) => { if (game) game.score = n; } };
 })();
 </script>
 </body>
