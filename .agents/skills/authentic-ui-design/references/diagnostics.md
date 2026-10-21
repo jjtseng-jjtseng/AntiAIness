@@ -69,6 +69,9 @@ When agents are told what not to do, they converge on a new default. Watch for i
 | Half-empty sections, missing closing call to action, misaligned parallel actions | Sections were cut or simplified without re-composing | Finish pass |
 | "Placeholder" and "sample data" chips on every panel, build notes visible to visitors, states shown in a detached review panel | Honesty applied without design | One quiet note per page; developer notes in HTML comments; show states in the product's own frame |
 | In an improvement, the brand's typeface, color proportions or page furniture disappear | Carriers of the aesthetic mistaken for tells | Fix how carriers are used; don't delete them |
+| A visual hero replaced by text or a plain diagram | Decoration was removed instead of transformed | Turn the visual into evidence: annotate it, fill it with real data, show real work |
+| The requested genre (futuristic, playful, luxurious) held back to avoid looking trendy | Treating every genre convention as a tell | Use the genre's vocabulary on purpose; make the product's material the distinctive part |
+| Unconventional semantic colors (yellow for correct, blue for errors) | Palette consistency put ahead of meaning | Green/red for right/wrong and success/error, with a second cue |
 
 ## Measurable signals (signals, not verdicts)
 

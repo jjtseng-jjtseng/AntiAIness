@@ -3,7 +3,7 @@ name: authentic-ui-design
 description: Design and build websites, web apps, dashboards, game UIs, landing pages and mobile screens with deliberate, product-specific art direction instead of the recognizable AI-default look. Use whenever creating or redesigning any user interface, picking fonts, colors, layout or components, reviewing why a UI "looks AI-generated", improving a design that is polished but generic, or working from user-supplied screenshots, sites or design systems. Preserves the user's requested style (sleek, minimal, playful, retro, luxurious, utilitarian, editorial) rather than imposing a house look.
 license: MIT
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
   source: https://github.com/jjtseng-jjtseng/AntiAIness
 ---
 
@@ -71,6 +71,7 @@ Conventions kept on purpose: <the familiar patterns this product needs>
 Guidance:
 
 - **Requested character** is the line most often skipped. Translate every adjective into something a stranger would notice in the first screenful (`framework.md` §2 has a table). "Futuristic" is not delivered by deleting glow; it is delivered by, say, a technical display face, a luminous accent reserved for live data, and data that animates when it changes. "Colorful" means color covers visible area, not one accent.
+- **Genre vocabulary is allowed.** If the requested mood has a recognizable vocabulary (futuristic: dark, luminous accent, instrument framing; playful: saturated color, chunky shapes, a character), use it on purpose and push it as far as the brief asks. Under-delivering the mood to avoid looking "trendy" is a failure; in validation, unguided builds that committed to the genre beat skill-guided builds that held back. Distinctiveness comes from the product's own material, not from avoiding the genre.
 - **Memorable thing** comes from the domain: a chart as the hero of an analytics product; the game's world drawn into its menus; a catalog's real taxonomy; a restaurant's actual menu set in good type. Not an orbit ring, not a glow, not a tilted mock.
 - **Type**: choose for the product's voice. One or two families. Faces that read as "nothing was decided" when used by reflex: Inter, DM Sans, Manrope, Space Grotesk, Plus Jakarta, Outfit, Sora, Poppins, and also the "safe serious" picks (IBM Plex, Source Sans, Libre Franklin) when reached for every time. Any face is fine when chosen for a reason you can state.
 - **Color**: start from something true (brand, material, data conventions, the game's palette). Decide roles, then values, then proportions.
@@ -80,6 +81,7 @@ Guidance:
 
 - **Content inventory first.** List what actually needs to be on the page, in the order the user needs it. Build sections from that list, not from a template. If a section has nothing real to say, it does not exist.
 - **One focal point per screen.** Decide what is big. Let the rest be quieter, but not empty.
+- **Turn decoration into evidence before deleting it.** A decorative mock, illustration or photo usually becomes strong when it carries real information: annotate it with the reasoning behind it, fill it with the product's real data, show the real work. Replacing a visual hero with text or a plain diagram usually loses.
 - **Vary the rhythm and the containers.** Alternate dense and open, full-bleed and contained, image-led and text-led where content motivates it. Don't let any single container (cards, hairline label/value rows, tables, accordions) carry more than two sections in a row.
 - **Real specificity.** Real names, numbers with units and sources, real categories, real states (empty, loading, error), example data that looks like the product's actual data. Zero fabricated proof.
 - **Apps and tools**: the primary task gets the primary space. No hero card inside a working tool. Stat tiles only for numbers someone acts on.
@@ -91,7 +93,7 @@ Guidance:
 - **Type scale**: 5–7 sizes. Body 15–18px on desktop web (12–14px only in dense professional tools, consistently). No functional text under 12px on web; under 11px nothing. Line length 45–90 characters. Letterspace all-caps +5–12%. Real italics, real small caps, tabular numerals for data.
 - **Hierarchy with three levers** (size, weight, color), rarely all three at once. Emphasize by de-emphasizing neighbors, not by adding effects.
 - **Spacing system**: one base unit, a short scale, a grid you could draw.
-- **Color discipline**: decide proportions on purpose (a playful brand may be 40% color; a ledger 5%). Text on tinted backgrounds is a tint of the same hue. Contrast ≥ 4.5:1 for text, ≥ 3:1 for large text and UI boundaries.
+- **Color discipline**: decide proportions on purpose (a playful brand may be 40% color; a ledger 5%). Keep semantic colors conventional: green for correct and success, red for errors and wrong answers, red/green for down/up in finance, each with a second cue (icon or text). Text on tinted backgrounds is a tint of the same hue. Contrast ≥ 4.5:1 for text, ≥ 3:1 for large text and UI boundaries.
 - **Shape**: one radius policy from the product's materials. One boundary technique per element class.
 - **Effects** (gradient, blur, glow, grain, glass): only if the direction card names them, with a job, in ≤ 2 places. When the brief asks for them, do them well rather than not at all.
 - **Components**: hover, focus-visible, active, disabled, loading, empty, error. Visible focus rings. Touch targets ≥ 40px.
