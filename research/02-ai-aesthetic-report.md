@@ -79,7 +79,13 @@ Authenticity is not irregularity. None of the real sites we examined use random 
 5. **Typography for reading.** Sizes, measure, leading and a short scale.
 6. **A few owned choices executed consistently.** Duolingo's one green and its character system; The Guardian's headline serif and section colors; Steam's blue-black and game key art; Arc's wavy section edges.
 
-## 8. Implications for a skill
+## 8. A fourth generation, observed while building the skill
+
+Validation (`../evaluation/`) showed the advice-absorption mechanism happening in real time. Agents given v1.0 of the skill, which said much more about what to remove than about what to deliver, converged on a new look: a neutral "serious" grotesk (IBM Plex in three of six outputs), one muted accent, 1px rules, hairline label/value lists in most sections, and noticeably less of the mood the brief asked for ("a bit futuristic" became calm documentation; "colorful and playful" became tasteful; "warm" lost its serif and most of its color). Each output was defensible on its own; side by side they were recognizable. A blind reviewer still preferred the skill-guided build in four of five paired scenarios, but the losses it named were exactly these. **(evidence, n=1 per scenario)**
+
+The lesson generalizes: any list of things to avoid becomes a style once a model optimizes against it. The countermeasure is to make *delivery* as explicit as *avoidance*: name the requested character and the visible decision that delivers it, and check the first screenful for it.
+
+## 9. Implications for a skill
 
 1. Teach a **decision procedure** (brief → direction → content inventory → structure → craft → render → diagnose), not a banned list.
 2. Make the **structural and intent layers** explicit, with tests ("would this skeleton fit another product?", "is specificity simulated or delivered?", "what is the one focal point?").
@@ -87,6 +93,7 @@ Authenticity is not irregularity. None of the real sites we examined use random 
 4. Name the **second- and third-generation defaults** explicitly so the model does not treat "not purple" as the goal.
 5. Insist on **preserving the requested aesthetic** and on **keeping conventions** where they serve, so the skill does not become a new house style.
 6. Require **rendering and diagnosis by layer** before any cosmetic iteration.
+7. Make **delivery of the requested character** an explicit, checkable step (§8), and name the skill's own likely over-correction so the agent can catch it.
 
 ## Sources
 
