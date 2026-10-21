@@ -14,7 +14,9 @@ const only = process.argv.slice(2);
 
 (async () => {
   const browser = await chromium.launch({ proxy: process.env.HTTPS_PROXY ? { server: process.env.HTTPS_PROXY } : undefined });
-  const summary = {};
+  const summaryPath = path.join(OUT, 'summary.json');
+  let summary = {};
+  try { summary = JSON.parse(fs.readFileSync(summaryPath, 'utf8')); } catch (e) { /* first run */ }
   for (const scen of fs.readdirSync(SCEN).sort()) {
     if (only.length && !only.includes(scen)) continue;
     for (const variant of fs.readdirSync(path.join(SCEN, scen)).sort()) {
@@ -56,6 +58,7 @@ const only = process.argv.slice(2);
       console.log('rendered', id);
     }
   }
-  fs.writeFileSync(path.join(OUT, 'summary.json'), JSON.stringify(summary, null, 2));
+  const sorted = Object.fromEntries(Object.keys(summary).sort().map(k => [k, summary[k]]));
+  fs.writeFileSync(summaryPath, JSON.stringify(sorted, null, 2));
   await browser.close();
 })();
