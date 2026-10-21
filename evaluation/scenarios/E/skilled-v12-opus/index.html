@@ -251,7 +251,7 @@ details p+p{margin-top:-8px}
 @media (max-width:960px){
   .menubtn{display:inline-flex}
   .headbtn{display:none}
-  #site-nav{position:absolute;top:calc(100% + 1px);left:0;right:0;display:none;align-items:stretch;gap:0;padding:6px 0 16px;border-bottom:1px solid var(--line);background:var(--paper);box-shadow:0 16px 24px rgba(25,40,68,.08)}
+  #site-nav{position:absolute;top:calc(100% + 1px);left:-24px;right:-24px;display:none;align-items:stretch;gap:0;padding:6px 24px 16px;border-bottom:1px solid var(--line);background:var(--paper);box-shadow:0 16px 24px rgba(25,40,68,.08)}
   #site-nav.open{display:grid}
   #site-nav a{display:flex;align-items:center;min-height:52px;border-bottom:1px solid var(--line);font-size:var(--fs-md)}
   #site-nav .nav-cta{display:flex;justify-content:center;margin-top:14px;border:0;border-radius:999px;color:#fff;background:var(--ink)}
@@ -267,6 +267,7 @@ details p+p{margin-top:-8px}
 @media (max-width:760px){
   :root{--fs-3xl:40px;--fs-2xl:32px;--fs-xl:24px}
   .wrap{width:calc(100% - 32px)}
+  #site-nav{left:-16px;right:-16px;padding-inline:16px}
   .topline p{padding-block:9px;text-align:left}
   .site-head{min-height:70px}
   .hero{gap:36px;padding-block:40px 56px}
