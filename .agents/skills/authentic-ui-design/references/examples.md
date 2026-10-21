@@ -1,30 +1,34 @@
 # Worked examples
 
-Three direction cards for contrasting briefs, a before/after diagnosis of a real AI-generated page, and the evaluation scenarios used to validate this skill.
+Direction cards for contrasting briefs, a before/after diagnosis of a real AI-generated page, and what the validation runs taught.
+
+**These cards illustrate reasoning. Do not reuse their typefaces, colors or layouts.** In validation, an agent given an earlier version of card A copied its font pairing for an unrelated product. The next product should get different answers because it has a different world.
 
 ## Direction cards
 
-### A. "A sleek, modern interface for a developer-facing API monitoring tool"
+### A. "A sleek, modern, slightly futuristic site for a developer-facing API monitoring tool"
 
-Brief inferred: engineers, daily, long sessions, desktop, often dark rooms, stress when things are red. Requested: sleek, modern. Content: real latency/error series, endpoint names, incident timeline.
+Brief inferred: engineers, daily, long sessions, desktop, often dark rooms, stress when things are red. Requested: sleek, modern, a bit futuristic, credible. Content: real latency/error series, endpoint names, incident timeline.
 
 ```
-Direction: "Instrument panel". Sleek means calm precision, not glow.
-The memorable thing: a full-width live latency chart as the hero of the app and of the marketing page, with real endpoint names on the y-axis.
-Type: IBM Plex Sans for UI (13/14/16/20/28), IBM Plex Mono for endpoint paths and numbers with tabular figures. Chosen: engineered, legible, real mono companion.
-Color: near-neutral dark surfaces (#14171c / #1b1f26), text #e6e9ef, muted #8b93a1; one accent for interaction, a desaturated blue (#6ea8ff); semantic red/amber/green reserved for status and never used as decoration. Dark chosen because the audience works at night with many dark tools; a light theme is offered.
-Shape & surface: 4px radius on controls, 6px on panels; 1px borders, no shadows except menus; no glow.
-Density: working-tool dense: 36px rows, 13px table text.
-Imagery: none; the product's own charts and tables are the imagery.
-Motion: state feedback only; chart updates animate 150ms.
-Voice: terse, specific ("p95 412 ms, +18% vs 7d"), no exclamation.
-Conventions kept: sidebar nav, ⌘K search, red = bad.
+Direction: "Live instrument". Credible because it shows real signal; futuristic because the signal is alive.
+Requested character → how it shows: sleek → one large flat product view, few elements, tight display tracking; modern → current type and real UI, no decoration; futuristic → a squared technical display face, a single luminous accent used only on live values, the chart redraws as data arrives, depth from stacked dark surfaces; credible → real units, honest labels, no glow on anything that is not data.
+The memorable thing: the incident chart with the deploy marker standing on the line, large in the hero, its live trace in the accent color.
+Type: a squared or wide technical display face for headings (chosen for its engineered feel), a plain readable sans for body, a monospace with tabular figures only for endpoints and numbers. Sizes 14/16/20/32/52.
+Color: layered blue-black surfaces (three steps), text near-white, one luminous accent for live data and the primary action only (~5% of the page), semantic red for incidents.
+Shape & surface: 4px controls, 8px panels; surfaces separated by tone, borders only inside data views; a soft light falloff behind the live chart is allowed because it is the one thing that "emits".
+Density: marketing-sparse around a working-dense product view.
+Imagery: the product's own views, flat and large.
+Motion: the chart trace draws on load (once) and ticks on update; nothing else moves.
+Voice: terse, specific ("p95 412 ms, +18% vs 7d").
+Conventions kept: pricing table with the recommended plan marked, a closing call to action, sign-in top right.
 ```
 
 ### B. "A playful, colorful math game for 8-year-olds"
 
 ```
 Direction: "Paper counting toys". Playful means a consistent toy-box world, not confetti.
+Requested character → how it shows: colorful → five tile colors covering most of the play area; playful → tiles that press and bounce, a mascot with three states; friendly → rounded heavy type, kind copy; trustworthy → a plain note for adults, no ads, no streak pressure.
 The memorable thing: numbers and operators as chunky tactile tiles with a drop shadow that *press* when tapped; every screen is built from the same tiles.
 Type: Fredoka (heavy, rounded, open counters) for everything, 20px minimum, 40–64px for the sum being solved.
 Color: cream board (#fff6e5), five tile colors with roles (ones = yellow, tens = orange, operators = blue, answers = green, mistakes = soft red), ink #2a2440. Chosen for a toy-material feel and clear semantics for a child.
@@ -40,8 +44,9 @@ Conventions kept: big "Next" button bottom-right, a visible home button, sound t
 
 ```
 Direction: "Ledger". Credibility comes from numbers set correctly.
+Requested character → how it shows: serious → neutral palette, no decoration; information-dense → 32px rows, everything above the fold; credible → limits drawn where they are breached, benchmark beside every return.
 The memorable thing: a dense holdings table with exposure bars inline, sorted by risk contribution, with the day's P&L as the only large number on the screen.
-Type: Source Sans 3 for UI (12/13/14/18/28), tabular numerals; no mono (a ledger, not a terminal).
+Type: a sans with true tabular numerals and a slightly condensed width for dense columns (12/13/14/18/28); no mono (a ledger, not a terminal).
 Color: white surfaces, hairline #d9dde3 borders, text #1b1f24; accent navy #1f3a5f for selection and links only; semantic green/red for up/down with ▲▼ glyphs as the second cue; amber for breaches. Light theme because this is daytime desk work on bright monitors.
 Shape & surface: 2px radius; borders only; no shadows; no cards, panels are regions of one grid.
 Density: analysis-tool dense: 32px rows, 13px numbers, 12px column headers.
@@ -68,6 +73,14 @@ The repository's `raspberry-pi-showcase` is a well-made AI-generated landing pag
 6. `↗`/`✳` glyphs 30 times; eyebrows with lines on every section; one accent word per heading. Fix: remove the glyph system; kickers only where they carry a category.
 
 What to keep: the pink/lime/paper palette (it is Raspberry Pi-adjacent and lively), Space Grotesk as the display face, the memory-option selector (a real product interaction), the FAQ content (it is real and useful), the responsive behavior.
+
+## What the validation runs taught (v1.0 → v1.1)
+
+Seven scenarios were built twice by fresh agents, with and without this skill, and reviewed blind (`evaluation/` in the repository). With v1.0:
+
+- **What worked**: every skill-guided output removed the measurable tells (tiny text, ornaments, eyebrows, accent words, glows); heroes showed the product's own material (a deploy-marker chart, an editor full of real-looking notes, base-ten blocks, a page plan); dashboards and games gained clearer focal points and states. A blind reviewer preferred the skill-guided version in four of five paired scenarios.
+- **What failed**: the outputs were consistently *quieter than asked*. "A bit futuristic" became calm documentation; "colorful and playful" became tasteful; "warm" lost its serif and most of its color in an improvement task, which the reviewer ranked below the unguided rewrite. Three of six outputs chose the same "serious" typeface, and hairline label/value rows appeared in most pages. Finish slipped: half-empty sections, a missing closing call to action, misaligned pricing buttons, a "states" panel that made a game read like a spec.
+- **What changed in v1.1**: the "requested character" line in the direction card and the translation table in `framework.md`; the fidelity-and-finish checklist group; "fix carriers, don't delete them" in improve mode; the over-correction table in `diagnostics.md`; cards here that no longer name fonts to copy.
 
 ## Evaluation scenarios
 

@@ -4,7 +4,7 @@ Different products need different design logic. Each section: what good looks li
 
 ## Marketing sites and landing pages
 
-**Good looks like**: the visitor's questions answered in order (what is it, is it for me, what does it look like, what does it cost, how do I start) with real content in every section; one hero that shows the actual product or subject; proof that is real or absent; a close that is a next step, not a "colored band with a giant glyph".
+**Good looks like**: the visitor's questions answered in order (what is it, is it for me, what does it look like, what does it cost, how do I start) with real content in every section; one hero that shows the actual product or subject; proof that is real or absent; a close that is a plain, specific next step (keep it; just not as a "colored band with a giant glyph"); and the requested mood visible in the first screenful.
 
 **Decide**: what the hero *shows* (product UI, photo of the real thing, the real data, a diagram, or type alone); the section order from the content inventory; which one section gets the most design; density (a dev tool page can be dense and text-led; a consumer product page sparse and image-led).
 
@@ -94,7 +94,7 @@ Different products need different design logic. Each section: what good looks li
 
 ## Playful, educational, consumer-friendly
 
-**Good looks like**: color and illustration with a consistent character system (a mascot with rules, a palette with roles, a shape language), big friendly type, instant clear feedback, restraint in motion so the content stays the star. Playful is a *system*, not randomness.
+**Good looks like**: color and illustration with a consistent character system (a mascot with rules, a palette with roles, a shape language), big friendly type, instant clear feedback, restraint in motion so the content stays the star. Playful is a *system*, not randomness. Color has to cover real area (tiles, backgrounds, illustrations), not just one accent on white; a pedagogically correct but pale page fails the "colorful" brief.
 
 **Decide**: the one or two brand colors and where they go; the illustration style and its rules; what "fun" feedback looks like (and how not to overdo it); readability for the age group (bigger, higher contrast).
 

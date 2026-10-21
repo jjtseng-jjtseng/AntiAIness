@@ -36,6 +36,29 @@ Voice: ...
 Conventions kept on purpose: ...
 ```
 
+### Translating the requested character into decisions
+
+Removing defaults tends to make pages calmer and plainer. That is right when the brief asked for calm and plain, and wrong otherwise. Every adjective in the brief needs at least one *visible* decision, and the result should be recognizable from the first screenful. These are starting levers, not recipes; pick the ones that fit the product and say why.
+
+| The user says | Levers that deliver it | What does not deliver it |
+|---|---|---|
+| sleek | Few elements, precise alignment, large confident type with tight display tracking, generous space, one saturated or luminous accent, smooth 150–250ms transitions, product imagery large and flat | Removing everything until it is merely sparse |
+| modern | Current, not dated: clear hierarchy, contemporary type, real product UI, responsive polish. It is vague: pair it with a second adjective derived from the product | Defaulting to the current trend (glass, bento, gradient) |
+| futuristic | A technical, geometric, wide or squared display face; monospace for real data; a luminous accent reserved for live or changing values; depth through layered dark surfaces; motion when data changes; precise grids and measurements that carry real information | Gradient text, random glow blobs, fake coordinates, deleting all of it and calling the result "credible" |
+| minimal | Fewer elements, not smaller ones; large type; one color; everything still present and findable | Tiny grey text; hiding navigation |
+| playful / colorful | 3–5 saturated colors with roles that cover real area (backgrounds, tiles, illustrations), an illustration or character system with rules, heavy rounded type, brief springy feedback, big targets | One accent on white; confetti everywhere; random rotations |
+| warm / friendly | Warm neutrals and accents in visible proportion, a humanist sans or soft serif, italics as a voice (used deliberately), conversational copy, real people and places | Stripping the serif and the color because they were "tells" |
+| serious / professional / trustworthy | Neutral palette, density, tables, precise numerals, restrained motion, honest disclaimers | Startup gradients; KPI tiles; oversized headlines |
+| luxurious / premium | A refined serif or high-contrast face at a few large sizes, space, superb photography or material, slow motion, two or three tones | Gold gradients; tiny grey text as "elegance" |
+| editorial | A typographic system: headline face, deck, byline, measure, columns, captions, rules | Uniform article cards |
+| bold / energetic | Big type at scale, high-contrast color fields, tight rhythm, decisive motion | Loudness everywhere with no focal point |
+| retro / period | The era's palette limits, type, chrome and copy tone, applied consistently | A retro font on modern SaaS chrome |
+| industrial / utilitarian | Grotesk or mono, visible grids and labels, high density, minimal color with hazard-style accents for status | "Industrial" textures without function |
+| dark / moody | Dark because of use or world, with layered surfaces, controlled highlights, readable text | Black background plus glow by default |
+| experimental | One strong idea carried through the whole page, navigation still conventional enough to use | Many unrelated novelties |
+
+Volume check: after rendering, show the first screenful to yourself as a stranger. If you would not name the user's adjectives, the direction card is not yet visible in the work.
+
 ### Finding "the memorable thing"
 
 It should come from the domain's own material, and it should be *one* thing executed consistently, not five gestures:
@@ -71,7 +94,7 @@ Typography is where most AI output fails measurably, and where most real sites q
 - Utility/native → the platform system stack is a legitimate, honest choice.
 - Games → the face that matches the world (period, culture, genre), with a plain functional companion for small UI text.
 
-Faces that signal "nothing was decided" when used by reflex: Inter, DM Sans, Manrope, Space Grotesk, Plus Jakarta Sans, Outfit, Sora, Poppins. They are fine faces; use them when chosen, not when defaulted.
+Faces that signal "nothing was decided" when used by reflex: Inter, DM Sans, Manrope, Space Grotesk, Plus Jakarta Sans, Outfit, Sora, Poppins. After anti-default advice, a second set becomes the reflex: IBM Plex, Source Sans, Libre Franklin, Fraunces, Instrument Serif. All are fine faces; use them when chosen for this product, not because they are the safe "serious" or "tasteful" pick. When two products in a row get the same face from you, that is a default.
 
 **Hierarchy.** Three levers: size, weight, color. Use one or two per level. Make secondary text quieter rather than making primary text louder. Don't use tiny tracked uppercase as the universal "label" style; sentence-case labels at 12–13px in a muted color are often better and always more readable.
 
@@ -96,7 +119,8 @@ Rules of thumb:
 - **Content inventory → hierarchy → layout.** List what must be on the page, rank it, then draw the layout around the rank. The template skeleton appears when this step is skipped.
 - **One focal point per screen.** Decide what is big. Then make the rest plainer than feels comfortable.
 - **Rhythm is a decision.** Vary section height, width (contained vs full-bleed), density and media type where the content motivates it. Uniform padding and uniform section shape read as generated.
-- **Choose containers by content.** Cards for card-like things (comparable, selectable, parallel). Tables for records. Lists for sequences. Prose for explanation. A single large image for a single thing. Not everything needs a box.
+- **Choose containers by content.** Cards for card-like things (comparable, selectable, parallel). Tables for records. Lists for sequences. Prose for explanation. A single large image for a single thing. Not everything needs a box. Equally, not everything is a hairline label/value list: after removing cards, agents tend to turn every section into the same ruled two-column list, which is a new template.
+- **Finish the composition.** No section where one column is full and the other empty; parallel items aligned (actions at the same height across pricing cards); no dead zones in app screens; marketing pages end with a plain, specific next step (a closing call to action is a convention to keep; what reads as generated is the decorative band, giant glyph and slogan around it).
 - **Grids you could draw.** Columns, gutters and a base spacing unit (4 or 8px) applied consistently. Alignment is the cheapest form of craft.
 - **Density is a product decision.** Daily tools: denser. First-visit pages: sparser, but still full of real content. UI density is value delivered per unit of space and time, not pixels per inch.
 - **Responsive is a second layout, not a collapse.** Decide what stacks, what hides, what changes form at 390px. Test 320/390/768/1024/1440. No horizontal overflow.
@@ -162,7 +186,9 @@ Offer two or three distinct directions in two lines each if the brief is genuine
 Screenshot desktop and mobile. Then, in this order:
 
 1. Is the direction card visibly true? (If the card says "the chart is the hero" and the hero is a gradient blob, fix the hero.)
-2. Run the default-tells checklist in `SKILL.md`.
-3. Check the quality floor: sizes, contrast, focus, overflow, states.
-4. If it is attractive but generic, diagnose by layer (`diagnostics.md`), then change the smallest set of things. Do not add effects.
-5. Stop when it passes. Don't keep polishing.
+2. Is the requested character visible in the first screenful? (Volume check above.)
+3. Run the checklist in `SKILL.md`.
+4. Check the quality floor: sizes, contrast, focus, overflow, states. Then the finish: half-empty sections, misaligned parallel items, dead zones, a missing closing step.
+5. If it is attractive but generic, diagnose by layer (`diagnostics.md`), then change the smallest set of things. Do not add effects.
+6. If it is specific but flat, find the adjective that is missing and add the decision that delivers it (table above). Do not add ornaments.
+7. Stop when it passes. Don't keep polishing.

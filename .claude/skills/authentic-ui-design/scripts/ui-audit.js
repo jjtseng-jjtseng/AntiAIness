@@ -71,7 +71,12 @@ const COLLECT = () => {
     }
     const r = cs.borderTopLeftRadius;
     if (r && r !== '0px') radii[r] = (radii[r] || 0) + 1;
-    if (cs.boxShadow && cs.boxShadow !== 'none') { shadows++; if (/rgba?\([^)]*\)\s+0px 0px \d+px/.test(cs.boxShadow) || /0px 0px \d+px/.test(cs.boxShadow)) glows++; }
+    if (cs.boxShadow && cs.boxShadow !== 'none') {
+      shadows++;
+      // A glow is a layer with zero offset and a real blur radius (not a 0-blur spread "rim").
+      const layers = cs.boxShadow.split(/,(?![^(]*\))/);
+      if (layers.some(l => { const n = (l.replace(/rgba?\([^)]*\)/g, '').match(/-?[\d.]+px/g) || []).map(parseFloat); return !/inset/.test(l) && n.length >= 3 && n[0] === 0 && n[1] === 0 && n[2] >= 4; })) glows++;
+    }
     if (/gradient/.test(cs.backgroundImage)) grads++;
     if (cs.backdropFilter && cs.backdropFilter !== 'none') blurs++;
   }
@@ -161,6 +166,9 @@ const COLLECT = () => {
   if (r.upper >= 15) notes.push(`${r.upper} uppercase text elements. Tracked-caps micro-labels as the universal label style is a tell.`);
   if (r.paraMeasure && r.paraMeasure.max > 110) notes.push(`Some paragraphs run ~${r.paraMeasure.max} characters per line. Keep running text at 45–90.`);
   if (r.overflowX) notes.push('Horizontal overflow detected at this width.');
+  const REFLEX = /^(inter|inter variable|dm sans|manrope|space grotesk|plus jakarta sans|outfit|sora|poppins|ibm plex sans|source sans 3|libre franklin|fraunces|instrument serif)$/i;
+  const primary = (r.families[0] || '').split('×')[0];
+  if (REFLEX.test(primary)) notes.push(`Primary face is ${primary}, a frequent reflex pick for generated UIs. Fine if chosen for this product; make sure the direction card says why.`);
 
   if (asJson) { console.log(JSON.stringify({ url, width, ...r, notes }, null, 2)); return; }
   console.log(`\nui-audit  ${url}  @${width}px   "${r.title}"`);

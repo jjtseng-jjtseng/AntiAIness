@@ -11,18 +11,23 @@
 
 Deliver the direction card as a short comment at the top of the stylesheet or in a 5-line note. Don't lecture.
 
+Show required states (feedback, empty, error, selected) in the product's own frame: a second state of the same screen, a toggle, or a sequence of screens. Use a detached "states" panel only when the user asked for a spec sheet; it makes a product page read like a review document.
+
 ## Improve an existing interface
 
 The user wants *their* design better, not a different design.
 
-1. **Inventory what exists**: typefaces, sizes, palette and roles, radius/shadow policy, density, section order, voice, components. Note which decisions look intentional (consistent, tied to the brand or content) and which look defaulted.
-2. **Find the stated aesthetic** in the brief, README, brand, or the design itself. Write it in one sentence. That sentence is the constraint.
+1. **Inventory what exists**: typefaces and their roles, sizes, palette, *how much of the page each color covers*, radius/shadow policy, density, section order and page furniture (banners, bands, footers), voice, components. Note which decisions look intentional and which look defaulted.
+2. **Find the stated aesthetic** in the brief, README, brand, or the design itself. Write it in one sentence. That sentence is the constraint. List its **carriers**: the specific elements that make the aesthetic visible (e.g. "warm" is carried by the paper color, the serif italic and the coral; "friendly" by the conversational copy and the rounded buttons).
 3. **Diagnose by layer** (`diagnostics.md`): intent → structure → surface. Rank.
-4. **Plan the smallest change set** that fixes the ranked findings *within* the stated aesthetic. Typical high-value moves: replace decoration with the product's real material; reorder/cut sections; fix the type scale (sizes up, fewer sizes, labels readable); make one thing the focal point and quiet the rest; rewrite the headline and two sentences with concrete nouns; remove ornaments (`↗ ✳`), accent-word reflex, floating badges.
-5. **Preserve**: the palette family if it was chosen, the typeface if it fits, the layout where it already serves the content, the functional requirements, all working behavior.
-6. Implement, render, compare before/after side by side, confirm the aesthetic sentence is still true.
+4. **Plan the smallest change set** that fixes the ranked findings *within* the stated aesthetic. High-value moves: replace decoration with the product's real material; reorder or merge sections; fix the type scale; make one thing the focal point; rewrite the headline and key sentences with concrete nouns; remove ornaments (`↗ ✳`), floating badges, fake specificity.
+5. **Fix carriers, don't delete them.** If the serif-italic accent word is overused, keep the serif and use the italic once where it means something. If coral appears as decoration everywhere, give it one job in visible proportion rather than removing it. If a banner or band is part of the brand's page, make its content useful rather than cutting it. Deleting a carrier changes the aesthetic the user asked you to keep.
+6. **Preserve**: the palette family and its proportions, the typefaces if they fit (or close relatives if they are pure defaults), every section and functional requirement, all working behavior.
+7. Implement, render, and compare before/after **side by side at thumbnail size**: it should read as the same brand, clearly improved. Then at full size: more specific, more readable, no tells, and at least as warm / sleek / playful as before.
 
-Do not: switch light to dark "for impact", replace a serif with a mono "to be distinctive", add animation, add sections, invent proof.
+Improvement by subtraction alone fails this mode. In the validation runs, an agent that removed every tell but also removed the serif, most of the gold and coral and the banner produced a cleaner page that a blind reviewer ranked *below* a less disciplined rewrite that kept the warmth and added specific evidence of how the studio works.
+
+Do not: switch light to dark "for impact", replace a serif with a mono "to be distinctive", swap the brand's typeface for a neutral grotesk, add animation, add sections, invent proof.
 
 ## Critique
 

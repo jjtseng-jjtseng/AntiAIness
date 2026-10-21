@@ -40,7 +40,7 @@ Evidence behind this file: seven AI-generated examples in the AntiAIness reposit
 | Perfect symmetry and even rhythm; every section the same height and padding | Nothing was weighted | Catalog grids, pricing tables | Give the important thing more space; let plain things be plain and short |
 | Dashboard = greeting + hero card + three stat tiles + two-column panels + "tip" card | The SaaS dashboard template | Rarely as a whole; stat tiles when they drive action | Primary task in primary space; data in tables with comparison; tiles only for action-worthy numbers |
 | Game = SaaS dashboard chrome (cards, kbd chips, status pills) around a canvas | Website defaults applied to a game | A game whose fiction is a dashboard | HUD and menus from the game's world, palette, shapes and type; chrome minimal |
-| Decorative sections with no content (giant glyph in a colored band; "the X difference" trio) | Filler to reach a "complete" page | Never as filler | Cut |
+| Decorative sections with no content (giant glyph in a colored band; "the X difference" trio) | Filler to reach a "complete" page | Never as filler | Cut the decoration; keep a plain, specific closing call to action, which is a convention, not a tell |
 | Floating-card annotations on a photo ("Up to 3× faster") | Simulated product detail | A real annotated diagram | Put facts in the text or a real spec table |
 
 ## Layer 3: Intent tells
@@ -56,6 +56,19 @@ Evidence behind this file: seven AI-generated examples in the AntiAIness reposit
 | Greeting + motivational line in a working tool ("Good afternoon, Maya. A focused rep beats an hour of unfocused prep.") | Consumer-app warmth applied to a tool | Social or wellness products where it is the point | Put the task first |
 | Dark mode or neon because the category "looks techy" | Mood instead of use | Products used in the dark, by people who prefer it, or whose brand is dark | Decide from use context |
 | Design that fits a screenshot but not a session: nothing for empty, loading, error, long text, many items | The happy path only | Never | Design the states |
+
+## Over-correction: the anti-default look
+
+When agents are told what not to do, they converge on a new default. Watch for it in your own work, and name it in critiques of "cleaned up" designs:
+
+| Tell | Why it happens | Fix |
+|---|---|---|
+| Neutral grotesk (often IBM Plex, Source Sans, Libre Franklin), one muted accent, 1px rules everywhere, no imagery | Every expressive element was removed as a potential tell | Restore the brief's character with owned decisions (`framework.md` §2) |
+| Every section is a hairline label-left / content-right list or table | Cards were removed and replaced with the next safest container | Choose containers by content; vary rhythm |
+| Less playful / sleek / warm / futuristic than asked | Removing tells is easier than delivering mood | Translate each adjective into a visible decision; volume check the first screenful |
+| Half-empty sections, missing closing call to action, misaligned parallel actions | Sections were cut or simplified without re-composing | Finish pass |
+| "Placeholder" and "sample data" notes inside the visual focus; states shown in a detached review panel | Honesty applied without design | Keep labels truthful but quiet; show states in the product's own frame |
+| In an improvement, the brand's typeface, color proportions or page furniture disappear | Carriers of the aesthetic mistaken for tells | Fix how carriers are used; don't delete them |
 
 ## Measurable signals (signals, not verdicts)
 
@@ -102,4 +115,4 @@ When a design is well-executed and still reads as AI, the surface is usually fin
 4. **Copy**: does it say anything? Rewrite two sentences with concrete nouns; often the design snaps into place.
 5. **Micro-typography**: tiny labels, tracked caps, accent-word reflex. Normalize sizes.
 
-Do not add effects, animation, more sections or more "sophistication". Generic + more = louder generic.
+Do not add effects, animation, more sections or more "sophistication". Generic + more = louder generic. Equally, do not stop at subtraction: generic − tells = bland. The fix is specific material plus the requested character.
